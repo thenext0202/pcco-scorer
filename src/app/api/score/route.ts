@@ -53,13 +53,17 @@ async function callClaudeAPI(
 
   const message = await anthropic.messages.create({
     model: "claude-sonnet-4-6",
-    max_tokens: 2000,
-    temperature: 0.2, // 일관성 있는 채점을 위해 낮게 설정
+    max_tokens: 4000, // 복잡한 프롬프트 처리를 위해 증가
+    temperature: 0.1, // JSON 안정성을 위해 더 낮게 조정
     system: SCORING_SYSTEM_PROMPT,
     messages: [
       {
         role: "user",
         content: userMessage,
+      },
+      {
+        role: "assistant",
+        content: "{", // Prefill: JSON으로 시작하도록 강제
       },
     ],
   });
@@ -72,8 +76,11 @@ async function callClaudeAPI(
     throw new Error("Empty response from Claude API");
   }
 
+  // Prefill로 인해 { 가 빠진 상태이므로 다시 추가
+  const fullResponse = "{" + responseText;
+
   // JSON 추출 및 파싱
-  const jsonText = extractJSON(responseText);
+  const jsonText = extractJSON(fullResponse);
   const parsed = JSON.parse(jsonText);
 
   // Zod 검증

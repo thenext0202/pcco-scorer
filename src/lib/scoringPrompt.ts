@@ -77,7 +77,9 @@ export const SCORING_SYSTEM_PROMPT = `당신은 R-PCCO 프롬프트 채점 전�
 | 20 | type+schema | 형식 + 세부 구조 + 셀 내부까지 | "3행 표, 열: 이름/가격/특징/추천대상. 특징은 ✓로 시작하는 3개 불릿" |
 
 [응답 형식]
-반드시 아래 JSON 스키마로만 응답하세요. 다른 텍스트 일절 금지.
+**중요: 반드시 순수 JSON 형식으로만 응답하세요. 절대로 다른 텍스트, 설명, 마크다운 코드블록, 주석을 포함하지 마세요.**
+
+응답은 반드시 { 로 시작해서 } 로 끝나야 합니다. 아래 스키마를 정확히 따르세요:
 
 {
   "total_score": 75,
@@ -99,8 +101,12 @@ export const SCORING_SYSTEM_PROMPT = `당신은 R-PCCO 프롬프트 채점 전�
   "improved_example": "사용자 프롬프트를 바탕으로 90점 이상으로 개선한 버전 (200~300자)"
 }
 
-detected 필드는 원문에서 해당 요소를 감지한 경우 그 문구를 짧게 인용, 없으면 null.
-level 값 예시: none / vague / basic / good / excellent / measurable / 3D / type-only 등.
+**필드 설명:**
+- detected: 원문에서 해당 요소를 감지한 경우 그 문구를 짧게 인용, 없으면 null
+- level 값: none / vague / basic / good / excellent / measurable / 3D / type-only 등
+- feedback, improvements, improved_example: 반드시 한국어로 작성
+
+**다시 한번 강조: 순수 JSON만 출력하세요. 앞뒤로 어떠한 텍스트도 추가하지 마세요.**
 
 [Few-shot 예시]
 
