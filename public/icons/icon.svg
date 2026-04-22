@@ -1,0 +1,21 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- 배경 -->
+  <rect width="512" height="512" rx="64" fill="#0f172a"/>
+
+  <!-- R-PCCO 글자 그리드 배치 -->
+  <g fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-weight="700">
+    <!-- R -->
+    <text x="256" y="140" font-size="72" text-anchor="middle" fill="#3b82f6">R</text>
+
+    <!-- P C C O 2x2 그리드 -->
+    <text x="160" y="260" font-size="64" text-anchor="middle" fill="#ffffff">P</text>
+    <text x="352" y="260" font-size="64" text-anchor="middle" fill="#ffffff">C</text>
+    <text x="160" y="380" font-size="64" text-anchor="middle" fill="#ffffff">C</text>
+    <text x="352" y="380" font-size="64" text-anchor="middle" fill="#ffffff">O</text>
+  </g>
+
+  <!-- 하단 작은 텍스트 -->
+  <text x="256" y="460" font-size="20" text-anchor="middle" fill="#64748b" font-family="system-ui, -apple-system, sans-serif">
+    프롬프트 채점기
+  </text>
+</svg>
