@@ -80,7 +80,7 @@ export default function Home() {
           </h2>
 
           {/* 채점 UI */}
-          <PromptScorer />
+          <PromptScorer enableAutoSave={false} />
         </div>
 
         {/* 푸터 */}
