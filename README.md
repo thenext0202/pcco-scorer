@@ -10,9 +10,9 @@ AI 프롬프트 강의 "AI의 프롬프트란?" (정금구) 부속 실습 앱입
 
 ## 🔗 Live Demo
 
-> **배포 후 여기에 Railway URL을 입력하세요**
->
-> 예: https://pcco-scorer-production.up.railway.app
+🚀 **https://pcco-scorer-production.up.railway.app/**
+
+실시간으로 프롬프트를 채점하고 리더보드에 참가해보세요!
 
 ## ✨ 주요 기능
 
