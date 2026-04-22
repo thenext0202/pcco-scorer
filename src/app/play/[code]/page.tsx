@@ -13,8 +13,6 @@ import { getSessionByCode, submitScore } from "@/lib/sessionApi";
 import type { Session } from "@/types/session";
 import type { ScoreResult } from "@/types/score";
 
-const NICKNAME_STORAGE_KEY = "r-pcco-nickname";
-
 export default function PlayPage() {
   const params = useParams();
   const code = params?.code as string;
@@ -60,18 +58,8 @@ export default function PlayPage() {
     fetchSession();
   }, [code]);
 
-  // 닉네임 복원
-  useEffect(() => {
-    const saved = localStorage.getItem(NICKNAME_STORAGE_KEY);
-    if (saved) {
-      setNickname(saved);
-      setHasNickname(true);
-    }
-  }, []);
-
   const handleSetNickname = () => {
     if (nickname.trim().length >= 2) {
-      localStorage.setItem(NICKNAME_STORAGE_KEY, nickname.trim());
       setHasNickname(true);
       toast.success(`환영합니다, ${nickname.trim()}님!`);
     }
