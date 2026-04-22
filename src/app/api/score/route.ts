@@ -23,21 +23,62 @@ const MIN_PROMPT_LENGTH = 30;
 const MAX_PROMPT_LENGTH = 1000;
 
 /**
- * 마크다운 코드 펜스 및 앞뒤 텍스트 제거, 순수 JSON만 추출
+ * 마크다운 코드 펜스 및 앞뒤 텍스트 제거, 순수 JSON만 추출 (개선 버전)
  */
 function extractJSON(text: string): string {
-  // 마크다운 ```json ... ``` 펜스 제거
-  let cleaned = text.replace(/```json\s*/g, "").replace(/```\s*/g, "");
+  // 1. 모든 종류의 마크다운 코드 펜스 제거 (json, javascript, typescript 등)
+  let cleaned = text.replace(/```[\w]*\s*/g, "").replace(/```\s*/g, "");
 
-  // 첫 { 부터 마지막 } 까지만 추출
+  // 2. 앞뒤 공백 제거
+  cleaned = cleaned.trim();
+
+  // 3. 첫 번째 { 찾기
   const firstBrace = cleaned.indexOf("{");
-  const lastBrace = cleaned.lastIndexOf("}");
-
-  if (firstBrace === -1 || lastBrace === -1) {
-    throw new Error("No valid JSON object found in response");
+  if (firstBrace === -1) {
+    throw new Error("No opening brace found in response");
   }
 
-  return cleaned.slice(firstBrace, lastBrace + 1);
+  // 4. 올바르게 매칭되는 마지막 } 찾기 (중첩 객체 고려)
+  let depth = 0;
+  let lastBrace = -1;
+
+  for (let i = firstBrace; i < cleaned.length; i++) {
+    const char = cleaned[i];
+
+    // 문자열 내부는 스킵 (간단한 처리)
+    if (char === '"') {
+      i++;
+      while (i < cleaned.length && cleaned[i] !== '"') {
+        if (cleaned[i] === "\\") i++; // 이스케이프 처리
+        i++;
+      }
+      continue;
+    }
+
+    if (char === "{") {
+      depth++;
+    } else if (char === "}") {
+      depth--;
+      if (depth === 0) {
+        lastBrace = i;
+        break; // 최상위 객체의 끝을 찾음
+      }
+    }
+  }
+
+  if (lastBrace === -1) {
+    throw new Error("No matching closing brace found in response");
+  }
+
+  const extracted = cleaned.slice(firstBrace, lastBrace + 1);
+
+  // 5. JSON 유효성 간단 검증
+  try {
+    JSON.parse(extracted);
+    return extracted;
+  } catch (e) {
+    throw new Error(`Extracted text is not valid JSON: ${e instanceof Error ? e.message : "Unknown error"}`);
+  }
 }
 
 /**
