@@ -61,10 +61,6 @@ async function callClaudeAPI(
         role: "user",
         content: userMessage,
       },
-      {
-        role: "assistant",
-        content: "{", // Prefill: JSON으로 시작하도록 강제
-      },
     ],
   });
 
@@ -76,11 +72,8 @@ async function callClaudeAPI(
     throw new Error("Empty response from Claude API");
   }
 
-  // Prefill로 인해 { 가 빠진 상태이므로 다시 추가
-  const fullResponse = "{" + responseText;
-
   // JSON 추출 및 파싱
-  const jsonText = extractJSON(fullResponse);
+  const jsonText = extractJSON(responseText);
   const parsed = JSON.parse(jsonText);
 
   // Zod 검증
