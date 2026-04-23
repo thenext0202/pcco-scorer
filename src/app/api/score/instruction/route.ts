@@ -123,7 +123,33 @@ async function callClaudeAPI(
   // Zod 검증
   const validated = InstructionScoreResultSchema.parse(parsed);
 
-  return validated as InstructionScoreResult;
+  // total_score 재계산 (Claude의 계산 오류 방지)
+  const elementsSum =
+    validated.elements.identity.score +
+    validated.elements.mission.score +
+    validated.elements.rules.score +
+    validated.elements.knowledge.score +
+    validated.elements.output.score;
+
+  const bonusesSum = Math.min(
+    validated.bonuses.reduce((sum, b) => sum + b.points, 0),
+    10 // 보너스 상한
+  );
+
+  const penaltiesSum = Math.min(
+    validated.penalties.reduce((sum, p) => sum + p.points, 0),
+    15 // 감점 상한
+  );
+
+  const correctedTotal = Math.max(
+    0,
+    Math.min(100, elementsSum + bonusesSum - penaltiesSum)
+  );
+
+  return {
+    ...validated,
+    total_score: correctedTotal,
+  } as InstructionScoreResult;
 }
 
 /**
