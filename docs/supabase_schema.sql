@@ -56,3 +56,22 @@ CREATE POLICY "submissions_insert_policy" ON submissions
 ALTER PUBLICATION supabase_realtime ADD TABLE submissions;
 
 -- 완료! 이제 애플리케이션에서 세션 생성 및 리더보드 기능을 사용할 수 있습니다.
+
+-- =========================================
+-- v2 확장: I-MRKO 지침 채점 모드 추가
+-- =========================================
+
+-- sessions 테이블에 mode 컬럼 추가
+ALTER TABLE sessions
+  ADD COLUMN IF NOT EXISTS mode VARCHAR(20) NOT NULL DEFAULT 'prompt'
+  CHECK (mode IN ('prompt', 'instruction'));
+
+-- 기존 세션은 기본값 'prompt'로 자동 설정됨
+-- 새 세션은 강사가 선택한 모드로 저장됨
+
+-- 인덱스 추가 (모드별 필터링 성능)
+CREATE INDEX IF NOT EXISTS idx_sessions_mode ON sessions(mode);
+
+-- 코멘트
+COMMENT ON COLUMN sessions.mode IS
+  'prompt = R-PCCO 프롬프트 채점 (1차 강의), instruction = I-MRKO 지침 채점 (2차 강의)';
