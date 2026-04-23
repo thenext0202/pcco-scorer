@@ -165,12 +165,23 @@ export default function BoardPage() {
             <div className="space-y-3">
               {entries.map((entry) => {
                 const isHighlighted = entry.id === highlightedId;
+                // TODO Phase 6: 세션 모드에 따라 분기 처리
+                // 현재는 모든 세션이 prompt 모드이므로 임시 타입 단언
+                const promptEntry = entry as {
+                  elements: {
+                    role: number;
+                    purpose: number;
+                    context: number;
+                    constraints: number;
+                    output: number;
+                  };
+                } & typeof entry;
                 const maxElement = Math.max(
-                  entry.elements.role,
-                  entry.elements.purpose,
-                  entry.elements.context,
-                  entry.elements.constraints,
-                  entry.elements.output
+                  promptEntry.elements.role,
+                  promptEntry.elements.purpose,
+                  promptEntry.elements.context,
+                  promptEntry.elements.constraints,
+                  promptEntry.elements.output
                 );
 
                 return (
@@ -220,23 +231,31 @@ export default function BoardPage() {
                     {/* 5요소 미니 바 */}
                     <div className="grid grid-cols-5 gap-3 mt-4">
                       {[
-                        { label: "R", value: entry.elements.role, icon: "🎭" },
+                        {
+                          label: "R",
+                          value: promptEntry.elements.role,
+                          icon: "🎭",
+                        },
                         {
                           label: "P",
-                          value: entry.elements.purpose,
+                          value: promptEntry.elements.purpose,
                           icon: "🎯",
                         },
                         {
                           label: "C",
-                          value: entry.elements.context,
+                          value: promptEntry.elements.context,
                           icon: "🌍",
                         },
                         {
                           label: "C",
-                          value: entry.elements.constraints,
+                          value: promptEntry.elements.constraints,
                           icon: "⛓️",
                         },
-                        { label: "O", value: entry.elements.output, icon: "📋" },
+                        {
+                          label: "O",
+                          value: promptEntry.elements.output,
+                          icon: "📋",
+                        },
                       ].map((element, idx) => (
                         <div key={idx} className="text-center">
                           <div className="text-sm text-slate-400 mb-1">

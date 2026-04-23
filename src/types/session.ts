@@ -3,6 +3,7 @@ export interface Session {
   code: string;
   title: string;
   host_name: string | null;
+  mode: "prompt" | "instruction"; // prompt = R-PCCO, instruction = I-MRKO
   created_at: string;
   expires_at: string;
 }
@@ -24,12 +25,14 @@ export interface Submission {
   created_at: string;
 }
 
-export interface LeaderboardEntry {
+// R-PCCO 프롬프트 채점 리더보드 엔트리
+export interface PromptLeaderboardEntry {
   rank: number;
   id: string;
   nickname: string;
   total_score: number;
   grade: "S" | "A" | "B" | "C" | "D" | "F";
+  mode: "prompt";
   elements: {
     role: number;
     purpose: number;
@@ -39,3 +42,26 @@ export interface LeaderboardEntry {
   };
   created_at: string;
 }
+
+// I-MRKO 지침 채점 리더보드 엔트리
+export interface InstructionLeaderboardEntry {
+  rank: number;
+  id: string;
+  nickname: string;
+  total_score: number;
+  grade: "S" | "A" | "B" | "C" | "D" | "F";
+  mode: "instruction";
+  elements: {
+    identity: number;
+    mission: number;
+    rules: number;
+    knowledge: number;
+    output: number;
+  };
+  created_at: string;
+}
+
+// 통합 타입
+export type LeaderboardEntry =
+  | PromptLeaderboardEntry
+  | InstructionLeaderboardEntry;

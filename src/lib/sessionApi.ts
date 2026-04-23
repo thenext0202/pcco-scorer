@@ -133,12 +133,15 @@ export async function getLeaderboard(
 
   const submissions = data as Submission[];
 
+  // TODO Phase 6: 세션 모드에 따라 적절한 타입 반환
+  // 현재는 모든 세션이 prompt 모드이므로 임시로 고정
   return submissions.map((sub, index) => ({
     rank: index + 1,
     id: sub.id,
     nickname: sub.nickname,
     total_score: sub.total_score,
     grade: sub.grade,
+    mode: "prompt" as const,
     elements: {
       role: sub.elements_json.role.score,
       purpose: sub.elements_json.purpose.score,
