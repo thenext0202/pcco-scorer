@@ -358,6 +358,229 @@ const message = await anthropic.messages.create({
 
 ---
 
+### Phase 8: I-MRKO 지침 채점 모드 추가 (2026-04-23)
+
+**목적:** 2차 강의 "AI의 지침이란?"를 위한 I-MRKO 지침 채점 기능 추가
+
+**핵심 요구사항:**
+- 기존 R-PCCO 기능 완전 보존 (하위 호환성)
+- I-MRKO 5요소 채점 추가
+- 프롬프트/지침 모드 선택 가능
+
+---
+
+#### Phase 0: 환경 세팅
+
+**작업 내용:**
+- `feat/instruction-mode` 브랜치 생성
+- 문서 3개 추가:
+  - `docs/I-MRKO_채점_루브릭.md` - 상세 채점 기준
+  - `docs/확장_개발_지침_I-MRKO.md` - 개발 가이드
+  - `CLAUDE_CODE_KICKOFF.md` - 킥오프 문서
+
+**커밋:** `docs: add I-MRKO extension planning documents`
+
+---
+
+#### Phase 1: DB 스키마 확장
+
+**작업 내용:**
+- `sessions` 테이블에 `mode` 컬럼 추가
+- 기본값: `'prompt'` (기존 세션 호환)
+- CHECK 제약: `'prompt'` 또는 `'instruction'`
+- 인덱스 추가: `idx_sessions_mode`
+
+**SQL:**
+```sql
+ALTER TABLE sessions
+  ADD COLUMN IF NOT EXISTS mode VARCHAR(20) NOT NULL DEFAULT 'prompt'
+  CHECK (mode IN ('prompt', 'instruction'));
+
+CREATE INDEX IF NOT EXISTS idx_sessions_mode ON sessions(mode);
+```
+
+**커밋:** `feat: add mode column to sessions table`
+
+---
+
+#### Phase 2: TypeScript 타입 & Zod 스키마
+
+**작업 내용:**
+- `src/types/score.ts` 확장
+  - `InstructionScoreResult` 타입 추가 (I-MRKO 5요소)
+  - `AnyScoreResult` 통합 타입
+  - `isInstructionScore()` 타입 가드
+- `src/lib/scoreSchema.ts` 확장
+  - `InstructionScoreResultSchema` Zod 스키마
+- `src/types/session.ts` 확장
+  - `Session` 인터페이스에 `mode` 추가
+  - `PromptLeaderboardEntry` / `InstructionLeaderboardEntry` 분리
+
+**I-MRKO 5요소:**
+```typescript
+{
+  identity: ScoreElement,   // 정체성 (이름, 역할, 성격)
+  mission: ScoreElement,     // 임무 (상시 업무 범위)
+  rules: ScoreElement,       // 규칙 (측정 가능한 Do/Don't)
+  knowledge: ScoreElement,   // 지식 (상시 참고 자료)
+  output: ScoreElement       // 출력 (기본 답변 포맷)
+}
+```
+
+**커밋:** `feat: add instruction score types and schema`
+
+---
+
+#### Phase 3: I-MRKO 채점 프롬프트 & API
+
+**작업 내용:**
+- `src/lib/instructionScoringPrompt.ts` 생성
+  - 루브릭 기반 시스템 프롬프트 (I-MRKO 5요소)
+  - 예시 함정 감지 (-5점)
+  - Few-shot 예시 포함
+- `src/app/api/score/instruction/route.ts` 생성
+  - MIN: 100자, MAX: 5000자 (지침은 프롬프트보다 김)
+  - Claude Sonnet 4.6 모델 사용
+  - `InstructionScoreResult` 반환
+
+**채점 루브릭:**
+- **I** (Identity): 0/5/10/15/20점
+- **M** (Mission): 0/5/10/15/20점
+- **R** (Rules): 0/5/10/15/20점 ⭐ 측정 가능성 중시
+- **K** (Knowledge): 0/5/10/15/20점
+- **O** (Output): 0/5/10/15/20점
+- 보너스: 측정가능규칙+3, 레이어링+2, 이유명시+2, 임무경계+2, 자기검증+4
+- 감점: 예시함정-5 (★), 정체성과장-2, 규칙모순-3, 부정형과다-2
+
+**커밋:** `feat: add I-MRKO scoring prompt and API route`
+
+---
+
+#### Phase 4: I-MRKO 컴포넌트
+
+**작업 내용:**
+- `src/components/InstructionScorer.tsx` 생성
+  - `PromptScorer.tsx` 기반, I-MRKO용 커스터마이징
+  - STORAGE_KEY: `"i-mrko-instruction-draft"`
+  - MIN: 100자, MAX: 5000자
+  - API 엔드포인트: `/api/score/instruction`
+  - placeholder: "AI 지침을 입력하세요..."
+- `src/components/InstructionScoreResult.tsx` 생성
+  - I-MRKO 5요소 아이콘: 🎭 I / 🎯 M / 📏 R / 📚 K / 📋 O
+
+**커밋:** `feat: add InstructionScorer and InstructionScoreResult components`
+
+---
+
+#### Phase 5: 홈 페이지 탭 토글
+
+**작업 내용:**
+- `src/app/page.tsx` 수정
+  - 헤더: "R-PCCO Scorer" → **"AI 채점기"**
+  - 탭 토글 UI 추가: 프롬프트 채점 ↔ 지침 채점
+  - 모드별 채점기 조건부 렌더링
+  - 푸터: 동적 5요소 설명
+
+**커밋:** `feat: add mode tab toggle to home page`
+
+---
+
+#### Phase 6: Host/Play/Board 모드 분기
+
+**작업 내용:**
+- `src/app/host/page.tsx` 수정
+  - 모드 선택 라디오 버튼 추가
+  - "🎯 프롬프트 채점" / "📘 지침 채점" 선택
+- `src/lib/sessionApi.ts` 확장
+  - `createSession()`에 `mode` 파라미터 추가
+  - `submitScore()`: `AnyScoreResult` 처리 (타입 가드)
+  - `getLeaderboard()`: 모드별 요소 매핑
+- `src/app/play/[code]/page.tsx` 수정
+  - 세션 모드에 따라 채점기 자동 분기
+  - 모드 배지 표시
+- `src/app/play/[code]/board/page.tsx` 수정
+  - 요소 라벨 상수: `ELEMENT_LABELS_PROMPT` / `ELEMENT_LABELS_INSTRUCTION`
+  - 모드별 5요소 미니바 표시
+  - 동적 푸터
+
+**커밋:** `feat: add mode selection and branching to Host/Play/Board pages`
+
+---
+
+#### Phase 7: 메타데이터 & PWA 업데이트
+
+**작업 내용:**
+- `src/app/layout.tsx` 수정
+  - title: **"AI 채점기 - 프롬프트 & 지침 채점"**
+  - description: I-MRKO 반영
+  - appleWebApp.title: "AI채점기"
+- `public/manifest.json` 수정
+  - name: **"AI 채점기 - 프롬프트 & 지침"**
+  - short_name: "AI채점기"
+- `README.md` 업데이트
+  - 제목: "AI 채점기 (R-PCCO & I-MRKO Scorer)"
+  - 이중 모드 지원 명시
+  - 사용 시나리오 업데이트
+
+**커밋:** `feat: update metadata and PWA to reflect I-MRKO support`
+
+---
+
+#### Phase 8: 검증 & Lint 수정
+
+**작업 내용:**
+- Lint 에러 수정 (Phase 0-7 파일만)
+  - `host/page.tsx`: unused router import 제거
+  - `InstructionScoreResult.tsx`: unused error variable 제거, 따옴표 이스케이프
+  - `InstructionScorer.tsx`: useState lazy initialization
+  - `sessionApi.ts`: unused import 제거
+- 빌드 검증 통과
+- E2E 테스트 체크리스트 제공
+
+**커밋:** `fix: resolve lint errors in Phase 0-7 files`
+
+---
+
+#### 중요 버그 수정: 점수 계산 오류
+
+**문제:**
+- 시스템 프롬프트에서 `penalties.points`가 음수(-5)로 예시됨
+- 계산식: `total_score = elements_sum - penalties_sum + bonuses_sum`
+- 실제: `elements_sum - (-5) = elements_sum + 5` ❌ 패널티가 보너스로!
+
+**해결:**
+- `penalties.points`를 양수(5)로 변경
+- 계산식 명확화: "penalties와 bonuses 모두 양수로 저장"
+- 실제 계산: `80 - 5 = 75` ✅
+
+**커밋:** `fix: correct penalty calculation in I-MRKO scoring prompt`
+
+---
+
+#### 배포
+
+**Supabase:**
+- DB 스키마 v2 적용 (mode 컬럼 추가)
+- 기존 세션 자동으로 `mode='prompt'` 설정
+
+**GitHub:**
+- `feat/instruction-mode` 브랜치 → `master` 병합
+- 19 files changed, 2427 insertions(+), 110 deletions(-)
+
+**Railway:**
+- 자동 배포 완료
+- 실시간 접속 확인: I-MRKO 탭 정상 작동
+
+**검증:**
+- 하위 호환성: 기존 R-PCCO 정상 작동 ✅
+- I-MRKO 모드: 지침 채점 정상 작동 ✅
+- 점수 계산: 정확한 합산 ✅
+- PWA: "AI 채점기" 이름 표시 ✅
+
+**완료일:** 2026-04-23
+
+---
+
 ## 🔮 향후 개선 사항
 
 ### 1. Structured Outputs 적용
@@ -435,8 +658,18 @@ const message = await anthropic.messages.create({
 
 ---
 
-**개발 완료일:** 2026-04-22
+**초기 개발:** 2026-04-22 (R-PCCO 프롬프트 채점)
+**확장 개발:** 2026-04-23 (I-MRKO 지침 채점 추가)
 **개발자:** Claude Sonnet 4.5 (co-authored)
-**강의:** "AI의 프롬프트란?" (정금구)
+**강의:**
+- 1차: "AI의 프롬프트란?" → R-PCCO 모드
+- 2차: "AI의 지침이란?" → I-MRKO 모드
 
 🚀 **Live:** https://pcco-scorer-production.up.railway.app/
+
+**주요 기능:**
+- 🎯 **R-PCCO 프롬프트 채점** (Role · Purpose · Context · Constraints · Output)
+- 📘 **I-MRKO 지침 채점** (Identity · Mission · Rules · Knowledge · Output)
+- 🏆 **실시간 리더보드** (Supabase Realtime)
+- 👥 **세션 모드** (강사/수강생)
+- 📱 **PWA 지원** (설치 가능)
