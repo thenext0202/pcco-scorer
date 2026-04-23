@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { QRCodeSVG } from "qrcode.react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,7 +11,6 @@ import { toast } from "sonner";
 import { createSession } from "@/lib/sessionApi";
 
 export default function HostPage() {
-  const router = useRouter();
   const [title, setTitle] = useState("");
   const [hostName, setHostName] = useState("");
   const [mode, setMode] = useState<"prompt" | "instruction">("prompt");

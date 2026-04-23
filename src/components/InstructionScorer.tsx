@@ -37,7 +37,12 @@ export default function InstructionScorer({
   submitButtonText = "채점하기",
   enableAutoSave = true,
 }: InstructionScorerProps) {
-  const [instruction, setInstruction] = useState("");
+  const [instruction, setInstruction] = useState(() => {
+    if (enableAutoSave && typeof window !== "undefined") {
+      return localStorage.getItem(STORAGE_KEY) || "";
+    }
+    return "";
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<InstructionScoreResultType | null>(
     null
@@ -45,16 +50,6 @@ export default function InstructionScorer({
   const [error, setError] = useState<string | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLDivElement>(null);
-
-  // localStorage에서 입력값 복원
-  useEffect(() => {
-    if (enableAutoSave) {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        setInstruction(saved);
-      }
-    }
-  }, [enableAutoSave]);
 
   // 입력값 자동 저장 (500ms debounce)
   useEffect(() => {

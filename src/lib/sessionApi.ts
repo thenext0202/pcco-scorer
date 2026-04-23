@@ -1,6 +1,6 @@
 import { supabase } from "./supabase";
 import type { Session, Submission, LeaderboardEntry } from "@/types/session";
-import type { ScoreResult, AnyScoreResult } from "@/types/score";
+import type { AnyScoreResult } from "@/types/score";
 import { isInstructionScore } from "@/types/score";
 
 /**

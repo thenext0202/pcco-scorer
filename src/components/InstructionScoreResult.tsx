@@ -36,7 +36,7 @@ export default function InstructionScoreResult({
       toast.success("복사 완료!", {
         description: "개선 예시가 클립보드에 복사되었습니다.",
       });
-    } catch (error) {
+    } catch {
       toast.error("복사 실패", {
         description: "클립보드 복사에 실패했습니다.",
       });
@@ -97,7 +97,7 @@ export default function InstructionScoreResult({
                   {/* 감지된 내용 */}
                   {element.detected && (
                     <div className="bg-slate-100 px-3 py-2 rounded text-sm text-slate-600 font-mono">
-                      "{element.detected}"
+                      &quot;{element.detected}&quot;
                     </div>
                   )}
 
