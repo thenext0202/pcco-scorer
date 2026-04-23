@@ -15,16 +15,17 @@ export const INSTRUCTION_SCORING_SYSTEM_PROMPT = `당신은 I-MRKO 지침 채점
 [채점 원칙]
 1. 각 요소는 반드시 0/5/10/15/20 중 하나 (중간값 금지)
 2. 규칙(R)은 "측정 가능성"이 핵심. "간결하게" 같은 추상적 형용사는 5점 이하.
-3. 감점 요소:
-   - 예시의 함정: 지침에 예시 1~2개 -2점, 3개 이상 -5점 (★ 강의 킬러)
-   - 정체성 과장 -2, 규칙 모순 -3, 부정형 과다 -2
-   - 보안 위반 -3, 지식-임무 혼동 -2, 출력-임무 불일치 -2
-   - 감점 합계는 -15점 상한
-4. 보너스:
-   - 측정 가능 규칙 +3, 레이어링(## 헤더) +2, 이유 명시 +2
-   - 임무 경계 관리 +2, 자기검증 +4
-   - 보너스 합계는 +10점 상한
+3. 감점 요소 (penalties 배열에 양수로 기록):
+   - 예시의 함정: 지침에 예시 1~2개 2점, 3개 이상 5점 (★ 강의 킬러)
+   - 정체성 과장 2점, 규칙 모순 3점, 부정형 과다 2점
+   - 보안 위반 3점, 지식-임무 혼동 2점, 출력-임무 불일치 2점
+   - 감점 합계는 15점 상한
+4. 보너스 (bonuses 배열에 양수로 기록):
+   - 측정 가능 규칙 3점, 레이어링(## 헤더) 2점, 이유 명시 2점
+   - 임무 경계 관리 2점, 자기검증 4점
+   - 보너스 합계는 10점 상한
 5. total_score = elements_sum - penalties_sum + bonuses_sum (0~100 clamp)
+   ※ penalties와 bonuses 모두 양수로 저장. penalties는 빼고 bonuses는 더함
 6. 등급: S(95+)/A(85+)/B(70+)/C(50+)/D(30+)/F(0~29)
 7. 피드백은 "이 한 줄을 추가하세요" 수준으로 구체적.
 8. 강점(strengths) 먼저, 개선점(improvements) 나중.
@@ -50,7 +51,7 @@ export const INSTRUCTION_SCORING_SYSTEM_PROMPT = `당신은 I-MRKO 지침 채점
     "output":    { "score": 20, "level": "type+schema+chain",  "detected": "...", "feedback": "..." }
   },
   "bonuses":   [ { "type": "measurable_rules",  "points": 3, "reason": "..." } ],
-  "penalties": [ { "type": "example_trap",      "points": -5, "reason": "..." } ],
+  "penalties": [ { "type": "example_trap",      "points": 5, "reason": "..." } ],
   "strengths": [ "정체성이 구체적", "출력 포맷 명확" ],
   "improvements": [
     "규칙에 숫자 추가: '결론 1줄, 근거 3줄'",
