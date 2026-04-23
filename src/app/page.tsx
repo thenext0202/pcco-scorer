@@ -6,8 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import PromptScorer from "@/components/PromptScorer";
+import InstructionScorer from "@/components/InstructionScorer";
+
+type Mode = "prompt" | "instruction";
 
 export default function Home() {
+  const [mode, setMode] = useState<Mode>("prompt");
   const [showJoinModal, setShowJoinModal] = useState(false);
   const [sessionCode, setSessionCode] = useState("");
 
@@ -22,9 +26,9 @@ export default function Home() {
       <div className="max-w-2xl mx-auto space-y-8">
         {/* 헤더 */}
         <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold text-slate-900">R-PCCO Scorer</h1>
+          <h1 className="text-4xl font-bold text-slate-900">AI 채점기</h1>
           <p className="text-slate-600">
-            당신의 프롬프트, 5요소로 채점합니다
+            프롬프트와 지침을 AI로 채점받기
           </p>
         </div>
 
@@ -75,19 +79,48 @@ export default function Home() {
         )}
 
         <div className="border-t border-slate-200 pt-8">
-          <h2 className="text-xl font-semibold text-slate-800 mb-4 text-center">
+          <h2 className="text-xl font-semibold text-slate-800 mb-6 text-center">
             단독 채점 모드
           </h2>
 
-          {/* 채점 UI */}
-          <PromptScorer enableAutoSave={false} />
+          {/* 탭 토글 */}
+          <div className="flex gap-2 mb-6 p-1 bg-slate-100 rounded-lg w-fit mx-auto">
+            <button
+              onClick={() => setMode("prompt")}
+              className={`px-6 py-2 rounded-md transition-all ${
+                mode === "prompt"
+                  ? "bg-white shadow text-blue-600 font-semibold"
+                  : "text-slate-600 hover:text-slate-800"
+              }`}
+            >
+              🎯 프롬프트 채점 (R-PCCO)
+            </button>
+            <button
+              onClick={() => setMode("instruction")}
+              className={`px-6 py-2 rounded-md transition-all ${
+                mode === "instruction"
+                  ? "bg-white shadow text-blue-600 font-semibold"
+                  : "text-slate-600 hover:text-slate-800"
+              }`}
+            >
+              📘 지침 채점 (I-MRKO)
+            </button>
+          </div>
+
+          {/* 모드별 채점기 */}
+          {mode === "prompt" ? (
+            <PromptScorer enableAutoSave={false} />
+          ) : (
+            <InstructionScorer enableAutoSave={false} />
+          )}
         </div>
 
         {/* 푸터 */}
         <footer className="text-center text-sm text-slate-500 pt-8">
           <p>
-            R-PCCO: Role(역할) · Purpose(목적) · Context(맥락) ·
-            Constraints(제약) · Output(출력)
+            {mode === "prompt"
+              ? "R-PCCO: Role(역할) · Purpose(목적) · Context(맥락) · Constraints(제약) · Output(출력)"
+              : "I-MRKO: Identity(정체성) · Mission(임무) · Rules(규칙) · Knowledge(지식) · Output(출력)"}
           </p>
         </footer>
       </div>
