@@ -1,6 +1,7 @@
 import { supabase } from "./supabase";
 import type { Session, Submission, LeaderboardEntry } from "@/types/session";
-import type { ScoreResult } from "@/types/score";
+import type { ScoreResult, AnyScoreResult } from "@/types/score";
+import { isInstructionScore } from "@/types/score";
 
 /**
  * 4자리 랜덤 코드 생성 (I, O, 1, 0 제외)
@@ -21,7 +22,8 @@ export function generateCode(): string {
  */
 export async function createSession(
   title: string,
-  hostName?: string
+  hostName?: string,
+  mode: "prompt" | "instruction" = "prompt"
 ): Promise<{ session: Session; code: string }> {
   let attempts = 0;
   const maxAttempts = 3;
@@ -35,6 +37,7 @@ export async function createSession(
         code,
         title,
         host_name: hostName || null,
+        mode,
       })
       .select()
       .single();
@@ -84,8 +87,25 @@ export async function submitScore(
   sessionId: string,
   nickname: string,
   prompt: string,
-  result: ScoreResult
+  result: AnyScoreResult
 ): Promise<Submission> {
+  // 결과 타입에 따라 elements_json 구성
+  const elements_json = isInstructionScore(result)
+    ? {
+        identity: { score: result.elements.identity.score },
+        mission: { score: result.elements.mission.score },
+        rules: { score: result.elements.rules.score },
+        knowledge: { score: result.elements.knowledge.score },
+        output: { score: result.elements.output.score },
+      }
+    : {
+        role: { score: result.elements.role.score },
+        purpose: { score: result.elements.purpose.score },
+        context: { score: result.elements.context.score },
+        constraints: { score: result.elements.constraints.score },
+        output: { score: result.elements.output.score },
+      };
+
   const { data, error } = await supabase
     .from("submissions")
     .insert({
@@ -94,13 +114,7 @@ export async function submitScore(
       prompt,
       total_score: result.total_score,
       grade: result.grade,
-      elements_json: {
-        role: { score: result.elements.role.score },
-        purpose: { score: result.elements.purpose.score },
-        context: { score: result.elements.context.score },
-        constraints: { score: result.elements.constraints.score },
-        output: { score: result.elements.output.score },
-      },
+      elements_json,
     })
     .select()
     .single();
@@ -117,6 +131,7 @@ export async function submitScore(
  */
 export async function getLeaderboard(
   sessionId: string,
+  mode: "prompt" | "instruction",
   limit: number = 10
 ): Promise<LeaderboardEntry[]> {
   const { data, error } = await supabase
@@ -133,22 +148,47 @@ export async function getLeaderboard(
 
   const submissions = data as Submission[];
 
-  // TODO Phase 6: 세션 모드에 따라 적절한 타입 반환
-  // 현재는 모든 세션이 prompt 모드이므로 임시로 고정
-  return submissions.map((sub, index) => ({
-    rank: index + 1,
-    id: sub.id,
-    nickname: sub.nickname,
-    total_score: sub.total_score,
-    grade: sub.grade,
-    mode: "prompt" as const,
-    elements: {
-      role: sub.elements_json.role.score,
-      purpose: sub.elements_json.purpose.score,
-      context: sub.elements_json.context.score,
-      constraints: sub.elements_json.constraints.score,
-      output: sub.elements_json.output.score,
-    },
-    created_at: sub.created_at,
-  }));
+  return submissions.map((sub, index) => {
+    // elements_json은 JSONB라서 런타임에 다양한 구조를 가질 수 있음
+    const elementsJson = sub.elements_json as Record<
+      string,
+      { score: number }
+    >;
+
+    if (mode === "instruction") {
+      return {
+        rank: index + 1,
+        id: sub.id,
+        nickname: sub.nickname,
+        total_score: sub.total_score,
+        grade: sub.grade,
+        mode: "instruction" as const,
+        elements: {
+          identity: elementsJson.identity?.score ?? 0,
+          mission: elementsJson.mission?.score ?? 0,
+          rules: elementsJson.rules?.score ?? 0,
+          knowledge: elementsJson.knowledge?.score ?? 0,
+          output: elementsJson.output?.score ?? 0,
+        },
+        created_at: sub.created_at,
+      };
+    } else {
+      return {
+        rank: index + 1,
+        id: sub.id,
+        nickname: sub.nickname,
+        total_score: sub.total_score,
+        grade: sub.grade,
+        mode: "prompt" as const,
+        elements: {
+          role: elementsJson.role?.score ?? 0,
+          purpose: elementsJson.purpose?.score ?? 0,
+          context: elementsJson.context?.score ?? 0,
+          constraints: elementsJson.constraints?.score ?? 0,
+          output: elementsJson.output?.score ?? 0,
+        },
+        created_at: sub.created_at,
+      };
+    }
+  });
 }

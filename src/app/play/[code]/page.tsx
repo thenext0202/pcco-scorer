@@ -7,11 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import PromptScorer from "@/components/PromptScorer";
+import InstructionScorer from "@/components/InstructionScorer";
 import { getSessionByCode, submitScore } from "@/lib/sessionApi";
 import type { Session } from "@/types/session";
-import type { ScoreResult } from "@/types/score";
+import type { AnyScoreResult } from "@/types/score";
 
 export default function PlayPage() {
   const params = useParams();
@@ -27,7 +29,7 @@ export default function PlayPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
-  const [lastResult, setLastResult] = useState<ScoreResult | null>(null);
+  const [lastResult, setLastResult] = useState<AnyScoreResult | null>(null);
   const [lastPrompt, setLastPrompt] = useState<string>("");
 
   // 세션 조회
@@ -65,7 +67,7 @@ export default function PlayPage() {
     }
   };
 
-  const handleScoreComplete = (result: ScoreResult, prompt: string) => {
+  const handleScoreComplete = (result: AnyScoreResult, prompt: string) => {
     setLastResult(result);
     setLastPrompt(prompt);
   };
@@ -191,18 +193,30 @@ export default function PlayPage() {
             <p className="text-slate-600">강사: {session.host_name}</p>
           )}
           <div className="flex items-center justify-center gap-4 text-sm text-slate-500">
+            <Badge variant="outline">
+              {session.mode === "instruction" ? "📘 지침 채점" : "🎯 프롬프트 채점"}
+            </Badge>
+            <span>•</span>
             <span>참가자: {nickname}</span>
             <span>•</span>
             <span>코드: {code}</span>
           </div>
         </div>
 
-        {/* 채점 UI */}
-        <PromptScorer
-          onSubmit={handleScoreComplete}
-          submitButtonText="채점하기"
-          enableAutoSave={false}
-        />
+        {/* 채점 UI - 세션 모드에 따라 자동 분기 */}
+        {session.mode === "instruction" ? (
+          <InstructionScorer
+            onSubmit={handleScoreComplete}
+            submitButtonText="채점하기"
+            enableAutoSave={false}
+          />
+        ) : (
+          <PromptScorer
+            onSubmit={handleScoreComplete}
+            submitButtonText="채점하기"
+            enableAutoSave={false}
+          />
+        )}
 
         {/* 리더보드 제출 */}
         {lastResult && !hasSubmitted && (

@@ -17,6 +17,22 @@ const GRADE_COLORS = {
   F: "bg-rose-500 text-white",
 } as const;
 
+const ELEMENT_LABELS_PROMPT = [
+  { key: "role" as const, label: "R", icon: "🎭" },
+  { key: "purpose" as const, label: "P", icon: "🎯" },
+  { key: "context" as const, label: "C", icon: "🌍" },
+  { key: "constraints" as const, label: "C", icon: "⛓️" },
+  { key: "output" as const, label: "O", icon: "📋" },
+] as const;
+
+const ELEMENT_LABELS_INSTRUCTION = [
+  { key: "identity" as const, label: "I", icon: "🎭" },
+  { key: "mission" as const, label: "M", icon: "🎯" },
+  { key: "rules" as const, label: "R", icon: "📏" },
+  { key: "knowledge" as const, label: "K", icon: "📚" },
+  { key: "output" as const, label: "O", icon: "📋" },
+] as const;
+
 export default function BoardPage() {
   const params = useParams();
   const code = params?.code as string;
@@ -55,7 +71,7 @@ export default function BoardPage() {
       if (!session) return;
 
       try {
-        const data = await getLeaderboard(session.id, 10);
+        const data = await getLeaderboard(session.id, session.mode, 10);
         setEntries(data);
       } catch (err) {
         console.error("Failed to fetch leaderboard:", err);
@@ -86,7 +102,7 @@ export default function BoardPage() {
 
           // 리더보드 갱신
           try {
-            const data = await getLeaderboard(session.id, 10);
+            const data = await getLeaderboard(session.id, session.mode, 10);
             setEntries(data);
 
             // 새 항목 하이라이트
@@ -128,7 +144,14 @@ export default function BoardPage() {
         {/* 헤더 */}
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-4xl font-bold mb-2">{session.title}</h1>
+            <div className="flex items-center gap-3 mb-2">
+              <h1 className="text-4xl font-bold">{session.title}</h1>
+              <Badge variant="outline" className="text-lg px-3 py-1">
+                {session.mode === "instruction"
+                  ? "📘 지침 채점"
+                  : "🎯 프롬프트 채점"}
+              </Badge>
+            </div>
             {session.host_name && (
               <p className="text-xl text-slate-400">강사: {session.host_name}</p>
             )}
@@ -165,24 +188,31 @@ export default function BoardPage() {
             <div className="space-y-3">
               {entries.map((entry) => {
                 const isHighlighted = entry.id === highlightedId;
-                // TODO Phase 6: 세션 모드에 따라 분기 처리
-                // 현재는 모든 세션이 prompt 모드이므로 임시 타입 단언
-                const promptEntry = entry as {
-                  elements: {
-                    role: number;
-                    purpose: number;
-                    context: number;
-                    constraints: number;
-                    output: number;
-                  };
-                } & typeof entry;
-                const maxElement = Math.max(
-                  promptEntry.elements.role,
-                  promptEntry.elements.purpose,
-                  promptEntry.elements.context,
-                  promptEntry.elements.constraints,
-                  promptEntry.elements.output
-                );
+
+                // 세션 모드에 따라 요소 라벨 및 값 선택
+                const labels =
+                  session.mode === "instruction"
+                    ? ELEMENT_LABELS_INSTRUCTION
+                    : ELEMENT_LABELS_PROMPT;
+
+                // 최대 점수 계산
+                const elementValues =
+                  entry.mode === "instruction"
+                    ? [
+                        entry.elements.identity,
+                        entry.elements.mission,
+                        entry.elements.rules,
+                        entry.elements.knowledge,
+                        entry.elements.output,
+                      ]
+                    : [
+                        entry.elements.role,
+                        entry.elements.purpose,
+                        entry.elements.context,
+                        entry.elements.constraints,
+                        entry.elements.output,
+                      ];
+                const maxElement = Math.max(...elementValues);
 
                 return (
                   <div
@@ -230,52 +260,29 @@ export default function BoardPage() {
 
                     {/* 5요소 미니 바 */}
                     <div className="grid grid-cols-5 gap-3 mt-4">
-                      {[
-                        {
-                          label: "R",
-                          value: promptEntry.elements.role,
-                          icon: "🎭",
-                        },
-                        {
-                          label: "P",
-                          value: promptEntry.elements.purpose,
-                          icon: "🎯",
-                        },
-                        {
-                          label: "C",
-                          value: promptEntry.elements.context,
-                          icon: "🌍",
-                        },
-                        {
-                          label: "C",
-                          value: promptEntry.elements.constraints,
-                          icon: "⛓️",
-                        },
-                        {
-                          label: "O",
-                          value: promptEntry.elements.output,
-                          icon: "📋",
-                        },
-                      ].map((element, idx) => (
-                        <div key={idx} className="text-center">
-                          <div className="text-sm text-slate-400 mb-1">
-                            {element.icon} {element.label}
-                          </div>
-                          <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
-                            <div
-                              className={`h-full rounded-full transition-all ${
-                                element.value === maxElement
-                                  ? "bg-yellow-400"
-                                  : "bg-blue-500"
-                              }`}
-                              style={{ width: `${(element.value / 20) * 100}%` }}
-                            />
-                          </div>
-                          <div className="text-xs text-slate-500 mt-1">
-                            {element.value}/20
-                          </div>
-                        </div>
-                      ))}
+                      {labels.map((element, idx) => {
+                        const value = elementValues[idx];
+                        return (
+                          <div key={idx} className="text-center">
+                            <div className="text-sm text-slate-400 mb-1">
+                              {element.icon} {element.label}
+                            </div>
+                            <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+                              <div
+                                className={`h-full rounded-full transition-all ${
+                                  value === maxElement
+                                    ? "bg-yellow-400"
+                                    : "bg-blue-500"
+                                }`}
+                                style={{ width: `${(value / 20) * 100}%` }}
+                              />
+                            </div>
+                              <div className="text-xs text-slate-500 mt-1">
+                                {value}/20
+                              </div>
+                            </div>
+                          );
+                        })}
                     </div>
                   </div>
                 );
@@ -286,7 +293,12 @@ export default function BoardPage() {
 
         {/* 푸터 */}
         <footer className="text-center text-slate-500 text-sm pt-8">
-          <p>실시간 업데이트 • R-PCCO Scorer</p>
+          <p>
+            실시간 업데이트 •{" "}
+            {session.mode === "instruction"
+              ? "I-MRKO: Identity · Mission · Rules · Knowledge · Output"
+              : "R-PCCO: Role · Purpose · Context · Constraints · Output"}
+          </p>
         </footer>
       </div>
     </main>

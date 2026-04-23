@@ -15,6 +15,7 @@ export default function HostPage() {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [hostName, setHostName] = useState("");
+  const [mode, setMode] = useState<"prompt" | "instruction">("prompt");
   const [isCreating, setIsCreating] = useState(false);
   const [sessionCode, setSessionCode] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -29,7 +30,11 @@ export default function HostPage() {
     setError(null);
 
     try {
-      const { code } = await createSession(title.trim(), hostName.trim());
+      const { code } = await createSession(
+        title.trim(),
+        hostName.trim(),
+        mode
+      );
       setSessionCode(code);
       toast.success("세션이 생성되었습니다!");
     } catch (err) {
@@ -172,6 +177,42 @@ export default function HostPage() {
                 placeholder="예: 정금구"
                 maxLength={50}
               />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-slate-700">
+                채점 모드 <span className="text-rose-500">*</span>
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setMode("prompt")}
+                  className={`p-4 border-2 rounded-lg text-left transition-all ${
+                    mode === "prompt"
+                      ? "border-blue-500 bg-blue-50"
+                      : "border-slate-200 hover:border-slate-300"
+                  }`}
+                >
+                  <div className="font-semibold">🎯 프롬프트 채점</div>
+                  <div className="text-xs text-slate-500 mt-1">
+                    1차 강의 · R-PCCO 5요소
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMode("instruction")}
+                  className={`p-4 border-2 rounded-lg text-left transition-all ${
+                    mode === "instruction"
+                      ? "border-blue-500 bg-blue-50"
+                      : "border-slate-200 hover:border-slate-300"
+                  }`}
+                >
+                  <div className="font-semibold">📘 지침 채점</div>
+                  <div className="text-xs text-slate-500 mt-1">
+                    2차 강의 · I-MRKO 5요소
+                  </div>
+                </button>
+              </div>
             </div>
 
             {error && (
