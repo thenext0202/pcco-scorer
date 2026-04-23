@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "R-PCCO Scorer - AI 프롬프트 채점기",
-  description: "당신의 프롬프트를 R-PCCO 5요소(역할/목적/맥락/제약/출력)로 자동 채점합니다.",
+  title: "AI 채점기 - 프롬프트 & 지침 채점",
+  description: "프롬프트(R-PCCO)와 지침(I-MRKO)을 AI로 자동 채점합니다.",
   manifest: "/manifest.json",
   themeColor: "#3b82f6",
   viewport: {
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "R-PCCO",
+    title: "AI채점기",
   },
   icons: {
     icon: [
@@ -40,8 +40,8 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "R-PCCO 프롬프트 채점기",
-    description: "AI 프롬프트를 R-PCCO 5요소로 채점받기",
+    title: "AI 채점기 - 프롬프트 & 지침 채점",
+    description: "프롬프트(R-PCCO)와 지침(I-MRKO)을 AI로 자동 채점받기",
     type: "website",
     locale: "ko_KR",
   },
