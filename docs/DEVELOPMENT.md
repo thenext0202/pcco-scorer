@@ -581,6 +581,229 @@ CREATE INDEX IF NOT EXISTS idx_sessions_mode ON sessions(mode);
 
 ---
 
+### Phase 9: PWA 업데이트 메커니즘 구현 (2026-04-23)
+
+**목적:** 사파리에서 홈화면에 추가한 사용자들이 앱 업데이트를 쉽게 받을 수 있도록 함
+
+**핵심 요구사항:**
+- 새 버전 감지 시 사용자에게 알림
+- 사용자 확인 후 즉시 업데이트
+- 빌드마다 자동 버전 변경
+
+---
+
+#### 1. Service Worker 버전 관리
+
+**변경 내용:**
+- `public/sw.js` 버전 시스템 추가
+  - `CACHE_NAME`: 하드코딩 → 타임스탬프 기반 동적 버전
+  - 메시지 이벤트 핸들러 추가 (SKIP_WAITING 처리)
+  - 자동 활성화 제거 (사용자 확인 후 활성화)
+  - 캐시 삭제 로그 추가
+
+```javascript
+const BUILD_VERSION = "BUILD_TIMESTAMP_PLACEHOLDER";
+const CACHE_NAME = `pcco-scorer-${BUILD_VERSION}`;
+
+// 메시지 이벤트: 업데이트 처리
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
+});
+```
+
+**변경 이유:**
+- 기존: 모든 빌드가 "r-pcco-v1" 캐시 → 브라우저가 변경 감지 못함
+- 개선: 빌드마다 고유 타임스탬프 → 브라우저가 새 버전 인식
+
+**파일:** `public/sw.js`
+
+---
+
+#### 2. 빌드 시 버전 주입 스크립트
+
+**작업 내용:**
+- `scripts/inject-sw-version.ts` 생성
+  - sw.js의 `BUILD_TIMESTAMP_PLACEHOLDER`를 실제 타임스탬프로 치환
+  - `Date.now()` 기반 고유 빌드 번호 생성
+- `package.json` 스크립트 추가
+  - `prebuild`: 빌드 전 자동 실행되는 npm 훅
+  - Next.js 빌드 전에 Service Worker 버전 주입
+
+```json
+"scripts": {
+  "prebuild": "tsx scripts/inject-sw-version.ts",
+  "build": "next build"
+}
+```
+
+**동작 흐름:**
+1. `npm run build` 실행
+2. `prebuild` 훅 자동 실행 → `inject-sw-version.ts`
+3. `sw.js`의 플레이스홀더를 `Date.now()` 값으로 치환
+4. Next.js 빌드 시작
+5. 버전이 주입된 `sw.js`가 빌드에 포함됨
+
+**파일:** `scripts/inject-sw-version.ts`, `package.json`
+
+---
+
+#### 3. 업데이트 감지 로직
+
+**작업 내용:**
+- `src/components/ServiceWorkerRegister.tsx` 대폭 개선
+  - `updatefound` 이벤트 리스너 추가
+  - 새 Service Worker 설치 완료 시 상태 저장
+  - 1시간마다 자동 업데이트 확인
+  - 페이지 포커스 시 업데이트 확인
+  - `controllerchange` 이벤트로 새로고침 트리거 (Safari 호환)
+
+```typescript
+registration.addEventListener("updatefound", () => {
+  const newWorker = registration.installing;
+  newWorker?.addEventListener("statechange", () => {
+    if (
+      newWorker.state === "installed" &&
+      navigator.serviceWorker.controller
+    ) {
+      // 새 버전 감지!
+      setWaitingWorker(newWorker);
+      setShowUpdateNotification(true);
+    }
+  });
+});
+```
+
+**업데이트 확인 타이밍:**
+- 페이지 로드 시 (초기 등록)
+- 1시간마다 (주기적 확인)
+- 페이지 포커스 시 (백그라운드 → 포그라운드)
+
+**Safari 호환성 처리:**
+- `controllerchange` 이벤트: 새 SW 활성화 시 자동 새로고침
+- iOS에서 Service Worker 제어권 변경 감지
+
+**파일:** `src/components/ServiceWorkerRegister.tsx`
+
+---
+
+#### 4. 업데이트 알림 UI
+
+**작업 내용:**
+- `src/components/UpdateNotification.tsx` 생성
+  - 화면 하단 중앙에 고정된 알림 카드
+  - 파란색~보라색 그라데이션 배경
+  - "새로고침" 버튼 클릭 시 업데이트 실행
+  - Slide-in 애니메이션
+
+```tsx
+<UpdateNotification onUpdate={handleUpdate} />
+```
+
+**사용자 경험:**
+1. 새 버전 감지 시 화면 하단에 알림 표시
+2. "새로고침" 버튼 클릭
+3. 새 Service Worker에게 `SKIP_WAITING` 메시지 전송
+4. Service Worker 활성화
+5. `controllerchange` 이벤트 발생
+6. 페이지 자동 새로고침
+7. 최신 버전 로드 완료!
+
+**파일:** `src/components/UpdateNotification.tsx`
+
+---
+
+#### 5. 업데이트 흐름 전체
+
+```
+[빌드]
+npm run build
+  → prebuild 훅 실행
+  → inject-sw-version.ts
+  → sw.js에 타임스탬프 주입 (예: 1745678901234)
+  → Next.js 빌드
+  → Railway 배포
+
+[사용자 A: 홈화면 앱 사용 중]
+1. 앱 실행 (기존 SW 캐시: pcco-scorer-1745670000000)
+2. ServiceWorkerRegister가 registration.update() 호출
+3. 서버에 새 sw.js 확인 (새 버전: pcco-scorer-1745678901234)
+4. 브라우저가 새 SW 다운로드 및 설치 시작
+5. "updatefound" 이벤트 발생
+6. 새 SW 설치 완료 (state: "installed")
+7. UpdateNotification 표시
+8. 사용자가 "새로고침" 클릭
+9. SKIP_WAITING 메시지 전송
+10. 새 SW가 skipWaiting() 호출
+11. 새 SW 활성화 (state: "activated")
+12. "controllerchange" 이벤트
+13. window.location.reload()
+14. 새 버전 로드 완료!
+```
+
+---
+
+#### 6. 테스트 방법
+
+**로컬 테스트:**
+1. 프로덕션 빌드: `npm run build && npm start`
+2. 브라우저에서 `http://localhost:3000` 접속
+3. DevTools → Application → Service Workers 확인
+4. 코드 수정 후 다시 빌드
+5. 브라우저에서 새로고침
+6. 업데이트 알림 표시 여부 확인
+
+**프로덕션 테스트 (Safari/iOS):**
+1. Railway 배포
+2. Safari에서 앱 접속
+3. 공유 → 홈 화면에 추가
+4. 홈 화면 아이콘으로 앱 실행
+5. 서버에 새 버전 배포
+6. 앱을 백그라운드 → 포그라운드 전환 (업데이트 확인 트리거)
+7. 1분 후 업데이트 알림 표시
+8. "새로고침" 클릭 → 즉시 업데이트
+
+**주의사항:**
+- 개발 모드(`npm run dev`)에서는 Service Worker 등록 안 됨
+- `process.env.NODE_ENV === "production"`에서만 작동
+- Railway 배포 후 테스트 필수
+
+---
+
+#### 7. 주요 변경 파일
+
+| 파일 | 변경 내용 |
+|------|----------|
+| `public/sw.js` | 버전 시스템 추가, 메시지 핸들러, 로그 개선 |
+| `scripts/inject-sw-version.ts` | 빌드 시 타임스탬프 주입 스크립트 |
+| `package.json` | `prebuild` 스크립트 추가 |
+| `src/components/ServiceWorkerRegister.tsx` | 업데이트 감지 로직 대폭 개선 |
+| `src/components/UpdateNotification.tsx` | 업데이트 알림 UI 컴포넌트 (신규) |
+
+---
+
+#### 8. 핵심 개선 포인트
+
+**Before:**
+- 빌드마다 동일한 캐시 이름 (`r-pcco-v1`)
+- 브라우저가 변경 감지 못함
+- 사용자가 수동으로 캐시 삭제 필요
+- 홈화면 앱은 업데이트 불가능
+
+**After:**
+- 빌드마다 고유한 타임스탬프 버전
+- 자동 업데이트 감지 (1시간마다 + 포커스 시)
+- 사용자 확인 후 즉시 업데이트
+- 홈화면 앱도 최신 버전 유지 가능
+- Safari/iOS 완벽 지원
+
+---
+
+**완료일:** 2026-04-23
+
+---
+
 ## 🔮 향후 개선 사항
 
 ### 1. Structured Outputs 적용

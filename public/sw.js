@@ -1,7 +1,9 @@
 // R-PCCO Scorer Service Worker
 // 수동 구현, 최소 기능만 포함
 
-const CACHE_NAME = "r-pcco-v1";
+// 빌드 시마다 자동으로 변경되는 버전 (타임스탬프 기반)
+const BUILD_VERSION = "BUILD_TIMESTAMP_PLACEHOLDER";
+const CACHE_NAME = `pcco-scorer-${BUILD_VERSION}`;
 const OFFLINE_URL = "/offline.html";
 
 // 핵심 정적 리소스 (설치 시 캐시)
@@ -15,32 +17,41 @@ const STATIC_RESOURCES = [
   "/icons/maskable-512.png",
 ];
 
+// 메시지 이벤트: 업데이트 처리
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
+});
+
 // 설치 이벤트: 정적 리소스 캐시
 self.addEventListener("install", (event) => {
+  console.log(`Service Worker installing: ${CACHE_NAME}`);
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(STATIC_RESOURCES);
     })
   );
-  // 즉시 활성화
-  self.skipWaiting();
+  // 자동 활성화는 하지 않고, 사용자 확인 후 skipWaiting
 });
 
 // 활성화 이벤트: 오래된 캐시 정리
 self.addEventListener("activate", (event) => {
+  console.log(`Service Worker activating: ${CACHE_NAME}`);
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
+        cacheNames
+          .filter((cacheName) => cacheName !== CACHE_NAME)
+          .map((cacheName) => {
+            console.log(`Deleting old cache: ${cacheName}`);
             return caches.delete(cacheName);
-          }
-        })
+          })
       );
     })
   );
   // 모든 클라이언트 즉시 제어
-  self.clients.claim();
+  return self.clients.claim();
 });
 
 // Fetch 이벤트: 요청 전략

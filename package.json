@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "tsx scripts/inject-sw-version.ts",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -37,6 +38,7 @@
     "eslint-config-next": "16.2.4",
     "sharp": "^0.34.5",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   },
   "engines": {
