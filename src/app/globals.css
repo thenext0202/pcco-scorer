@@ -128,3 +128,411 @@
     @apply font-sans;
   }
 }
+:root {
+  /* Claude-Inspired Warm Premium Design System - Pure Black Edition */
+  --background: hsl(0, 0%, 0%);
+  --foreground: hsl(0, 0%, 98%);
+
+  /* Layered black backgrounds */
+  --background-secondary: hsl(0, 0%, 4%);
+  --background-tertiary: hsl(0, 0%, 7%);
+  --background-elevated: hsl(0, 0%, 10%);
+
+  /* Claude warm gradient colors - 따뜻한 오렌지/구리 톤 (brightened for black bg) */
+  --accent-primary: hsl(15, 80%, 68%);
+  --accent-secondary: hsl(25, 75%, 70%);
+  --accent-tertiary: hsl(35, 70%, 72%);
+  --accent-glow: hsl(20, 85%, 72%);
+
+  /* Soft complementary warm colors (brightened for contrast) */
+  --accent-coral: hsl(10, 80%, 72%);
+  --accent-peach: hsl(30, 80%, 75%);
+  --accent-gold: hsl(45, 75%, 68%);
+  --accent-cream: hsl(40, 65%, 82%);
+
+  /* Card styles with warm borders on pure black */
+  --card-background: hsla(0, 0%, 5%, 0.7);
+  --card-border: hsla(20, 60%, 65%, 0.25);
+  --card-border-hover: hsla(15, 80%, 68%, 0.6);
+
+  /* Text hierarchy - pure white based */
+  --text-primary: hsl(0, 0%, 98%);
+  --text-secondary: hsl(0, 0%, 88%);
+  --text-muted: hsl(0, 0%, 72%);
+  --text-dim: hsl(0, 0%, 58%);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-background-secondary: var(--background-secondary);
+  --color-background-tertiary: var(--background-tertiary);
+  --color-background-elevated: var(--background-elevated);
+
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-accent-tertiary: var(--accent-tertiary);
+  --color-accent-glow: var(--accent-glow);
+  --color-accent-coral: var(--accent-coral);
+  --color-accent-peach: var(--accent-peach);
+  --color-accent-gold: var(--accent-gold);
+  --color-accent-cream: var(--accent-cream);
+
+  --color-card-background: var(--card-background);
+  --color-card-border: var(--card-border);
+  --color-card-border-hover: var(--card-border-hover);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-dim: var(--text-dim);
+
+  /* Premium typography */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Enhanced animations */
+  --animate-fade-in: fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-slide-up: slide-up 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-slide-down: slide-down 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Premium keyframes with easing */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* Base styles with premium touch */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Premium glass card with enhanced backdrop */
+.glass-card {
+  background: var(--card-background);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--accent-coral) 25%,
+    var(--accent-primary) 50%,
+    var(--accent-peach) 75%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.glass-card:hover::before {
+  opacity: 0.8;
+}
+
+/* Premium gradient text with warm colors */
+.gradient-text {
+  background: linear-gradient(
+    135deg,
+    var(--accent-coral) 0%,
+    var(--accent-primary) 35%,
+    var(--accent-secondary) 65%,
+    var(--accent-gold) 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 10s ease infinite;
+}
+
+/* Enhanced glow with warm colors */
+.glow {
+  box-shadow:
+    0 0 30px hsla(15, 75%, 65%, 0.4),
+    0 0 60px hsla(25, 70%, 68%, 0.25),
+    0 0 90px hsla(35, 65%, 72%, 0.15);
+}
+
+/* Interactive card with premium hover */
+.card-interactive {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.card-interactive::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    700px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    hsla(15, 75%, 65%, 0.15),
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.card-interactive:hover {
+  transform: translateY(-8px) scale(1.01);
+  border-color: var(--card-border-hover);
+  box-shadow:
+    0 24px 80px -12px hsla(15, 75%, 65%, 0.35),
+    0 12px 40px -6px hsla(25, 70%, 68%, 0.25),
+    inset 0 2px 0 0 hsla(15, 75%, 65%, 0.15);
+}
+
+.card-interactive:hover::after {
+  opacity: 1;
+}
+
+/* Premium tilt effect */
+.tilt-hover {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tilt-hover:hover {
+  transform: perspective(1200px) rotateX(1deg) rotateY(-1deg) translateY(-4px);
+}
+
+/* Pulse glow with warm animation */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow:
+      0 0 40px hsla(15, 75%, 65%, 0.5),
+      0 0 80px hsla(25, 70%, 68%, 0.3),
+      0 0 120px hsla(35, 65%, 72%, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 50px hsla(20, 80%, 70%, 0.6),
+      0 0 100px hsla(15, 75%, 65%, 0.4),
+      0 0 150px hsla(25, 70%, 68%, 0.25);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Premium button styles */
+.btn-premium {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.btn-premium::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    hsla(20, 80%, 85%, 0.3) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%) rotate(10deg);
+  transition: transform 0.7s ease;
+}
+
+.btn-premium:hover::before {
+  transform: translateX(100%) rotate(10deg);
+}
+
+/* Selection with warm brand color */
+::selection {
+  background: var(--accent-primary);
+  color: var(--background);
+}
+
+/* Premium scrollbar with warm gradient */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-secondary);
+  border-left: 1px solid var(--card-border);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    var(--accent-primary),
+    var(--accent-secondary)
+  );
+  border-radius: 6px;
+  border: 2px solid var(--background-secondary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    var(--accent-coral),
+    var(--accent-peach)
+  );
+}
+
+/* Text shadow for depth with warm tone */
+.text-premium {
+  text-shadow: 0 3px 15px hsla(15, 75%, 65%, 0.4);
+}
+
+/* Premium section divider with warm glow */
+.section-divider {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--card-border-hover) 50%,
+    transparent 100%
+  );
+  margin: 5rem 0;
+}
+
+.section-divider::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  border-radius: 50%;
+  box-shadow:
+    0 0 30px var(--accent-glow),
+    0 0 60px hsla(15, 75%, 65%, 0.5);
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Smooth transitions for all interactive elements */
+a, button, input, textarea, select {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Focus styles with warm tone */
+:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Premium gradient mesh background with warm tones on black */
+.gradient-mesh {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(at 15% 20%, hsla(15, 85%, 55%, 0.12) 0, transparent 50%),
+    radial-gradient(at 85% 75%, hsla(25, 80%, 58%, 0.12) 0, transparent 50%),
+    radial-gradient(at 50% 50%, hsla(35, 75%, 60%, 0.1) 0, transparent 50%),
+    radial-gradient(at 70% 30%, hsla(10, 85%, 55%, 0.08) 0, transparent 40%);
+  filter: blur(80px);
+  opacity: 0.4;
+  animation: gradient-shift 20s ease infinite;
+}
+
+/* Soft accent for highlights */
+.accent-soft {
+  color: var(--accent-primary);
+  text-shadow: 0 0 20px hsla(15, 75%, 65%, 0.3);
+}
+
+/* Badge styles with warm pastel */
+.badge-pastel {
+  background: linear-gradient(135deg,
+    hsla(15, 75%, 65%, 0.2),
+    hsla(25, 70%, 68%, 0.2)
+  );
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(12px);
+}
+
+/* Warm shine effect */
+@keyframes warm-shine {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.shine-effect {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--accent-cream) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: warm-shine 3s ease-in-out infinite;
+}
