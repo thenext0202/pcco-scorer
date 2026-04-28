@@ -536,3 +536,65 @@ a, button, input, textarea, select {
   background-size: 200% 100%;
   animation: warm-shine 3s ease-in-out infinite;
 }
+
+/* Mobile Optimization Utilities */
+@media (max-width: 640px) {
+  /* Better text wrapping on mobile */
+  body {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* Prevent horizontal scroll */
+  html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  /* Smooth font scaling */
+  html {
+    font-size: 16px;
+  }
+
+  /* Better touch targets */
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Optimize spacing */
+  .section-divider {
+    margin: 1.5rem auto !important;
+  }
+}
+
+/* Break Korean text properly */
+.break-keep {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* Force word breaks for long text */
+.break-words {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Prevent text overflow */
+.text-ellipsis-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.text-ellipsis-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -13,18 +13,18 @@ export default function FrameworkCards() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.3 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-16 px-4"
         >
-          <h2 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight text-premium">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 tracking-tight text-premium">
             평생 쓸 수 있는 공식
           </h2>
-          <p className="text-xl text-text-muted">
+          <p className="text-base sm:text-lg md:text-xl text-text-muted">
             외워서 가져가는 프레임워크
           </p>
         </motion.div>
 
         {/* Frameworks grid */}
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {frameworks.map((framework, index) => (
             <motion.div
               key={index}
@@ -32,23 +32,23 @@ export default function FrameworkCards() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, amount: 0.3 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="glass-card p-6 rounded-2xl hover:border-accent-primary/50 transition-all duration-300 card-interactive tilt-hover"
+              className="glass-card p-4 sm:p-6 rounded-2xl hover:border-accent-primary/50 transition-all duration-300 card-interactive tilt-hover"
             >
               {/* Header */}
-              <div className="mb-6">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-3xl font-bold gradient-text">
+              <div className="mb-4 sm:mb-6">
+                <div className="flex items-start sm:items-center justify-between gap-2 mb-2">
+                  <h3 className="text-2xl sm:text-3xl font-bold gradient-text break-words">
                     {framework.name}
                   </h3>
-                  <span className="text-xs text-text-muted bg-background-tertiary px-2 py-1 rounded">
+                  <span className="text-xs text-text-muted bg-background-tertiary px-2 py-1 rounded whitespace-nowrap flex-shrink-0">
                     {framework.course}
                   </span>
                 </div>
-                <p className="text-sm text-text-muted">{framework.subtitle}</p>
+                <p className="text-xs sm:text-sm text-text-muted break-words">{framework.subtitle}</p>
               </div>
 
               {/* Elements */}
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 {framework.elements.map((element, elementIndex) => (
                   <motion.div
                     key={elementIndex}
@@ -57,24 +57,24 @@ export default function FrameworkCards() {
                     viewport={{ once: false, amount: 0.3 }}
                     transition={{ duration: 0.4, delay: index * 0.1 + elementIndex * 0.05 }}
                     whileHover={{ x: 5, backgroundColor: "rgba(147, 51, 234, 0.1)" }}
-                    className="p-3 rounded-lg bg-background-tertiary/50 border border-card-border hover:border-accent-primary/50 transition-all cursor-pointer"
+                    className="p-2 sm:p-3 rounded-lg bg-background-tertiary/50 border border-card-border hover:border-accent-primary/50 transition-all cursor-pointer"
                   >
-                    <div className="flex items-start gap-3">
-                      <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-accent-primary/20 flex items-center justify-center">
-                        <span className="text-sm font-bold text-accent-primary">
+                    <div className="flex items-start gap-2 sm:gap-3">
+                      <div className="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-accent-primary/20 flex items-center justify-center">
+                        <span className="text-xs sm:text-sm font-bold text-accent-primary">
                           {element.code}
                         </span>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-baseline gap-2 mb-1">
-                          <span className="font-semibold text-foreground">
+                        <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2 mb-1">
+                          <span className="font-semibold text-sm sm:text-base text-foreground break-words">
                             {element.name}
                           </span>
-                          <span className="text-xs text-text-dim">
+                          <span className="text-xs text-text-dim break-words">
                             {element.english}
                           </span>
                         </div>
-                        <p className="text-xs text-text-muted">
+                        <p className="text-xs text-text-muted break-words leading-relaxed">
                           {element.question}
                         </p>
                       </div>

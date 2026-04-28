@@ -17,7 +17,7 @@ export default function CourseDetail({ courseId }: CourseDetailProps) {
   if (!course || !detail) return null;
 
   return (
-    <section id={courseId} className="py-16 px-6">
+    <section id={courseId} className="py-12 sm:py-16 px-4 sm:px-6">
       <div className="max-w-5xl mx-auto">
         {/* Toggle Button */}
         <motion.button
@@ -26,28 +26,28 @@ export default function CourseDetail({ courseId }: CourseDetailProps) {
           viewport={{ once: false, amount: 0.3 }}
           transition={{ duration: 0.6 }}
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full glass-card p-8 rounded-2xl hover:border-accent-primary/50 transition-all duration-300 text-left group"
+          className="w-full glass-card p-4 sm:p-6 md:p-8 rounded-2xl hover:border-accent-primary/50 transition-all duration-300 text-left group"
         >
-          <div className="flex items-center justify-between">
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="px-3 py-1 rounded-full bg-accent-primary/20 border border-accent-primary/30">
-                  <span className="text-accent-primary font-bold text-sm">
+          <div className="flex items-start sm:items-center justify-between gap-3 sm:gap-4">
+            <div className="flex-1 min-w-0">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+                <div className="px-3 py-1 rounded-full bg-accent-primary/20 border border-accent-primary/30 whitespace-nowrap">
+                  <span className="text-accent-primary font-bold text-xs sm:text-sm">
                     {course.framework}
                   </span>
                 </div>
-                <span className="text-text-dim text-sm">
+                <span className="text-text-dim text-xs sm:text-sm whitespace-nowrap">
                   {course.duration} · {course.level}
                 </span>
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-2 gradient-text">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 gradient-text break-words">
                 {courseId === "course-1" ? "1차 강의 복습하기" : "2차 강의 복습하기"}
               </h2>
-              <p className="text-text-secondary">{course.title} - {course.subtitle}</p>
+              <p className="text-sm sm:text-base text-text-secondary break-words">{course.title} - {course.subtitle}</p>
             </div>
-            <div className="flex-shrink-0 ml-6">
-              <div className={`w-12 h-12 rounded-xl bg-accent-primary/20 flex items-center justify-center transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
-                <ChevronDown className="w-6 h-6 text-accent-primary" />
+            <div className="flex-shrink-0">
+              <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-accent-primary/20 flex items-center justify-center transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
+                <ChevronDown className="w-5 h-5 sm:w-6 sm:h-6 text-accent-primary" />
               </div>
             </div>
           </div>
@@ -63,11 +63,11 @@ export default function CourseDetail({ courseId }: CourseDetailProps) {
               transition={{ duration: 0.4 }}
               className="overflow-hidden mt-6"
             >
-              <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-12 space-y-12 text-gray-900">
+              <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 lg:p-12 space-y-8 sm:space-y-10 md:space-y-12 text-gray-900">
                 {/* Hero Message */}
                 {detail.heroMessage && (
-                  <div className="border-l-4 border-accent-primary pl-6 py-2">
-                    <p className="text-2xl md:text-3xl font-bold text-gray-900 italic">
+                  <div className="border-l-4 border-accent-primary pl-4 sm:pl-6 py-2">
+                    <p className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 italic break-words leading-snug">
                       "{detail.heroMessage}"
                     </p>
                   </div>
@@ -75,18 +75,18 @@ export default function CourseDetail({ courseId }: CourseDetailProps) {
 
                 {/* Promises */}
                 {detail.promises && (
-                  <div className="bg-accent-primary/5 rounded-xl p-6 border-2 border-accent-primary/20">
-                    <h3 className="text-xl font-bold mb-4 text-gray-900 flex items-center gap-2">
-                      <Target className="w-6 h-6 text-accent-primary" />
-                      이 강의 후 달라지는 3가지
+                  <div className="bg-accent-primary/5 rounded-xl p-4 sm:p-6 border-2 border-accent-primary/20">
+                    <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-gray-900 flex items-center gap-2">
+                      <Target className="w-5 h-5 sm:w-6 sm:h-6 text-accent-primary flex-shrink-0" />
+                      <span className="break-words">이 강의 후 달라지는 3가지</span>
                     </h3>
                     <div className="space-y-3">
                       {detail.promises.map((promise: string, index: number) => (
-                        <div key={index} className="flex items-start gap-3">
+                        <div key={index} className="flex items-start gap-2 sm:gap-3">
                           <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent-primary text-white flex items-center justify-center text-sm font-bold mt-0.5">
                             {index + 1}
                           </span>
-                          <p className="text-gray-700 leading-relaxed">{promise}</p>
+                          <p className="text-sm sm:text-base text-gray-700 leading-relaxed break-words">{promise}</p>
                         </div>
                       ))}
                     </div>

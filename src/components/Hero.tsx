@@ -57,7 +57,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-[1.1] tracking-tight text-premium"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 leading-[1.15] tracking-tight text-premium px-4"
         >
           {heroContent.title}
         </motion.h1>
@@ -67,7 +67,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-2xl md:text-3xl font-semibold gradient-text mb-4"
+          className="text-xl sm:text-2xl md:text-3xl font-semibold gradient-text mb-4 px-4"
         >
           {heroContent.subtitle}
         </motion.p>
@@ -77,7 +77,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-lg md:text-xl text-text-muted max-w-3xl mx-auto mb-12"
+          className="text-base sm:text-lg md:text-xl text-text-muted max-w-3xl mx-auto mb-12 px-4"
         >
           {heroContent.tagline}
         </motion.p>
@@ -92,22 +92,22 @@ export default function Hero() {
           {/* Main CTA - 실습 앱 사용하기 (강조) */}
           <a
             href="/practice"
-            className="group relative px-12 py-6 rounded-2xl font-bold text-xl bg-gradient-to-r from-accent-primary via-accent-secondary to-accent-primary bg-[length:200%_100%] text-background hover:scale-[1.02] hover:bg-[position:100%_0] transition-all duration-500 flex items-center gap-3 pulse-glow shadow-2xl btn-premium"
+            className="group relative px-6 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 rounded-2xl font-bold text-base sm:text-lg md:text-xl bg-gradient-to-r from-accent-primary via-accent-secondary to-accent-primary bg-[length:200%_100%] text-background hover:scale-[1.02] hover:bg-[position:100%_0] transition-all duration-500 flex items-center justify-center gap-2 sm:gap-3 pulse-glow shadow-2xl btn-premium w-full sm:w-auto max-w-md"
           >
-            <ExternalLink className="w-6 h-6 group-hover:rotate-12 transition-transform" />
-            실습 앱 사용하기
-            <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+            <ExternalLink className="w-5 h-5 sm:w-6 sm:h-6 group-hover:rotate-12 transition-transform flex-shrink-0" />
+            <span className="whitespace-nowrap">실습 앱 사용하기</span>
+            <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-1 transition-transform flex-shrink-0" />
           </a>
 
           {/* Curriculum Toggle Button */}
           <button
             onClick={() => setShowCurriculum(!showCurriculum)}
-            className="group relative px-8 py-4 rounded-lg font-semibold text-lg glass-card hover:bg-accent-primary/10 hover:border-accent-primary transition-all duration-300 flex items-center gap-2"
+            className="group relative px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg glass-card hover:bg-accent-primary/10 hover:border-accent-primary transition-all duration-300 flex items-center justify-center gap-2 w-full sm:w-auto max-w-md"
           >
-            <BookOpen className="w-5 h-5" />
-            커리큘럼 보기
+            <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+            <span className="whitespace-nowrap">커리큘럼 보기</span>
             <ChevronDown
-              className={`w-5 h-5 transition-transform duration-300 ${
+              className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 flex-shrink-0 ${
                 showCurriculum ? "rotate-180" : ""
               }`}
             />
@@ -123,32 +123,32 @@ export default function Hero() {
                 transition={{ duration: 0.3 }}
                 className="w-full max-w-3xl overflow-hidden"
               >
-                <div className="glass-card p-6 rounded-2xl mt-4 space-y-6">
+                <div className="glass-card p-4 sm:p-6 rounded-2xl mt-4 space-y-4 sm:space-y-6">
                   {courses.map((course, index) => (
                     <motion.div
                       key={course.id}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.4, delay: index * 0.1 }}
-                      className="border border-card-border rounded-xl p-5 hover:border-accent-primary/50 transition-all card-interactive"
+                      className="border border-card-border rounded-xl p-4 sm:p-5 hover:border-accent-primary/50 transition-all card-interactive"
                     >
                       {/* Course header */}
-                      <div className="flex items-start justify-between mb-3">
+                      <div className="mb-3">
                         <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-2">
-                            <span className="px-3 py-1 rounded-full bg-accent-primary/20 text-accent-primary text-xs font-bold">
+                          <div className="flex flex-wrap items-center gap-2 mb-2">
+                            <span className="px-3 py-1 rounded-full bg-accent-primary/20 text-accent-primary text-xs font-bold whitespace-nowrap">
                               {course.framework}
                             </span>
-                            <span className="text-sm text-text-muted">{course.duration}</span>
+                            <span className="text-xs sm:text-sm text-text-muted whitespace-nowrap">{course.duration}</span>
                           </div>
-                          <h3 className="text-xl font-bold mb-1">{course.title}</h3>
-                          <p className="text-sm text-text-muted">{course.subtitle}</p>
+                          <h3 className="text-lg sm:text-xl font-bold mb-1 break-words">{course.title}</h3>
+                          <p className="text-xs sm:text-sm text-text-muted break-words">{course.subtitle}</p>
                         </div>
                       </div>
 
                       {/* Key points */}
                       <div className="mb-4">
-                        <p className="text-sm text-foreground italic border-l-2 border-accent-primary pl-3 py-1 bg-accent-primary/5">
+                        <p className="text-xs sm:text-sm text-foreground italic border-l-2 border-accent-primary pl-3 py-1 bg-accent-primary/5 break-words">
                           "{course.heroQuote}"
                         </p>
                       </div>
@@ -156,10 +156,10 @@ export default function Hero() {
                       {/* CTA */}
                       <a
                         href={`#${course.id}`}
-                        className="inline-flex items-center gap-2 text-accent-primary hover:text-accent-secondary transition-colors font-semibold text-sm group"
+                        className="inline-flex items-center gap-2 text-accent-primary hover:text-accent-secondary transition-colors font-semibold text-xs sm:text-sm group"
                       >
-                        자세히 보기
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        <span className="whitespace-nowrap">자세히 보기</span>
+                        <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform flex-shrink-0" />
                       </a>
                     </motion.div>
                   ))}
