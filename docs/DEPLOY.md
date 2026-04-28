@@ -1,6 +1,6 @@
 # Railway 배포 가이드
 
-이 문서는 R-PCCO Scorer를 Railway에 배포하는 상세 가이드입니다.
+이 문서는 AI 채점기(R-PCCO & I-MRKO Scorer)를 Railway에 배포하는 상세 가이드입니다.
 
 ## 📋 사전 준비
 
@@ -108,11 +108,12 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.xxxxxx...
    - `/api/health` (또는 `/`) 응답 확인
 
 3. 기능 테스트:
-   - ✅ 단독 채점 모드 동작
-   - ✅ 세션 생성 (`/host`)
+   - ✅ 단독 채점 모드 (프롬프트/지침 탭 전환)
+   - ✅ 세션 생성 (`/host` - 모드 선택 확인)
    - ✅ 참가자 입장 (`/play/[code]`)
    - ✅ 리더보드 실시간 업데이트 (`/play/[code]/board`)
    - ✅ PWA 설치 프롬프트 표시
+   - ✅ PWA 업데이트 알림 (재배포 후 테스트)
 
 ---
 
@@ -120,10 +121,18 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.xxxxxx...
 
 ### 1. API 엔드포인트 테스트
 
+**프롬프트 채점 테스트:**
 ```bash
 curl -X POST https://YOUR-RAILWAY-URL.up.railway.app/api/score \
   -H "Content-Type: application/json" \
   -d '{"prompt":"너는 10년차 마케터야. 신제품 홍보를 위해 블로그 글을 써줘. 200자, 친근한 톤."}'
+```
+
+**지침 채점 테스트:**
+```bash
+curl -X POST https://YOUR-RAILWAY-URL.up.railway.app/api/score/instruction \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"## 정체성\n너는 비서야.\n\n## 임무\n이메일 작성을 돕는다.\n\n## 규칙\n- 200자 이내\n- 존댓말 사용\n\n## 출력\nMarkdown 형식"}'
 ```
 
 **예상 결과**: JSON 응답 (total_score, grade, elements 등)

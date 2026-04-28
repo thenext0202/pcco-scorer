@@ -1,16 +1,19 @@
-# R-PCCO Scorer
+# AI 채점기 (R-PCCO & I-MRKO Scorer)
 
 ## 프로젝트 개요
-AI 프롬프트 강의 수강생이 자신의 프롬프트를 입력하면 R-PCCO 5요소(역할/목적/맥락/제약/출력)로 자동 채점받는 PWA.
+AI 프롬프트 강의용 자동 채점 PWA. 두 가지 모드를 지원합니다:
+- **프롬프트 채점**: R-PCCO 5요소(역할/목적/맥락/제약/출력)
+- **지침 채점**: I-MRKO 5요소(정체성/임무/규칙/지식/출력)
+
 Claude Sonnet 4.6 모델을 활용한 실시간 채점과 리더보드를 제공.
-수강생들의 프롬프트 작성 능력 향상과 학습 동기 부여를 목표로 함.
+수강생들의 프롬프트/지침 작성 능력 향상과 학습 동기 부여를 목표로 함.
 
 ## 기술 스택
-- **Frontend**: Next.js 14 (App Router), TypeScript, Tailwind CSS, shadcn/ui
+- **Frontend**: Next.js 16 (App Router), TypeScript, Tailwind CSS, shadcn/ui
 - **AI**: Anthropic SDK (Claude Sonnet 4.6 - `claude-sonnet-4-6`)
-- **Backend**: Supabase (Database & Auth)
-- **Deployment**: Vercel
-- **PWA**: next-pwa
+- **Backend**: Supabase (Database & Realtime)
+- **Deployment**: Railway
+- **PWA**: Service Worker (수동 구현, 자동 업데이트 지원)
 
 ## 폴더 구조
 ```
