@@ -103,6 +103,31 @@ public/                    # 정적 파일
 7. **보안 강화**
    - 세션 만들기 비밀번호 보호 추가 (7962)
 
+### 모바일 최적화 (2026-04-29)
+1. **반응형 디자인 구현**
+   - 4-5단계 브레이크포인트 적용 (xs → sm → md → lg → xl)
+   - 모바일 우선 접근 방식
+
+2. **텍스트 가독성 개선**
+   - 한글 텍스트: `break-keep` (단어 단위 줄바꿈)
+   - 긴 영문: `break-words` (강제 줄바꿈)
+   - 제목/버튼: `whitespace-nowrap` (한 줄 유지)
+
+3. **터치 인터페이스 최적화**
+   - 버튼/링크 최소 터치 타겟: 44px × 44px
+   - 모바일 버튼: 전체 너비 + 최대 너비 제한
+   - 아이콘 크기 고정 (`flex-shrink-0`)
+
+4. **레이아웃 조정**
+   - 그리드: `grid sm:grid-cols-2 lg:grid-cols-3`
+   - 패딩: `p-4 sm:p-6 md:p-8 lg:p-12`
+   - 갭: `gap-2 sm:gap-3 md:gap-4`
+
+5. **글로벌 CSS 추가**
+   - 가로 스크롤 방지
+   - 자동 하이픈 처리
+   - 모바일 전용 스타일 (`@media max-width: 640px`)
+
 ## 코딩 규칙
 - TypeScript strict mode 사용
 - 함수형 컴포넌트 사용
@@ -148,6 +173,75 @@ const handleHostSession = () => {
 // Before: href="https://pcco-scorer-production.up.railway.app"
 // After: href="/practice"
 ```
+
+### 모바일 최적화 (2026-04-29 추가)
+
+**글로벌 CSS 유틸리티** (`src/app/globals.css`):
+```css
+/* 모바일 전용 최적화 */
+@media (max-width: 640px) {
+  body {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  html, body {
+    overflow-x: hidden;  /* 가로 스크롤 방지 */
+    max-width: 100vw;
+  }
+
+  button, a {
+    min-height: 44px;  /* 터치 타겟 최소 크기 */
+    min-width: 44px;
+  }
+}
+
+/* 텍스트 줄바꿈 유틸리티 */
+.break-keep {
+  word-break: keep-all;      /* 한글 단어 단위 줄바꿈 */
+  overflow-wrap: break-word;
+}
+
+.break-words {
+  word-wrap: break-word;     /* 강제 줄바꿈 */
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+```
+
+**컴포넌트별 반응형 패턴**:
+
+1. **Hero.tsx** - 타이틀 및 버튼
+```tsx
+// 타이틀: 4단계 반응형
+className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
+
+// 버튼: 모바일 전체 너비
+className="w-full sm:w-auto max-w-md px-6 sm:px-10 md:px-12"
+```
+
+2. **FrameworkCards.tsx** - 그리드 레이아웃
+```tsx
+// 1열 → 2열 → 3열
+className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+```
+
+3. **CourseDetail.tsx** - 패딩 조정
+```tsx
+// 점진적 패딩 증가
+className="p-4 sm:p-6 md:p-8 lg:p-12"
+```
+
+**모바일 최적화 체크리스트**:
+- [x] 반응형 텍스트 크기 (4-5단계 브레이크포인트)
+- [x] 텍스트 줄바꿈 최적화 (break-keep, break-words)
+- [x] 버튼 터치 타겟 최소 44px
+- [x] 가로 스크롤 방지
+- [x] 모바일 우선 패딩/간격 조정
+- [x] 아이콘 크기 고정 (flex-shrink-0)
+- [ ] 모바일 복습 섹션 추가 최적화 (향후)
+- [ ] 터치 제스처 최적화 (향후)
 
 ## 커밋 규칙
 Conventional Commits 준수:
@@ -248,7 +342,10 @@ Conventional Commits 준수:
 - [ ] 채점 기록 다운로드 (PDF/CSV)
 - [ ] 다크모드/라이트모드 토글 (랜딩 페이지)
 - [ ] 강의 자료 검색 기능
-- [ ] 모바일 최적화 (복습 섹션)
+- [x] ~~모바일 최적화 (기본)~~ ✅ 완료 (2026-04-29)
+  - [ ] 모바일 복습 섹션 추가 최적화 (표, 긴 텍스트 블록)
+  - [ ] 터치 제스처 (스와이프, 핀치 줌)
+  - [ ] 모바일 네비게이션 개선
 - [ ] 세션 비밀번호 변경 기능 (관리자 패널)
 - [ ] **강의 관리 시스템** (강의 추가/수정/삭제 UI)
 - [ ] **강의별 실습 앱 자동 생성** (새 강의 추가 시 채점 모드 자동 매핑)
@@ -264,6 +361,34 @@ Conventional Commits 준수:
 - **배경**: Slate 그라데이션
 - **카드**: 글래스모피즘 디자인
 - **모드 구분**: 블루(프롬프트), 그린(지침)
+
+### 반응형 디자인 (모바일 최적화)
+**브레이크포인트**:
+- `sm`: 640px (모바일 가로/작은 태블릿)
+- `md`: 768px (태블릿)
+- `lg`: 1024px (데스크톱)
+- `xl`: 1280px (큰 데스크톱)
+
+**텍스트 크기 전략**:
+```tsx
+// 점진적 확대 (모바일 → 데스크톱)
+className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
+```
+
+**텍스트 줄바꿈**:
+- `break-keep`: 한글 단어 단위 줄바꿈 (제목, 중요 텍스트)
+- `break-words`: 긴 영문/URL 강제 줄바꿈
+- `whitespace-nowrap`: 버튼 텍스트 한 줄 유지
+
+**버튼 레이아웃**:
+- 모바일: `w-full max-w-md` (전체 너비, 최대 너비 제한)
+- 아이콘: `flex-shrink-0` (크기 고정)
+- 터치 타겟: 최소 44px × 44px
+
+**간격 시스템**:
+- 패딩: `p-4 sm:p-6 md:p-8 lg:p-12`
+- 갭: `gap-2 sm:gap-3 md:gap-4`
+- 마진: `mb-4 sm:mb-6 md:mb-12`
 
 ## 주요 기능 상세
 
