@@ -30,12 +30,18 @@ interface InstructionScorerProps {
    * localStorage 자동 저장 활성화 (기본값: true)
    */
   enableAutoSave?: boolean;
+
+  /**
+   * 결과 영역 끝의 "다른 지침 채점하기" 버튼을 숨김 (세션 모드용).
+   */
+  hideRetryButton?: boolean;
 }
 
 export default function InstructionScorer({
   onSubmit,
   submitButtonText = "채점하기",
   enableAutoSave = true,
+  hideRetryButton = false,
 }: InstructionScorerProps) {
   const [instruction, setInstruction] = useState(() => {
     if (enableAutoSave && typeof window !== "undefined") {
@@ -218,16 +224,18 @@ export default function InstructionScorer({
           <InstructionScoreResult result={result} />
 
           {/* 다른 지침 채점하기 버튼 */}
-          <div className="text-center pt-4">
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={handleRetry}
-              className="w-full sm:w-auto"
-            >
-              다른 지침 채점하기
-            </Button>
-          </div>
+          {!hideRetryButton && (
+            <div className="text-center pt-4">
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={handleRetry}
+                className="w-full sm:w-auto"
+              >
+                다른 지침 채점하기
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </div>

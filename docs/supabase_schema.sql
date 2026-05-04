@@ -75,3 +75,23 @@ CREATE INDEX IF NOT EXISTS idx_sessions_mode ON sessions(mode);
 -- 코멘트
 COMMENT ON COLUMN sessions.mode IS
   'prompt = R-PCCO 프롬프트 채점 (1차 강의), instruction = I-MRKO 지침 채점 (2차 강의)';
+
+-- =========================================
+-- v3 확장: SSDHR 이미지 프롬프트 채점 모드 추가 (3차 강의)
+-- =========================================
+
+-- mode 컬럼의 CHECK 제약을 'image' 포함하도록 재정의
+-- (PostgreSQL은 CHECK 제약을 직접 수정할 수 없어서 DROP → ADD)
+ALTER TABLE sessions
+  DROP CONSTRAINT IF EXISTS sessions_mode_check;
+
+ALTER TABLE sessions
+  ADD CONSTRAINT sessions_mode_check
+  CHECK (mode IN ('prompt', 'instruction', 'image'));
+
+-- 코멘트 갱신
+COMMENT ON COLUMN sessions.mode IS
+  'prompt = R-PCCO (1차), instruction = I-MRKO (2차), image = SSDHR (3차)';
+
+-- submissions.elements_json은 JSONB라서 image 모드의 새 키
+-- (scene/style/detail/hard/reality)도 자동 호환됨. 별도 마이그레이션 불필요.

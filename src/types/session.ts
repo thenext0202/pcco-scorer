@@ -3,7 +3,8 @@ export interface Session {
   code: string;
   title: string;
   host_name: string | null;
-  mode: "prompt" | "instruction"; // prompt = R-PCCO, instruction = I-MRKO
+  // prompt = R-PCCO (1차), instruction = I-MRKO (2차), image = SSDHR (3차)
+  mode: "prompt" | "instruction" | "image";
   created_at: string;
   expires_at: string;
 }
@@ -61,7 +62,26 @@ export interface InstructionLeaderboardEntry {
   created_at: string;
 }
 
+// SSDHR 이미지 프롬프트 채점 리더보드 엔트리 (3차 강의)
+export interface ImageLeaderboardEntry {
+  rank: number;
+  id: string;
+  nickname: string;
+  total_score: number;
+  grade: "S" | "A" | "B" | "C" | "D" | "F";
+  mode: "image";
+  elements: {
+    scene: number;
+    style: number;
+    detail: number;
+    hard: number;
+    reality: number;
+  };
+  created_at: string;
+}
+
 // 통합 타입
 export type LeaderboardEntry =
   | PromptLeaderboardEntry
-  | InstructionLeaderboardEntry;
+  | InstructionLeaderboardEntry
+  | ImageLeaderboardEntry;

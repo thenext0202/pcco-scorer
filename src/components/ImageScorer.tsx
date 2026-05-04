@@ -6,20 +6,18 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import ScoreResult from "@/components/ScoreResult";
-import type { ScoreResult as ScoreResultType } from "@/types/score";
+import ImageScoreResultView from "@/components/ImageScoreResult";
+import type { ImageScoreResult } from "@/types/score";
 
-const STORAGE_KEY = "r-pcco-prompt-draft";
-const MAX_LENGTH = 1000;
+const STORAGE_KEY = "ssdhr-image-prompt-draft";
+const MAX_LENGTH = 1500;
 const MIN_LENGTH = 30;
 
-interface PromptScorerProps {
+interface ImageScorerProps {
   /**
    * 채점 완료 후 콜백 (세션 모드에서 사용)
-   * @param result 채점 결과
-   * @param prompt 입력한 프롬프트
    */
-  onSubmit?: (result: ScoreResultType, prompt: string) => void;
+  onSubmit?: (result: ImageScoreResult, prompt: string) => void;
 
   /**
    * 제출 버튼 텍스트 (기본값: "채점하기")
@@ -33,20 +31,19 @@ interface PromptScorerProps {
 
   /**
    * 결과 영역 끝의 "다른 프롬프트 채점하기" 버튼을 숨김 (세션 모드용).
-   * 외부에서 별도 CTA(예: 리더보드 등록)를 노출할 때, 결과 끝 버튼이 "끝났다는 신호"로 작용해 다음 액션을 가리는 것을 방지.
    */
   hideRetryButton?: boolean;
 }
 
-export default function PromptScorer({
+export default function ImageScorer({
   onSubmit,
   submitButtonText = "채점하기",
   enableAutoSave = true,
   hideRetryButton = false,
-}: PromptScorerProps) {
+}: ImageScorerProps) {
   const [prompt, setPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [result, setResult] = useState<ScoreResultType | null>(null);
+  const [result, setResult] = useState<ImageScoreResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLDivElement>(null);
@@ -80,12 +77,9 @@ export default function PromptScorer({
     setError(null);
 
     try {
-      // 실제 API 호출
-      const response = await fetch("/api/score", {
+      const response = await fetch("/api/score/image", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),
       });
 
@@ -94,10 +88,9 @@ export default function PromptScorer({
         throw new Error(errorData.error || "채점에 실패했습니다.");
       }
 
-      const scoreResult: ScoreResultType = await response.json();
+      const scoreResult: ImageScoreResult = await response.json();
       setResult(scoreResult);
 
-      // 결과 영역으로 스크롤
       setTimeout(() => {
         resultRef.current?.scrollIntoView({
           behavior: "smooth",
@@ -105,7 +98,6 @@ export default function PromptScorer({
         });
       }, 100);
 
-      // 콜백 호출 (세션 모드)
       if (onSubmit) {
         onSubmit(scoreResult, prompt);
       }
@@ -150,8 +142,8 @@ export default function PromptScorer({
                     setPrompt(e.target.value);
                   }
                 }}
-                placeholder="여기에 프롬프트를 입력하세요. 예: 너는 10년차 마케터야. 신제품 홍보를 위해..."
-                className="min-h-[200px] text-base resize-none"
+                placeholder={`이미지 생성 프롬프트를 입력하세요.\n\n예: 한국인 7세 남자 아이가 책상에서 일기 쓰는 모습, 탑뷰. photograph, 35mm f/2.8, warm earth tones, early 2000s Kodak Gold 200. 약간 삐뚤어진 글씨, 종이 살짝 구겨짐. 일기장에 "오늘은 비가 왔다" 정확히 명시, 글자 변형 금지. Negative: 깨진 글씨 금지, 여분 손가락 금지.`}
+                className="min-h-[240px] text-base resize-none"
                 maxLength={MAX_LENGTH}
               />
               <div className="flex items-center justify-between text-sm">
@@ -159,7 +151,7 @@ export default function PromptScorer({
                   className={`${
                     charCount < MIN_LENGTH
                       ? "text-rose-500"
-                      : charCount > 800
+                      : charCount > 1200
                       ? "text-orange-500"
                       : "text-slate-500"
                   }`}
@@ -218,9 +210,8 @@ export default function PromptScorer({
       {/* 결과 표시 */}
       {result && !isLoading && (
         <div ref={resultRef} className="space-y-6">
-          <ScoreResult result={result} />
+          <ImageScoreResultView result={result} />
 
-          {/* 다른 프롬프트 채점하기 버튼 */}
           {!hideRetryButton && (
             <div className="text-center pt-4">
               <Button

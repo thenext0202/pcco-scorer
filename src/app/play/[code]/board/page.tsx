@@ -33,6 +33,14 @@ const ELEMENT_LABELS_INSTRUCTION = [
   { key: "output" as const, label: "O", icon: "📋" },
 ] as const;
 
+const ELEMENT_LABELS_IMAGE = [
+  { key: "scene" as const, label: "S", icon: "🎬" },
+  { key: "style" as const, label: "S", icon: "🎨" },
+  { key: "detail" as const, label: "D", icon: "🔍" },
+  { key: "hard" as const, label: "H", icon: "🔒" },
+  { key: "reality" as const, label: "R", icon: "⚖️" },
+] as const;
+
 export default function BoardPage() {
   const params = useParams();
   const code = params?.code as string;
@@ -149,6 +157,8 @@ export default function BoardPage() {
               <Badge variant="outline" className="text-lg px-3 py-1">
                 {session.mode === "instruction"
                   ? "📘 지침 채점"
+                  : session.mode === "image"
+                  ? "🎨 이미지 프롬프트 채점"
                   : "🎯 프롬프트 채점"}
               </Badge>
             </div>
@@ -193,25 +203,37 @@ export default function BoardPage() {
                 const labels =
                   session.mode === "instruction"
                     ? ELEMENT_LABELS_INSTRUCTION
+                    : session.mode === "image"
+                    ? ELEMENT_LABELS_IMAGE
                     : ELEMENT_LABELS_PROMPT;
 
                 // 최대 점수 계산
-                const elementValues =
-                  entry.mode === "instruction"
-                    ? [
-                        entry.elements.identity,
-                        entry.elements.mission,
-                        entry.elements.rules,
-                        entry.elements.knowledge,
-                        entry.elements.output,
-                      ]
-                    : [
-                        entry.elements.role,
-                        entry.elements.purpose,
-                        entry.elements.context,
-                        entry.elements.constraints,
-                        entry.elements.output,
-                      ];
+                let elementValues: number[];
+                if (entry.mode === "instruction") {
+                  elementValues = [
+                    entry.elements.identity,
+                    entry.elements.mission,
+                    entry.elements.rules,
+                    entry.elements.knowledge,
+                    entry.elements.output,
+                  ];
+                } else if (entry.mode === "image") {
+                  elementValues = [
+                    entry.elements.scene,
+                    entry.elements.style,
+                    entry.elements.detail,
+                    entry.elements.hard,
+                    entry.elements.reality,
+                  ];
+                } else {
+                  elementValues = [
+                    entry.elements.role,
+                    entry.elements.purpose,
+                    entry.elements.context,
+                    entry.elements.constraints,
+                    entry.elements.output,
+                  ];
+                }
                 const maxElement = Math.max(...elementValues);
 
                 return (
@@ -297,6 +319,8 @@ export default function BoardPage() {
             실시간 업데이트 •{" "}
             {session.mode === "instruction"
               ? "I-MRKO: Identity · Mission · Rules · Knowledge · Output"
+              : session.mode === "image"
+              ? "SSDHR: Scene · Style · Detail · Hard · Reality"
               : "R-PCCO: Role · Purpose · Context · Constraints · Output"}
           </p>
         </footer>

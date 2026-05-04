@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import PromptScorer from "@/components/PromptScorer";
 import InstructionScorer from "@/components/InstructionScorer";
+import ImageScorer from "@/components/ImageScorer";
 import { getSessionByCode, submitScore } from "@/lib/sessionApi";
 import type { Session } from "@/types/session";
 import type { AnyScoreResult } from "@/types/score";
@@ -194,7 +195,11 @@ export default function PlayPage() {
           )}
           <div className="flex items-center justify-center gap-4 text-sm text-slate-500">
             <Badge variant="outline">
-              {session.mode === "instruction" ? "📘 지침 채점" : "🎯 프롬프트 채점"}
+              {session.mode === "instruction"
+                ? "📘 지침 채점"
+                : session.mode === "image"
+                ? "🎨 이미지 프롬프트 채점"
+                : "🎯 프롬프트 채점"}
             </Badge>
             <span>•</span>
             <span>참가자: {nickname}</span>
@@ -204,69 +209,96 @@ export default function PlayPage() {
         </div>
 
         {/* 채점 UI - 세션 모드에 따라 자동 분기 */}
-        {session.mode === "instruction" ? (
+        {session.mode === "instruction" && (
           <InstructionScorer
             onSubmit={handleScoreComplete}
             submitButtonText="채점하기"
             enableAutoSave={false}
+            hideRetryButton
           />
-        ) : (
+        )}
+        {session.mode === "image" && (
+          <ImageScorer
+            onSubmit={handleScoreComplete}
+            submitButtonText="채점하기"
+            enableAutoSave={false}
+            hideRetryButton
+          />
+        )}
+        {session.mode === "prompt" && (
           <PromptScorer
             onSubmit={handleScoreComplete}
             submitButtonText="채점하기"
             enableAutoSave={false}
+            hideRetryButton
           />
-        )}
-
-        {/* 리더보드 제출 */}
-        {lastResult && !hasSubmitted && (
-          <Card className="border-green-200 bg-green-50">
-            <CardContent className="pt-6 text-center space-y-3">
-              <p className="font-medium text-slate-800">
-                이 점수를 리더보드에 올리시겠어요?
-              </p>
-              <p className="text-sm text-slate-600">
-                총점: {lastResult.total_score}점 / 등급: {lastResult.grade}
-              </p>
-              <Button
-                onClick={handleSubmitToLeaderboard}
-                disabled={isSubmitting}
-                className="w-full"
-              >
-                {isSubmitting ? "제출 중..." : "리더보드에 등록하기"}
-              </Button>
-            </CardContent>
-          </Card>
         )}
 
         {/* 제출 완료 */}
         {hasSubmitted && (
-          <Card className="border-blue-200 bg-blue-50">
+          <Card className="border-blue-300 bg-blue-50">
             <CardContent className="pt-6 text-center space-y-3">
-              <p className="font-medium text-slate-800">
+              <p className="font-semibold text-slate-900">
                 ✅ 리더보드에 등록되었습니다!
               </p>
-              <Link href={`/play/${code}/board`}>
-                <Button variant="outline" className="w-full">
-                  리더보드 보기
+              <Link href={`/play/${code}/board`} className="block">
+                <Button
+                  size="lg"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold"
+                >
+                  📊 리더보드 보기
                 </Button>
               </Link>
             </CardContent>
           </Card>
         )}
 
-        {/* 링크 */}
-        <div className="flex gap-3 pt-4">
-          <Link href={`/play/${code}/board`} className="flex-1">
-            <Button variant="outline" className="w-full">
-              📊 리더보드 보기
+        {/* 링크 — 제출 전에만 "리더보드 보기" 별도 노출, 제출 후엔 위 카드 버튼만 사용 */}
+        <div className="flex gap-3 pt-4 pb-32 sm:pb-4">
+          {!hasSubmitted && (
+            <Link href={`/play/${code}/board`} className="flex-1">
+              <Button variant="outline" className="w-full text-slate-700">
+                📊 리더보드 보기
+              </Button>
+            </Link>
+          )}
+          <Link href="/" className={hasSubmitted ? "flex-1" : ""}>
+            <Button variant="ghost" className={hasSubmitted ? "w-full" : ""}>
+              홈
             </Button>
-          </Link>
-          <Link href="/">
-            <Button variant="ghost">홈</Button>
           </Link>
         </div>
       </div>
+
+      {/* Sticky 리더보드 제출 CTA — 채점 완료 후 등록 전까지 화면 하단 고정 */}
+      {lastResult && !hasSubmitted && (
+        <div className="fixed inset-x-0 bottom-0 z-50 px-4 pb-4 pointer-events-none">
+          <div className="max-w-2xl mx-auto pointer-events-auto">
+            <Card className="border-2 border-green-400 bg-green-50 shadow-2xl shadow-green-200/50">
+              <CardContent className="pt-4 pb-4 px-4 sm:px-6 space-y-2">
+                <div className="flex items-center justify-between gap-3 flex-wrap">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm sm:text-base font-semibold text-slate-800">
+                      🎯 채점 완료! 리더보드에 등록하세요
+                    </p>
+                    <p className="text-xs sm:text-sm text-slate-600">
+                      총점 {lastResult.total_score}점 · {lastResult.grade}등급
+                    </p>
+                  </div>
+                  <Button
+                    onClick={handleSubmitToLeaderboard}
+                    disabled={isSubmitting}
+                    size="lg"
+                    className="bg-green-600 hover:bg-green-700 text-white font-bold shadow-md whitespace-nowrap"
+                  >
+                    {isSubmitting ? "제출 중..." : "리더보드에 등록하기 →"}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

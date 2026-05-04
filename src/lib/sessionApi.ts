@@ -1,7 +1,7 @@
 import { supabase } from "./supabase";
 import type { Session, Submission, LeaderboardEntry } from "@/types/session";
 import type { AnyScoreResult } from "@/types/score";
-import { isInstructionScore } from "@/types/score";
+import { isInstructionScore, isImageScore } from "@/types/score";
 
 /**
  * 4자리 랜덤 코드 생성 (I, O, 1, 0 제외)
@@ -23,7 +23,7 @@ export function generateCode(): string {
 export async function createSession(
   title: string,
   hostName?: string,
-  mode: "prompt" | "instruction" = "prompt"
+  mode: "prompt" | "instruction" | "image" = "prompt"
 ): Promise<{ session: Session; code: string }> {
   let attempts = 0;
   const maxAttempts = 3;
@@ -90,21 +90,32 @@ export async function submitScore(
   result: AnyScoreResult
 ): Promise<Submission> {
   // 결과 타입에 따라 elements_json 구성
-  const elements_json = isInstructionScore(result)
-    ? {
-        identity: { score: result.elements.identity.score },
-        mission: { score: result.elements.mission.score },
-        rules: { score: result.elements.rules.score },
-        knowledge: { score: result.elements.knowledge.score },
-        output: { score: result.elements.output.score },
-      }
-    : {
-        role: { score: result.elements.role.score },
-        purpose: { score: result.elements.purpose.score },
-        context: { score: result.elements.context.score },
-        constraints: { score: result.elements.constraints.score },
-        output: { score: result.elements.output.score },
-      };
+  let elements_json: Record<string, { score: number }>;
+  if (isInstructionScore(result)) {
+    elements_json = {
+      identity: { score: result.elements.identity.score },
+      mission: { score: result.elements.mission.score },
+      rules: { score: result.elements.rules.score },
+      knowledge: { score: result.elements.knowledge.score },
+      output: { score: result.elements.output.score },
+    };
+  } else if (isImageScore(result)) {
+    elements_json = {
+      scene: { score: result.elements.scene.score },
+      style: { score: result.elements.style.score },
+      detail: { score: result.elements.detail.score },
+      hard: { score: result.elements.hard.score },
+      reality: { score: result.elements.reality.score },
+    };
+  } else {
+    elements_json = {
+      role: { score: result.elements.role.score },
+      purpose: { score: result.elements.purpose.score },
+      context: { score: result.elements.context.score },
+      constraints: { score: result.elements.constraints.score },
+      output: { score: result.elements.output.score },
+    };
+  }
 
   const { data, error } = await supabase
     .from("submissions")
@@ -131,7 +142,7 @@ export async function submitScore(
  */
 export async function getLeaderboard(
   sessionId: string,
-  mode: "prompt" | "instruction",
+  mode: "prompt" | "instruction" | "image",
   limit: number = 10
 ): Promise<LeaderboardEntry[]> {
   const { data, error } = await supabase
@@ -169,6 +180,23 @@ export async function getLeaderboard(
           rules: elementsJson.rules?.score ?? 0,
           knowledge: elementsJson.knowledge?.score ?? 0,
           output: elementsJson.output?.score ?? 0,
+        },
+        created_at: sub.created_at,
+      };
+    } else if (mode === "image") {
+      return {
+        rank: index + 1,
+        id: sub.id,
+        nickname: sub.nickname,
+        total_score: sub.total_score,
+        grade: sub.grade,
+        mode: "image" as const,
+        elements: {
+          scene: elementsJson.scene?.score ?? 0,
+          style: elementsJson.style?.score ?? 0,
+          detail: elementsJson.detail?.score ?? 0,
+          hard: elementsJson.hard?.score ?? 0,
+          reality: elementsJson.reality?.score ?? 0,
         },
         created_at: sub.created_at,
       };

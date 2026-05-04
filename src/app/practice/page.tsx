@@ -7,8 +7,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import PromptScorer from "@/components/PromptScorer";
 import InstructionScorer from "@/components/InstructionScorer";
+import ImageScorer from "@/components/ImageScorer";
 
-type Mode = "prompt" | "instruction";
+type Mode = "prompt" | "instruction" | "image";
 
 export default function Home() {
   const [mode, setMode] = useState<Mode>("prompt");
@@ -51,7 +52,7 @@ export default function Home() {
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold text-slate-900">AI 채점기</h1>
           <p className="text-slate-600">
-            프롬프트와 지침을 AI로 채점받기
+            프롬프트·지침·이미지 프롬프트를 AI로 채점받기
           </p>
         </div>
 
@@ -154,43 +155,54 @@ export default function Home() {
           </h2>
 
           {/* 탭 토글 */}
-          <div className="flex gap-2 mb-6 p-1 bg-slate-100 rounded-lg w-fit mx-auto">
+          <div className="flex flex-wrap gap-2 mb-6 p-1 bg-slate-100 rounded-lg w-fit mx-auto">
             <button
               onClick={() => setMode("prompt")}
-              className={`px-6 py-2 rounded-md transition-all ${
+              className={`px-4 sm:px-6 py-2 rounded-md transition-all text-sm sm:text-base ${
                 mode === "prompt"
                   ? "bg-white shadow text-blue-600 font-semibold"
                   : "text-slate-600 hover:text-slate-800"
               }`}
             >
-              🎯 프롬프트 채점 (R-PCCO)
+              🎯 프롬프트 (R-PCCO)
             </button>
             <button
               onClick={() => setMode("instruction")}
-              className={`px-6 py-2 rounded-md transition-all ${
+              className={`px-4 sm:px-6 py-2 rounded-md transition-all text-sm sm:text-base ${
                 mode === "instruction"
                   ? "bg-white shadow text-blue-600 font-semibold"
                   : "text-slate-600 hover:text-slate-800"
               }`}
             >
-              📘 지침 채점 (I-MRKO)
+              📘 지침 (I-MRKO)
+            </button>
+            <button
+              onClick={() => setMode("image")}
+              className={`px-4 sm:px-6 py-2 rounded-md transition-all text-sm sm:text-base ${
+                mode === "image"
+                  ? "bg-white shadow text-purple-600 font-semibold"
+                  : "text-slate-600 hover:text-slate-800"
+              }`}
+            >
+              🎨 이미지 (SSDHR)
             </button>
           </div>
 
           {/* 모드별 채점기 */}
-          {mode === "prompt" ? (
-            <PromptScorer enableAutoSave={false} />
-          ) : (
-            <InstructionScorer enableAutoSave={false} />
-          )}
+          {mode === "prompt" && <PromptScorer enableAutoSave={false} />}
+          {mode === "instruction" && <InstructionScorer enableAutoSave={false} />}
+          {mode === "image" && <ImageScorer enableAutoSave={false} />}
         </div>
 
         {/* 푸터 */}
         <footer className="text-center text-sm text-slate-500 pt-8">
           <p>
-            {mode === "prompt"
-              ? "R-PCCO: Role(역할) · Purpose(목적) · Context(맥락) · Constraints(제약) · Output(출력)"
-              : "I-MRKO: Identity(정체성) · Mission(임무) · Rules(규칙) · Knowledge(지식) · Output(출력)"}
+            {mode === "prompt" &&
+              "R-PCCO: Role(역할) · Purpose(목적) · Context(맥락) · Constraints(제약) · Output(출력)"}
+            {mode === "instruction" &&
+              "I-MRKO: Identity(정체성) · Mission(임무) · Rules(규칙) · Knowledge(지식) · Output(출력)"}
+            {mode === "image" &&
+              "SSDHR: Scene(장면) · Style(스타일) · Detail(디테일) · Hard(강제 규칙) · Reality(물리 규칙)"}
           </p>
         </footer>
       </div>
