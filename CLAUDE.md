@@ -128,6 +128,37 @@ public/                    # 정적 파일
    - 자동 하이픈 처리
    - 모바일 전용 스타일 (`@media max-width: 640px`)
 
+### 3차 강의 (SSDHR) 추가 + 세션 확장 + CTA 개선 (2026-05-04)
+
+1. **3차 강의 랜딩 추가**
+   - `src/data/content.ts`에 `course-3` (이미지 프롬프트 설계 가이드, 90분, 9단 구조) 추가
+   - `frameworks[]`에 SSDHR 카드 추가 (장면·스타일·디테일·강제·물리)
+   - `CourseDetail`의 차수 제목을 `courses` 인덱스 기반으로 일반화 (4차 이상도 자동 대응)
+   - 커밋: `3091c18`
+
+2. **SSDHR 채점 시스템 구축**
+   - `docs/SSDHR_채점_루브릭.md` 작성 (5요소 × 20점 + 가점 5종 + 감점 7종)
+   - 가점 N/A 처리: JSON 자산화·레퍼런스 분리는 케이스 미해당 시 `points: null`
+   - 신규: `src/lib/imageScoringPrompt.ts`, `/api/score/image`, `ImageScorer`, `ImageScoreResult`
+   - `practice` 페이지에 3번째 탭 🎨 이미지 (SSDHR) 추가
+   - Zod 스키마: `ImageBonusSchema`의 `points: z.number().nullable()`로 N/A 표현
+
+3. **세션 모드 'image' 확장**
+   - DB: `sessions.mode` CHECK 제약을 `('prompt', 'instruction', 'image')`로 확장 (v3 마이그레이션, 사용자 수동 실행)
+   - `Session.mode`, `ImageLeaderboardEntry`, `LeaderboardEntry` 유니온 확장
+   - `sessionApi.ts`: `createSession`/`submitScore`/`getLeaderboard`에 image 분기
+   - `/host`: 모드 선택 UI 2칸 → 3칸 반응형
+   - `/play/[code]`: image 분기 → `ImageScorer` 마운트
+   - `/play/[code]/board`: `ELEMENT_LABELS_IMAGE` 추가 + 모드별 분기
+
+4. **리더보드 등록 CTA UX 개선**
+   - 문제: 결과 영역이 길어 그 아래 등록 카드를 사용자가 놓침
+   - 모든 Scorer에 `hideRetryButton` prop 추가 → 세션 모드에선 "다른 X 채점하기" 버튼 숨김
+   - 등록 카드를 `fixed inset-x-0 bottom-0 z-50`으로 sticky bottom 배치
+   - 제출 완료 카드 버튼: outline → solid blue (`<Link>` inherit color 흐림 해결)
+   - 하단 "리더보드 보기"는 `!hasSubmitted`일 때만 표시 (중복 제거)
+   - 커밋: `5f4a6ad`
+
 ## 코딩 규칙
 - TypeScript strict mode 사용
 - 함수형 컴포넌트 사용

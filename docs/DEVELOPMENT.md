@@ -804,6 +804,200 @@ npm run build
 
 ---
 
+### Phase 10: SSDHR 이미지 프롬프트 채점 모드 + 세션 확장 (2026-05-04)
+
+**목적:** 3차 강의 "이미지 프롬프트 설계 가이드"를 위한 SSDHR 이미지 프롬프트 채점 + 세션 모드 'image' 확장 + 리더보드 등록 CTA UX 개선
+
+**핵심 요구사항:**
+- 기존 R-PCCO/I-MRKO 기능 완전 보존 (하위 호환성)
+- SSDHR 5요소 채점 + 가점 N/A 처리 (단일/시리즈/레퍼런스 케이스별)
+- 세션 모드 `'image'` 지원 (DB CHECK 제약 v3 마이그레이션 포함)
+- 리더보드 등록 CTA 미발견 이슈 수정
+
+---
+
+#### Phase 0: 3차 강의 데이터 추가
+
+**작업 내용:**
+- `src/data/content.ts`에 `course-3` 추가
+  - 9단 구조(SSDHR 5단 + 메타 2단 + JSON·레퍼런스 2단), 90분 분량
+  - 6 Parts, 표 9개, 템플릿 4개, 결론, FAQ 6개
+- `frameworks[]`에 `SSDHR` (장면·스타일·디테일·강제·물리) 카드 추가
+- `CourseDetail`의 하드코딩된 차수 제목을 `courses` 인덱스 기반으로 일반화 (4차 강의 이상도 자동 대응)
+- `page.tsx`에 `<CourseDetail courseId="course-3" />` 추가
+
+**커밋:** `3091c18` feat: 3차 강의 (이미지 프롬프트 설계 가이드, SSDHR) 추가
+
+---
+
+#### Phase 1: SSDHR 루브릭 작성
+
+**작업 내용:**
+- `docs/SSDHR_채점_루브릭.md` 작성 (R-PCCO/I-MRKO 형식 따름)
+  - 5요소 × 20점 = 100점 만점
+  - 가점 5종 × +2점 = 최대 +10점 (cap 100)
+  - 감점 7종 = 최대 -15점
+
+**SSDHR 5요소:**
+- **S** (Scene): 주체·행동·환경·구도 4요소
+- **S** (Style): 매체·카메라·색감·앵커 4 레이어
+- **D** (Detail): 불완전함 설계 + AI 약점 5가지(텍스트·손·시선·접촉·그림자)
+- **H** (Hard): 반드시 포함·변형 금지·정확성 검증 3유형
+- **R** (Reality): 방향성·물리적 일관성·행동 흐름 3차원
+
+**가점 항목 (5종):**
+- 토큰 순서 (앞 25%에 핵심 주체) — 모든 케이스
+- 충돌 없음 (시각 언어 일관) — 모든 케이스
+- 양방향 정의 (Negative 명시) — 모든 케이스
+- JSON 자산화 — 시리즈 케이스만, 단일 이미지면 N/A (`points: null`)
+- 레퍼런스 분리 — 사진 첨부 케이스만, 없으면 N/A
+
+**감점 항목 (7종):**
+- 충돌 표현 -3 / 생존 IP 참조 -2 / 길이 초과 -2 / 모호한 강제 표현 -2 / 정적 동사 -1 / 모호한 스타일 단어 -1 / 부정형 과다 -2
+
+---
+
+#### Phase 2: TypeScript 타입 & Zod 스키마
+
+**작업 내용:**
+- `src/types/score.ts` 확장
+  - `ImageScoreResult` 인터페이스 추가 (5요소 + 가점 nullable)
+  - `AnyScoreResult` 유니온에 추가
+  - `isImageScore()` 타입 가드
+- `src/lib/scoreSchema.ts` 확장
+  - `ImageBonusSchema`: `points: z.number().nullable()` (N/A 처리용)
+  - `ImageScoreResultSchema` 신설
+
+**핵심 변경점:**
+- 기존 `BonusPenaltySchema`는 `points: z.number()` 필수
+- 이미지는 케이스별 N/A 가능 → 별도 스키마 필요
+
+---
+
+#### Phase 3: 채점 프롬프트 & API
+
+**작업 내용:**
+- `src/lib/imageScoringPrompt.ts` 생성
+  - 5요소 평가 가이드 + 가점 N/A 자동 감지 키워드
+  - JSON 케이스 감지: `JSON`, `style_lock`, `character_lock` 등
+  - 레퍼런스 케이스 감지: `Image A`, `--cref`, `--sref`, `레퍼런스` 등
+  - 두 케이스 모두 미해당 시 단일 이미지로 간주
+- `src/app/api/score/image/route.ts` 생성
+  - MIN: 30자, MAX: 1500자
+  - Claude Sonnet 4.6 모델 사용
+  - 가점 합산 시 `null` 제외 (`b.points ?? 0`), 합 +10점 cap
+  - 감점 합 -15점 cap
+  - `total_score = elements_sum + bonuses_sum - penalties_sum` (0~100 clamp)
+
+---
+
+#### Phase 4: UI 컴포넌트
+
+**작업 내용:**
+- `src/components/ImageScorer.tsx` 생성
+  - `PromptScorer.tsx` 패턴 따름
+  - STORAGE_KEY: `"ssdhr-image-prompt-draft"`
+  - placeholder에 9단 구조 예시 포함
+  - `hideRetryButton` prop 지원
+- `src/components/ImageScoreResult.tsx` 생성
+  - SSDHR 5요소 아이콘: 🎬 Scene / 🎨 Style / 🔍 Detail / 🔒 Hard / ⚖️ Reality
+  - 가점을 두 섹션으로 분리:
+    - **✨ 가점 (적용)** — `points !== null`인 항목
+    - **➖ 평가 대상 아님 (N/A)** — `points === null`인 항목
+  - 보라색 프로그레스 바 (R-PCCO 파랑·I-MRKO 파랑과 차별화)
+
+---
+
+#### Phase 5: practice 페이지 탭 추가
+
+**작업 내용:**
+- `src/app/practice/page.tsx` 수정
+  - `Mode` 타입 확장: `"prompt" | "instruction" | "image"`
+  - 3번째 탭 🎨 이미지 (SSDHR) 추가, 보라색 강조
+  - 모바일 대응: `flex-wrap`으로 줄바꿈 허용
+  - 푸터에 모드별 5요소 풀네임 표시
+
+---
+
+#### Phase 6: 세션 모드 'image' 확장
+
+**작업 내용:**
+
+**6-1. DB 스키마 (v3 마이그레이션):**
+```sql
+ALTER TABLE sessions DROP CONSTRAINT IF EXISTS sessions_mode_check;
+ALTER TABLE sessions
+  ADD CONSTRAINT sessions_mode_check
+  CHECK (mode IN ('prompt', 'instruction', 'image'));
+```
+- `submissions.elements_json`은 JSONB라 별도 마이그레이션 불필요
+- ⚠️ 사용자가 Supabase Dashboard에서 직접 실행해야 함 (anon key는 DDL 권한 없음)
+
+**6-2. 타입 확장:**
+- `src/types/session.ts`
+  - `Session.mode`에 `"image"` 추가
+  - `ImageLeaderboardEntry` 신설 (scene/style/detail/hard/reality)
+  - `LeaderboardEntry` 유니온 확장
+
+**6-3. sessionApi 확장:**
+- `createSession()` mode 파라미터 타입 확장
+- `submitScore()`에 image 분기 추가 (SSDHR 5요소 매핑)
+- `getLeaderboard()` mode 파라미터 + image 분기
+
+**6-4. UI 분기:**
+- `/host`: 모드 선택 UI 2칸 → 3칸 반응형 (모바일 세로 / 데스크톱 가로). 보라색으로 이미지 옵션 강조
+- `/play/[code]`: image 분기 → `ImageScorer` 마운트, 헤더 Badge에 🎨 표시
+- `/play/[code]/board`: `ELEMENT_LABELS_IMAGE` 추가, 라벨·요소값·Badge·푸터 모두 image 분기
+
+---
+
+#### Phase 7: 리더보드 등록 CTA UX 개선
+
+**문제:**
+- 채점 후 결과 영역이 매우 길어서 (5요소 점수표 + 강점 + 개선점 + 개선예시) 그 아래의 "리더보드에 등록하기" 카드를 사용자가 놓치는 사례 다수 보고
+- 결과 영역 끝의 "다른 X 채점하기" 버튼이 "끝났다는 신호"로 작용해 다음 액션을 가림
+- 모바일에서 더 심함
+
+**해결:**
+- 모든 Scorer 컴포넌트에 `hideRetryButton` prop 추가 (`PromptScorer`/`InstructionScorer`/`ImageScorer`)
+  - `/play/[code]/page.tsx`에서 `hideRetryButton` 전달 → 세션 모드에선 retry 버튼 숨김
+  - 단독 채점 모드(`/practice`)는 그대로 유지
+- 리더보드 등록 카드를 **sticky bottom**으로 (`fixed inset-x-0 bottom-0 z-50`)
+  - 모바일·데스크톱 모두 시야에 항상 노출
+  - 초록색 강조 (`border-green-400 bg-green-50 shadow-2xl`) + 큰 버튼 + 화살표
+  - 콤팩트 레이아웃 (점수·등급 + CTA 한 줄)
+  - 등록 완료 시 자동으로 사라짐
+- `pointer-events-none` 컨테이너 + `pointer-events-auto` 카드 → sticky 카드 외 영역 클릭 가능
+- 본문이 sticky에 가려지지 않도록 `pb-32 sm:pb-4` 패딩 추가
+
+**중복 버튼 + 텍스트 가독성 fix:**
+- `hasSubmitted=true` 시 "리더보드 보기" 버튼이 두 곳 표시되던 문제
+  - 제출 완료 카드 안 + 하단 링크 영역
+- 제출 완료 카드 버튼: outline → solid blue (`bg-blue-600 text-white`)로 변경
+  - `<Link>` 안 `<Button variant="outline">`이 a 태그 inherit color로 텍스트가 흐려지던 현상 해결
+- 하단 링크 영역의 "리더보드 보기"는 `!hasSubmitted`일 때만 표시 (제출 후 카드 버튼과 중복 제거)
+
+---
+
+#### Phase 8: 빌드 & 배포
+
+**검증:**
+- TypeScript typecheck 통과
+- `npm run build` 통과 (10개 라우트, `/api/score/image` 추가)
+- Lint: 신규 에러 0건 (기존 코드 스타일 경고만)
+
+**Git 이력:**
+- `3091c18` feat: 3차 강의 (이미지 프롬프트 설계 가이드, SSDHR) 추가
+- `5f4a6ad` feat: SSDHR 이미지 프롬프트 채점 앱 + 세션 모드 확장 + 리더보드 CTA 개선
+
+**Railway:**
+- 자동 배포 완료
+- DB 마이그레이션 v3는 사용자가 Supabase Dashboard에서 수동 실행
+
+**완료일:** 2026-05-04
+
+---
+
 ## 🔮 향후 개선 사항
 
 ### 1. Structured Outputs 적용
@@ -882,11 +1076,13 @@ npm run build
 ---
 
 **초기 개발:** 2026-04-22 (R-PCCO 프롬프트 채점)
-**확장 개발:** 2026-04-23 (I-MRKO 지침 채점 추가)
-**개발자:** Claude Sonnet 4.5 (co-authored)
+**확장 개발 1차:** 2026-04-23 (I-MRKO 지침 채점 추가)
+**확장 개발 2차:** 2026-05-04 (SSDHR 이미지 프롬프트 채점 + 세션 image 모드 + 리더보드 CTA 개선)
+**개발자:** Claude Sonnet 4.5 / Claude Opus 4.7 (co-authored)
 **강의:**
 - 1차: "AI의 프롬프트란?" → R-PCCO 모드
 - 2차: "AI의 지침이란?" → I-MRKO 모드
+- 3차: "이미지 프롬프트 설계 가이드" → SSDHR 모드
 
 🚀 **Live:** https://pcco-scorer-production.up.railway.app/
 
