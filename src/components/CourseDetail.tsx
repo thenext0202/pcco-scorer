@@ -13,6 +13,7 @@ export default function CourseDetail({ courseId }: CourseDetailProps) {
   const [isOpen, setIsOpen] = useState(false);
   const course = courses.find((c) => c.id === courseId);
   const detail = courseDetails.find((d) => d.id === courseId) as any;
+  const courseIndex = courses.findIndex((c) => c.id === courseId);
 
   if (!course || !detail) return null;
 
@@ -41,7 +42,7 @@ export default function CourseDetail({ courseId }: CourseDetailProps) {
                 </span>
               </div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 gradient-text break-words">
-                {courseId === "course-1" ? "1차 강의 복습하기" : "2차 강의 복습하기"}
+                {`${courseIndex + 1}차 강의 복습하기`}
               </h2>
               <p className="text-sm sm:text-base text-text-secondary break-words">{course.title} - {course.subtitle}</p>
             </div>
