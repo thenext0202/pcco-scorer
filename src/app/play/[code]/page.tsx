@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import PromptScorer from "@/components/PromptScorer";
 import InstructionScorer from "@/components/InstructionScorer";
 import ImageScorer from "@/components/ImageScorer";
+import VibeScorer from "@/components/VibeScorer";
 import { getSessionByCode, submitScore } from "@/lib/sessionApi";
 import type { Session } from "@/types/session";
 import type { AnyScoreResult } from "@/types/score";
@@ -199,6 +200,8 @@ export default function PlayPage() {
                 ? "📘 지침 채점"
                 : session.mode === "image"
                 ? "🎨 이미지 프롬프트 채점"
+                : session.mode === "vibe"
+                ? "⚡ 바이브 코딩 채점"
                 : "🎯 프롬프트 채점"}
             </Badge>
             <span>•</span>
@@ -219,6 +222,14 @@ export default function PlayPage() {
         )}
         {session.mode === "image" && (
           <ImageScorer
+            onSubmit={handleScoreComplete}
+            submitButtonText="채점하기"
+            enableAutoSave={false}
+            hideRetryButton
+          />
+        )}
+        {session.mode === "vibe" && (
+          <VibeScorer
             onSubmit={handleScoreComplete}
             submitButtonText="채점하기"
             enableAutoSave={false}

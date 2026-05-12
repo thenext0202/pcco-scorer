@@ -13,9 +13,9 @@ import { createSession } from "@/lib/sessionApi";
 export default function HostPage() {
   const [title, setTitle] = useState("");
   const [hostName, setHostName] = useState("");
-  const [mode, setMode] = useState<"prompt" | "instruction" | "image">(
-    "prompt"
-  );
+  const [mode, setMode] = useState<
+    "prompt" | "instruction" | "image" | "vibe"
+  >("prompt");
   const [isCreating, setIsCreating] = useState(false);
   const [sessionCode, setSessionCode] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -183,7 +183,7 @@ export default function HostPage() {
               <label className="text-sm font-medium text-slate-700">
                 채점 모드 <span className="text-rose-500">*</span>
               </label>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
                 <button
                   type="button"
                   onClick={() => setMode("prompt")}
@@ -224,6 +224,20 @@ export default function HostPage() {
                   <div className="font-semibold">🎨 이미지 프롬프트</div>
                   <div className="text-xs text-slate-500 mt-1">
                     3차 강의 · SSDHR
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMode("vibe")}
+                  className={`p-4 border-2 rounded-lg text-left transition-all ${
+                    mode === "vibe"
+                      ? "border-indigo-500 bg-indigo-50"
+                      : "border-slate-200 hover:border-slate-300"
+                  }`}
+                >
+                  <div className="font-semibold">⚡ 바이브 코딩</div>
+                  <div className="text-xs text-slate-500 mt-1">
+                    4차 강의 · R-PCCO 코딩판
                   </div>
                 </button>
               </div>

@@ -95,3 +95,23 @@ COMMENT ON COLUMN sessions.mode IS
 
 -- submissions.elements_json은 JSONB라서 image 모드의 새 키
 -- (scene/style/detail/hard/reality)도 자동 호환됨. 별도 마이그레이션 불필요.
+
+-- =========================================
+-- v4 확장: 바이브 코딩 채점 모드 추가 (4차 강의 — R-PCCO 코딩 응용)
+-- =========================================
+
+-- mode 컬럼의 CHECK 제약을 'vibe' 포함하도록 재정의
+ALTER TABLE sessions
+  DROP CONSTRAINT IF EXISTS sessions_mode_check;
+
+ALTER TABLE sessions
+  ADD CONSTRAINT sessions_mode_check
+  CHECK (mode IN ('prompt', 'instruction', 'image', 'vibe'));
+
+-- 코멘트 갱신
+COMMENT ON COLUMN sessions.mode IS
+  'prompt = R-PCCO (1차), instruction = I-MRKO (2차), image = SSDHR (3차), vibe = 바이브 코딩 R-PCCO 코딩 응용 (4차)';
+
+-- 바이브 코딩 모드는 elements_json 키가 prompt 모드와 동일하므로
+-- (role/purpose/context/constraints/output) 추가 마이그레이션 불필요.
+-- 모드 구분은 sessions.mode 컬럼으로만 함.

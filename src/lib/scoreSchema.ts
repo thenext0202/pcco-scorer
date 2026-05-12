@@ -86,3 +86,24 @@ export const ImageScoreResultSchema = z.object({
 });
 
 export type ImageScoreResultValidated = z.infer<typeof ImageScoreResultSchema>;
+
+// 바이브 코딩 5요소 채점 스키마 (4차 강의 — R-PCCO 코딩 응용)
+// elements 키는 R-PCCO와 동일, bonus 항목은 4개 고정 (해당 없으면 points: 0)
+export const VibeScoreResultSchema = z.object({
+  total_score: z.number().int().min(0).max(100),
+  grade: z.enum(["S", "A", "B", "C", "D", "F"]),
+  elements: z.object({
+    role: ScoreElementSchema,
+    purpose: ScoreElementSchema,
+    context: ScoreElementSchema,
+    constraints: ScoreElementSchema,
+    output: ScoreElementSchema,
+  }),
+  bonuses: z.array(BonusPenaltySchema),
+  penalties: z.array(BonusPenaltySchema),
+  strengths: z.array(z.string()),
+  improvements: z.array(z.string()),
+  improved_example: z.string(),
+});
+
+export type VibeScoreResultValidated = z.infer<typeof VibeScoreResultSchema>;

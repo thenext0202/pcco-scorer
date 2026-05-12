@@ -8,8 +8,9 @@ import { Input } from "@/components/ui/input";
 import PromptScorer from "@/components/PromptScorer";
 import InstructionScorer from "@/components/InstructionScorer";
 import ImageScorer from "@/components/ImageScorer";
+import VibeScorer from "@/components/VibeScorer";
 
-type Mode = "prompt" | "instruction" | "image";
+type Mode = "prompt" | "instruction" | "image" | "vibe";
 
 export default function Home() {
   const [mode, setMode] = useState<Mode>("prompt");
@@ -52,7 +53,7 @@ export default function Home() {
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold text-slate-900">AI 채점기</h1>
           <p className="text-slate-600">
-            프롬프트·지침·이미지 프롬프트를 AI로 채점받기
+            프롬프트·지침·이미지·바이브 코딩을 AI로 채점받기
           </p>
         </div>
 
@@ -186,12 +187,23 @@ export default function Home() {
             >
               🎨 이미지 (SSDHR)
             </button>
+            <button
+              onClick={() => setMode("vibe")}
+              className={`px-4 sm:px-6 py-2 rounded-md transition-all text-sm sm:text-base ${
+                mode === "vibe"
+                  ? "bg-white shadow text-indigo-600 font-semibold"
+                  : "text-slate-600 hover:text-slate-800"
+              }`}
+            >
+              ⚡ 바이브 코딩
+            </button>
           </div>
 
           {/* 모드별 채점기 */}
           {mode === "prompt" && <PromptScorer enableAutoSave={false} />}
           {mode === "instruction" && <InstructionScorer enableAutoSave={false} />}
           {mode === "image" && <ImageScorer enableAutoSave={false} />}
+          {mode === "vibe" && <VibeScorer enableAutoSave={false} />}
         </div>
 
         {/* 푸터 */}
@@ -203,6 +215,8 @@ export default function Home() {
               "I-MRKO: Identity(정체성) · Mission(임무) · Rules(규칙) · Knowledge(지식) · Output(출력)"}
             {mode === "image" &&
               "SSDHR: Scene(장면) · Style(스타일) · Detail(디테일) · Hard(강제 규칙) · Reality(물리 규칙)"}
+            {mode === "vibe" &&
+              "바이브 코딩 (R-PCCO 코딩 응용): 역할 · 목적 · 맥락(디바이스!) · 제약 · 출력 — Artifacts 즉시 실행"}
           </p>
         </footer>
       </div>

@@ -3,8 +3,8 @@ export interface Session {
   code: string;
   title: string;
   host_name: string | null;
-  // prompt = R-PCCO (1차), instruction = I-MRKO (2차), image = SSDHR (3차)
-  mode: "prompt" | "instruction" | "image";
+  // prompt = R-PCCO (1차), instruction = I-MRKO (2차), image = SSDHR (3차), vibe = 바이브 코딩 (4차)
+  mode: "prompt" | "instruction" | "image" | "vibe";
   created_at: string;
   expires_at: string;
 }
@@ -80,8 +80,28 @@ export interface ImageLeaderboardEntry {
   created_at: string;
 }
 
+// 바이브 코딩 5요소 채점 리더보드 엔트리 (4차 강의 — R-PCCO 코딩 응용)
+// elements 키는 prompt와 동일하지만 mode 필드로 구분
+export interface VibeLeaderboardEntry {
+  rank: number;
+  id: string;
+  nickname: string;
+  total_score: number;
+  grade: "S" | "A" | "B" | "C" | "D" | "F";
+  mode: "vibe";
+  elements: {
+    role: number;
+    purpose: number;
+    context: number;
+    constraints: number;
+    output: number;
+  };
+  created_at: string;
+}
+
 // 통합 타입
 export type LeaderboardEntry =
   | PromptLeaderboardEntry
   | InstructionLeaderboardEntry
-  | ImageLeaderboardEntry;
+  | ImageLeaderboardEntry
+  | VibeLeaderboardEntry;

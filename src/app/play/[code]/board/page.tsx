@@ -41,6 +41,9 @@ const ELEMENT_LABELS_IMAGE = [
   { key: "reality" as const, label: "R", icon: "⚖️" },
 ] as const;
 
+// 바이브 코딩은 R-PCCO와 elements 키 동일, 라벨도 같음 (라벨 재사용)
+const ELEMENT_LABELS_VIBE = ELEMENT_LABELS_PROMPT;
+
 export default function BoardPage() {
   const params = useParams();
   const code = params?.code as string;
@@ -159,6 +162,8 @@ export default function BoardPage() {
                   ? "📘 지침 채점"
                   : session.mode === "image"
                   ? "🎨 이미지 프롬프트 채점"
+                  : session.mode === "vibe"
+                  ? "⚡ 바이브 코딩 채점"
                   : "🎯 프롬프트 채점"}
               </Badge>
             </div>
@@ -205,6 +210,8 @@ export default function BoardPage() {
                     ? ELEMENT_LABELS_INSTRUCTION
                     : session.mode === "image"
                     ? ELEMENT_LABELS_IMAGE
+                    : session.mode === "vibe"
+                    ? ELEMENT_LABELS_VIBE
                     : ELEMENT_LABELS_PROMPT;
 
                 // 최대 점수 계산
@@ -226,6 +233,7 @@ export default function BoardPage() {
                     entry.elements.reality,
                   ];
                 } else {
+                  // prompt 또는 vibe — elements 키 구조가 같음
                   elementValues = [
                     entry.elements.role,
                     entry.elements.purpose,
@@ -321,6 +329,8 @@ export default function BoardPage() {
               ? "I-MRKO: Identity · Mission · Rules · Knowledge · Output"
               : session.mode === "image"
               ? "SSDHR: Scene · Style · Detail · Hard · Reality"
+              : session.mode === "vibe"
+              ? "바이브 코딩: 역할 · 목적 · 맥락(디바이스!) · 제약 · 출력 (R-PCCO 코딩 응용)"
               : "R-PCCO: Role · Purpose · Context · Constraints · Output"}
           </p>
         </footer>
