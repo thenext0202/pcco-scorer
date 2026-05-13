@@ -159,6 +159,36 @@ public/                    # 정적 파일
    - 하단 "리더보드 보기"는 `!hasSubmitted`일 때만 표시 (중복 제거)
    - 커밋: `5f4a6ad`
 
+### 4차 강의 (바이브 코딩) 추가 + 세션 vibe 모드 (2026-05-12)
+
+1. **4차 강의 랜딩 추가**
+   - `src/data/content.ts`에 `course-4` (바이브 코딩이란?, 125분, R-PCCO 코딩 응용) 추가
+   - `frameworks[]`에 '바이브 코딩 5요소' 카드 추가 (R-PCCO 코딩판)
+   - 4차는 R-PCCO를 코딩 맥락으로 변형 — 같은 5요소지만 평가 기준이 다름
+   - 데이터 기반 자동 렌더링 (Hero·CourseDetail·FrameworkCards 모두 코드 수정 없이 대응)
+   - 커밋: `d74802e`
+
+2. **바이브 코딩 채점 시스템 구축**
+   - `docs/바이브코딩_채점_루브릭.md` 작성 (5요소 × 20점 + 가점 4종 + 감점 5종)
+   - 신규: `src/lib/vibeScoringPrompt.ts`, `/api/score/vibe`, `VibeScorer`, `VibeScoreResult`, `VibeScoreResultSchema`
+   - `practice` 페이지에 4번째 탭 ⚡ 바이브 코딩 추가
+   - **★ 핵심 설계**: `improved_example`이 일반 피드백이 아니라 **claude.ai에 그대로 붙여넣으면 Artifacts에 즉시 작동하는 완성형 프롬프트**
+     - 시스템 프롬프트에서 6가지 필수 항목 강제 (역할/목적/Who+Where+When/제약/인터랙션/단일 파일 출력 종결)
+     - 결과 화면에 인디고 강조 카드 + 큰 복사 버튼 + 'claude.ai 열기' 외부 링크
+   - **Where(디바이스) 캡 규칙**: 맥락에서 Where 미명시 시 최대 10점 — 코딩에서 디바이스 누락은 결과를 산으로 보냄
+   - 가점 4종: `device_specified` (+3), `tech_stack_clear` (+2), `interaction_explicit` (+2), `single_file_output` (+2)
+   - 커밋: `8c7c210`
+
+3. **세션 모드 'vibe' 확장**
+   - DB: `sessions.mode` CHECK 제약을 `('prompt', 'instruction', 'image', 'vibe')`로 확장 (v4 마이그레이션, 사용자 수동 실행)
+   - `Session.mode`, `VibeLeaderboardEntry`, `LeaderboardEntry` 유니온 확장
+   - `sessionApi.ts`: `createSession`/`submitScore`/`getLeaderboard`에 vibe 분기
+     - elements 키는 prompt와 동일(role/purpose/context/constraints/output)이라 마이그레이션 없이 호환
+   - `/host`: 모드 선택 UI 3칸 → 4칸 반응형 (`sm:grid-cols-2 lg:grid-cols-4`)
+   - `/play/[code]`: vibe 분기 → `VibeScorer` 마운트, Badge "⚡ 바이브 코딩 채점"
+   - `/play/[code]/board`: `ELEMENT_LABELS_VIBE = ELEMENT_LABELS_PROMPT` 재사용
+   - 커밋: `8c7c210`
+
 ## 코딩 규칙
 - TypeScript strict mode 사용
 - 함수형 컴포넌트 사용
@@ -302,9 +332,26 @@ Conventional Commits 준수:
 ## 프로젝트 방향성
 
 **⚠️ 중요**: 이 프로젝트는 **지속적으로 강의가 추가되는 플랫폼**입니다.
-- 현재: R-PCCO, I-MRKO 2개 강의
-- 앞으로 새로운 강의가 계속 추가될 예정
+- 현재: R-PCCO(1차), I-MRKO(2차), SSDHR(3차), 바이브 코딩(4차) 4개 강의
+- 앞으로 새로운 강의가 계속 추가될 예정 (5주차 이후 바이브 코딩 시리즈 본격 진입)
 - 확장 가능한 구조로 설계 필요
+
+### 채점 모드 추가 시 영향 받는 파일 (체크리스트)
+새 채점 모드(예: 5차 강의 전용) 추가 시 다음을 모두 손대야 함:
+1. `src/lib/{mode}ScoringPrompt.ts` 신규 작성 (시스템 프롬프트)
+2. `src/lib/scoreSchema.ts` — `{Mode}ScoreResultSchema` Zod 추가
+3. `src/types/score.ts` — `{Mode}ScoreResult` 타입 + `AnyScoreResult` union 확장
+4. `src/types/session.ts` — `Session.mode` union 확장 + `{Mode}LeaderboardEntry` 추가
+5. `src/app/api/score/{mode}/route.ts` — image/vibe route 패턴 복사 후 시스템 프롬프트만 교체
+6. `src/components/{Mode}Scorer.tsx` + `{Mode}ScoreResult.tsx` 신규 작성
+7. `src/lib/sessionApi.ts` — `createSession`/`submitScore`/`getLeaderboard`에 mode 분기 추가
+8. `src/app/practice/page.tsx` — 탭 추가 + `Mode` union 확장
+9. `src/app/host/page.tsx` — 모드 선택 카드 추가 + 그리드 칸 수 조정
+10. `src/app/play/[code]/page.tsx` — Badge 라벨 + Scorer 마운트 분기
+11. `src/app/play/[code]/board/page.tsx` — `ELEMENT_LABELS_{MODE}` 추가
+12. `docs/supabase_schema.sql` — `sessions_mode_check` 재정의 마이그레이션 추가
+13. `docs/{프레임워크}_채점_루브릭.md` 신규 작성
+14. `CLAUDE.md` — 통합 히스토리 + Course N + 채점 시스템 섹션 갱신
 
 ### 새 강의 추가 가이드
 
@@ -354,8 +401,10 @@ Conventional Commits 준수:
 
 2. **practice 페이지에 탭 추가** (`src/app/practice/page.tsx`)
    ```typescript
-   type Mode = "prompt" | "instruction" | "newframework";
+   // 현재 4개 모드. 새 모드 추가 시 union 확장
+   type Mode = "prompt" | "instruction" | "image" | "vibe" | "newframework";
    ```
+   ※ `Session.mode`, `sessionApi.ts`의 함수 시그니처, host 페이지 useState 타입도 같이 확장 필요 — 위 "채점 모드 추가 시 영향 받는 파일" 14단계 체크리스트 참고
 
 3. **API 엔드포인트 확장** (필요시)
    - `src/app/api/score/route.ts` 수정
@@ -380,6 +429,10 @@ Conventional Commits 준수:
 - [ ] 세션 비밀번호 변경 기능 (관리자 패널)
 - [ ] **강의 관리 시스템** (강의 추가/수정/삭제 UI)
 - [ ] **강의별 실습 앱 자동 생성** (새 강의 추가 시 채점 모드 자동 매핑)
+- [x] ~~3차 강의 (SSDHR 이미지 프롬프트) 추가~~ ✅ 완료 (2026-05-04)
+- [x] ~~4차 강의 (바이브 코딩) 랜딩 + 채점 + 세션 모드~~ ✅ 완료 (2026-05-12)
+- [ ] **바이브 코딩 시리즈 2~6주차 추가** (Claude Code 설치, CLAUDE.md/README.md 작성 실습, 본인 프로젝트, 배포 등)
+- [ ] **바이브 코딩 채점기 v2** — improved_example을 Claude API로 실제 실행해서 작동 여부 자체 검증
 
 ## 디자인 시스템
 ### 랜딩 페이지 (강의 소개)
@@ -440,17 +493,33 @@ className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
   - Part 1: 왜 지침인가
   - Part 2-6: I-MRKO 5요소 + I/O Contract 상세 설명
   - Before/After 예시, 표, 템플릿, 비교
+- **Course 3 (SSDHR)**:
+  - Part 1: 한 줄 원리 (제어 시스템)
+  - Part 2-5: SSDHR 5단 + 메타 규칙 + JSON 자산화 + 레퍼런스 통제
+  - Before/After 예시, JSON 템플릿, 9단 구조표
+- **Course 4 (바이브 코딩)**:
+  - Part 1: 왜 바이브 코딩인가 (코딩 아니라 묘사)
+  - Part 2: 바이브 코딩 5요소 (R-PCCO 코딩 응용)
+  - Part 3: AI한테 한 장, 사람한테 한 장 (CLAUDE.md + README.md)
+  - Before/After 예시 (운세 앱), 카드형 5요소 표, 3대 습관
 
-### 3. 채점 시스템
+### 3. 채점 시스템 (4종)
 - **프롬프트 채점 (R-PCCO)**: Role, Purpose, Context, Constraints, Output
 - **지침 채점 (I-MRKO)**: Identity, Mission, Rules, Knowledge, Output
-- Claude Sonnet 4.6 API 실시간 채점
-- 10점 만점 평가 + 피드백 제공
+- **이미지 프롬프트 채점 (SSDHR)**: Scene, Style, Detail, Hard, Reality
+- **바이브 코딩 채점 (R-PCCO 코딩 응용)**: 역할·목적·맥락(디바이스!)·제약·출력
+  - **★ improved_example이 Artifacts 즉시 실행 가능한 완성형 프롬프트**
+  - Where(디바이스) 미명시 시 맥락 점수 10점 캡
+  - 가점: 디바이스 명시 / 기술 스택 / 인터랙션 / 단일 파일 출력
+- Claude Sonnet 4.6 (`claude-sonnet-4-6`) API 실시간 채점
+- 100점 만점 + S~F 등급 + 강점·개선점·개선 예시 피드백
 
 ### 4. 세션 기능
-- 4자리 코드로 세션 참가
+- 4자리 코드로 세션 참가 (혼동 문자 I, O, 1, 0 제외)
 - 실시간 리더보드 (Supabase Realtime)
-- 자동 저장 기능
+- 자동 저장 기능 (localStorage)
+- 모드별 분기: prompt / instruction / image / vibe
+- 24시간 후 자동 만료
 
 ## 환경 변수
 `.env.local` 파일에 다음 변수 설정 필요:
