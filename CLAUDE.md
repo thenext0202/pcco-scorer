@@ -165,7 +165,8 @@ public/                    # 정적 파일
    - `src/data/content.ts`에 `course-4` (바이브 코딩이란?, 125분, R-PCCO 코딩 응용) 추가
    - `frameworks[]`에 '바이브 코딩 5요소' 카드 추가 (R-PCCO 코딩판)
    - 4차는 R-PCCO를 코딩 맥락으로 변형 — 같은 5요소지만 평가 기준이 다름
-   - 데이터 기반 자동 렌더링 (Hero·CourseDetail·FrameworkCards 모두 코드 수정 없이 대응)
+   - Hero·FrameworkCards는 `content.ts` 데이터만 추가하면 자동 렌더링됨
+   - ⚠️ CourseDetail은 자동 아님 — `src/app/page.tsx`에 `<CourseDetail courseId="course-N" />` 수동 마운트 필요
    - 커밋: `d74802e`
 
 2. **바이브 코딩 채점 시스템 구축**
@@ -188,6 +189,22 @@ public/                    # 정적 파일
    - `/play/[code]`: vibe 분기 → `VibeScorer` 마운트, Badge "⚡ 바이브 코딩 채점"
    - `/play/[code]/board`: `ELEMENT_LABELS_VIBE = ELEMENT_LABELS_PROMPT` 재사용
    - 커밋: `8c7c210`
+
+### 5차 강의 (AI 자동화 이해) 추가 — 랜딩만 (2026-05-21)
+
+1. **5차 강의 랜딩 추가**
+   - `src/data/content.ts`에 `course-5` (AI 자동화 이해, 120분, BATLR 5단계) 추가
+   - `frameworks[]`에 BATLR 카드 추가 (Break·Asset·Tool·Link·Record — 쪼·에·도·연·기)
+   - 5차는 5요소가 아니라 **5단계 프로세스**(쪼개기→에셋화→도구→연결→기록) — 기존 R-PCCO·I-MRKO·SSDHR과 성격이 다름
+   - 핵심 한 문장: "AI가 못하는 게 아니라, 전달이 부족한 겁니다"
+   - 메인 비유: 요리 (재료=인풋, 도구=스펙, 완성품=아웃풋 — 3기둥)
+   - 채점 모드 없음 (랜딩만 추가)
+
+2. **CourseDetail 수동 마운트 함정 발견**
+   - 데이터(`content.ts`)만 추가했더니 복습 페이지가 안 보임
+   - 원인: `src/app/page.tsx`에서 `<CourseDetail courseId="..." />`를 명시 호출하는 구조
+   - 해결: `page.tsx`에 `<CourseDetail courseId="course-5" />` 한 줄 추가
+   - CLAUDE.md "새 강의 추가 가이드"에 ⚠️ 경고 추가 (이전 4차 히스토리의 "자동 렌더링" 문구는 잘못된 설명이었음)
 
 ## 코딩 규칙
 - TypeScript strict mode 사용
@@ -332,8 +349,8 @@ Conventional Commits 준수:
 ## 프로젝트 방향성
 
 **⚠️ 중요**: 이 프로젝트는 **지속적으로 강의가 추가되는 플랫폼**입니다.
-- 현재: R-PCCO(1차), I-MRKO(2차), SSDHR(3차), 바이브 코딩(4차) 4개 강의
-- 앞으로 새로운 강의가 계속 추가될 예정 (5주차 이후 바이브 코딩 시리즈 본격 진입)
+- 현재: R-PCCO(1차), I-MRKO(2차), SSDHR(3차), 바이브 코딩(4차), AI 자동화 이해(5차) 5개 강의
+- 앞으로 새로운 강의가 계속 추가될 예정
 - 확장 가능한 구조로 설계 필요
 
 ### 채점 모드 추가 시 영향 받는 파일 (체크리스트)
@@ -391,7 +408,20 @@ Conventional Commits 준수:
 }
 ```
 
-#### 2. 채점 모드 추가 (필요시)
+#### 2. ⚠️ CourseDetail 수동 마운트 (필수, 빠뜨리기 쉬움)
+
+`src/app/page.tsx`에 `<CourseDetail courseId="course-N" />`를 명시적으로 추가해야 함. **데이터만 넣으면 복습 페이지가 안 보임.**
+
+```tsx
+// src/app/page.tsx
+<CourseDetail courseId="course-4" />
+<div className="section-divider max-w-6xl mx-auto" />
+<CourseDetail courseId="course-5" />  // 새 강의 추가 시 이 줄을
+```
+
+> Hero·FrameworkCards·CourseSection은 `courses[]`·`frameworks[]` 배열을 자동 순회하지만, CourseDetail은 `courseId` prop으로 명시 호출하는 구조.
+
+#### 3. 채점 모드 추가 (필요시)
 
 새로운 프레임워크에 대한 채점이 필요한 경우:
 
@@ -410,11 +440,14 @@ Conventional Commits 준수:
    - `src/app/api/score/route.ts` 수정
    - 새로운 채점 로직 추가
 
-#### 3. 자동 렌더링 확인
+#### 4. 렌더링 동작 정리
 
-- Hero 섹션: `courses` 배열에 추가하면 커리큘럼 보기에 자동 표시
-- 강의 소개: CourseSection 컴포넌트가 자동으로 렌더링
-- 복습 섹션: CourseDetail 컴포넌트가 데이터 기반으로 자동 생성
+| 컴포넌트 | 동작 | 새 강의 추가 시 |
+|---------|------|----------------|
+| Hero | `courses[]` 배열 자동 순회 | 코드 수정 불필요 |
+| CourseSection | `courses[]` 배열 자동 순회 | 코드 수정 불필요 |
+| FrameworkCards | `frameworks[]` 배열 자동 순회 | 코드 수정 불필요 |
+| **CourseDetail** | **`courseId` prop으로 명시 호출** | **⚠️ `page.tsx`에 수동 마운트 필수** |
 
 ## 향후 개선 사항
 - [ ] 강의 복습 섹션 프린트 기능
@@ -431,6 +464,7 @@ Conventional Commits 준수:
 - [ ] **강의별 실습 앱 자동 생성** (새 강의 추가 시 채점 모드 자동 매핑)
 - [x] ~~3차 강의 (SSDHR 이미지 프롬프트) 추가~~ ✅ 완료 (2026-05-04)
 - [x] ~~4차 강의 (바이브 코딩) 랜딩 + 채점 + 세션 모드~~ ✅ 완료 (2026-05-12)
+- [x] ~~5차 강의 (AI 자동화 이해 / BATLR) 랜딩 추가~~ ✅ 완료 (2026-05-21, 랜딩만)
 - [ ] **바이브 코딩 시리즈 2~6주차 추가** (Claude Code 설치, CLAUDE.md/README.md 작성 실습, 본인 프로젝트, 배포 등)
 - [ ] **바이브 코딩 채점기 v2** — improved_example을 Claude API로 실제 실행해서 작동 여부 자체 검증
 
@@ -502,6 +536,12 @@ className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
   - Part 2: 바이브 코딩 5요소 (R-PCCO 코딩 응용)
   - Part 3: AI한테 한 장, 사람한테 한 장 (CLAUDE.md + README.md)
   - Before/After 예시 (운세 앱), 카드형 5요소 표, 3대 습관
+- **Course 5 (AI 자동화 이해)**:
+  - Part 1: 왜 자동화는 실패하는가 (한 줄 원리·3기둥·핵심 한 문장)
+  - Part 2: 자동화 5단계 BATLR — 쪼개기·에셋화·도구·연결·기록
+  - Part 3: 설계 데모 — 후킹 카드 1장 (4개 에셋 분해, 망하는 요청 vs 되는 요청)
+  - Before/After 예시 (후킹 영상), 3기둥 표, 5단계 체크카드, 3대 습관
+  - 채점 모드 없음 (랜딩만)
 
 ### 3. 채점 시스템 (4종)
 - **프롬프트 채점 (R-PCCO)**: Role, Purpose, Context, Constraints, Output
