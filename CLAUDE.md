@@ -206,6 +206,19 @@ public/                    # 정적 파일
    - 해결: `page.tsx`에 `<CourseDetail courseId="course-5" />` 한 줄 추가
    - CLAUDE.md "새 강의 추가 가이드"에 ⚠️ 경고 추가 (이전 4차 히스토리의 "자동 렌더링" 문구는 잘못된 설명이었음)
 
+### 6차 강의 (Claude Code 실전) 추가 — 랜딩만 (2026-06-04)
+
+1. **6차 강의 랜딩 추가**
+   - `src/data/content.ts`에 `course-6` (Claude Code 실전, 118분 +배포 보너스, 빌드 5단계) 추가
+   - `courses`·`frameworks`·`courseDetails`에 `course-6` 추가 + `heroContent.ctas`에 "6차 강의 보기"(`#course-6`) 버튼 추가
+   - 6차 프레임워크는 **빌드 5단계**(묘사·실행·분리·갖춤·공유) — claude.ai Artifacts와 달리 "내 컴퓨터에서 진짜 실행되는 도구"를 만드는 표준 흐름
+   - 핵심 한 문장: "Claude Code의 맥락엔 '내 컴퓨터'가 들어간다 — 묘사하면 진짜 도구가 된다"
+   - 권장 선수강: 1·2·4차 (프롬프트·지침·바이브 코딩)
+   - 채점 모드 없음 (랜딩만 추가)
+
+2. **CourseDetail 수동 마운트 (5차에서 발견한 함정 재적용)**
+   - `src/app/page.tsx`에 `<CourseDetail courseId="course-6" />` 한 줄 추가 — 데이터만 넣으면 복습 페이지가 안 보임
+
 ## 코딩 규칙
 - TypeScript strict mode 사용
 - 함수형 컴포넌트 사용

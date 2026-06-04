@@ -11,6 +11,7 @@ export const heroContent = {
     { text: "3차 강의 보기", href: "#course-3", variant: "secondary" },
     { text: "4차 강의 보기", href: "#course-4", variant: "secondary" },
     { text: "5차 강의 보기", href: "#course-5", variant: "secondary" },
+    { text: "6차 강의 보기", href: "#course-6", variant: "secondary" },
     { text: "실습 앱 사용하기", href: "https://pcco-scorer-production.up.railway.app", variant: "outline", external: true }
   ]
 };
@@ -293,6 +294,64 @@ export const courses = [
         quote: "1개 고치면 계획서부터 갱신 — 그러면 오류 10개가 1개로 줄어든다"
       }
     ]
+  },
+  {
+    id: "course-6",
+    title: "Claude Code 실전",
+    subtitle: "묘사하면 내 컴퓨터에서 도는 도구가 된다 — 만들고·쪼개고·배포까지",
+    duration: "118분 (+배포 보너스)",
+    level: "초급 (코딩 무경험 OK) ~ 중급",
+    framework: "빌드 5단계",
+    frameworkFull: "묘사·실행·분리·갖춤·공유 — 프로그램 만드는 표준 흐름",
+    heroQuote: "Claude Code의 맥락엔 '내 컴퓨터'가 들어간다 — 묘사하면 진짜 도구가 된다",
+    tagline: "코드를 짜지 말고, 내 컴퓨터에서 돌 프로그램을 묘사하라",
+    prerequisite: "(권장) 1·2·4차 — 프롬프트·지침·바이브 코딩",
+
+    promises: [
+      "claude.ai Artifacts와 달리, 내 컴퓨터에서 진짜 실행되고 내 파일을 다루는 프로그램을 만들 수 있게 된다",
+      "프로그램이 2단계 이상으로 커지면 '레이어로 쪼개 지침으로 넘기는' 설계가 손에 붙는다 (2차 I/O 계약의 코드판)",
+      "어떤 프로그램이든 그대로 시작할 '재사용 스캐폴드' 한 벌(CLAUDE.md·README·DEVLOG·specs…)을 들고 돌아간다"
+    ],
+
+    beforeAfter: {
+      title: "파일 이름 일괄 변경기 만들기",
+      before: {
+        label: "Before (모호)",
+        prompt: "파일 이름 바꿔주는 프로그램 만들어줘",
+        result: "터미널만 깜빡, 뭘 어떻게 써야 할지 모를 결과"
+      },
+      after: {
+        label: "After (빌드 5단계)",
+        prompt: "너는 작은 프로그램을 잘 만드는 개발자야. 폴더를 정하면 그 안 파일 이름을 규칙대로 제자리에서 바꾸고, 바꾸기 전 미리보기·되돌리기까지. Node.js로, 브라우저에서 버튼으로.",
+        result: "내 컴퓨터에서 진짜 도는 도구 + 레이어 구조 + git 백업까지"
+      }
+    },
+
+    curriculum: [
+      { section: "오프닝 + 복습", time: "8분", slides: "1~3" },
+      { section: "Part 1 — 왜 Claude Code인가", time: "12분", slides: "4~6" },
+      { section: "Part 2 — 만능 5단계 + 첫 버전", time: "15분", slides: "7~9" },
+      { section: "Part 3 — 로컬 서버 테스트", time: "12분", slides: "10~11" },
+      { section: "Part 4 — 미리보기 + 계획 모드", time: "15분", slides: "12~13" },
+      { section: "Part 5 — 디버깅", time: "12분", slides: "14" },
+      { section: "Part 6 — 레이어 / I-O 계약", time: "22분", slides: "15~20", highlight: true },
+      { section: "Part 7 — 재사용 스캐폴드", time: "14분", slides: "21~23", highlight: true },
+      { section: "Part 8~9 — git · 공유", time: "20분", slides: "24~25" },
+      { section: "실습 + 마무리", time: "18분", slides: "26~32" }
+    ],
+
+    killerInsights: [
+      {
+        title: "레이어 + I/O 계약 (코드판)",
+        description: "2단계 이상이면 단계로 쪼개 JSON으로 넘긴다 — 2차 지침 체인의 코드 버전",
+        quote: "한 단계는 한 책임 — 접점은 산문이 아니라 약속(계약)으로"
+      },
+      {
+        title: "재사용 스캐폴드",
+        description: "프로그램 = 코드 + 구조 파일들. 다음 프로그램도 이 한 장으로 시작한다",
+        quote: "초보가 무너지는 건 실력이 아니라 구조가 없어서다"
+      }
+    ]
   }
 ];
 
@@ -366,6 +425,18 @@ export const frameworks = [
       { code: "T", name: "도구", english: "Tool", question: "어떤 AI·API로?" },
       { code: "L", name: "연결", english: "Link", question: "레이어로 어떻게 쌓나?" },
       { code: "R", name: "기록", english: "Record", question: "계획서에 적었나?" }
+    ]
+  },
+  {
+    name: "빌드 5단계",
+    subtitle: "프로그램 만드는 표준 흐름 (묘·실·분·갖·공)",
+    course: "6차 강의",
+    elements: [
+      { code: "묘", name: "묘사", english: "Describe", question: "R-PCCO로 뭘 만들지?" },
+      { code: "실", name: "실행", english: "Run", question: "로컬 서버로 돌려봤나?" },
+      { code: "분", name: "분리", english: "Layer", question: "2단계 이상이면 레이어로?" },
+      { code: "갖", name: "갖춤", english: "Scaffold", question: "필수 파일(CLAUDE.md 등) 갖췄나?" },
+      { code: "공", name: "공유", english: "Share", question: "git·GitHub로 나눴나?" }
     ]
   }
 ];
@@ -1930,6 +2001,222 @@ export const courseDetails = [
       {
         q: "회사 비밀 정보 넣어도 되나요?",
         a: "절대 금지. 일반 버전은 학습 데이터로 쓰일 수 있음."
+      }
+    ]
+  },
+  {
+    id: "course-6",
+    heroMessage: "Claude Code의 맥락엔 '내 컴퓨터'가 들어간다 — 묘사하면 진짜 도구가 된다.",
+    promises: [
+      "claude.ai Artifacts와 달리, 내 컴퓨터에서 진짜 실행되고 내 파일을 다루는 프로그램을 만들 수 있게 된다",
+      "프로그램이 2단계 이상으로 커지면 '레이어로 쪼개 지침으로 넘기는' 설계가 손에 붙는다 — 2차 I/O 계약의 코드 버전",
+      "어떤 프로그램이든 그대로 시작할 '재사용 스캐폴드' 한 벌(CLAUDE.md·README·DEVLOG·specs…)을 들고 돌아간다"
+    ],
+    beforeAfterExample: {
+      title: "Before / After — '파일 이름 바꿔주는 프로그램 만들어줘'",
+      subtitle: "막연한 한 줄 vs 빌드 5단계로 묘사한 요청",
+      before: {
+        label: "❌ 막연한 요청",
+        prompt: "파일 이름 바꿔주는 프로그램 만들어줘",
+        result: "터미널만 깜빡 → 뭘 어떻게 써야 할지 모를 결과, 다시 설명해야 함"
+      },
+      after: {
+        label: "✅ 빌드 5단계로 묘사",
+        prompt: "너는 작은 프로그램을 잘 만드는 개발자야. 폴더를 정하면 그 안 파일 이름을 규칙대로 제자리에서 바꾸고, 바꾸기 전 미리보기·되돌리기까지. Node.js로, 브라우저에서 버튼으로.",
+        result: "내 컴퓨터에서 진짜 도는 도구 — 레이어로 깔끔히 나뉘고, git으로 백업까지"
+      }
+    },
+    parts: [
+      {
+        title: "Part 1. 왜 Claude Code인가",
+        content: [
+          {
+            subtitle: "문제 제기 — 4차에서 만든 운세 앱, 지금 어디 있죠?",
+            text: "claude.ai Artifacts로 만든 앱은 브라우저 안에만 있었다. 닫으면 사라지고, 내 컴퓨터 파일은 못 만진다. '내 다운로드 폴더 정리해줘' 같은 진짜 일은 못 한다. 그걸 하는 게 Claude Code — 터미널에서 도는 AI 코딩 도구다.",
+            tip: "오늘은 같은 R-PCCO를 그대로 쓴다. 단, '맥락'에 내 컴퓨터·내 폴더·실행 환경이 들어갈 뿐."
+          },
+          {
+            subtitle: "한 줄 차이 — Artifacts vs Claude Code",
+            text: "같은 'AI로 만들기'지만 도는 곳과 남는 것이 다르다.",
+            table: {
+              title: "모래상자 vs 내 컴퓨터",
+              rows: [
+                { aspect: "어디서 도나", artifacts: "브라우저 모래상자", claudecode: "내 컴퓨터에서 진짜로" },
+                { aspect: "내 파일 접근", artifacts: "못 함", claudecode: "내 폴더·파일 직접" },
+                { aspect: "파일 개수", artifacts: "보통 단일 파일", claudecode: "여러 파일(레이어)" },
+                { aspect: "잘하는 일", artifacts: "빠른 웹 시제품", claudecode: "진짜 도구·자동화·공유" }
+              ]
+            }
+          },
+          {
+            subtitle: "막히면 슬래시 — 외울 건 네 개 + 토큰 절약 하나",
+            text: "슬래시 한 글자로 강력해지는 단축어. 그리고 plan(계획) 모드는 Shift+Tab으로 전환한다.",
+            details: [
+              "/help — 명령어 목록 (막혔을 때 첫 명령)",
+              "/init — CLAUDE.md(설명서) 자동 생성 (새 폴더 시작 시)",
+              "/clear — 대화 비우기 (새 작업 시작 시)",
+              "/permissions — 권한 허용/차단 설정",
+              "/compact — 지금까지 요약해 토큰 절약 (대화가 길어질 때)",
+              "Shift+Tab — plan(계획) 모드 전환 (위험 변경 전 '계획만 먼저'). 쉽게는 '먼저 계획만 보여줘'라고 말해도 됨"
+            ]
+          }
+        ]
+      },
+      {
+        title: "Part 2. 만들고 → 돌려보고 → 고친다",
+        content: [
+          {
+            subtitle: "만능 5단계 + R-PCCO로 묘사",
+            text: "어떤 작업이든 통하는 흐름: ①폴더 준비 → ②claude 실행 → ③의도 설명(R-PCCO) → ④단계별 → ⑤확인·반복. 핵심은 3번, 의도 설명이다.",
+            example: "역할 '작은 프로그램 잘 만드는 개발자' / 목적 '폴더 파일 이름 제자리에서 바꾸기' / 맥락 'Windows·Node.js·브라우저' / 제약 '미리보기·한글 안전·단순하게' / 출력 '실행 한 줄로 열리는 한 페이지'.",
+            tip: "코드를 한 줄도 안 쓴다. 우리가 아는 R-PCCO로 '묘사'만 한다."
+          },
+          {
+            subtitle: "화면을 읽어라 — Context · Tools · Permissions",
+            text: "이 세 단어를 알면 Claude Code의 모든 동작이 한 번에 보인다.",
+            table: {
+              title: "핵심 개념 3",
+              rows: [
+                { concept: "Context (맥락)", meaning: "지금 Claude가 아는 모든 것 — 대화·파일·지침" },
+                { concept: "Tools (도구)", meaning: "컴퓨터에 손대는 능력 — Read·Write·Bash. 화면에 떠서 '지금 뭘 하는지' 보임" },
+                { concept: "Permissions (권한)", meaning: "위험한 작업 전 묻는 안전벨트 — '1초 읽고' 승인" }
+              ]
+            },
+            quote: "권한 확인을 빨리 가려고 다 Yes 누르지 말 것 — 신규 실수 1위."
+          },
+          {
+            subtitle: "로컬 서버로 바로 돌려본다",
+            text: "'로컬 서버로 띄워줘' 하면 Claude가 Node.js로 서버를 켠다. 브라우저에서 localhost:3000(3000은 '포트', 프로그램의 문 번호)을 열면 — 내 컴퓨터에서 진짜 도는 순간. Artifacts엔 없던 경험이다.",
+            tip: "포트 충돌이 나면 '다른 포트로 띄워줘' 한마디."
+          },
+          {
+            subtitle: "에러는 적이 아니라 정보다 — 디버깅 5요소",
+            text: "'안 돼요 고쳐주세요'는 정보가 0이라 Claude가 추측한다. 다섯 가지를 주면 5분이면 고쳐진다.",
+            details: [
+              "① 무슨 명령을 했는지",
+              "② 에러 메시지 전체 (일부 X)",
+              "③ 환경 (OS·버전)",
+              "④ 언제부터",
+              "⑤ 원하는 결과"
+            ]
+          }
+        ]
+      },
+      {
+        title: "Part 3. 레이어로 쪼개기 — I/O 계약 (핵심)",
+        content: [
+          {
+            subtitle: "문제 — 한 파일에 다 엉켰다",
+            text: "규칙·미리보기·적용·되돌리기가 한 파일에 뒤섞이면, 수정하려 할 때 어디를 건드릴지 헷갈린다. 2차 강의에서 배운 그 원리를 꺼낼 때다.",
+            tip: "프로그램도 글처럼 '레이어로 쌓는다'. 한 방에 완성하지 않는다."
+          },
+          {
+            subtitle: "원칙 — 한 단계 한 책임, 접점은 계약으로",
+            quote: "체인의 성패는 지침이 아니라 지침 사이의 '접점'에 달렸다. 산문은 체인의 적.",
+            text: "일이 커지면 단계로 나누고, 한 단계는 한 가지 책임만 진다. 수집은 변환 안 하고, 변환은 저장 안 한다. 단계 사이는 반드시 구조화된 데이터(JSON)로 넘긴다."
+          },
+          {
+            subtitle: "3단계로 — 수집 → 변환계획 → 출력",
+            text: "파일 변경기를 세 단계로 쪼갠다. 사이엔 '계약(JSON)'이 흐른다.",
+            table: {
+              title: "3단계 레이어",
+              rows: [
+                { stage: "1 수집", role: "폴더 → 파일 목록", contract: "→ 파일목록 JSON" },
+                { stage: "2 변환계획", role: "규칙 → 새 이름 계획 (저장 안 함)", contract: "→ 변경계획 JSON" },
+                { stage: "3 출력", role: "계획대로 제자리 변경 + 되돌리기 기록", contract: "—" }
+              ]
+            },
+            example: "한 덩어리였던 코드가 collect·transform·output 파일로 갈라진다. Artifacts는 단일 파일에 욱여넣어야 했다 — 멀티파일, 이게 Claude Code의 가치.",
+            tip: "각 단계 지침(스펙)을 코드보다 '먼저' 쓰고, '이 약속대로 구현해줘'라고 시킨다 (스펙 우선)."
+          },
+          {
+            subtitle: "접점에 적는 것 — 포·필·범·메",
+            text: "단계 사이로 넘기는 데이터의 약속. 넘기는 쪽·받는 쪽 지침에 '같은 포맷'을 적어야 안 깨진다.",
+            table: {
+              title: "I/O 계약 4요소",
+              rows: [
+                { element: "포 (Format)", meaning: "어떤 구조로 — JSON / 표 / 헤더 섹션" },
+                { element: "필 (Required)", meaning: "반드시 들어갈 항목" },
+                { element: "범 (Scope)", meaning: "개수·분량·깊이 한계" },
+                { element: "메 (Metadata)", meaning: "충돌 표시·개수 등 메타정보" }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        title: "Part 4. 재사용 스캐폴드 + git·공유",
+        content: [
+          {
+            subtitle: "프로그램 = 코드 + 구조 파일들",
+            text: "초보가 무너지는 건 실력이 아니라 구조가 없어서다. 어떤 프로그램이든 이 파일 뼈대로 시작한다.",
+            table: {
+              title: "있으면 안 무너지는 파일들",
+              rows: [
+                { file: "CLAUDE.md", role: "AI가 매 세션 자동으로 읽는 설명서", auto: "자동" },
+                { file: "specs/*.md", role: "단계별 지침(I/O 계약)", auto: "자동(참조)" },
+                { file: "README.md", role: "사람용 설명서", auto: "—" },
+                { file: "DEVLOG.md / HANDOVER.md", role: "개발로그 / 인수인계", auto: "—" },
+                { file: ".env / .gitignore", role: "비밀·설정 / 깃 제외", auto: "—" }
+              ]
+            },
+            tip: "처음부터 다 만들지 말 것 — 최소 3개로 시작해 작게 키운다."
+          },
+          {
+            subtitle: "git 안전망 + 공유의 진실",
+            text: "git은 시간 여행 — 큰 작업 전 커밋해두면 AI가 망쳐도 한 줄로 되돌린다. 그리고 이 도구는 URL로 남이 못 쓴다.",
+            beforeAfter: {
+              before: "Vercel에 URL 배포 → 남이 못 씀 (배포된 웹서버는 방문자 파일을 못 만짐)",
+              after: "GitHub로 코드 공유 → 남이 받아 자기 컴퓨터에서 실행. (남의 파일 안 만지는 앱은 URL 배포가 맞다)"
+            },
+            quote: "무엇을 만드느냐가 배포 방식을 정한다."
+          }
+        ]
+      }
+    ],
+    habits: [
+      {
+        title: "묘사는 R-PCCO로, 커지면 레이어로",
+        description: "프로그램 요청도 역할·목적·맥락·제약·출력. 2단계 이상이면 단계로 쪼개고 단계별 지침을 쓴다"
+      },
+      {
+        title: "위험한 일은 미리보기·plan·git 먼저",
+        description: "되돌릴 수 없는 일은 먼저 보여주고, 큰 변경은 계획 모드로, 작업 전엔 git 백업"
+      },
+      {
+        title: "구조부터 깐다",
+        description: "작게 요청 → 돌려보고 → 다음. 그리고 코드보다 파일 구조(스캐폴드)를 먼저 갖춘다"
+      }
+    ],
+    checkCard: [
+      { code: "묘", name: "묘사", question: "R-PCCO로 뭘 만들지 정했나?" },
+      { code: "실", name: "실행", question: "로컬 서버로 돌려 확인했나?" },
+      { code: "분", name: "분리", question: "2단계 이상이면 레이어로 쪼갰나?" },
+      { code: "갖", name: "갖춤", question: "CLAUDE.md·README·스펙 등 갖췄나?" },
+      { code: "공", name: "공유", question: "git 백업 + 공유까지 했나?" }
+    ],
+    conclusion: "Claude Code의 맥락엔 '내 컴퓨터'가 들어갑니다.\n\n순서를 잊지 마세요. 묘사 → 실행 → 분리 → 갖춤 → 공유.\n\n1차에서 '프롬프트는 사고력의 증폭기', 2차에서 '지침은 범용을 전용으로', 4차에서 '바이브 코딩은 묘사다'라고 했습니다. 6차는 그걸 내 컴퓨터로 가져옵니다 — 묘사하면 진짜 도는 프로그램이 되고, 커지면 레이어로 쪼개고, 구조를 갖춰 남과 나눕니다. 오늘 만든 건 도구 하나지만, 진짜 배운 건 '어떤 프로그램이든 시작하는 법'입니다.",
+    challenge: "오늘부터 딱 하나만 — 평소 귀찮던 작업 하나를 골라, Claude Code에 '○○해주는 작은 도구 만들어줘'라고 묘사해 보세요. 그리고 기능이 2단계를 넘어가면, 하는 일에 따라 단계로 쪼개 보세요.",
+    faqs: [
+      {
+        q: "코딩 못해도 되나요?",
+        a: "됩니다. 코드를 직접 쓰지 않고 '무엇을 원하는지' 한국어로 묘사하면 Claude Code가 만들어줍니다. 단, Node.js·포트 같은 '이름'은 알아두면 좋아요."
+      },
+      {
+        q: "뭘 설치해야 하나요?",
+        a: "Claude Code와 Node.js입니다. Claude Code를 깔면 Node는 대개 같이 있습니다. 윈도우는 'Git Bash'(검은 명령 창)에서 claude를 켭니다."
+      },
+      {
+        q: "Artifacts(4차)랑 뭐가 다른가요?",
+        a: "Artifacts는 브라우저 안 모래상자라 내 파일을 못 만지고 닫으면 사라집니다. Claude Code는 내 컴퓨터에서 진짜 실행되고, 내 폴더를 다루고, git으로 남습니다."
+      },
+      {
+        q: "내가 만든 프로그램, 남도 쓸 수 있나요?",
+        a: "내 파일을 직접 만지는 도구는 URL 배포로는 남이 못 씁니다(브라우저 보안). GitHub로 코드를 공유해 각자 자기 컴퓨터에서 실행합니다. 반대로 남의 파일을 안 만지는 웹앱은 URL 배포가 맞습니다."
+      },
+      {
+        q: "프로그램이 자꾸 복잡해져요.",
+        a: "2단계 이상이면 '하는 일'에 따라 레이어로 쪼개세요. 단계 사이는 JSON으로 넘기고, 각 단계는 한 가지 책임만 — 수정이 훨씬 쉬워집니다."
       }
     ]
   }
