@@ -219,6 +219,19 @@ public/                    # 정적 파일
 2. **CourseDetail 수동 마운트 (5차에서 발견한 함정 재적용)**
    - `src/app/page.tsx`에 `<CourseDetail courseId="course-6" />` 한 줄 추가 — 데이터만 넣으면 복습 페이지가 안 보임
 
+### 7차 강의 (PWA 할 일 앱) 추가 — 랜딩만 (2026-06-18)
+
+1. **7차 강의 랜딩 추가**
+   - `src/data/content.ts`에 `course-7` (Claude Code로 잘 짠 앱을 '내 앱'으로 / PWA, 112분, PWA 5요소) 추가
+   - `courses`·`frameworks`·`courseDetails`에 `course-7` 추가 + `heroContent.ctas`에 "7차 강의 보기"(`#course-7`) 버튼 추가
+   - 7차 프레임워크는 **PWA 5요소**(화·정·오·저·배 — 화면·정보·오프라인·저장·배포) — 웹페이지를 폰 앱으로 만드는 5요소
+   - 핵심 흐름: 잘 짜인 PWA를 받아 → 레이어 4겹(데이터·동작·화면·연결) 구조를 읽고 → 디자인+기능을 내 입맛대로 개조 → HTTPS 배포 후 폰 홈 화면에 설치·공유
+   - 6차 떡밥 회수: "무엇을 만드느냐가 배포를 정한다" — 6차 변경기는 내 파일을 만져 URL 배포 불가였지만, 할 일 앱은 안 만지니 URL 배포가 정답
+   - 채점 모드 없음 (랜딩만 추가)
+
+2. **CourseDetail 수동 마운트 (반복 적용)**
+   - `src/app/page.tsx`에 `<CourseDetail courseId="course-7" />` 한 줄 추가 — 데이터만 넣으면 복습 페이지가 안 보임
+
 ## 코딩 규칙
 - TypeScript strict mode 사용
 - 함수형 컴포넌트 사용

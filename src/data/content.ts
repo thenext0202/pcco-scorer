@@ -12,6 +12,7 @@ export const heroContent = {
     { text: "4차 강의 보기", href: "#course-4", variant: "secondary" },
     { text: "5차 강의 보기", href: "#course-5", variant: "secondary" },
     { text: "6차 강의 보기", href: "#course-6", variant: "secondary" },
+    { text: "7차 강의 보기", href: "#course-7", variant: "secondary" },
     { text: "실습 앱 사용하기", href: "https://pcco-scorer-production.up.railway.app", variant: "outline", external: true }
   ]
 };
@@ -352,6 +353,63 @@ export const courses = [
         quote: "초보가 무너지는 건 실력이 아니라 구조가 없어서다"
       }
     ]
+  },
+  {
+    id: "course-7",
+    title: "Claude Code로 잘 짠 앱을 '내 앱'으로 (PWA)",
+    subtitle: "레이어로 잘 짜인 PWA를 받아 → 구조를 읽고 → 내 입맛대로 고쳐 → 폰에 배포",
+    duration: "112분",
+    level: "초급 (코딩 무경험 OK) ~ 중급",
+    framework: "PWA 5요소",
+    frameworkFull: "화·정·오·저·배 — 웹을 폰 앱으로 만드는 5요소",
+    heroQuote: "구조를 읽으면 고칠 곳이 보인다 — 잘 짠 앱을 받아 내 것으로 고쳐 폰에 배포한다",
+    tagline: "받아서 → 구조 읽고 → 디자인+기능 개조 → 폰에 배포",
+    prerequisite: "(권장) 6차 — Claude Code 빌드 5단계",
+
+    promises: [
+      "잘 나뉜 코드(데이터·동작·화면·연결 레이어)를 '읽고' '어디를 고칠지' 보는 눈을 갖는다",
+      "받은 PWA를 디자인 + 기능까지 내 입맛대로 개조해, '받은 앱'이 아닌 '내 앱'으로 만든다",
+      "내가 개조한 앱을 배포해 폰 홈 화면에 깔고, URL로 친구도 설치하게 한다"
+    ],
+
+    beforeAfter: {
+      title: "잘 짠 PWA를 받았을 때",
+      before: {
+        label: "Before (그냥 받기만)",
+        prompt: "코드 복잡해 보이는데… 어디를 고쳐야 할지 모르겠다",
+        result: "받은 그대로 두거나, 아무 데나 고치다 망가뜨림"
+      },
+      after: {
+        label: "After (구조를 읽고 개조)",
+        prompt: "actions는 계산, render는 화면 — '중요 표시' 기능은 actions에 함수 만들고 render에 별표 보여줘",
+        result: "정확한 자리에 기능이 붙고, 디자인도 내 취향대로 → 폰에 깔리는 '내 앱'"
+      }
+    },
+
+    curriculum: [
+      { section: "오프닝 + 복습", time: "6분", slides: "1~3" },
+      { section: "Part 1 — PWA란? + 5요소", time: "10분", slides: "4~5" },
+      { section: "Part 2 — 스타터 받기·실행", time: "6분", slides: "6" },
+      { section: "Part 3 — 구조 투어 (레이어)", time: "18분", slides: "7~9", highlight: true },
+      { section: "Part 4 — 디자인 개조", time: "14분", slides: "10~11" },
+      { section: "Part 5 — 기능 개조", time: "15분", slides: "12~13", highlight: true },
+      { section: "Part 6 — 캐시·배포 (Vercel)", time: "19분", slides: "14~17" },
+      { section: "Part 7 — 폰 설치 + 공유", time: "10분", slides: "18~19", highlight: true },
+      { section: "마무리", time: "8분", slides: "20~22" }
+    ],
+
+    killerInsights: [
+      {
+        title: "구조를 읽으면 고칠 곳이 보인다",
+        description: "입력→출력으로 잘 나뉜 레이어가 곧 '수정 지도'. 좋은 구조 = 고치기 쉬운 구조",
+        quote: "기능은 actions부터, 모양은 render·css부터"
+      },
+      {
+        title: "무엇을 만드느냐가 배포를 정한다",
+        description: "6차 변경기는 내 파일 만져 URL 배포 불가였지만, 할 일 앱은 안 만지니 URL 배포가 정답",
+        quote: "6차의 배포 한계, 이번엔 풀린다"
+      }
+    ]
   }
 ];
 
@@ -437,6 +495,18 @@ export const frameworks = [
       { code: "분", name: "분리", english: "Layer", question: "2단계 이상이면 레이어로?" },
       { code: "갖", name: "갖춤", english: "Scaffold", question: "필수 파일(CLAUDE.md 등) 갖췄나?" },
       { code: "공", name: "공유", english: "Share", question: "git·GitHub로 나눴나?" }
+    ]
+  },
+  {
+    name: "PWA 5요소",
+    subtitle: "웹을 폰 앱으로 (화·정·오·저·배)",
+    course: "7차 강의",
+    elements: [
+      { code: "화", name: "화면", english: "Screen", question: "앱처럼 보이나? (모바일)" },
+      { code: "정", name: "정보", english: "Manifest", question: "이름·아이콘·색 넣었나?" },
+      { code: "오", name: "오프라인", english: "Offline", question: "인터넷 없이 열리나?" },
+      { code: "저", name: "저장", english: "Save", question: "데이터가 폰에 남나?" },
+      { code: "배", name: "배포", english: "Deploy", question: "URL로 설치·공유되나?" }
     ]
   }
 ];
@@ -2217,6 +2287,188 @@ export const courseDetails = [
       {
         q: "프로그램이 자꾸 복잡해져요.",
         a: "2단계 이상이면 '하는 일'에 따라 레이어로 쪼개세요. 단계 사이는 JSON으로 넘기고, 각 단계는 한 가지 책임만 — 수정이 훨씬 쉬워집니다."
+      }
+    ]
+  },
+  {
+    id: "course-7",
+    heroMessage: "구조를 읽으면 고칠 곳이 보인다. 잘 짠 앱을 받아, 내 것으로 고쳐, 폰에 배포한다.",
+    promises: [
+      "잘 나뉜 코드(데이터·동작·화면·연결 레이어)를 '읽고' '어디를 고칠지' 보는 눈을 갖는다",
+      "받은 PWA를 디자인 + 기능까지 내 입맛대로 개조해, '받은 앱'이 아닌 '내 앱'으로 만든다",
+      "내가 개조한 앱을 배포해 폰 홈 화면에 깔고, URL로 친구도 설치하게 한다"
+    ],
+    beforeAfterExample: {
+      title: "Before / After — 잘 짠 PWA를 받았을 때",
+      subtitle: "그냥 받기만 vs 구조를 읽고 개조",
+      before: {
+        label: "❌ 그냥 받기만",
+        prompt: "코드 복잡해 보이는데… 어디를 고쳐야 할지 모르겠다",
+        result: "받은 그대로 두거나, 아무 데나 고치다 망가뜨림"
+      },
+      after: {
+        label: "✅ 구조를 읽고 개조",
+        prompt: "actions는 계산, render는 화면 — '중요 표시' 기능은 actions에 함수 만들고 render에 별표 보여줘",
+        result: "정확한 자리에 기능이 붙고, 디자인도 내 취향대로 → 폰에 깔리는 '내 앱'"
+      }
+    },
+    parts: [
+      {
+        title: "Part 1. PWA란? — 앱은 거창한 게 아니다",
+        content: [
+          {
+            subtitle: "문제 제기 — 폰 앱은 꼭 앱스토어를 거쳐야 할까?",
+            text: "네이티브 앱은 전용 언어를 배우고 앱스토어 심사를 받아야 한다. 그런데 우리가 만들 줄 아는 '웹' 한 페이지에 다섯 가지만 더하면, 폰에 설치되고 오프라인도 되는 앱(PWA)이 된다.",
+            tip: "여러분 폰에 깔린 앱 중 일부는 사실 PWA예요(스타벅스·트위터 등). '앱처럼 보이지만 웹'."
+          },
+          {
+            subtitle: "한 줄 정의 — 앱 = 웹페이지 + 다섯 가지",
+            quote: "앱 = 웹페이지 + 다섯 가지(화·정·오·저·배).",
+            text: "PWA(Progressive Web App) = 웹으로 만들었는데 앱처럼 설치·오프라인이 되는 것. 핵심은 '웹에 무엇을 더하면 앱이 되는가' — 그게 5요소다.",
+            table: {
+              title: "네이티브 앱 vs PWA",
+              rows: [
+                { aspect: "만드는 법", native: "전용 언어·복잡한 개발", pwa: "웹(HTML/CSS/JS) + 5요소" },
+                { aspect: "배포", native: "앱스토어 심사", pwa: "URL 하나 (링크로 설치)" },
+                { aspect: "설치", native: "스토어 다운로드", pwa: "'홈 화면에 추가'" }
+              ]
+            }
+          },
+          {
+            subtitle: "프레임워크 — PWA 5요소 (화·정·오·저·배)",
+            text: "웹을 앱으로 만드는 다섯 가지. 다섯 칸 중 하나라도 비면 '앱'이 아니라 그냥 웹페이지.",
+            table: {
+              title: "PWA 5요소",
+              rows: [
+                { code: "화 화면", what: "앱처럼 보이는 모바일 한 페이지", file: "index.html·css" },
+                { code: "정 정보", what: "이름·아이콘·테마색 (홈 화면 아이콘)", file: "manifest.json" },
+                { code: "오 오프라인", what: "인터넷 없이 열림", file: "sw.js (서비스워커)" },
+                { code: "저 저장", what: "데이터가 폰에 남음", file: "localStorage" },
+                { code: "배 배포", what: "URL로 설치·공유", file: "Vercel" }
+              ]
+            },
+            tip: "숨은 전제: 설치·오프라인은 HTTPS에서만 된다(로컬은 localhost 예외). 그래서 '배포'가 5요소에 들어간다."
+          }
+        ]
+      },
+      {
+        title: "Part 2. 구조 투어 — 레이어 4겹",
+        content: [
+          {
+            subtitle: "받은 앱을 '읽는다' — 한 파일 = 한 책임",
+            text: "잘 짜인 PWA를 받아 먼저 구조를 읽는다. 파일이 역할별로 나뉘어 있어 '무엇이 어디 있는지'가 보인다.",
+            table: {
+              title: "레이어 4겹 (입력 → 출력)",
+              rows: [
+                { layer: "store.js (데이터)", io: "(없음)→목록 / 목록→(저장)", job: "localStorage 저장·불러오기" },
+                { layer: "actions.js (동작)", io: "(목록, 입력) → 새 목록", job: "추가·완료·삭제 계산 (순수 함수)" },
+                { layer: "render.js (화면)", io: "목록 → 화면", job: "그리기만 (데이터 안 바꿈)" },
+                { layer: "app.js (연결)", io: "이벤트 → actions → store → render", job: "레이어를 잇는다" }
+              ]
+            },
+            tip: "Claude Code에 '이 파일들이 뭐 하는지 쉽게 설명해줘' · '@actions.js 입력/출력이 뭐야'로 읽는다."
+          },
+          {
+            subtitle: "데이터 흐름 — 입력이 레이어를 타고 흐른다",
+            text: "입력 → app → actions(계산) → store(저장) → render(화면). 앞 단계의 출력이 다음 단계의 입력이 되고, 모든 변경은 update() 한 곳을 거친다.",
+            quote: "구조를 읽으면 고칠 곳이 보인다 — 기능은 actions부터, 모양은 render·css부터.",
+            tip: "2차 'I/O 계약', 6차 '레이어'가 이 앱에 그대로 들어 있다 — 추상이 아니라 실물."
+          }
+        ]
+      },
+      {
+        title: "Part 3. 개조 — 디자인 + 기능 (내 것으로)",
+        content: [
+          {
+            subtitle: "디자인 개조 — 즉시 결과가 보이는 것부터",
+            text: "앱 이름·테마색·테마·둥글기를 내 취향대로. 새로고침 한 번에 바뀐다 — 작은 성공이 쌓인다.",
+            example: "'앱 이름을 오늘 할 일로' / '테마색을 청록으로(styles·manifest·meta 일관되게)' / '밝은 테마로'.",
+            tip: "정(정보): 내가 만든 이미지의 '파일 경로'를 Claude Code에 알려주면, 192·512 아이콘으로 만들어 연결한다."
+          },
+          {
+            subtitle: "기능 개조 — '어느 레이어를 고치나'",
+            text: "기능을 추가할 땐 actions에 순수 함수부터 → app에서 연결 → render·css로 표시. 어느 레이어인지 같이 말하면 정확히 붙는다(구조를 이해했다는 신호).",
+            beforeAfter: {
+              before: "'중요 표시 만들어줘' (어디 붙을지 모호)",
+              after: "'actions에 toggleImportant 함수 만들고, render에 별표 보여주고, 중요한 건 위로 정렬'"
+            },
+            tip: "보여주는 방식만 바꾸는 것(통계·정렬·숨기기)은 render 중심. 코드 바꾸면 sw.js 캐시 버전 올리기(오: v2→v3)."
+          }
+        ]
+      },
+      {
+        title: "Part 4. 배포 + 설치 (배 + ⭐)",
+        content: [
+          {
+            subtitle: "배 — 진짜 설치는 배포(HTTPS) 후에",
+            text: "설치·오프라인은 HTTPS(자물쇠 주소)에서만 된다. 로컬 localhost는 테스트용 예외. 진짜 폰에 깔려면 배포해 HTTPS URL을 받아야 한다.",
+            example: "Vercel(기본): GitHub에 올리고 연결 → 자동 HTTPS URL. 정적 앱이라 설정 거의 없음. 대안 Railway는 server.js로 정적 서빙.",
+            tip: "'localhost에선 되는데 폰에선 설치가 안 돼요'는 당연 — 배포해야 한다."
+          },
+          {
+            subtitle: "6차 떡밥 회수 — 무엇을 만드느냐가 배포를 정한다",
+            quote: "6차의 배포 한계, 이번엔 풀린다.",
+            text: "6차 파일 변경기는 내 파일을 만져서 URL 배포가 안 됐다(GitHub로 코드 공유). 할 일 앱은 남의 파일을 안 만지고 자기 폰에만 저장하니 정반대 — URL 배포가 정답이다.",
+            beforeAfter: {
+              before: "6차(내 파일 만짐) → URL 배포 불가 → GitHub 코드 공유",
+              after: "7차(남의 파일 안 만짐) → URL 배포 → 링크로 누구나 설치"
+            }
+          },
+          {
+            subtitle: "⭐ 폰에 설치 + 친구에게 공유",
+            text: "배포 URL을 폰 브라우저에서 열고 '홈 화면에 추가' → 아이콘 생성. 안드로이드(Chrome)는 배너/메뉴, 아이폰(Safari)은 공유 버튼 → 홈 화면에 추가.",
+            beforeAfter: {
+              before: "URL을 단톡방에 공유",
+              after: "친구도 똑같이 폰에 설치 — '어 이거 네가 만든 앱이야?'"
+            },
+            tip: "비행기모드로 열어 오프라인까지 확인하면 '진짜 앱'을 체감. 아이폰 설치 UX는 미리 캡처해 안내."
+          }
+        ]
+      }
+    ],
+    habits: [
+      {
+        title: "고치기 전에 구조부터 읽기",
+        description: "입력→출력, 어느 레이어(데이터·동작·화면·연결)인지 보고 시작한다"
+      },
+      {
+        title: "디자인 → 기능 순서로 개조",
+        description: "즉시 결과 나는 디자인부터 고쳐 성공 경험을 쌓고, 기능으로 넘어간다"
+      },
+      {
+        title: "캐시 버전 + HTTPS",
+        description: "코드 바꾸면 서비스워커 캐시 버전 올리기, 설치·오프라인은 배포 후 HTTPS에서"
+      }
+    ],
+    checkCard: [
+      { code: "화", name: "화면", question: "폰에서 앱처럼 보이나?" },
+      { code: "정", name: "정보", question: "이름·아이콘·테마색(매니페스트) 넣었나?" },
+      { code: "오", name: "오프라인", question: "인터넷 없이 열리나?(서비스워커)" },
+      { code: "저", name: "저장", question: "새로고침해도 데이터 남나?(localStorage)" },
+      { code: "배", name: "배포", question: "HTTPS URL로 설치·공유되나?" }
+    ],
+    conclusion: "구조를 읽으면 고칠 곳이 보입니다 — 좋은 구조 = 고치기 쉬운 구조.\n\n순서를 잊지 마세요. 받기 → 구조 읽기 → 개조(디자인+기능) → 배포·설치.\n\n6차는 맨손으로 만들었다면, 7차는 잘 짜인 앱을 받아 '읽고 고치는' 법을 배웁니다 — 사실 실무에서 더 많이 하는 일이에요. PWA 5요소(화·정·오·저·배)와 레이어 4겹(데이터·동작·화면·연결), 이 두 지도면 다음 앱도 읽고 고쳐 폰에 깔 수 있습니다. 무엇을 만드느냐가 배포 방식을 정합니다.",
+    challenge: "오늘부터 딱 하나만 — 받은 앱에 '내 기능' 하나를 더해 보세요. 먼저 '어느 레이어를 고쳐야 하지?'를 묻고, actions부터 손대 보면 구조가 보입니다.",
+    faqs: [
+      {
+        q: "코딩 못해도 되나요?",
+        a: "됩니다. 코드를 직접 안 짜도, 잘 나뉜 구조를 '읽고' Claude Code에 '어느 레이어를 고쳐줘'라고 시키면 됩니다. 어디를 고칠지 보는 눈이 핵심이에요."
+      },
+      {
+        q: "PWA가 진짜 앱인가요? 앱스토어 앱이랑 다른가요?",
+        a: "홈 화면에 깔리고 오프라인도 되지만, 앱스토어를 거치지 않습니다. 푸시·카메라 같은 일부 기능은 추가 작업이 필요하고, 아이폰은 제약이 조금 더 있습니다. 가벼운 도구 앱엔 충분합니다."
+      },
+      {
+        q: "'홈 화면에 추가'가 안 떠요.",
+        a: "대개 둘 중 하나입니다 — HTTPS가 아니거나(로컬은 localhost만 예외), 매니페스트·아이콘이 빠졌거나. 배포 URL에서, manifest.json과 서비스워커 등록을 확인하세요."
+      },
+      {
+        q: "데이터는 어디 저장되나요?",
+        a: "내 폰(브라우저)의 localStorage에만 저장됩니다. 서버로 안 가서 프라이버시가 안전한 대신, 기기를 바꾸면 따라오지 않습니다(서버 저장은 다음 단계)."
+      },
+      {
+        q: "배포는 꼭 Vercel이어야 하나요?",
+        a: "아니요. 무료로 HTTPS를 주는 곳이면 됩니다(Netlify·Cloudflare Pages·GitHub Pages 등). 이 강의는 Vercel을 기본으로, Railway를 대안으로 안내합니다."
       }
     ]
   }
