@@ -232,6 +232,21 @@ public/                    # 정적 파일
 2. **CourseDetail 수동 마운트 (반복 적용)**
    - `src/app/page.tsx`에 `<CourseDetail courseId="course-7" />` 한 줄 추가 — 데이터만 넣으면 복습 페이지가 안 보임
 
+### 8차 강의 (자동화 설계 / PILOT) 추가 — 랜딩만 (2026-07-08)
+
+1. **8차 강의 랜딩 추가**
+   - `src/data/content.ts`에 `course-8` (자동화 설계 — 실전 공장을 해부하다, 120분, PILOT) 추가
+   - `courses`·`frameworks`·`courseDetails`에 `course-8` 추가 + `heroContent.ctas`에 "8차 강의 보기"(`#course-8`) 버튼 추가
+   - 8차 프레임워크는 **PILOT**(Pipeline 쪼갠다·I/O 정한다·Layer 나눈다·Oversight 지킨다·Trace 남긴다) — 어떤 자동화에도 쓰는 설계 5원칙
+   - 교보재: 사용자가 실제 구현한 "제품 광고 영상 자동생성 공장"(`D:\개발\AI 영상 자동화 구축`)을 **해부** → 설계 원리 5개를 뽑아 → 각자 '내 자동화 설계도' 1장을 그리는 방식 (코드 실습 없음, 순수 설계)
+   - 핵심 흐름: 공장 견학 → PILOT 5칼로 해부 → 설계 실습. 하이라이트 "가로로 쪼개고(P) 세로로 나눈다(L)" 두 축
+   - 이전 강의 회수: 2차 I/O 계약 = I, 6차 레이어 = L, 5차 기록(Record) = T. "MCP now → API later" 이식 개념(API·MCP 눈높이 설명 포함)
+   - 채점 모드 없음 (랜딩만 추가)
+   - 강의자료: `강의자료/8차_자동화설계_영상공장/` (기획안·해부노트·설계도 템플릿 docx·러닝시트·슬라이드)
+
+2. **CourseDetail 수동 마운트 (반복 적용)**
+   - `src/app/page.tsx`에 `<CourseDetail courseId="course-8" />` 한 줄 추가 — 데이터만 넣으면 복습 페이지가 안 보임
+
 ## 코딩 규칙
 - TypeScript strict mode 사용
 - 함수형 컴포넌트 사용
