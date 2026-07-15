@@ -14,6 +14,7 @@ export const heroContent = {
     { text: "6차 강의 보기", href: "#course-6", variant: "secondary" },
     { text: "7차 강의 보기", href: "#course-7", variant: "secondary" },
     { text: "8차 강의 보기", href: "#course-8", variant: "secondary" },
+    { text: "9차 강의 보기", href: "#course-9", variant: "secondary" },
     { text: "실습 앱 사용하기", href: "https://pcco-scorer-production.up.railway.app", variant: "outline", external: true }
   ]
 };
@@ -469,6 +470,67 @@ export const courses = [
         quote: "MCP now → API later, 일은 그대로"
       }
     ]
+  },
+  {
+    id: "course-9",
+    title: "진짜 서비스 만들기 — 심리테스트 공유 서비스",
+    subtitle: "내가 기획한 심리테스트를 GitHub(기억)·Vercel(무대)·Supabase(창고)에 입주시켜, 내 컴퓨터를 꺼도 살아있는 서비스로 만든다",
+    duration: "180분 (이론 65 + 실습 105 + 마무리 10 · 2회 분할 가능)",
+    level: "초급 ~ 중급 (코딩 무경험 OK)",
+    framework: "살아있는 서비스 5요소",
+    frameworkFull: "몸(앱)·기억(GitHub)·무대(Vercel)·창고(Supabase)·맥박(push→자동배포)",
+    heroQuote: "코드는 GitHub에 살고, 실행은 Vercel에 살고, 데이터는 Supabase에 산다 — 셋 다 내 컴퓨터가 아니라서, 내 컴퓨터를 꺼도 서비스는 산다",
+    tagline: "공유 링크가 되는 순간, 앱이 아니라 서비스다",
+    prerequisite: "(권장) 6차 — Claude Code · 7차 — PWA 배포",
+
+    promises: [
+      "클라이언트·서버·클라우드 — 인터넷이 돌아가는 원리가 내 언어가 된다",
+      "GitHub에 올리고(기억), Vercel에 잇고(무대), Supabase를 연결하는(창고) 표준 3종 세트를 손에 넣는다",
+      "내가 기획한 심리테스트가 진짜 URL로 공개되고, 친구 폰에서 내 결과가 열리는 공유 링크를 갖는다"
+    ],
+
+    beforeAfter: {
+      title: "결과를 친구에게 보여주고 싶을 때",
+      before: {
+        label: "Before (7차까지 — 내 기기 안)",
+        prompt: "폰 화면을 캡처해서 보내는 수밖에…",
+        result: "데이터가 localStorage(그 브라우저 안) · 폰 바꾸면 소멸 · 전체 통계는 원리적으로 불가능"
+      },
+      after: {
+        label: "After (9차 — 세 집에 입주)",
+        prompt: "공유 링크를 카톡으로 — 친구 폰에서 내 결과가 그대로 열린다",
+        result: "데이터가 창고(Supabase)에 · push만 하면 자동 재배포 · '당신 유형은 전체의 23%' 통계까지"
+      }
+    },
+
+    curriculum: [
+      { section: "Part 0 — 오프닝 + 완성본 라이브 시연", time: "8분", slides: "1~4" },
+      { section: "이론 ① — 앱과 서비스 (손님·주방·클라우드)", time: "10분", slides: "5~8" },
+      { section: "이론 ② — GitHub 기억 (버전 관리 = 게임 세이브)", time: "12분", slides: "9~12" },
+      { section: "이론 ③ — Vercel 무대 (배포·자동배포·롤백)", time: "12분", slides: "13~16" },
+      { section: "이론 ④ — Supabase 창고 (DB·SQL·열쇠·문지기)", time: "15분", slides: "17~21", highlight: true },
+      { section: "이론 ⑤ — 총정리 (세 집이 한 몸) ✂️ 분할점", time: "8분", slides: "22~23" },
+      { section: "실습 P6 — 내 테스트 기획 (Claude 대화 → 기획안.md)", time: "15분", slides: "24" },
+      { section: "실습 P7 — 백엔드 키트 위에 바이브 코딩", time: "30분", slides: "25", highlight: true },
+      { section: "실습 P8 — GitHub 기억의 집 입주", time: "12분", slides: "26" },
+      { section: "실습 P9 — Vercel 무대에 서다", time: "10분", slides: "27" },
+      { section: "실습 P10 — Supabase 창고를 잇다", time: "25분", slides: "28", highlight: true },
+      { section: "실습 P11 — 맥박 확인 + 공유 이벤트", time: "13분", slides: "29", highlight: true },
+      { section: "마무리", time: "10분", slides: "30~31" }
+    ],
+
+    killerInsights: [
+      {
+        title: "공유 링크 = DB의 존재 증명",
+        description: "친구 폰에서 내 결과가 보이려면 데이터가 내 폰도 친구 폰도 아닌 제3의 장소에 있어야 한다 — localStorage로는 논리적으로 불가능",
+        quote: "카톡 한 번으로 증명되는 데이터베이스의 필요성"
+      },
+      {
+        title: "push가 곧 배포 (맥박)",
+        description: "GitHub와 Vercel을 이어두면 '커밋하고 push해줘' 한 마디에 몇십 초 뒤 전 세계에 새 버전이 뜬다 — 커밋 기록 = 배포 히스토리 = 되돌릴 수 있는 기억",
+        quote: "7차 배포는 택배 한 번, 오늘은 컨베이어 벨트"
+      }
+    ]
   }
 ];
 
@@ -578,6 +640,18 @@ export const frameworks = [
       { code: "L", name: "나눈다", english: "Layer", question: "지식·실행·창구 층으로? (세로)" },
       { code: "O", name: "지킨다", english: "Oversight", question: "비싼 지점 앞 사람 관문?" },
       { code: "T", name: "남긴다", english: "Trace", question: "상태를 전부 파일로?" }
+    ]
+  },
+  {
+    name: "살아있는 서비스 5요소",
+    subtitle: "내 컴퓨터를 꺼도 살아있는 서비스 (몸·기억·무대·창고·맥박)",
+    course: "9차 강의",
+    elements: [
+      { code: "몸", name: "앱 코드", english: "App", question: "내 폴더 — 만들고 고치는 곳" },
+      { code: "기", name: "기억 GitHub", english: "Archive", question: "커밋·push로 역사를 남겼나?" },
+      { code: "무", name: "무대 Vercel", english: "Stage", question: "24시간 URL로 살아있나?" },
+      { code: "창", name: "창고 Supabase", english: "DB", question: "데이터가 제3의 장소에 있나?" },
+      { code: "맥", name: "맥박 자동배포", english: "CI/CD", question: "push하면 스스로 새 버전?" }
     ]
   }
 ];
@@ -2766,6 +2840,210 @@ export const courseDetails = [
       {
         q: "5차(자동화 이해)와 뭐가 다른가요?",
         a: "5차는 '자동화가 왜 실패하는가'의 큰 그림(BATLR)이라면, 8차는 '어떻게 설계하는가'의 실전편입니다. 실제로 돌아가는 공장을 해부해 설계 원리 5개(PILOT)를 뽑고, 각자 설계도를 그립니다."
+      }
+    ]
+  },
+  {
+    id: "course-9",
+    heroMessage: "코드는 GitHub에 살고, 실행은 Vercel에 살고, 데이터는 Supabase에 산다 — 셋 다 내 컴퓨터가 아니라서, 내 컴퓨터를 꺼도 서비스는 산다.",
+    promises: [
+      "클라이언트·서버·클라우드 — 인터넷이 돌아가는 원리가 내 언어가 된다",
+      "GitHub에 올리고(기억), Vercel에 잇고(무대), Supabase를 연결하는(창고) 표준 3종 세트를 손에 넣는다",
+      "내가 기획한 심리테스트가 진짜 URL로 공개되고, 친구 폰에서 내 결과가 열리는 공유 링크를 갖는다"
+    ],
+    beforeAfterExample: {
+      title: "Before / After — 결과를 친구에게 보여주고 싶을 때",
+      subtitle: "내 기기 안(localStorage) vs 세 집에 입주(진짜 서비스)",
+      before: {
+        label: "❌ 7차까지 — 내 기기 안",
+        prompt: "폰 화면을 캡처해서 보내는 수밖에…",
+        result: "데이터가 localStorage(그 브라우저 안) · 폰 바꾸면 소멸 · 전체 통계는 원리적으로 불가능"
+      },
+      after: {
+        label: "✅ 9차 — 세 집에 입주",
+        prompt: "공유 링크를 카톡으로 — 친구 폰에서 내 결과가 그대로 열린다",
+        result: "데이터가 창고(Supabase)에 · push만 하면 자동 재배포 · '당신 유형은 전체의 23%' 통계까지"
+      }
+    },
+    parts: [
+      {
+        title: "Part 1. 왜 서비스인가 — 손님·주방·클라우드",
+        content: [
+          {
+            subtitle: "인터넷은 손님과 주방이다 (클라이언트·서버)",
+            quote: "인터넷의 모든 일 = 요청하는 손님(클라이언트) + 응답하는 주방(서버).",
+            text: "폰으로 유튜브를 열면 폰이 손님(주문), 어딘가의 24시간 컴퓨터가 주방(응답)이다. 지금까지 우리 앱은(4차 Artifacts·7차 localhost) 내가 손님이자 주방 — 내 기기 안 자급자족이라 남이 못 왔다.",
+            tip: "localhost = '내 컴퓨터 안'이라는 뜻의 예약된 주소. 옆 사람 폰에서 안 열리는 게 당연하다."
+          },
+          {
+            subtitle: "클라우드 = 남의 컴퓨터를 빌려 쓰기",
+            text: "남이 오려면 ① 24시간 켜진 컴퓨터 ② 전 세계가 찾는 주소 ③ HTTPS 자물쇠가 필요한데, 셋 다 내 노트북엔 없다. 그래서 빌린다 — 단, 세 회사가 빌려주는 게 다르다.",
+            table: {
+              title: "세 집 (빌려주는 것이 다르다)",
+              rows: [
+                { house: "기억 · GitHub", role: "코드 보관용 컴퓨터 (원본·역사) — 일기장이자 금고" },
+                { house: "무대 · Vercel", role: "앱 실행용 컴퓨터 + 주소 + HTTPS — 24시간 극장" },
+                { house: "창고 · Supabase", role: "데이터 보관용 컴퓨터 + 관리 화면 — 은행 금고" }
+              ]
+            },
+            tip: "셋 다 무료로 시작, 셋 다 GitHub 계정 하나로 로그인 — GitHub가 개발 세계의 신분증인 이유."
+          },
+          {
+            subtitle: "왜 셋으로 나누나 — 한 집 = 한 책임",
+            text: "코드는 '역사', 실행은 '안 꺼짐', 데이터는 '안 잃음+규칙'이 중요하다. 성격이 다르면 집도 다르다(8차 L의 서비스판). 나눠 놓으면 갈아끼울 수 있다 — 이 채점기 리더보드도 GitHub·Railway·Supabase로 똑같이 산다."
+          }
+        ]
+      },
+      {
+        title: "Part 2. 기억 · GitHub — 버전 관리는 게임 세이브",
+        content: [
+          {
+            subtitle: "'최종_진짜_최종.js'의 지옥에서 탈출",
+            text: "코드가 내 폴더에만 있으면 — 노트북 고장 = 서비스 증발, '어제까진 됐는데'로 복귀 불가, 그리고 Vercel이 코드를 가져갈 공식 주소가 없어 자동배포 자체가 성립 안 된다. GitHub는 백업집 + 역사책 + 다른 서비스와의 접선 장소다."
+          },
+          {
+            subtitle: "커밋 = 세이브, push = 클라우드 업로드",
+            quote: "좋은 커밋 메모 = 미래의 나에게 보내는 쪽지.",
+            text: "Git은 내 컴퓨터의 세이브 프로그램(게임기), GitHub는 클라우드 세이브 서버. 커밋은 스냅샷+메모의 세이브 1회, push가 그걸 올리는 동작. 히스토리에서 아무 시점으로든 돌아간다 — 빨강(지운 줄)/초록(넣은 줄) 비교가 '뭘 고쳤는지'의 증거.",
+            tip: "public repo는 그대로 포트폴리오. 요즘 이력서엔 GitHub 주소가 들어간다."
+          },
+          {
+            subtitle: "오늘 쓰는 동작은 딱 3개 (명령어 암기 X)",
+            table: {
+              title: "Claude Code에게 말로 시키기",
+              rows: [
+                { step: "① 처음 한 번", say: "\"GitHub에 로그인해줘 (gh auth login)\" — 브라우저 인증만 직접" },
+                { step: "② 처음 한 번", say: "\"이 폴더를 GitHub 새 저장소로 올려줘\"" },
+                { step: "③ 무한 반복", say: "\"바뀐 내용 커밋하고 push해줘\" — 맥박의 방아쇠" }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        title: "Part 3. 무대 · Vercel — 배포와 맥박",
+        content: [
+          {
+            subtitle: "7차 배포는 택배, 오늘은 컨베이어 벨트",
+            text: "7차 CLI 배포(vercel --prod)는 완성본을 한 번 부치는 택배 — 고칠 때마다 다시 부쳐야 했다. 무대(Vercel)를 기억(GitHub)에 한 번 연결하면 push할 때마다 알아서 새 버전이 오른다. 현업 표준 CI/CD를 그대로 까는 것.",
+            beforeAfter: {
+              before: "7차 — vercel --prod 를 매번 직접 (택배)",
+              after: "9차 — push만 하면 Building→Ready 자동 (벨트)"
+            }
+          },
+          {
+            subtitle: "배포의 3종 자동 선물 + 롤백",
+            text: "배포하면 전 세계 유일 주소(내앱.vercel.app)와 HTTPS 자물쇠가 자동으로 따라온다. 우리 앱은 정적 사이트(조리가 필요 없는 도시락)라 설정도 없다. 배포도 역사가 남아서 — 망가지면 클릭 한 번에 직전 버전으로 롤백. '무서워서 못 고친다'가 사라진다.",
+            tip: "무대 연결은 처음 5클릭(GitHub 로그인→Add New→Import→Deploy→URL), 이후 0클릭."
+          }
+        ]
+      },
+      {
+        title: "Part 4. 창고 · Supabase — DB·SQL·열쇠·문지기",
+        content: [
+          {
+            subtitle: "공유 링크 = DB의 존재 증명",
+            quote: "친구 폰에 내 결과가 보이려면, 데이터는 내 폰도 친구 폰도 아닌 제3의 장소에 있어야 한다.",
+            text: "localStorage로는 기술이 부족한 게 아니라 논리적으로 불가능하다. 그 제3의 장소가 DB(창고). 파일 대신 DB인 이유 셋 — ① 동시성(100명이 저장해도 한 건도 안 잃음) ② 검색(id 하나로 즉시) ③ 규칙(위반은 저장 자체가 거절)."
+          },
+          {
+            subtitle: "테이블 = 규칙 있는 엑셀, SQL 동사는 4개",
+            text: "테이블은 열=항목, 행=데이터 1건인 '만 명이 동시에 써도 안 깨지는 엑셀'. SQL은 창고에 말 거는 언어 — INSERT(넣기)·SELECT(꺼내기)·UPDATE·DELETE가 전부이고, 심리테스트는 앞의 2개만 쓴다. 저장할 때 자동 발급되는 id가 그대로 공유 링크의 ?id=가 된다.",
+            tip: "Supabase의 속은 PostgreSQL — 대기업들이 쓰는 엔진을 무료로 빌리는 것. 테이블을 만들면 넣기/꺼내기 창구(API)가 자동 생성된다."
+          },
+          {
+            subtitle: "열쇠 2개와 문지기 RLS (보안의 첫 감각)",
+            text: "anon 키는 손님용 방문증 — 코드에 넣어 공개돼도 된다. 무엇을 할 수 있는지는 문지기(RLS)가 정하니까(넣기⭕ 읽기⭕ 고치기✗ 지우기✗). service_role 키는 마스터키 — 절대 코드·GitHub에 올리지 않는다.",
+            quote: "습관: 공개돼도 되는 열쇠인지 모르겠으면, 일단 공개하지 마라.",
+            tip: "무료 창고는 약 1주 미사용 시 일시정지 — '몇 주 뒤 안 열려요'의 1순위 원인. 대시보드 Restore로 복구."
+          }
+        ]
+      },
+      {
+        title: "Part 5. 세 집이 한 몸 — 데이터의 여행",
+        content: [
+          {
+            subtitle: "마스터 그림 — 이 한 장이 남으면 성공",
+            quote: "내 컴퓨터(몸) →push→ GitHub(기억) →자동배포→ Vercel(무대) ↔insert/select↔ Supabase(창고)",
+            text: "내 컴퓨터의 역할은 '만들고 고치는 것'뿐. 이 그림 어디에도 '켜져 있는 내 컴퓨터'는 없다 — 그래서 내 컴퓨터를 꺼도 서비스는 산다."
+          },
+          {
+            subtitle: "친구가 공유 링크를 여는 순간",
+            text: "① 친구 폰이 무대에 요청 → 앱 화면이 내려온다 ② 앱이 링크의 id로 창고에 select ③ 내 결과가 친구 폰에 그려진다. 한 번의 클릭에 세 집이 다 움직인다.",
+            table: {
+              title: "역할 확인 문답",
+              rows: [
+                { q: "코드를 망가뜨렸다?", a: "기억(커밋 복귀) 또는 무대(롤백)" },
+                { q: "1만 명이 몰렸다?", a: "일하는 건 무대와 창고 — 내 컴퓨터 아님" },
+                { q: "응답을 엑셀로 뽑고 싶다?", a: "창고 — Table Editor에서 내보내기" }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        title: "Part 6. 실습 — 기획 → 바이브 코딩 → 세 집 입주",
+        content: [
+          {
+            subtitle: "내 테스트 기획 (Claude와 대화 → 기획안.md)",
+            text: "강사 제공 '기획 프롬프트'(R-PCCO 구조)를 claude.ai에 붙여넣고 대화로 나만의 테스트를 설계한다 — 주제·질문 수·기능 전부 자유. 최소 요건 2개만: 결과에 유형 개념(통계가 성립하려면) + 결과 공유 기능. 뽑은 기획안은 키트 폴더의 기획안.md로 저장."
+          },
+          {
+            subtitle: "백엔드 키트 위에 바이브 코딩 — 구현 요청은 한 줄",
+            quote: "\"기획안.md를 읽고, CLAUDE.md의 규칙을 지켜서 구현해줘.\"",
+            text: "키트의 CLAUDE.md(규칙서)가 울타리가 되어 어떤 기획이 와도 뒷단 계약(db.js 함수 3개·?id= 공유 규칙)이 지켜진다 — 6차 'AI한테 한 장'의 실전 회수. 창고 연결 전엔 공유 버튼이 '대기 중'(회색)인 게 정상.",
+            tip: "생성이 꼬이면 참고샘플(동물테스트)로 갈아타고 뒷단 진도는 함께 — 내 기획 구현은 숙제로."
+          },
+          {
+            subtitle: "입주 3연속 + 맥박 확인 (와우 3연타)",
+            text: "GitHub에 올리고(기억) → Vercel 5클릭(무대) → Supabase 4단계(창고: 프로젝트 생성→SQL 복붙→열쇠 복사→연결). 마지막으로 push 한 번 — Vercel이 혼자 재배포하는 걸 관람하고(와우), 옆 사람과 공유 링크를 교환해 남의 폰에서 내 결과가 열리는 걸 확인한다(와우). 통계 숫자가 참여자마다 변하면 창고가 살아있다는 뜻(와우)."
+          }
+        ]
+      }
+    ],
+    habits: [
+      {
+        title: "고치면 커밋",
+        description: "의미 있는 변경마다 세이브 포인트 — 미래의 나에게 보내는 쪽지와 함께"
+      },
+      {
+        title: "마스터키는 절대 올리지 않기",
+        description: "anon(방문증)은 공개 OK, service_role(마스터키)은 절대 금지. 모르겠으면 공개하지 마라"
+      },
+      {
+        title: "배포 후엔 반드시 폰에서 확인",
+        description: "무대에 올랐으면 진짜 관객석(폰)에서 열어본다"
+      }
+    ],
+    checkCard: [
+      { code: "몸", name: "앱 코드", question: "내 폴더에서 만들고 고쳤나?" },
+      { code: "기", name: "기억 GitHub", question: "커밋·push로 역사를 남겼나?" },
+      { code: "무", name: "무대 Vercel", question: "24시간 URL로 살아있나?" },
+      { code: "창", name: "창고 Supabase", question: "데이터가 제3의 장소에 있나?" },
+      { code: "맥", name: "맥박 자동배포", question: "push하면 스스로 새 버전이 되나?" }
+    ],
+    conclusion: "공유 링크가 되는 순간, 그건 앱이 아니라 서비스입니다.\n\n오늘의 다섯 단어 — 몸·기억·무대·창고·맥박. 코드는 GitHub에 살고, 실행은 Vercel에 살고, 데이터는 Supabase에 삽니다. 셋 다 내 컴퓨터가 아니라서, 내 컴퓨터를 꺼도 서비스는 삽니다.\n\n여러분이 오늘 배운 건 심리테스트가 아니라 — 아이디어가 뭐든(리더보드·방명록·예약 시스템) 그걸 세상에 내보내는 표준 배관입니다. 기억에 올리고, 무대에 잇고, 창고를 연결한다 — 이 세 동작은 이제 여러분 것입니다.",
+    challenge: "오늘 만든 테스트를 친구들에게 뿌려보세요 — 창고에 쌓이는 진짜 응답이 최고의 복습입니다. 심화 숙제: 7차 PWA 5요소를 얹어 설치형으로 개조해보기. 단, '이 서비스는 왜 웹이 정답이었나'부터 답하고 시작할 것.",
+    faqs: [
+      {
+        q: "코딩 못해도 되나요?",
+        a: "됩니다. 화면 만들기는 Claude Code가 하고(바이브 코딩), GitHub·Vercel·Supabase도 말로 시키거나 클릭 몇 번이면 됩니다. 이 강의의 핵심은 코드가 아니라 '무엇이 어디에 사는가'라는 구조를 이해하는 것입니다."
+      },
+      {
+        q: "심리테스트 말고 다른 걸 만들어도 되나요?",
+        a: "구조는 똑같이 적용됩니다. 다만 수업에서는 심리테스트를 권합니다 — '공유 링크'가 DB의 필요성을 논리적으로 증명하는 최고의 예제이고, 친구에게 뿌리는 재미가 복습이 되기 때문입니다. 배운 뒤엔 방명록·리더보드·예약 등 무엇이든 같은 배관 위에 올릴 수 있습니다."
+      },
+      {
+        q: "anon 키를 코드에 넣고 GitHub에 공개해도 정말 괜찮나요?",
+        a: "네, anon 키는 설계상 공개를 전제로 한 '손님용 방문증'입니다. 실제 권한은 창고의 출입 규칙(RLS)이 정합니다 — 오늘 규칙은 넣기·읽기만 허용이라 조작이 불가능합니다. 절대 공개하면 안 되는 건 service_role(마스터키)이고, 수업에서는 꺼내지도 않습니다."
+      },
+      {
+        q: "몇 주 뒤에 테스트가 안 열려요!",
+        a: "십중팔구 Supabase 무료 프로젝트의 일시정지입니다(약 1주 미사용 시). 대시보드에서 Restore를 누르면 복구됩니다. Vercel URL 자체가 안 열리면 Deployments에서 마지막 배포 상태를 확인하세요."
+      },
+      {
+        q: "왜 PWA(폰 설치형)로 안 만드나요?",
+        a: "무엇을 만드느냐가 형태를 정합니다. 할 일 앱(7차)은 매일 여는 도구라 설치가 정답이었지만, 심리테스트는 친구가 링크로 한 번 방문하는 서비스라 웹이 정답입니다. 게다가 서비스워커 캐시는 '고쳤는데 반영이 안 돼요'를 만들어 자동배포 확인을 방해합니다. 원하면 심화 숙제로 PWA 5요소를 얹어보세요."
       }
     ]
   }

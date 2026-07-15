@@ -247,6 +247,23 @@ public/                    # 정적 파일
 2. **CourseDetail 수동 마운트 (반복 적용)**
    - `src/app/page.tsx`에 `<CourseDetail courseId="course-8" />` 한 줄 추가 — 데이터만 넣으면 복습 페이지가 안 보임
 
+### 9차 강의 (진짜 서비스 만들기 / GitHub·Vercel·Supabase) 추가 — 랜딩만 (2026-07-15)
+
+1. **9차 강의 랜딩 추가**
+   - `src/data/content.ts`에 `course-9` (진짜 서비스 만들기 — 심리테스트 공유 서비스, 180분, 살아있는 서비스 5요소) 추가
+   - `courses`·`frameworks`·`courseDetails`에 `course-9` 추가 + `heroContent.ctas`에 "9차 강의 보기"(`#course-9`) 버튼 추가
+   - 9차 프레임워크는 **살아있는 서비스 5요소**(몸·기억·무대·창고·맥박) — 몸(앱 코드)·기억(GitHub)·무대(Vercel)·창고(Supabase)·맥박(push→자동배포)
+   - 핵심 한 문장: "코드는 GitHub에, 실행은 Vercel에, 데이터는 Supabase에 산다 — 셋 다 내 컴퓨터가 아니라서 내 컴퓨터를 꺼도 서비스는 산다"
+   - 킬러 인사이트: ① 공유 링크 = DB의 존재 증명 (localStorage로는 논리적으로 불가능) ② push가 곧 배포 (7차 택배 → 9차 컨베이어 벨트)
+   - 방식: **백엔드 키트** — 앞단(화면·질문·기능)은 수강생이 기획안대로 바이브 코딩, 강사는 뒷단(db.js 계약 3함수·CLAUDE.md 규칙서·SQL)만 제공. 웹으로 확정(PWA 아님 — 서비스워커 캐시가 자동배포 데모 방해, PWA는 심화 숙제)
+   - 이전 강의 회수: 7차 localStorage '저(Save)'의 한계 → 창고 / 7차 배포 치트시트의 "대안: GitHub→Vercel 자동배포"가 메인 코스로 / 6차 CLAUDE.md("AI한테 한 장")가 키트 규칙서로 실전 투입 / 8차 L(나눈다) = 세 집 분리
+   - 권장 선수강: 6차(Claude Code)·7차(PWA 배포)
+   - 채점 모드 없음 (랜딩만 추가)
+   - 강의자료: `강의자료/9차_진짜서비스_심리테스트/` (기획안 v2.1 — 이론부 정식 편성 · 백엔드키트 · 테스트기획 프롬프트 · 러닝시트 · 슬라이드 2종[이름 유/무] PDF)
+
+2. **CourseDetail 수동 마운트 (반복 적용)**
+   - `src/app/page.tsx`에 `<CourseDetail courseId="course-9" />` 한 줄 추가 — 데이터만 넣으면 복습 페이지가 안 보임
+
 ## 코딩 규칙
 - TypeScript strict mode 사용
 - 함수형 컴포넌트 사용
@@ -390,7 +407,8 @@ Conventional Commits 준수:
 ## 프로젝트 방향성
 
 **⚠️ 중요**: 이 프로젝트는 **지속적으로 강의가 추가되는 플랫폼**입니다.
-- 현재: R-PCCO(1차), I-MRKO(2차), SSDHR(3차), 바이브 코딩(4차), AI 자동화 이해(5차) 5개 강의
+- 현재: R-PCCO(1차), I-MRKO(2차), SSDHR(3차), 바이브 코딩(4차), AI 자동화 이해(5차), Claude Code 실전(6차), PWA(7차), 자동화 설계 PILOT(8차), 진짜 서비스 만들기(9차) — 9개 강의
+- 채점 모드는 1~4차(prompt·instruction·image·vibe) 4종, 5차 이후는 랜딩만
 - 앞으로 새로운 강의가 계속 추가될 예정
 - 확장 가능한 구조로 설계 필요
 
