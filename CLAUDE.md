@@ -289,7 +289,8 @@ public/                    # 정적 파일
    - `/play/[code]/board`: `ELEMENT_LABELS_REVERSE`(4개: 관찰/명세/예외/구조) + **요소당 만점 25 분기**(`maxPerElement`) + grid-cols-4 분기
 
 4. **10차 랜딩 추가 (같은 날)**
-   - `src/data/content.ts`: `courses`·`frameworks`("역설계 3단계" — 쓰·뜯·적 3요소 카드)·`courseDetails`에 `course-10` 추가 + `heroContent.ctas`에 "10차 강의 보기" 추가
+   - `src/data/content.ts`: `courses`·`frameworks`("역설계 3단계" — 쓰·뜯·적 3요소 카드)·`courseDetails`에 `course-10` 추가
+   - ⚠️ **`heroContent.ctas`는 죽은 데이터로 판명** (배포 검증 중 발견): ctas 배열을 읽는 코드가 프로젝트 어디에도 없다. 히어로의 강의 이동 버튼은 `courses[]`를 직접 순회해 자동 생성되므로 courses 추가만으로 충분. 1~9차 ctas 항목도 전부 미사용 상태 — 관례로 10차 줄도 추가돼 있으나 렌더링되지 않는다. **다음 강의부터 ctas 추가 불필요**
    - `src/app/page.tsx`에 `<CourseDetail courseId="course-10" />` 수동 마운트 (반복 적용)
    - **★ 진단 오염 방지**: 랜딩 복습 섹션에 채점 4축의 축 이름·수업 수칙까지만 공개. 기능 체크리스트 15항목·세부 배점·층 구조는 절대 미포함 ("세부 항목은 제출 후 공개" 명시). Before/After 예시도 실제 기능명 없이 추상 수준으로만
    - 10차 curriculum에는 slides 필드 없음 (슬라이드 미제작 — 제작 후 필요 시 추가)
@@ -460,6 +461,11 @@ Conventional Commits 준수:
 14. `CLAUDE.md` — 통합 히스토리 + Course N + 채점 시스템 섹션 갱신
 
 ### 새 강의 추가 가이드
+
+> ⚠️ `heroContent.ctas`에는 추가하지 말 것 — 어떤 컴포넌트도 읽지 않는 죽은 데이터다(2026-07-29 확인).
+> 히어로·강의 목록 버튼은 `courses[]` 자동 순회로 생성된다. ctas 배열의 **1~10차 + 외부 링크까지
+> 11개 항목 전체가 미사용** — 각 차수 히스토리의 "ctas 추가" 기록은 당시 관례였을 뿐 실제로
+> 렌더링된 적 없음.
 
 #### 1. 강의 데이터 추가 (`src/data/content.ts`)
 
