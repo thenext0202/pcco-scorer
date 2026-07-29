@@ -107,3 +107,32 @@ export const VibeScoreResultSchema = z.object({
 });
 
 export type VibeScoreResultValidated = z.infer<typeof VibeScoreResultSchema>;
+
+// 프롬프트 역설계 채점 스키마 (10차 강의 — IG 아카이버 한 방 프롬프트)
+// 4축 × 25점 구조 (기존 5요소 × 20점과 다름). 가점·감점 없음 (빈 배열 고정).
+export const ReverseScoreElementSchema = z.object({
+  score: z.number().int().min(0).max(25),
+  level: z.string(),
+  detected: z.string().nullable(),
+  feedback: z.string(),
+});
+
+export const ReverseScoreResultSchema = z.object({
+  total_score: z.number().int().min(0).max(100),
+  grade: z.enum(["S", "A", "B", "C", "D", "F"]),
+  elements: z.object({
+    observe: ReverseScoreElementSchema,
+    spec: ReverseScoreElementSchema,
+    edge: ReverseScoreElementSchema,
+    structure: ReverseScoreElementSchema,
+  }),
+  bonuses: z.array(BonusPenaltySchema),
+  penalties: z.array(BonusPenaltySchema),
+  strengths: z.array(z.string()),
+  improvements: z.array(z.string()),
+  improved_example: z.string(),
+});
+
+export type ReverseScoreResultValidated = z.infer<
+  typeof ReverseScoreResultSchema
+>;

@@ -9,8 +9,9 @@ import PromptScorer from "@/components/PromptScorer";
 import InstructionScorer from "@/components/InstructionScorer";
 import ImageScorer from "@/components/ImageScorer";
 import VibeScorer from "@/components/VibeScorer";
+import ReverseScorer from "@/components/ReverseScorer";
 
-type Mode = "prompt" | "instruction" | "image" | "vibe";
+type Mode = "prompt" | "instruction" | "image" | "vibe" | "reverse";
 
 export default function Home() {
   const [mode, setMode] = useState<Mode>("prompt");
@@ -53,7 +54,7 @@ export default function Home() {
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold text-slate-900">AI 채점기</h1>
           <p className="text-slate-600">
-            프롬프트·지침·이미지·바이브 코딩을 AI로 채점받기
+            프롬프트·지침·이미지·바이브 코딩·역설계를 AI로 채점받기
           </p>
         </div>
 
@@ -197,6 +198,16 @@ export default function Home() {
             >
               ⚡ 바이브 코딩
             </button>
+            <button
+              onClick={() => setMode("reverse")}
+              className={`px-4 sm:px-6 py-2 rounded-md transition-all text-sm sm:text-base ${
+                mode === "reverse"
+                  ? "bg-white shadow text-teal-600 font-semibold"
+                  : "text-slate-600 hover:text-slate-800"
+              }`}
+            >
+              🔍 역설계 (한 방 프롬프트)
+            </button>
           </div>
 
           {/* 모드별 채점기 */}
@@ -204,6 +215,7 @@ export default function Home() {
           {mode === "instruction" && <InstructionScorer enableAutoSave={false} />}
           {mode === "image" && <ImageScorer enableAutoSave={false} />}
           {mode === "vibe" && <VibeScorer enableAutoSave={false} />}
+          {mode === "reverse" && <ReverseScorer enableAutoSave={false} />}
         </div>
 
         {/* 푸터 */}
@@ -217,6 +229,8 @@ export default function Home() {
               "SSDHR: Scene(장면) · Style(스타일) · Detail(디테일) · Hard(강제 규칙) · Reality(물리 규칙)"}
             {mode === "vibe" &&
               "바이브 코딩 (R-PCCO 코딩 응용): 역할 · 목적 · 맥락(디바이스!) · 제약 · 출력 — Artifacts 즉시 실행"}
+            {mode === "reverse" &&
+              "역설계 4축: 기능 관찰 · 명세 구체성 · 예외·제약 인식 · 프롬프트 구조 — 쓰다·뜯다·적다"}
           </p>
         </footer>
       </div>

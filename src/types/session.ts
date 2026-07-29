@@ -3,8 +3,8 @@ export interface Session {
   code: string;
   title: string;
   host_name: string | null;
-  // prompt = R-PCCO (1차), instruction = I-MRKO (2차), image = SSDHR (3차), vibe = 바이브 코딩 (4차)
-  mode: "prompt" | "instruction" | "image" | "vibe";
+  // prompt = R-PCCO (1차), instruction = I-MRKO (2차), image = SSDHR (3차), vibe = 바이브 코딩 (4차), reverse = 프롬프트 역설계 (10차)
+  mode: "prompt" | "instruction" | "image" | "vibe" | "reverse";
   created_at: string;
   expires_at: string;
 }
@@ -99,9 +99,28 @@ export interface VibeLeaderboardEntry {
   created_at: string;
 }
 
+// 프롬프트 역설계 채점 리더보드 엔트리 (10차 강의)
+// ★ 다른 모드와 달리 4축 × 25점 구조 (요소당 만점 25)
+export interface ReverseLeaderboardEntry {
+  rank: number;
+  id: string;
+  nickname: string;
+  total_score: number;
+  grade: "S" | "A" | "B" | "C" | "D" | "F";
+  mode: "reverse";
+  elements: {
+    observe: number;
+    spec: number;
+    edge: number;
+    structure: number;
+  };
+  created_at: string;
+}
+
 // 통합 타입
 export type LeaderboardEntry =
   | PromptLeaderboardEntry
   | InstructionLeaderboardEntry
   | ImageLeaderboardEntry
-  | VibeLeaderboardEntry;
+  | VibeLeaderboardEntry
+  | ReverseLeaderboardEntry;

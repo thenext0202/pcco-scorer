@@ -84,12 +84,33 @@ export interface VibeScoreResult {
   improved_example: string;
 }
 
+// 프롬프트 역설계 채점 결과 (10차 강의 — IG 아카이버 한 방 프롬프트)
+// 4축 × 25점 구조: observe(기능 관찰) · spec(명세 구체성) · edge(예외·제약 인식) · structure(프롬프트 구조)
+// improved_example은 모범답안이 아니라 "스스로 더 관찰하게 만드는 질문 가이드"
+// (답 유출 방지 — 미관찰 기능의 구체명 노출 금지)
+export interface ReverseScoreResult {
+  total_score: number;
+  grade: "S" | "A" | "B" | "C" | "D" | "F";
+  elements: {
+    observe: ScoreElement; // 0~25
+    spec: ScoreElement; // 0~25
+    edge: ScoreElement; // 0~25
+    structure: ScoreElement; // 0~25
+  };
+  bonuses: Array<{ type: string; points: number; reason: string }>;
+  penalties: Array<{ type: string; points: number; reason: string }>;
+  strengths: string[];
+  improvements: string[];
+  improved_example: string;
+}
+
 // 통합 타입 (API 분기용)
 export type AnyScoreResult =
   | PromptScoreResult
   | InstructionScoreResult
   | ImageScoreResult
-  | VibeScoreResult;
+  | VibeScoreResult
+  | ReverseScoreResult;
 
 // 모드 구분 유틸리티
 export function isInstructionScore(
@@ -100,6 +121,10 @@ export function isInstructionScore(
 
 export function isImageScore(r: AnyScoreResult): r is ImageScoreResult {
   return "scene" in r.elements;
+}
+
+export function isReverseScore(r: AnyScoreResult): r is ReverseScoreResult {
+  return "observe" in r.elements;
 }
 
 // VibeScoreResult는 PromptScoreResult와 elements 키가 동일하므로

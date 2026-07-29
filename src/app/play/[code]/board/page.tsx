@@ -44,6 +44,14 @@ const ELEMENT_LABELS_IMAGE = [
 // 바이브 코딩은 R-PCCO와 elements 키 동일, 라벨도 같음 (라벨 재사용)
 const ELEMENT_LABELS_VIBE = ELEMENT_LABELS_PROMPT;
 
+// ★ 역설계(10차)는 4축 × 25점 — 요소 개수·만점이 다름
+const ELEMENT_LABELS_REVERSE = [
+  { key: "observe" as const, label: "관찰", icon: "👀" },
+  { key: "spec" as const, label: "명세", icon: "🔬" },
+  { key: "edge" as const, label: "예외", icon: "⚠️" },
+  { key: "structure" as const, label: "구조", icon: "🧩" },
+] as const;
+
 export default function BoardPage() {
   const params = useParams();
   const code = params?.code as string;
@@ -164,6 +172,8 @@ export default function BoardPage() {
                   ? "🎨 이미지 프롬프트 채점"
                   : session.mode === "vibe"
                   ? "⚡ 바이브 코딩 채점"
+                  : session.mode === "reverse"
+                  ? "🔍 역설계 채점 (한 방 프롬프트)"
                   : "🎯 프롬프트 채점"}
               </Badge>
             </div>
@@ -212,7 +222,12 @@ export default function BoardPage() {
                     ? ELEMENT_LABELS_IMAGE
                     : session.mode === "vibe"
                     ? ELEMENT_LABELS_VIBE
+                    : session.mode === "reverse"
+                    ? ELEMENT_LABELS_REVERSE
                     : ELEMENT_LABELS_PROMPT;
+
+                // 요소당 만점 — 역설계(4축)만 25, 나머지는 20
+                const maxPerElement = session.mode === "reverse" ? 25 : 20;
 
                 // 최대 점수 계산
                 let elementValues: number[];
@@ -231,6 +246,14 @@ export default function BoardPage() {
                     entry.elements.detail,
                     entry.elements.hard,
                     entry.elements.reality,
+                  ];
+                } else if (entry.mode === "reverse") {
+                  // 역설계 — 4축
+                  elementValues = [
+                    entry.elements.observe,
+                    entry.elements.spec,
+                    entry.elements.edge,
+                    entry.elements.structure,
                   ];
                 } else {
                   // prompt 또는 vibe — elements 키 구조가 같음
@@ -288,8 +311,12 @@ export default function BoardPage() {
                       </div>
                     </div>
 
-                    {/* 5요소 미니 바 */}
-                    <div className="grid grid-cols-5 gap-3 mt-4">
+                    {/* 요소 미니 바 (역설계는 4축, 나머지는 5요소) */}
+                    <div
+                      className={`grid ${
+                        labels.length === 4 ? "grid-cols-4" : "grid-cols-5"
+                      } gap-3 mt-4`}
+                    >
                       {labels.map((element, idx) => {
                         const value = elementValues[idx];
                         return (
@@ -304,11 +331,13 @@ export default function BoardPage() {
                                     ? "bg-yellow-400"
                                     : "bg-blue-500"
                                 }`}
-                                style={{ width: `${(value / 20) * 100}%` }}
+                                style={{
+                                  width: `${(value / maxPerElement) * 100}%`,
+                                }}
                               />
                             </div>
                               <div className="text-xs text-slate-500 mt-1">
-                                {value}/20
+                                {value}/{maxPerElement}
                               </div>
                             </div>
                           );
@@ -331,6 +360,8 @@ export default function BoardPage() {
               ? "SSDHR: Scene · Style · Detail · Hard · Reality"
               : session.mode === "vibe"
               ? "바이브 코딩: 역할 · 목적 · 맥락(디바이스!) · 제약 · 출력 (R-PCCO 코딩 응용)"
+              : session.mode === "reverse"
+              ? "역설계 4축: 기능 관찰 · 명세 구체성 · 예외·제약 인식 · 프롬프트 구조 (각 25점)"
               : "R-PCCO: Role · Purpose · Context · Constraints · Output"}
           </p>
         </footer>

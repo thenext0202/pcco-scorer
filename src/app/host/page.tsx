@@ -14,7 +14,7 @@ export default function HostPage() {
   const [title, setTitle] = useState("");
   const [hostName, setHostName] = useState("");
   const [mode, setMode] = useState<
-    "prompt" | "instruction" | "image" | "vibe"
+    "prompt" | "instruction" | "image" | "vibe" | "reverse"
   >("prompt");
   const [isCreating, setIsCreating] = useState(false);
   const [sessionCode, setSessionCode] = useState<string | null>(null);
@@ -238,6 +238,20 @@ export default function HostPage() {
                   <div className="font-semibold">⚡ 바이브 코딩</div>
                   <div className="text-xs text-slate-500 mt-1">
                     4차 강의 · R-PCCO 코딩판
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMode("reverse")}
+                  className={`p-4 border-2 rounded-lg text-left transition-all ${
+                    mode === "reverse"
+                      ? "border-teal-500 bg-teal-50"
+                      : "border-slate-200 hover:border-slate-300"
+                  }`}
+                >
+                  <div className="font-semibold">🔍 역설계</div>
+                  <div className="text-xs text-slate-500 mt-1">
+                    10차 강의 · 한 방 프롬프트
                   </div>
                 </button>
               </div>

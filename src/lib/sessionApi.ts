@@ -1,7 +1,11 @@
 import { supabase } from "./supabase";
 import type { Session, Submission, LeaderboardEntry } from "@/types/session";
 import type { AnyScoreResult } from "@/types/score";
-import { isInstructionScore, isImageScore } from "@/types/score";
+import {
+  isInstructionScore,
+  isImageScore,
+  isReverseScore,
+} from "@/types/score";
 
 /**
  * 4자리 랜덤 코드 생성 (I, O, 1, 0 제외)
@@ -23,7 +27,7 @@ export function generateCode(): string {
 export async function createSession(
   title: string,
   hostName?: string,
-  mode: "prompt" | "instruction" | "image" | "vibe" = "prompt"
+  mode: "prompt" | "instruction" | "image" | "vibe" | "reverse" = "prompt"
 ): Promise<{ session: Session; code: string }> {
   let attempts = 0;
   const maxAttempts = 3;
@@ -107,6 +111,14 @@ export async function submitScore(
       hard: { score: result.elements.hard.score },
       reality: { score: result.elements.reality.score },
     };
+  } else if (isReverseScore(result)) {
+    // 역설계 모드 (10차) — 4축 × 25점
+    elements_json = {
+      observe: { score: result.elements.observe.score },
+      spec: { score: result.elements.spec.score },
+      edge: { score: result.elements.edge.score },
+      structure: { score: result.elements.structure.score },
+    };
   } else {
     // prompt 또는 vibe 모드 — elements 키 구조가 동일하므로 같이 처리
     // (모드 구분은 sessions.mode 필드와 getLeaderboard 호출 시 mode 인자로 함)
@@ -144,7 +156,7 @@ export async function submitScore(
  */
 export async function getLeaderboard(
   sessionId: string,
-  mode: "prompt" | "instruction" | "image" | "vibe",
+  mode: "prompt" | "instruction" | "image" | "vibe" | "reverse",
   limit: number = 10
 ): Promise<LeaderboardEntry[]> {
   const { data, error } = await supabase
@@ -199,6 +211,22 @@ export async function getLeaderboard(
           detail: elementsJson.detail?.score ?? 0,
           hard: elementsJson.hard?.score ?? 0,
           reality: elementsJson.reality?.score ?? 0,
+        },
+        created_at: sub.created_at,
+      };
+    } else if (mode === "reverse") {
+      return {
+        rank: index + 1,
+        id: sub.id,
+        nickname: sub.nickname,
+        total_score: sub.total_score,
+        grade: sub.grade,
+        mode: "reverse" as const,
+        elements: {
+          observe: elementsJson.observe?.score ?? 0,
+          spec: elementsJson.spec?.score ?? 0,
+          edge: elementsJson.edge?.score ?? 0,
+          structure: elementsJson.structure?.score ?? 0,
         },
         created_at: sub.created_at,
       };

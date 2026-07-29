@@ -264,6 +264,30 @@ public/                    # 정적 파일
 2. **CourseDetail 수동 마운트 (반복 적용)**
    - `src/app/page.tsx`에 `<CourseDetail courseId="course-9" />` 한 줄 추가 — 데이터만 넣으면 복습 페이지가 안 보임
 
+### 10차 강의 (프롬프트 역설계 / IG 아카이버) — 채점 모드 'reverse' 추가 (2026-07-29)
+
+1. **강의 개요 — 진단·분반용 실습 강의 (랜딩은 별도 작업 예정)**
+   - 수강생이 완성 프로그램 **IG 아카이버**(`D:\개발\인스타 캐러셀 아카이빙`, 인스타그램 캐러셀 이미지 아카이빙 데스크톱 앱)를 **exe만** 써보고(소스 비공개) 그 프로그램을 재현하는 "한 방 프롬프트"를 작성
+   - 목적: 제출물 채점으로 학습 수준 진단 → **초급반/중급반 분반**. 최종 분반 = 수강생 희망 + 강사 원문 검토 (플랫폼 점수는 참고 지표)
+   - 프레임워크: 역설계 3단계 **쓰다·뜯다·적다** (Use→Decompose→Specify)
+   - 강의자료: `강의자료/10차_프롬프트역설계_IG아카이버/` (기획안 v1.1 · 관찰워크시트 docx · 채점기준표 · 배포키트)
+
+2. **역설계 채점 시스템 구축 — ★ 4축 × 25점 (기존 5요소 × 20점과 다름)**
+   - `docs/역설계_채점_루브릭.md` 작성. elements 키: `observe`(기능 관찰)/`spec`(명세 구체성)/`edge`(예외·제약 인식)/`structure`(프롬프트 구조), 각 0~25
+   - 신규: `src/lib/reverseScoringPrompt.ts`, `/api/score/reverse`, `ReverseScorer`, `ReverseScoreResult`(컴포넌트), `ReverseScoreResultSchema`(Zod, 0~25 별도 element 스키마)
+   - 가점·감점 없음 — route에서 `bonuses: []`/`penalties: []` 강제, total = 4축 합 재계산
+   - **★ 답 유출 금지 설계**: 시스템 프롬프트에 대상 프로그램 전체 기능 명세(15항목 3층)가 들어 있지만, 출력의 모든 필드에서 수강생이 안 적은 구체 기능명·파일명·수치 노출 금지. `improved_example`은 모범답안이 아니라 **"다시 관찰하러 가기" 질문 가이드** — UI에도 복사/claude.ai 버튼 없이 안내 카드로만 렌더링 (vibe 모드와 정반대 설계)
+   - 입력 제한: 최소 50자 / **최대 4,000자** (한 방 프롬프트는 전체 명세라서 김)
+   - `practice` 페이지에 5번째 탭 🔍 역설계 추가 (teal 컬러)
+
+3. **세션 모드 'reverse' 확장**
+   - DB: `sessions.mode` CHECK 제약을 `('prompt','instruction','image','vibe','reverse')`로 확장 (**v5 마이그레이션, 사용자 수동 실행 필요**)
+   - `Session.mode`, `ReverseLeaderboardEntry`(4축), `LeaderboardEntry` 유니온 확장, `isReverseScore` 타입 가드 추가
+   - `sessionApi.ts`: `createSession`/`submitScore`/`getLeaderboard`에 reverse 분기 (elements_json 키 4개)
+   - `/host`: 모드 선택 카드 5개 (그리드는 lg 4칸 유지 — 5번째는 줄바꿈)
+   - `/play/[code]`: reverse 분기 → `ReverseScorer` 마운트, Badge "🔍 역설계 채점 (한 방 프롬프트)"
+   - `/play/[code]/board`: `ELEMENT_LABELS_REVERSE`(4개: 관찰/명세/예외/구조) + **요소당 만점 25 분기**(`maxPerElement`) + grid-cols-4 분기
+
 ## 코딩 규칙
 - TypeScript strict mode 사용
 - 함수형 컴포넌트 사용
@@ -407,8 +431,8 @@ Conventional Commits 준수:
 ## 프로젝트 방향성
 
 **⚠️ 중요**: 이 프로젝트는 **지속적으로 강의가 추가되는 플랫폼**입니다.
-- 현재: R-PCCO(1차), I-MRKO(2차), SSDHR(3차), 바이브 코딩(4차), AI 자동화 이해(5차), Claude Code 실전(6차), PWA(7차), 자동화 설계 PILOT(8차), 진짜 서비스 만들기(9차) — 9개 강의
-- 채점 모드는 1~4차(prompt·instruction·image·vibe) 4종, 5차 이후는 랜딩만
+- 현재: R-PCCO(1차), I-MRKO(2차), SSDHR(3차), 바이브 코딩(4차), AI 자동화 이해(5차), Claude Code 실전(6차), PWA(7차), 자동화 설계 PILOT(8차), 진짜 서비스 만들기(9차), 프롬프트 역설계(10차) — 10개 강의
+- 채점 모드는 5종: 1~4차(prompt·instruction·image·vibe) + 10차(reverse). 5~9차는 랜딩만. 10차는 채점 모드 먼저 구축, 랜딩(course-10)은 별도 작업
 - 앞으로 새로운 강의가 계속 추가될 예정
 - 확장 가능한 구조로 설계 필요
 
@@ -602,7 +626,7 @@ className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
   - Before/After 예시 (후킹 영상), 3기둥 표, 5단계 체크카드, 3대 습관
   - 채점 모드 없음 (랜딩만)
 
-### 3. 채점 시스템 (4종)
+### 3. 채점 시스템 (5종)
 - **프롬프트 채점 (R-PCCO)**: Role, Purpose, Context, Constraints, Output
 - **지침 채점 (I-MRKO)**: Identity, Mission, Rules, Knowledge, Output
 - **이미지 프롬프트 채점 (SSDHR)**: Scene, Style, Detail, Hard, Reality
@@ -610,6 +634,9 @@ className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
   - **★ improved_example이 Artifacts 즉시 실행 가능한 완성형 프롬프트**
   - Where(디바이스) 미명시 시 맥락 점수 10점 캡
   - 가점: 디바이스 명시 / 기술 스택 / 인터랙션 / 단일 파일 출력
+- **역설계 채점 (10차 — 한 방 프롬프트)**: ★ 유일하게 4축 × 25점 (observe·spec·edge·structure)
+  - 가점·감점 없음, 총점 = 4축 합. 입력 최대 4,000자
+  - **★ 답 유출 금지**: improved_example이 모범답안이 아니라 "다시 관찰하러 가기" 질문 가이드. 미관찰 기능의 구체명 노출 금지 (vibe와 정반대 설계)
 - Claude Sonnet 4.6 (`claude-sonnet-4-6`) API 실시간 채점
 - 100점 만점 + S~F 등급 + 강점·개선점·개선 예시 피드백
 

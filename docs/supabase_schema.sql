@@ -115,3 +115,23 @@ COMMENT ON COLUMN sessions.mode IS
 -- 바이브 코딩 모드는 elements_json 키가 prompt 모드와 동일하므로
 -- (role/purpose/context/constraints/output) 추가 마이그레이션 불필요.
 -- 모드 구분은 sessions.mode 컬럼으로만 함.
+
+-- =========================================
+-- v5 확장: 프롬프트 역설계 채점 모드 추가 (10차 강의 — IG 아카이버 한 방 프롬프트)
+-- =========================================
+
+-- mode 컬럼의 CHECK 제약을 'reverse' 포함하도록 재정의
+ALTER TABLE sessions
+  DROP CONSTRAINT IF EXISTS sessions_mode_check;
+
+ALTER TABLE sessions
+  ADD CONSTRAINT sessions_mode_check
+  CHECK (mode IN ('prompt', 'instruction', 'image', 'vibe', 'reverse'));
+
+-- 코멘트 갱신
+COMMENT ON COLUMN sessions.mode IS
+  'prompt = R-PCCO (1차), instruction = I-MRKO (2차), image = SSDHR (3차), vibe = 바이브 코딩 (4차), reverse = 프롬프트 역설계 (10차)';
+
+-- ★ 역설계 모드는 다른 모드와 달리 4축 × 25점 구조.
+-- elements_json 키: observe / spec / edge / structure (각 0~25)
+-- JSONB라서 추가 마이그레이션 불필요. 모드 구분은 sessions.mode 컬럼으로만 함.
