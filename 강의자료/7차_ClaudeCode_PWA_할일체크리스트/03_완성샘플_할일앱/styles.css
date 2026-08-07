@@ -1,0 +1,44 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0e0e16; --card: #1b1b27; --line: #2c2c3a;
+  --purple: #7c3aed; --purple-l: #a78bfa; --muted: #9aa0ac; --text: #f1f1f5;
+}
+html, body { height: 100%; }
+body {
+  font-family: -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+  background: var(--bg); color: var(--text);
+}
+/* 모바일 우선: 폰 화면에 맞춘 한 페이지 */
+.app {
+  max-width: 480px; margin: 0 auto; min-height: 100%;
+  padding: 24px 18px calc(24px + env(safe-area-inset-bottom));
+}
+.top { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 18px; }
+.top h1 { font-size: 28px; font-weight: 800; }
+.count { color: var(--purple-l); font-size: 14px; font-weight: 600; }
+
+.input-row { display: flex; gap: 8px; margin-bottom: 18px; }
+#input {
+  flex: 1; min-height: 48px; padding: 0 14px; font-size: 16px;
+  border: 1px solid var(--line); border-radius: 12px; background: var(--card); color: var(--text);
+}
+#input::placeholder { color: var(--muted); }
+.add {
+  min-height: 48px; padding: 0 18px; font-size: 16px; font-weight: 700;
+  border: none; border-radius: 12px; background: var(--purple); color: #fff; cursor: pointer;
+}
+
+.list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.item {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px;
+}
+.chk { display: flex; align-items: center; gap: 12px; flex: 1; cursor: pointer; }
+.chk input { width: 22px; height: 22px; accent-color: var(--purple); flex-shrink: 0; }
+.text { font-size: 16px; line-height: 1.4; word-break: break-all; }
+.item.done .text { text-decoration: line-through; color: var(--muted); }
+.del {
+  background: none; border: none; font-size: 18px; padding: 6px; cursor: pointer;
+  min-width: 36px; min-height: 36px;
+}
+.empty { text-align: center; color: var(--muted); margin-top: 40px; font-size: 15px; }

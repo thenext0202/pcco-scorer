@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>6차 슬라이드 — 디자인 샘플</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root{
+    --bg:#0e0e16; --ink:#15151f; --muted:#6b7280; --line:#e5e7eb;
+    --purple:#7c3aed; --purple-l:#a78bfa; --purple-bg:#f5f3ff; --red:#dc2626;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:"Pretendard","Malgun Gothic",-apple-system,sans-serif; background:#3a3a40;}
+  .deck{display:flex; flex-direction:column; align-items:center; gap:24px; padding:24px;}
+  .slide{
+    width:1280px; height:720px; position:relative; overflow:hidden;
+    background:#fff; flex:0 0 auto;
+  }
+  /* ===== 공통 본문(화이트) ===== */
+  .pad{position:absolute; inset:0; padding:64px 72px;}
+  .eyebrow{color:var(--purple); font-size:15px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; display:flex; align-items:center; gap:10px;}
+  .eyebrow::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--purple);}
+  .title{font-size:52px; font-weight:800; color:var(--ink); line-height:1.18; margin-top:26px; letter-spacing:-.02em;}
+  .title .dim{color:#9aa0ac; font-weight:700;}
+  .title .pp{color:var(--purple);}
+  .subtitle{font-size:21px; color:var(--muted); margin-top:18px; line-height:1.5;}
+  .foot{position:absolute; left:72px; right:72px; bottom:34px; display:flex; justify-content:space-between; font-size:13px; color:#aab0bb; letter-spacing:.04em;}
+  /* 표 */
+  table{width:100%; border-collapse:collapse; margin-top:44px; font-size:19px;}
+  thead th{color:var(--purple); font-weight:700; text-align:left; padding:14px 16px; border-bottom:1px solid var(--line); font-size:15px;}
+  tbody td{padding:16px; border-bottom:1px solid #f1f2f4; color:#33373f;}
+  tbody td:first-child{font-weight:700; color:var(--ink);}
+  tbody td.hl{color:var(--purple); font-weight:700;}
+  /* 인용/콜아웃 박스 */
+  .callout{margin-top:40px; background:#f7f7fa; border-left:4px solid var(--purple); border-radius:0 8px 8px 0; padding:20px 24px; font-size:19px; color:#4b5563; font-style:italic;}
+  .reddot{color:var(--red); font-weight:700; font-size:16px; margin-top:30px; display:flex; align-items:center; gap:8px;}
+  /* 카드 행 */
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:40px;}
+  .cards.c4{grid-template-columns:repeat(4,1fr);} .cards.c5{grid-template-columns:repeat(5,1fr);}
+  .card{border:1px solid var(--line); border-radius:14px; padding:22px 22px 24px;}
+  .card .k{color:var(--purple); font-size:13px; font-weight:700; letter-spacing:.05em;}
+  .card .t{font-size:21px; font-weight:800; color:var(--ink); margin-top:10px;}
+  .card .d{font-size:15px; color:#7a808b; margin-top:8px; line-height:1.5;}
+  .arrowline{margin-top:26px; text-align:center; color:#7a808b; font-size:17px;}
+  .arrowline .pp{color:var(--purple); font-weight:700;}
+  /* 체크리스트 */
+  .check{margin-top:36px; columns:2; column-gap:48px;}
+  .check div{font-size:19px; color:#33373f; padding:9px 0; break-inside:avoid;}
+  .check i{color:var(--purple); font-weight:800; margin-right:10px;}
+  /* ===== 표지(다크) ===== */
+  .slide.cover{background:var(--bg);}
+  .blob{position:absolute; border-radius:50%; filter:none;}
+  .blob.b1{width:300px; height:300px; left:-70px; top:-90px; background:var(--purple);}
+  .blob.b2{width:230px; height:230px; right:120px; bottom:-130px; background:#5b21b6;}
+  .blob.b3{width:150px; height:150px; right:90px; top:50px; background:#2a2a36;}
+  .cover .eyebrow{color:var(--purple-l);}
+  .cover .eyebrow::before{background:var(--purple-l);}
+  .cover .big{position:absolute; left:72px; bottom:200px; font-size:104px; font-weight:800; color:#fff; line-height:1.05; letter-spacing:-.03em;}
+  .cover .big .pp{color:var(--purple-l);}
+  .cover .csub{position:absolute; left:74px; bottom:150px; font-size:24px; color:#9ca3af;}
+  .cover .lect{position:absolute; left:72px; bottom:70px; display:flex; align-items:center; gap:12px;}
+  .cover .lect .av{width:40px; height:40px; border-radius:50%; background:var(--purple); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;}
+  .cover .lect .lc{font-size:12px; color:#9ca3af; letter-spacing:.15em;}
+  .cover .lect .ln{font-size:16px; color:#fff; font-weight:700;}
+  .cover .eyebrow.top{position:absolute; left:72px; top:54px;}
+  .cover .foot{color:#5b6068;}
+  .note{width:1280px; color:#cfcfd6; font-size:13px; text-align:center; margin:-8px 0 4px;}
+  @media print{
+    @page{size:1280px 720px; margin:0;}
+    body{background:#fff;} .deck{gap:0; padding:0;} .note{display:none;}
+    .slide{break-after:page;}
+  }
+</style>
+</head>
+<body>
+<div class="deck">
+  <div class="note">※ 디자인 샘플 4장 — 브라우저에서 열어 확인 / 인쇄(Ctrl+P) → PDF, 용지 가로·배율 100%·여백 없음</div>
+
+  <!-- 1) 표지 (다크) -->
+  <section class="slide cover">
+    <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+    <div class="eyebrow top">6TH · CLAUDE CODE WORKSHOP</div>
+    <div class="big">Claude Code로<br/>진짜 <span class="pp">프로그램</span>을 만든다</div>
+    <div class="csub">묘사하면, 내 컴퓨터에서 도는 도구가 된다.</div>
+    <div class="lect">
+      <div class="av">정</div>
+      <div><div class="lc">LECTURER</div><div class="ln">정금구</div></div>
+    </div>
+    <div class="foot"><span>Claude Code 종합 실습 / 정금구</span><span>01 / 32</span></div>
+  </section>
+
+  <!-- 2) 본문: 비교표 -->
+  <section class="slide">
+    <div class="pad">
+      <div class="eyebrow">PART 1 · 왜 Claude Code인가</div>
+      <div class="title">Artifacts vs Claude Code <span class="dim">— 모래상자 vs 내 컴퓨터</span></div>
+      <div class="subtitle">4차에서 만든 운세 앱, 지금 어디 있죠? 브라우저 안에만 있었습니다.</div>
+      <table>
+        <thead><tr><th>구분</th><th>claude.ai Artifacts (4차)</th><th>Claude Code (6차)</th></tr></thead>
+        <tbody>
+          <tr><td>어디서 도나</td><td>브라우저 모래상자</td><td class="hl">내 컴퓨터에서 진짜로</td></tr>
+          <tr><td>파일 개수</td><td>보통 단일 파일</td><td>여러 파일 프로젝트(레이어)</td></tr>
+          <tr><td>내 파일 접근</td><td>못 함</td><td class="hl">내 폴더·파일 직접</td></tr>
+          <tr><td>잘하는 일</td><td>빠른 웹 시제품</td><td>진짜 도구·자동화·공유까지</td></tr>
+        </tbody>
+      </table>
+      <div class="foot"><span>PART 1 / 왜 Claude Code인가</span><span>05 / 32</span></div>
+    </div>
+  </section>
+
+  <!-- 3) 본문: 레이어 카드 -->
+  <section class="slide">
+    <div class="pad">
+      <div class="eyebrow">PART 6 · 레이어 설계 (핵심)</div>
+      <div class="title">2단계 이상이면 <span class="pp">레이어로 쪼갠다</span></div>
+      <div class="subtitle">2차 I/O 계약 그대로 — 단계 사이는 JSON으로만, 한 단계는 한 책임.</div>
+      <div class="cards">
+        <div class="card"><div class="k">STAGE 1 · 수집</div><div class="t">collect</div><div class="d">폴더 → 파일목록 JSON. 이름은 안 바꿈.</div></div>
+        <div class="card"><div class="k">STAGE 2 · 변환계획</div><div class="t">transform</div><div class="d">규칙 → 변경계획 JSON(미리보기). 저장 안 함.</div></div>
+        <div class="card"><div class="k">STAGE 3 · 출력</div><div class="t">output</div><div class="d">제자리 rename + 되돌리기 기록.</div></div>
+      </div>
+      <div class="arrowline">〈계약1: 파일목록 JSON〉 <span class="pp">→</span> 〈계약2: 변경계획 JSON〉 <span class="pp">→</span> 제자리 변경</div>
+      <div class="foot"><span>PART 6 / 레이어 설계</span><span>17 / 32</span></div>
+    </div>
+  </section>
+
+  <!-- 4) 본문: 체크리스트 -->
+  <section class="slide">
+    <div class="pad">
+      <div class="eyebrow">PART 7 · 재사용 스캐폴드</div>
+      <div class="title">다음 프로그램도 <span class="pp">이 한 장</span>으로 시작한다</div>
+      <div class="subtitle">오늘 만든 건 도구 하나지만, 진짜 배운 건 모든 프로그램에 깔 구조.</div>
+      <div class="check">
+        <div><i>✓</i>폴더 만들고 <code>/init</code> → CLAUDE.md</div>
+        <div><i>✓</i>R-PCCO로 의도 설명 → 최소 버전</div>
+        <div><i>✓</i>로컬에서 돌려보기</div>
+        <div><i>✓</i>2단계 이상? specs/ 단계별 지침</div>
+        <div><i>✓</i>비밀·설정은 .env / .env.example</div>
+        <div><i>✓</i>DEVLOG·HANDOVER 기록</div>
+        <div><i>✓</i>반복작업은 SKILL.md</div>
+        <div><i>✓</i>git commit → 공유 결정</div>
+      </div>
+      <div class="callout">“프로그램 = 코드 + 구조 파일들.” 구조부터 깔면 혼자서도 안 무너진다.</div>
+      <div class="foot"><span>PART 7 / 재사용 스캐폴드</span><span>28 / 32</span></div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

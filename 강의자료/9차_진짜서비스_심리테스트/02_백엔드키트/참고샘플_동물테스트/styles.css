@@ -1,0 +1,100 @@
+/* 참고샘플 — 모바일 우선 디자인 */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Pretendard", -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+  background: linear-gradient(160deg, #1b1b3a 0%, #2d1b4e 60%, #40215c 100%);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  word-break: keep-all;
+}
+
+#app { width: 100%; max-width: 480px; padding: 24px; }
+
+.screen {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: 36px 24px;
+  text-align: center;
+  backdrop-filter: blur(8px);
+}
+
+.hidden { display: none; }
+
+.emoji-big { font-size: 72px; margin-bottom: 12px; }
+
+h1 { font-size: 28px; margin-bottom: 12px; line-height: 1.3; }
+h2 { font-size: 20px; margin: 16px 0 24px; line-height: 1.45; min-height: 58px; }
+
+.desc { font-size: 16px; line-height: 1.6; opacity: 0.85; margin-bottom: 24px; }
+.tiny { font-size: 13px; opacity: 0.55; margin-top: 16px; }
+
+.btn {
+  display: block;
+  width: 100%;
+  min-height: 52px;
+  border: none;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.1s, opacity 0.2s;
+}
+.btn:active { transform: scale(0.98); }
+.btn.primary { background: #ffb35c; color: #2d1b4e; }
+.btn.primary:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn.ghost {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  margin-top: 12px;
+}
+
+.progress {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+#progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #ffb35c;
+  border-radius: 99px;
+  transition: width 0.25s;
+}
+.q-count { font-size: 14px; opacity: 0.6; }
+
+.choices { display: flex; flex-direction: column; gap: 10px; }
+.choices button {
+  min-height: 56px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 16px;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+.choices button:hover { background: rgba(255, 255, 255, 0.18); }
+.choices button:active { transform: scale(0.98); }
+
+.result-label { font-size: 15px; opacity: 0.7; margin-bottom: 8px; }
+.match {
+  background: rgba(255, 179, 92, 0.15);
+  border: 1px solid rgba(255, 179, 92, 0.4);
+  border-radius: 14px;
+  padding: 12px;
+  font-size: 15px;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+.stats { font-size: 14px; opacity: 0.75; margin-bottom: 20px; min-height: 20px; }
+.note { font-size: 13px; opacity: 0.6; margin-top: 10px; line-height: 1.5; }

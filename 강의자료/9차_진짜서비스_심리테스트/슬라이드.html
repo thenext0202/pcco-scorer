@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>9차 강의 슬라이드 · 진짜 서비스 만들기</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root{--bg:#12102a; --ink:#171528; --muted:#6b6880; --line:#e6e6ef;
+        --teal:#4f46e5; --teal-l:#a5b4fc; --teal-bg:#eef2ff; --amber:#d97706; --red:#dc2626;}
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:"Pretendard","Malgun Gothic",-apple-system,sans-serif; background:#3a3a40;}
+  .deck{display:flex; flex-direction:column; align-items:center; gap:22px; padding:22px;}
+  .slide{width:1280px; height:720px; position:relative; overflow:hidden; background:#fff; flex:0 0 auto;}
+  .pad{position:absolute; inset:0; padding:52px 66px;}
+  .eyebrow{color:var(--teal); font-size:14.5px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; display:flex; align-items:center; gap:10px;}
+  .eyebrow::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--teal);}
+  .eyebrow.red{color:var(--red);} .eyebrow.red::before{background:var(--red);}
+  .eyebrow.amber{color:var(--amber);} .eyebrow.amber::before{background:var(--amber);}
+  .title{font-size:44px; font-weight:800; color:var(--ink); line-height:1.16; margin-top:18px; letter-spacing:-.02em;}
+  .title.sm{font-size:38px;}
+  .title .dim{color:#9c9aae; font-weight:700;} .title .pp{color:var(--teal);}
+  .subtitle{font-size:19px; color:var(--muted); margin-top:13px; line-height:1.5;}
+  .foot{position:absolute; left:66px; right:66px; bottom:26px; display:flex; justify-content:space-between; font-size:12.5px; color:#a9a7b8; letter-spacing:.04em;}
+  table{width:100%; border-collapse:collapse; margin-top:24px; font-size:17px;}
+  thead th{color:var(--teal); font-weight:700; text-align:left; padding:11px 15px; border-bottom:1px solid var(--line); font-size:14.5px;}
+  tbody td{padding:10px 15px; border-bottom:1px solid #f2f2f7; color:#322f45;}
+  tbody td:first-child{font-weight:800; color:var(--teal); font-size:19px; text-align:center; width:84px;}
+  tbody td.hl{color:var(--teal); font-weight:700;}
+  .callout{margin-top:22px; background:#f6f6fb; border-left:4px solid var(--teal); border-radius:0 8px 8px 0; padding:16px 22px; font-size:20px; color:#3b3852; line-height:1.5;}
+  .callout.sm{font-size:17px; padding:14px 20px;}
+  .callout .pp{color:var(--teal); font-weight:700;} .callout .rr{color:var(--red); font-weight:700;}
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:26px;}
+  .cards.c2{grid-template-columns:repeat(2,1fr);} .cards.c4{grid-template-columns:repeat(4,1fr);}
+  .card{border:1px solid var(--line); border-radius:14px; padding:20px;}
+  .card .k{color:var(--teal); font-size:12.5px; font-weight:700; letter-spacing:.05em;}
+  .card .t{font-size:20px; font-weight:800; color:var(--ink); margin-top:9px;}
+  .card .d{font-size:14px; color:#7b7890; margin-top:7px; line-height:1.5;}
+  .arrowline{margin-top:22px; text-align:center; color:#7b7890; font-size:17px;}
+  .arrowline .pp{color:var(--teal); font-weight:700;}
+  .twocol{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:24px;}
+  .panel{border:1px solid var(--line); border-radius:14px; padding:22px;}
+  .panel.red{border-color:#f3c9c9; background:#fdf5f5;} .panel.red h4{color:var(--red);}
+  .panel.green{border-color:#cfd2f5; background:#f5f6fe;} .panel.green h4{color:var(--teal);}
+  .panel h4{font-size:16.5px; color:var(--teal); margin-bottom:11px;}
+  .panel ul{margin-left:18px;} .panel li{font-size:15.5px; color:#3b3852; margin:8px 0; line-height:1.45;}
+  .mono{font-family:ui-monospace,monospace; background:#e9eafd; color:#3730a3; padding:1px 7px; border-radius:5px; font-size:.92em;}
+  .bigstate{margin-top:34px; font-size:35px; font-weight:800; color:var(--ink); line-height:1.32; letter-spacing:-.02em;}
+  .bigstate .pp{color:var(--teal);}
+  .steps{display:flex; align-items:stretch; gap:12px; margin-top:28px;}
+  .step{flex:1; border:1px solid var(--line); border-radius:14px; padding:18px 14px; text-align:center; position:relative;}
+  .step .sn{width:28px; height:28px; border-radius:8px; background:var(--teal); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; margin:0 auto 10px; font-size:14px;}
+  .step .stt{font-size:16px; font-weight:800; color:var(--ink);}
+  .step .std{font-size:13px; color:#7b7890; margin-top:5px; line-height:1.4;}
+  .step:not(:last-child)::after{content:"›"; position:absolute; right:-11px; top:50%; transform:translateY(-50%); color:var(--teal-l); font-size:21px; font-weight:800; z-index:2;}
+  .dl{margin-top:22px;}
+  .di{display:flex; gap:16px; align-items:flex-start; padding:13px 0; border-bottom:1px solid #f2f2f7;}
+  .di .dk{flex:0 0 176px; display:flex; align-items:center; gap:9px;}
+  .di .dk .b{background:var(--teal); color:#fff; font-weight:800; font-size:13px; border-radius:6px; padding:3px 10px;}
+  .di .dk .kt{font-size:17px; font-weight:800; color:var(--ink);}
+  .di .dd{flex:1; font-size:15.5px; color:#454258; line-height:1.5;}
+  .di .dd b{color:var(--teal);}
+  .tl{margin-top:24px; border-left:3px solid var(--teal); padding-left:22px;}
+  .tli{position:relative; padding:9px 0;}
+  .tli::before{content:""; position:absolute; left:-28px; top:15px; width:11px; height:11px; border-radius:50%; background:var(--teal);}
+  .tli .th{font-size:16.5px; font-weight:800; color:var(--ink);}
+  .tli .td{font-size:14.5px; color:#6d6a80; margin-top:2px;}
+  .tags{display:flex; flex-wrap:wrap; gap:11px; margin-top:28px;}
+  .tag{background:var(--teal-bg); color:#3730a3; border-radius:24px; padding:11px 20px; font-size:17px; font-weight:700;}
+  .minicard{margin-top:26px; border:2px solid var(--teal); border-radius:16px; overflow:hidden; width:720px;}
+  .minicard .mh{background:var(--teal); color:#fff; font-size:18px; font-weight:800; padding:12px 22px;}
+  .minicard .mb{padding:18px 22px;} .minicard .row{display:flex; gap:14px; font-size:17px; margin:8px 0; align-items:baseline;}
+  .minicard .lbl{flex:0 0 130px; color:var(--teal); font-weight:800;} .minicard .val{color:#322f45; font-weight:600;}
+  /* 세 집 연결도 */
+  .houses{display:flex; align-items:center; gap:0; margin-top:30px;}
+  .house{flex:1; border:1px solid var(--line); border-radius:14px; padding:20px 12px; text-align:center; background:#fbfbfe;}
+  .house.hl{border-color:var(--teal); background:var(--teal-bg);}
+  .house .he{font-size:34px;} .house .ht{font-size:19px; font-weight:800; color:var(--ink); margin-top:8px;}
+  .house .hk{font-size:13px; color:var(--teal); font-weight:700; margin-top:3px; letter-spacing:.04em;}
+  .house .hd{font-size:13px; color:#7b7890; margin-top:6px; line-height:1.45;}
+  .harrow{flex:0 0 62px; text-align:center; color:var(--teal); font-size:13px; font-weight:800; line-height:1.4;}
+  /* dark cover/closing */
+  .slide.dark{background:var(--bg);}
+  .blob{position:absolute; border-radius:50%; filter:blur(2px);}
+  .blob.b1{width:320px; height:320px; left:-80px; top:-100px; background:var(--teal);}
+  .blob.b2{width:240px; height:240px; right:120px; bottom:-140px; background:#3730a3;}
+  .dark .eyebrow{color:var(--teal-l);} .dark .eyebrow::before{background:var(--teal-l);}
+  .cover .big{position:absolute; left:66px; right:66px; bottom:190px; font-size:72px; font-weight:800; color:#fff; line-height:1.14; letter-spacing:-.03em;}
+  .cover .big .pp{color:var(--teal-l);}
+  .cover .csub{position:absolute; left:68px; right:66px; bottom:148px; font-size:22px; color:#a3a1b8;}
+  .lect{position:absolute; left:66px; bottom:58px; display:flex; align-items:center; gap:12px;}
+  .lect .av{width:40px; height:40px; border-radius:50%; background:var(--teal); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;}
+  .lect .lc{font-size:12px; color:#a3a1b8; letter-spacing:.15em;} .lect .ln{font-size:16px; color:#fff; font-weight:700;}
+  .eyebrow.top{position:absolute; left:66px; top:50px;}
+  .dark .foot{color:#5e5b72;}
+  .five-cover{position:absolute; right:66px; top:140px; display:flex; flex-direction:column; gap:10px;}
+  .pcv{display:flex; align-items:center; gap:14px;} .pcv .l{width:44px; height:44px; border-radius:10px; background:rgba(165,180,252,.14); color:var(--teal-l); font-weight:800; font-size:19px; display:flex; align-items:center; justify-content:center;}
+  .pcv .w{color:#d6d5ea; font-size:17px; font-weight:600; white-space:nowrap;}
+  .closing .big{position:absolute; left:66px; right:66px; top:280px; font-size:64px; font-weight:800; color:#fff; letter-spacing:-.02em; line-height:1.2;}
+  .closing .big .pp{color:var(--teal-l);}
+  .closing .csub{position:absolute; left:68px; right:66px; top:430px; font-size:22px; color:#a3a1b8; line-height:1.5;}
+  @media print{@page{size:1280px 720px; margin:0;} body{background:#fff;} .deck{display:block!important; gap:0; padding:0;} .slide{break-after:page; break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- 01 표지 -->
+  <section class="slide dark cover">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="eyebrow top">9TH · REAL SERVICE</div>
+    <div class="five-cover">
+      <div class="pcv"><div class="l">몸</div><div class="w">앱 코드 · 내 폴더</div></div>
+      <div class="pcv"><div class="l">기억</div><div class="w">GitHub · 코드의 역사</div></div>
+      <div class="pcv"><div class="l">무대</div><div class="w">Vercel · 24시간 실행</div></div>
+      <div class="pcv"><div class="l">창고</div><div class="w">Supabase · 모두의 데이터</div></div>
+      <div class="pcv"><div class="l">맥박</div><div class="w">push → 자동배포</div></div>
+    </div>
+    <div class="big">내 컴퓨터를 꺼도<br/><span class="pp">서비스</span>는 살아있다</div>
+    <div class="csub">심리테스트 공유 서비스로 배우는 GitHub · Vercel · Supabase</div>
+    <!--LECT-->
+    <div class="foot"><span>진짜 서비스 만들기 · 3종 세트</span><span>01 / 31</span></div>
+  </section>
+
+  <!-- 02 오프닝 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">PART 0 · 오프닝</div>
+    <div class="title">그 앱, 지금도 <span class="pp">살아있나요?</span></div>
+    <div class="subtitle">7차 할 일 앱 — URL은 살아있다. 그런데 여러분이 적은 할 일은 어디에?</div>
+    <div class="twocol">
+      <div class="panel green"><h4>살아있는 것 ✓</h4><ul>
+        <li>앱 화면과 URL — <b>무대(Vercel)</b> 위에 있으니까</li>
+        <li>폰 홈 화면의 아이콘</li>
+      </ul></div>
+      <div class="panel red"><h4>갇혀 있는 것 ✗</h4><ul>
+        <li>내가 적은 할 일 — <b>localStorage, 그 브라우저 안</b></li>
+        <li>폰 바꾸면 사라짐 · 친구는 절대 못 봄</li>
+        <li>"전체 사용자 통계" 같은 건 원리적으로 불가능</li>
+      </ul></div>
+    </div>
+    <div class="callout">데이터가 '내 기기 안'에 사는 한 — 그건 <span class="pp">서비스</span>가 아니라 <span class="rr">앱</span>이다.</div>
+    <div class="foot"><span>PART 0 / 오프닝</span><span>02 / 31</span></div>
+  </div></section>
+
+  <!-- 03 라이브 시연 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">PART 0 · 오늘의 결과물</div>
+    <div class="title">오늘 만드는 것 — <span class="pp">심리테스트 공유 서비스</span></div>
+    <div class="subtitle">강사 완성본 라이브 시연. 잘 보세요, 마지막 장면이 오늘의 전부입니다.</div>
+    <div class="tl">
+      <div class="tli"><div class="th">① 폰에서 테스트 풀기</div><div class="td">질문 5개, 30초면 끝</div></div>
+      <div class="tli"><div class="th">② 결과 + 통계</div><div class="td">"당신 유형은 전체 참여자의 23%"</div></div>
+      <div class="tli"><div class="th">③ 공유 링크 복사 → 수강생 한 명에게 카톡</div><div class="td">그 자리에서 전송</div></div>
+      <div class="tli"><div class="th">④ 그 수강생 폰에서 — 강사의 결과가 열린다 ⭐</div><div class="td">본인은 아무것도 안 풀었는데</div></div>
+    </div>
+    <div class="callout">친구 폰에서 내 결과가 보인다 — <span class="pp">이게 되려면 뭐가 필요할까?</span> 그게 오늘의 이론입니다.</div>
+    <div class="foot"><span>PART 0 / 오늘의 결과물</span><span>03 / 31</span></div>
+  </div></section>
+
+  <!-- 04 오늘의 약속 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">TODAY'S PROMISE</div>
+    <div class="title">코드·실행·데이터에게 <span class="pp">집</span>을 준다</div>
+    <div class="subtitle">몸(앱) · 기억(GitHub) · 무대(Vercel) · 창고(Supabase) · 맥박(자동배포) — 오늘의 다섯 단어.</div>
+    <div class="cards">
+      <div class="card"><div class="k">01 · 이론</div><div class="t">세 집의 원리</div><div class="d">클라이언트·서버·클라우드부터, 세 도구가 왜·무엇을·어떻게 하는지.</div></div>
+      <div class="card"><div class="k">02 · 실습</div><div class="t">세 집에 입주</div><div class="d">내가 기획한 테스트를 바이브 코딩 → 기억·무대·창고에 입주.</div></div>
+      <div class="card"><div class="k">03 · 결과물</div><div class="t">내 서비스 URL</div><div class="d">친구에게 보낼 공유 링크 + 창고에 쌓이는 진짜 응답들.</div></div>
+    </div>
+    <div class="callout">오늘부터 여러분이 만드는 건 앱이 아니라 — <span class="pp">내 컴퓨터를 꺼도 살아있는 서비스</span>다.</div>
+    <div class="foot"><span>TODAY'S PROMISE</span><span>04 / 31</span></div>
+  </div></section>
+
+  <!-- 05 이론1: 손님과 주방 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">이론 ① · 앱과 서비스는 다르다</div>
+    <div class="title">인터넷은 <span class="pp">손님</span>과 <span class="pp">주방</span>이다</div>
+    <div class="subtitle">인터넷의 모든 일은 딱 두 역할 — 요청하는 쪽(클라이언트)과 응답하는 쪽(서버).</div>
+    <div class="houses">
+      <div class="house"><div class="he">📱</div><div class="ht">손님</div><div class="hk">클라이언트</div><div class="hd">브라우저·폰<br/>"이 페이지 주세요" (요청)</div></div>
+      <div class="harrow">요청 →<br/>← 응답</div>
+      <div class="house hl"><div class="he">🍳</div><div class="ht">주방</div><div class="hk">서버</div><div class="hd">24시간 켜진 컴퓨터<br/>화면·데이터를 내온다</div></div>
+    </div>
+    <div class="callout">지금까지 우리는(4차 Artifacts · 7차 localhost) — <span class="pp">내가 손님이자 주방</span>이었다. 내 기기 안 자급자족. 그래서 남이 못 온다.</div>
+    <div class="foot"><span>이론 ① / 클라이언트·서버</span><span>05 / 31</span></div>
+  </div></section>
+
+  <!-- 06 이론1: localhost -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">이론 ① · 앱과 서비스는 다르다</div>
+    <div class="title"><span class="mono">localhost</span>의 정체 — <span class="pp">"내 컴퓨터 안"</span></div>
+    <div class="subtitle">옆 사람 폰에서 안 열리는 게 당연 — 그 주소 자체가 '각자 자기 컴퓨터'를 가리키는 예약어니까.</div>
+    <div class="cards">
+      <div class="card"><div class="k">필요 ①</div><div class="t">24시간 켜진 컴퓨터</div><div class="d">내 노트북은 덮으면 끝. 손님이 언제 올지 모른다.</div></div>
+      <div class="card"><div class="k">필요 ②</div><div class="t">전 세계가 찾는 주소</div><div class="d">도메인 — "여기로 오세요"라고 부를 수 있는 이름.</div></div>
+      <div class="card"><div class="k">필요 ③</div><div class="t">안전한 연결</div><div class="d">HTTPS 자물쇠 — 7차에서 "설치는 HTTPS에서만"이었던 이유.</div></div>
+    </div>
+    <div class="bigstate">셋 다 내 노트북엔 없다.<br/>그래서 — <span class="pp">빌린다.</span></div>
+    <div class="foot"><span>이론 ① / localhost</span><span>06 / 31</span></div>
+  </div></section>
+
+  <!-- 07 이론1: 클라우드 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">이론 ① · 앱과 서비스는 다르다</div>
+    <div class="title">클라우드 = <span class="pp">남의 컴퓨터</span>를 빌려 쓰기</div>
+    <div class="subtitle">데이터센터에 컴퓨터를 수만 대 켜놓고 빌려주는 회사들. 단 — 빌려주는 게 서로 다르다.</div>
+    <table><thead><tr><th>우리말</th><th>회사</th><th>빌려주는 것</th><th>비유</th></tr></thead><tbody>
+      <tr><td>기억</td><td class="hl">GitHub</td><td>코드 보관용 컴퓨터 (원본·역사)</td><td>일기장이자 금고</td></tr>
+      <tr><td>무대</td><td class="hl">Vercel</td><td>앱 실행용 컴퓨터 + 주소 + HTTPS</td><td>24시간 극장</td></tr>
+      <tr><td>창고</td><td class="hl">Supabase</td><td>데이터 보관용 컴퓨터 + 관리 화면</td><td>은행 금고</td></tr>
+    </tbody></table>
+    <div class="callout sm">셋 다 <span class="pp">무료로 시작</span>하고, 셋 다 <span class="pp">GitHub 계정 하나로 로그인</span>된다 — GitHub가 개발 세계의 신분증인 이유.</div>
+    <div class="foot"><span>이론 ① / 클라우드</span><span>07 / 31</span></div>
+  </div></section>
+
+  <!-- 08 이론1: 왜 셋 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">이론 ① · 앱과 서비스는 다르다</div>
+    <div class="title">왜 <span class="pp">셋</span>으로 나누나</div>
+    <div class="subtitle">코드는 '역사'가, 실행은 '안 꺼짐'이, 데이터는 '안 잃음 + 규칙'이 중요하다 — 성격이 다르면 집도 다르다.</div>
+    <div class="cards">
+      <div class="card"><div class="k">8차 회수</div><div class="t">한 집 = 한 책임</div><div class="d">PILOT의 L(나눈다)이 서비스 규모로 커진 것.</div></div>
+      <div class="card"><div class="k">자유</div><div class="t">갈아끼우기</div><div class="d">무대를 옮겨도 기억과 창고는 그대로. 분리의 힘.</div></div>
+      <div class="card"><div class="k">실물</div><div class="t">우리 채점기도 이렇게 산다</div><div class="d">코드 GitHub · 무대 Railway · 창고 Supabase — 오늘 배우는 게 진짜 서비스의 표준 구조.</div></div>
+    </div>
+    <div class="callout">이 수업 리더보드가 실시간으로 뜨던 것 — <span class="pp">오늘 배우는 창고(Supabase)</span>가 한 일입니다.</div>
+    <div class="foot"><span>이론 ① / 왜 셋인가</span><span>08 / 31</span></div>
+  </div></section>
+
+  <!-- 09 이론2: GitHub 왜 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">이론 ② · GITHUB — 기억</div>
+    <div class="title"><span class="dim">최종_진짜_최종.js</span>의 <span class="pp">지옥</span>에서 탈출</div>
+    <div class="subtitle">코드가 내 폴더에만 있으면 생기는 세 가지 일.</div>
+    <div class="twocol">
+      <div class="panel red"><h4>GitHub 없으면 ✗</h4><ul>
+        <li>노트북 고장 = <b>서비스 전체 증발</b></li>
+        <li>"어제까진 됐는데"로 <b>못 돌아감</b></li>
+        <li>Vercel이 코드를 <b>가져갈 주소가 없음</b> → 자동배포 불가</li>
+      </ul></div>
+      <div class="panel green"><h4>GitHub 있으면 ✓</h4><ul>
+        <li>원본 보관소 + <b>역사책</b> — 모든 버전이 남는다</li>
+        <li>아무 시점으로 <b>복귀 가능</b></li>
+        <li>다른 서비스들과의 <b>접선 장소</b> — 배포 파이프라인의 심장</li>
+      </ul></div>
+    </div>
+    <div class="callout sm">6차 파일 변경기로 정리했던 그 지옥이 코드에서 재현되는 걸 — <span class="pp">Git이 원천 차단</span>한다.</div>
+    <div class="foot"><span>이론 ② / GitHub — 왜</span><span>09 / 31</span></div>
+  </div></section>
+
+  <!-- 10 이론2: 게임 세이브 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">이론 ② · GITHUB — 기억</div>
+    <div class="title">버전 관리 = <span class="pp">게임 세이브</span></div>
+    <div class="subtitle">"지금 상태"를 이름 붙여 저장해두고, 언제든 그 시점으로 돌아가는 기술.</div>
+    <div class="dl">
+      <div class="di"><div class="dk"><span class="b">Git</span><span class="kt">게임기</span></div><div class="dd">내 컴퓨터에서 도는 <b>세이브 프로그램</b>. 전 세계 개발자의 표준.</div></div>
+      <div class="di"><div class="dk"><span class="b">GitHub</span><span class="kt">클라우드 세이브</span></div><div class="dd">세이브 파일들을 올려두는 <b>클라우드 서버</b>. 올려야 '내 컴퓨터 밖'에 존재.</div></div>
+      <div class="di"><div class="dk"><span class="b">커밋</span><span class="kt">세이브 1회</span></div><div class="dd">스냅샷 + "뭘 바꿨는지" 메모. <b>좋은 메모 = 미래의 나에게 보내는 쪽지.</b></div></div>
+      <div class="di"><div class="dk"><span class="b">push</span><span class="kt">올리기</span></div><div class="dd">내 세이브들을 GitHub에 올리기. 오늘 배울 <b>맥박의 방아쇠</b>.</div></div>
+      <div class="di"><div class="dk"><span class="b">브랜치</span><span class="kt">딴 길 세이브</span></div><div class="dd">복제해서 딴 길로 가보는 것 — 오늘은 본선(main) 하나만. '이런 게 있다'까지만.</div></div>
+    </div>
+    <div class="foot"><span>이론 ② / 버전 관리</span><span>10 / 31</span></div>
+  </div></section>
+
+  <!-- 11 이론2: 기능 지도 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">이론 ② · GITHUB — 기억</div>
+    <div class="title">GitHub <span class="pp">기능 지도</span></div>
+    <div class="subtitle">오늘 쓰는 건 위 4줄. 아래는 '이런 것도 있다'.</div>
+    <table><thead><tr><th>기능</th><th>뭐 하는 것</th><th>비유</th></tr></thead><tbody>
+      <tr><td>repo</td><td>프로젝트 하나가 사는 방 — <span class="mono">github.com/아이디/프로젝트명</span></td><td>집 주소</td></tr>
+      <tr><td>커밋·push</td><td>세이브 만들기 · 올리기</td><td>세이브 → 금고</td></tr>
+      <tr><td>히스토리</td><td>모든 커밋이 시간순으로 — 빨강(지운 줄)/초록(넣은 줄) 비교</td><td>타임머신</td></tr>
+      <tr><td>README</td><td>repo 첫 화면의 소개문 (4차 "사람한테 한 장")</td><td>집 문패</td></tr>
+      <tr><td>공개/비공개</td><td>public이면 누구나 열람 — <b>그대로 포트폴리오</b></td><td>오픈하우스</td></tr>
+      <tr><td>Issues·PR</td><td>협업용 게시판·검토 절차 — 오늘은 안 씀</td><td>회사 결재 라인</td></tr>
+    </tbody></table>
+    <div class="foot"><span>이론 ② / 기능 지도</span><span>11 / 31</span></div>
+  </div></section>
+
+  <!-- 12 이론2: 3동작 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">이론 ② · GITHUB — 기억</div>
+    <div class="title">오늘 쓰는 동작은 <span class="pp">딱 3개</span></div>
+    <div class="subtitle">명령어를 외우지 않는다 — Claude Code에게 말로 시키고, 무슨 일이 일어났는지만 이해한다.</div>
+    <div class="steps">
+      <div class="step"><div class="sn">1</div><div class="stt">"GitHub에 로그인해줘"</div><div class="std">gh auth login — 처음 한 번,<br/>브라우저 인증만 내가</div></div>
+      <div class="step"><div class="sn">2</div><div class="stt">"이 폴더를 새 저장소로 올려줘"</div><div class="std">처음 한 번 —<br/>repo 생성 + 첫 push</div></div>
+      <div class="step"><div class="sn">3</div><div class="stt">"커밋하고 push해줘"</div><div class="std">이후 무한 반복 —<br/>세이브 → 금고</div></div>
+    </div>
+    <div class="callout">확인은 웹에서: repo 페이지 → <span class="pp">commits</span> → 커밋 클릭 → <span class="rr">빨강</span>/<span class="pp">초록</span> 비교. "뭘 고쳤는지"의 증거.</div>
+    <div class="foot"><span>이론 ② / 오늘의 3동작</span><span>12 / 31</span></div>
+  </div></section>
+
+  <!-- 13 이론3: Vercel 왜 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">이론 ③ · VERCEL — 무대</div>
+    <div class="title">7차 배포는 <span class="dim">택배</span>, 오늘은 <span class="pp">컨베이어 벨트</span></div>
+    <div class="subtitle">내 컴퓨터를 서버로 쓸 수는 없다 — 24시간·주소·HTTPS 전부 없으니까. 그래서 극장을 빌린다.</div>
+    <div class="twocol">
+      <div class="panel red"><h4>7차 방식 — CLI 택배 ✗</h4><ul>
+        <li><span class="mono">vercel --prod</span> — 완성본을 한 번 던지기</li>
+        <li>고칠 때마다 <b>다시 보내야</b> 한다</li>
+        <li>사람이 손으로 = 잊고, 늦고, 실수한다</li>
+      </ul></div>
+      <div class="panel green"><h4>오늘 — GitHub 연동 벨트 ✓</h4><ul>
+        <li>repo를 무대에 <b>한 번 연결</b>하면</li>
+        <li>push할 때마다 <b>알아서 새 버전</b>이 오른다</li>
+        <li>현업 표준(CI/CD)을 그대로 쓰는 것</li>
+      </ul></div>
+    </div>
+    <div class="callout sm">Vercel은 <span class="pp">24시간 꺼지지 않는 극장</span> — 대본(코드)을 고칠 때마다 무대가 스스로 바뀐다.</div>
+    <div class="foot"><span>이론 ③ / Vercel — 왜</span><span>13 / 31</span></div>
+  </div></section>
+
+  <!-- 14 이론3: 배포 3선물 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">이론 ③ · VERCEL — 무대</div>
+    <div class="title">배포하면 따라오는 <span class="pp">3종 자동 선물</span></div>
+    <div class="subtitle">배포(deploy) = 내 앱을 남의 24시간 컴퓨터에 얹어 인터넷에 공개하는 것.</div>
+    <div class="cards">
+      <div class="card"><div class="k">선물 ①</div><div class="t">전 세계 유일 주소</div><div class="d"><span class="mono">내앱.vercel.app</span> — 도메인이 자동 발급.</div></div>
+      <div class="card"><div class="k">선물 ②</div><div class="t">HTTPS 자물쇠</div><div class="d">오가는 내용의 암호화. 7차 "설치·오프라인은 HTTPS에서만"의 그 자물쇠가 자동으로.</div></div>
+      <div class="card"><div class="k">선물 ③</div><div class="t">정적 사이트는 초간단</div><div class="d">우리 앱은 조리(서버 계산)가 필요 없는 도시락 — 파일 그대로 내면 끝. 그래서 설정이 없다.</div></div>
+    </div>
+    <div class="callout sm">환경변수(비밀 값 금고) 같은 것도 있다 — 오늘은 필요 없는 이유를 <span class="pp">창고의 열쇠 이론</span>에서 설명.</div>
+    <div class="foot"><span>이론 ③ / 배포</span><span>14 / 31</span></div>
+  </div></section>
+
+  <!-- 15 이론3: CI/CD 롤백 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">이론 ③ · VERCEL — 무대</div>
+    <div class="title"><span class="pp">자동배포</span>, 그리고 되돌리기(롤백)</div>
+    <div class="subtitle">배포도 커밋처럼 역사가 남는다 — 각 배포 줄에는 커밋 메시지가 그대로 붙는다.</div>
+    <div class="tl">
+      <div class="tli"><div class="th">push</div><div class="td">"커밋하고 push해줘" — 내가 하는 일의 전부</div></div>
+      <div class="tli"><div class="th">Vercel이 감지 → Building…</div><div class="td">새 버전을 알아서 가져가 준비</div></div>
+      <div class="tli"><div class="th">Ready — 전 세계 공개</div><div class="td">몇십 초 뒤, 같은 주소에 새 버전</div></div>
+      <div class="tli"><div class="th">망가졌다? → 클릭 한 번 롤백</div><div class="td">직전 배포로 즉시 복귀</div></div>
+    </div>
+    <div class="callout">"무서워서 못 고친다"가 사라진다 — <span class="pp">기억(커밋)과 롤백</span>이 있으니까. 현업이 이것 없이 일 안 하는 이유.</div>
+    <div class="foot"><span>이론 ③ / 자동배포·롤백</span><span>15 / 31</span></div>
+  </div></section>
+
+  <!-- 16 이론3: 5클릭 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">이론 ③ · VERCEL — 무대</div>
+    <div class="title">처음 <span class="pp">5클릭</span>, 이후 <span class="pp">0클릭</span></div>
+    <div class="subtitle">무대 연결은 처음 한 번뿐 — 이후엔 push가 전부다. (실행은 실습 Part 9에서)</div>
+    <div class="steps">
+      <div class="step"><div class="sn">1</div><div class="stt">GitHub로 로그인</div><div class="std">vercel.com —<br/>Continue with GitHub</div></div>
+      <div class="step"><div class="sn">2</div><div class="stt">Add New → Project</div><div class="std">새 프로젝트 만들기</div></div>
+      <div class="step"><div class="sn">3</div><div class="stt">내 repo Import</div><div class="std">기억의 집과 연결</div></div>
+      <div class="step"><div class="sn">4</div><div class="stt">Deploy</div><div class="std">설정 그대로<br/>(Framework: Other)</div></div>
+      <div class="step"><div class="sn">5</div><div class="stt">URL 발급 🎉</div><div class="std">폰에서 열어 확인</div></div>
+    </div>
+    <div class="callout sm">무료(Hobby)는 개인·비상업 학습에 충분. 상업 서비스로 키울 땐 유료 전환 검토.</div>
+    <div class="foot"><span>이론 ③ / 사용법</span><span>16 / 31</span></div>
+  </div></section>
+
+  <!-- 17 이론4: 공유링크 논리 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">이론 ④ · SUPABASE — 창고</div>
+    <div class="title">공유 링크 = <span class="pp">DB의 존재 증명</span></div>
+    <div class="subtitle">오프닝의 그 장면 — 친구 폰에서 내 결과가 열리려면?</div>
+    <div class="bigstate">내 결과가 친구 폰에 보이려면,<br/>그 데이터는 내 폰도 친구 폰도 아닌<br/><span class="pp">제3의 장소</span>에 있어야 한다.</div>
+    <div class="callout sm"><span class="rr">localStorage의 감옥</span> — 폰 바꾸면 소멸 · 공유 불가 · 통계 불가. 논리적으로 불가능한 것이지, 기술이 부족한 게 아니다. 그 제3의 장소가 <span class="pp">DB(창고)</span>.</div>
+    <div class="foot"><span>이론 ④ / Supabase — 왜</span><span>17 / 31</span></div>
+  </div></section>
+
+  <!-- 18 이론4: DB란 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">이론 ④ · SUPABASE — 창고</div>
+    <div class="title">왜 파일이 아니라 <span class="pp">DB</span>인가</div>
+    <div class="subtitle">"그냥 파일에 저장하면 안 되나요?" — 세 가지가 무너진다.</div>
+    <div class="cards">
+      <div class="card"><div class="k">① 동시성</div><div class="t">100명이 동시에 저장</div><div class="d">파일은 서로 덮어쓴다. DB는 줄 세워서 한 건도 안 잃는다.</div></div>
+      <div class="card"><div class="k">② 검색</div><div class="t">id 하나로 즉시</div><div class="d">파일은 전부 읽어야 찾는다. DB는 바로 꺼낸다.</div></div>
+      <div class="card"><div class="k">③ 규칙</div><div class="t">DB가 지켜준다</div><div class="d">"비면 안 됨", "4개 중 하나" — 규칙 위반은 저장 자체가 거절.</div></div>
+    </div>
+    <div class="callout">테이블 = <span class="pp">규칙 있는 엑셀 시트</span>. 열 = 항목, 행 = 응답 1건. 만 명이 동시에 써도 안 깨지는 엑셀.</div>
+    <div class="foot"><span>이론 ④ / DB란</span><span>18 / 31</span></div>
+  </div></section>
+
+  <!-- 19 이론4: SQL + 테이블 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">이론 ④ · SUPABASE — 창고</div>
+    <div class="title">SQL — 창고에 말 거는 언어, 동사는 <span class="pp">4개</span></div>
+    <div class="subtitle">속은 PostgreSQL — 대기업들이 쓰는 그 엔진을 무료로 빌린다. 오늘 SQL은 강사 스크립트 복붙 한 방.</div>
+    <div class="tags">
+      <span class="tag">INSERT · 넣기 ✅ 오늘 씀</span>
+      <span class="tag">SELECT · 꺼내기 ✅ 오늘 씀</span>
+      <span class="tag" style="background:#f4f4f6; color:#8a8798">UPDATE · 고치기 — 안 씀</span>
+      <span class="tag" style="background:#f4f4f6; color:#8a8798">DELETE · 지우기 — 안 씀</span>
+    </div>
+    <div class="minicard">
+      <div class="mh">results 테이블 — 우리 창고의 설계 (2차 I/O 계약의 데이터판)</div>
+      <div class="mb">
+        <div class="row"><span class="lbl">id</span><span class="val">자동 발급 고유번호 → 이게 곧 공유 링크의 <span class="mono">?id=</span></span></div>
+        <div class="row"><span class="lbl">result</span><span class="val">결과 유형 이름 (통계용)</span></div>
+        <div class="row"><span class="lbl">payload</span><span class="val">결과 전체 — 자유 구조 (질문이 몇 개든 OK)</span></div>
+        <div class="row"><span class="lbl">created_at</span><span class="val">저장 시각 (자동)</span></div>
+      </div>
+    </div>
+    <div class="foot"><span>이론 ④ / SQL·테이블</span><span>19 / 31</span></div>
+  </div></section>
+
+  <!-- 20 이론4: 열쇠와 RLS -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">이론 ④ · SUPABASE — 창고</div>
+    <div class="title">열쇠 <span class="pp">2개</span>와 문지기 <span class="pp">RLS</span></div>
+    <div class="subtitle">창고가 인터넷에 있다 = 아무나 문을 두드릴 수 있다. 그래서 열쇠와 규칙이 필요하다.</div>
+    <div class="twocol">
+      <div class="panel green"><h4>anon 키 — 손님용 방문증 ✓</h4><ul>
+        <li>코드에 넣어 <b>공개돼도 된다</b></li>
+        <li>뭘 할 수 있는지는 <b>문지기(RLS)</b>가 정한다</li>
+        <li>오늘 config.js에 넣는 게 이 열쇠</li>
+      </ul></div>
+      <div class="panel red"><h4>service_role — 마스터키 ✗</h4><ul>
+        <li>문지기를 <b>무시</b>하고 다 할 수 있다</li>
+        <li><b>절대</b> 코드·GitHub에 올리지 않는다</li>
+        <li>오늘은 꺼내지도 않는다</li>
+      </ul></div>
+    </div>
+    <div class="callout sm">문지기 규칙표(RLS): 넣기 ⭕ · 읽기 ⭕ · 고치기 ✗ · 지우기 ✗ → anon 키가 공개돼도 남의 결과를 조작할 수 없다. 습관: <span class="pp">"공개돼도 되는 열쇠인지 모르겠으면, 공개하지 마라."</span></div>
+    <div class="foot"><span>이론 ④ / 열쇠·RLS</span><span>20 / 31</span></div>
+  </div></section>
+
+  <!-- 21 이론4: 개설 4단계 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">이론 ④ · SUPABASE — 창고</div>
+    <div class="title">창고 개설 <span class="pp">4단계</span></div>
+    <div class="subtitle">테이블을 만들면 "넣기/꺼내기 창구(API)"가 자동으로 생긴다 — 코드에선 한 줄로 쓴다. (실행은 Part 10)</div>
+    <div class="steps">
+      <div class="step"><div class="sn">1</div><div class="stt">New Project</div><div class="std">Region: Seoul ·<br/>생성 대기 1~2분</div></div>
+      <div class="step"><div class="sn">2</div><div class="stt">SQL 복붙 → Run</div><div class="std">강사 SQL 한 방 —<br/>테이블+문지기 10초 완성</div></div>
+      <div class="step"><div class="sn">3</div><div class="stt">열쇠 복사</div><div class="std">Settings → API<br/>URL + anon key</div></div>
+      <div class="step"><div class="sn">4</div><div class="stt">앱과 연결</div><div class="std">Claude Code에게<br/>"config.js에 넣어줘"</div></div>
+    </div>
+    <div class="callout sm">⚠️ 무료 프로젝트는 <span class="rr">약 1주일 미사용 시 일시정지</span> — "몇 주 뒤 안 열려요"의 1순위 원인. 대시보드에서 Restore 클릭이면 복구.</div>
+    <div class="foot"><span>이론 ④ / 개설 4단계</span><span>21 / 31</span></div>
+  </div></section>
+
+  <!-- 22 이론5: 마스터 그림 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">이론 ⑤ · 총정리</div>
+    <div class="title">세 집이 <span class="pp">한 몸</span>이 되는 순간</div>
+    <div class="subtitle">오늘의 마스터 그림 — 이 한 장이 남으면 성공.</div>
+    <div class="houses">
+      <div class="house"><div class="he">💻</div><div class="ht">내 컴퓨터</div><div class="hk">몸</div><div class="hd">만들고 고치는 곳<br/>꺼져도 서비스는 산다</div></div>
+      <div class="harrow">push →</div>
+      <div class="house"><div class="he">📚</div><div class="ht">GitHub</div><div class="hk">기억</div><div class="hd">코드 원본 · 역사</div></div>
+      <div class="harrow">자동배포 →</div>
+      <div class="house hl"><div class="he">🎭</div><div class="ht">Vercel</div><div class="hk">무대</div><div class="hd">24시간 실행 · URL</div></div>
+      <div class="harrow">↔ insert<br/>select</div>
+      <div class="house"><div class="he">🏦</div><div class="ht">Supabase</div><div class="hk">창고</div><div class="hd">모두의 데이터</div></div>
+    </div>
+    <div class="bigstate">이 그림 어디에도<br/><span class="pp">'켜져 있는 내 컴퓨터'</span>는 없다.</div>
+    <div class="foot"><span>이론 ⑤ / 총정리</span><span>22 / 31</span></div>
+  </div></section>
+
+  <!-- 23 이론5: 데이터의 여행 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">이론 ⑤ · 총정리</div>
+    <div class="title">데이터의 <span class="pp">여행</span> — 친구가 링크를 여는 순간</div>
+    <div class="subtitle"><span class="mono">my-test.vercel.app/?id=abc123</span> — 이 한 번의 클릭에 세 집이 다 움직인다.</div>
+    <div class="tl">
+      <div class="tli"><div class="th">① 친구 폰 → 무대(Vercel)</div><div class="td">주소로 요청 → 앱 화면이 내려온다</div></div>
+      <div class="tli"><div class="th">② 앱 → 창고(Supabase)</div><div class="td">id 'abc123'으로 select 요청</div></div>
+      <div class="tli"><div class="th">③ 창고 → 친구 폰</div><div class="td">내 결과 행을 내어줌 → 화면에 그려짐</div></div>
+    </div>
+    <div class="cards" style="margin-top:20px">
+      <div class="card"><div class="k">문답 ①</div><div class="t">코드를 망가뜨렸다?</div><div class="d">기억(커밋 복귀) 또는 무대(롤백)</div></div>
+      <div class="card"><div class="k">문답 ②</div><div class="t">1만 명이 몰렸다?</div><div class="d">일하는 건 무대와 창고 — 내 컴퓨터 아님</div></div>
+      <div class="card"><div class="k">문답 ③</div><div class="t">응답을 엑셀로?</div><div class="d">창고 — Table Editor에서 내보내기</div></div>
+    </div>
+    <div class="foot"><span>이론 ⑤ / 데이터의 여행 · ✂️ 2회 분할 시 여기까지 1회차</span><span>23 / 31</span></div>
+  </div></section>
+
+  <!-- 24 실습 P6 기획 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">실습 · PART 6</div>
+    <div class="title">내 테스트를 <span class="pp">기획</span>한다 — Claude와 대화</div>
+    <div class="subtitle">강사 제공 '기획 프롬프트'를 claude.ai에 붙여넣고 대화 시작. 이 프롬프트, 어디서 본 틀이죠? — R-PCCO(1차).</div>
+    <div class="steps">
+      <div class="step"><div class="sn">1</div><div class="stt">프롬프트 붙여넣기</div><div class="std">취향 질문 2개에 답</div></div>
+      <div class="step"><div class="sn">2</div><div class="stt">주제 고르기</div><div class="std">후보 5개 중 선택·변형<br/>(동물? 음식? 방 안의 물건?)</div></div>
+      <div class="step"><div class="sn">3</div><div class="stt">단계별 설계</div><div class="std">성향 축 → 유형 → 질문<br/>단계마다 내가 확인</div></div>
+      <div class="step"><div class="sn">4</div><div class="stt">"완성" → 기획안.md</div><div class="std">출력물을 키트 폴더의<br/>기획안.md로 저장</div></div>
+    </div>
+    <div class="callout">자유 기획 — 단 <span class="pp">최소 요건 2개</span>: ① 결과에 유형/등급 개념 (통계가 성립하려면) ② 결과 공유 기능 (오늘의 킬러 장면).</div>
+    <div class="foot"><span>실습 PART 6 / 기획 · 15분</span><span>24 / 31</span></div>
+  </div></section>
+
+  <!-- 25 실습 P7 바이브코딩 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">실습 · PART 7</div>
+    <div class="title">백엔드 키트 위에 <span class="pp">바이브 코딩</span></div>
+    <div class="subtitle">키트 폴더에서 claude 실행 → 구현 요청은 한 줄이면 된다.</div>
+    <div class="minicard">
+      <div class="mh">구현 요청 (복붙)</div>
+      <div class="mb"><div class="row"><span class="val" style="font-size:19px">"<b>기획안.md</b>를 읽고, <b>CLAUDE.md</b>의 규칙을 지켜서 이 심리테스트 서비스를 구현해줘."</span></div></div>
+    </div>
+    <div class="cards" style="margin-top:20px">
+      <div class="card"><div class="k">울타리</div><div class="t">CLAUDE.md가 지킨다</div><div class="d">어떤 기획이 와도 뒷단 계약은 유지 — 6차 "AI한테 한 장"의 실전 회수.</div></div>
+      <div class="card"><div class="k">계약</div><div class="t">db.js 함수 3개</div><div class="d">saveResult · loadResult · getStats — 앞단은 자유, 창고 출입은 이 문으로만.</div></div>
+      <div class="card"><div class="k">정상!</div><div class="t">공유 버튼은 회색</div><div class="d">"창고 연결 대기 중" — 아직 창고가 없어서. Part 10에서 켜진다.</div></div>
+    </div>
+    <div class="callout sm">🛟 생성이 꼬여 시간을 잡아먹으면 — <span class="pp">참고샘플(동물테스트)로 갈아타고</span> 뒷단 진도는 함께 간다.</div>
+    <div class="foot"><span>실습 PART 7 / 바이브 코딩 · 30분</span><span>25 / 31</span></div>
+  </div></section>
+
+  <!-- 26 실습 P8 GitHub -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">실습 · PART 8</div>
+    <div class="title">GitHub — <span class="pp">기억의 집</span> 입주</div>
+    <div class="subtitle">이론 ②의 3동작을 그대로. 로그인(처음 한 번) → 올리기 → 확인.</div>
+    <div class="tl">
+      <div class="tli"><div class="th">"GitHub에 로그인해줘 (gh auth login)"</div><div class="td">브라우저 인증만 직접 — Logged in 확인</div></div>
+      <div class="tli"><div class="th">"이 폴더를 GitHub 새 저장소로 올려줘. 이름은 my-test"</div><div class="td">repo 생성 + 첫 push</div></div>
+      <div class="tli"><div class="th">브라우저에서 repo 확인</div><div class="td">파일 목록 · 기획안.md도 함께 박제 — 기획의 역사까지 기억에</div></div>
+      <div class="tli"><div class="th">한 가지 고치고 → "커밋하고 push해줘"</div><div class="td">commits에 두 번째 줄 + 빨강/초록 비교 화면</div></div>
+    </div>
+    <div class="callout">"방금 여러분 코드가 <span class="pp">지구 반대편 데이터센터</span>에 박제됐습니다."</div>
+    <div class="foot"><span>실습 PART 8 / GitHub · 12분</span><span>26 / 31</span></div>
+  </div></section>
+
+  <!-- 27 실습 P9 Vercel -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">실습 · PART 9</div>
+    <div class="title">Vercel — <span class="pp">무대</span>에 서다</div>
+    <div class="subtitle">이론 ③의 5클릭을 그대로. 코드 작업 없음 — 전부 vercel.com 대시보드에서.</div>
+    <div class="steps">
+      <div class="step"><div class="sn">1</div><div class="stt">Continue with GitHub</div><div class="std">로그인 = 연동 완료</div></div>
+      <div class="step"><div class="sn">2</div><div class="stt">Add New → Project</div><div class="std"></div></div>
+      <div class="step"><div class="sn">3</div><div class="stt">my-test Import</div><div class="std">안 보이면 GitHub<br/>권한에서 repo 허용</div></div>
+      <div class="step"><div class="sn">4</div><div class="stt">Deploy</div><div class="std">Framework: Other<br/>설정 그대로</div></div>
+      <div class="step"><div class="sn">5</div><div class="stt">폰에서 열기 🎉</div><div class="std">내 테스트가<br/>전 세계에 공개</div></div>
+    </div>
+    <div class="callout">"7차랑 뭐가 다른지 아직 안 보이죠? — <span class="pp">Part 11에서 보여드립니다.</span>"</div>
+    <div class="foot"><span>실습 PART 9 / Vercel · 10분</span><span>27 / 31</span></div>
+  </div></section>
+
+  <!-- 28 실습 P10 Supabase -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">실습 · PART 10 ⭐ 오늘의 산</div>
+    <div class="title">Supabase — <span class="pp">창고</span>를 잇다</div>
+    <div class="subtitle">이론 ④의 4단계를 그대로 실행한다.</div>
+    <div class="steps">
+      <div class="step"><div class="sn">1</div><div class="stt">New Project</div><div class="std">Region: Seoul<br/>대기 중 개념 복습</div></div>
+      <div class="step"><div class="sn">2</div><div class="stt">SQL Editor → Run</div><div class="std">supabase_setup.sql<br/>복붙 한 방</div></div>
+      <div class="step"><div class="sn">3</div><div class="stt">열쇠 복사</div><div class="std">Settings → API<br/>URL + anon key</div></div>
+      <div class="step"><div class="sn">4</div><div class="stt">"config.js에 넣어줘"</div><div class="std">Claude Code가 연결</div></div>
+    </div>
+    <div class="callout">로컬에서 테스트 1회 → <span class="pp">Table Editor에 내 응답이 한 줄 꽂혀 있다</span> — "방금 여러분 데이터가 창고에 들어갔습니다." (와우 ①) 그리고 공유 버튼이 켜졌다.</div>
+    <div class="foot"><span>실습 PART 10 / Supabase · 25분</span><span>28 / 31</span></div>
+  </div></section>
+
+  <!-- 29 실습 P11 맥박 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">실습 · PART 11 ⭐</div>
+    <div class="title"><span class="pp">맥박</span> 확인 + 공유 이벤트</div>
+    <div class="subtitle">오늘의 와우 모먼트 3연타.</div>
+    <div class="tl">
+      <div class="tli"><div class="th">"커밋하고 push해줘" → Vercel Deployments 관람</div><div class="td">Building… → Ready. "저는 Vercel에 손도 안 댔습니다. push가 방아쇠." (와우 ②)</div></div>
+      <div class="tli"><div class="th">폰에서 내 테스트 → 결과 → 공유 링크 복사</div><div class="td">옆 사람과 링크 교환</div></div>
+      <div class="tli"><div class="th">남의 폰에서 내 결과가 열린다 (와우 ③)</div><div class="td">이론 ④의 논리가 눈앞에서 증명되는 순간</div></div>
+      <div class="tli"><div class="th">통계가 살아 움직인다</div><div class="td">"당신 유형은 23%" — 창고가 쌓일수록 숫자가 변한다. 단톡방에 URL 공유!</div></div>
+    </div>
+    <div class="foot"><span>실습 PART 11 / 맥박·공유 · 13분</span><span>29 / 31</span></div>
+  </div></section>
+
+  <!-- 30 마무리 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">마무리</div>
+    <div class="title">몸 · 기억 · 무대 · 창고 — 그리고 <span class="pp">맥박</span></div>
+    <div class="subtitle">"코드는 GitHub에 살고, 실행은 Vercel에 살고, 데이터는 Supabase에 산다. 셋 다 내 컴퓨터가 아니다."</div>
+    <div class="dl">
+      <div class="di"><div class="dk"><span class="b">습관 1</span><span class="kt">고치면 커밋</span></div><div class="dd">의미 있는 변경마다 세이브 포인트 — 미래의 나를 위한 쪽지와 함께.</div></div>
+      <div class="di"><div class="dk"><span class="b">습관 2</span><span class="kt">마스터키 금지</span></div><div class="dd">service_role 키는 절대 코드·GitHub에 올리지 않는다. 모르겠으면 공개하지 마라.</div></div>
+      <div class="di"><div class="dk"><span class="b">습관 3</span><span class="kt">배포 후 폰 확인</span></div><div class="dd">무대에 올랐으면 반드시 진짜 관객석(폰)에서 확인.</div></div>
+    </div>
+    <div class="callout sm">📢 공지: 무료 창고는 1주 미사용 시 일시정지(Restore로 복구) · 심화 숙제: 7차 PWA 5요소를 얹어 설치형으로 — 단, <span class="pp">"이 서비스는 왜 웹이 정답이었나"</span>부터 답하고 시작.</div>
+    <div class="foot"><span>마무리</span><span>30 / 31</span></div>
+  </div></section>
+
+  <!-- 31 클로징 -->
+  <section class="slide dark closing">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="eyebrow top">9TH · REAL SERVICE</div>
+    <div class="big">공유 링크가 되는 순간,<br/>앱이 아니라 <span class="pp">서비스</span>다</div>
+    <div class="csub">오늘 배운 건 심리테스트가 아니라 — 무엇을 만들든 세상에 내보내는 표준 배관.<br/>다음: 이 배관 위에 리더보드? 방명록? 예약 시스템? 무엇이든.</div>
+    <div class="foot"><span>진짜 서비스 만들기 · GitHub × Vercel × Supabase</span><span>31 / 31</span></div>
+  </section>
+
+</div>
+</body>
+</html>

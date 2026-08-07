@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>10차 강의 슬라이드 · 거꾸로 만들기 — 한 방 프롬프트 역설계</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root{--bg:#0c1f1d; --ink:#152321; --muted:#66807c; --line:#e2ecea;
+        --teal:#0d9488; --teal-l:#5eead4; --teal-bg:#f0fdfa; --amber:#d97706; --red:#dc2626;}
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:"Pretendard","Malgun Gothic",-apple-system,sans-serif; background:#3a3a40;}
+  .deck{display:flex; flex-direction:column; align-items:center; gap:22px; padding:22px;}
+  .slide{width:1280px; height:720px; position:relative; overflow:hidden; background:#fff; flex:0 0 auto;}
+  .pad{position:absolute; inset:0; padding:52px 66px;}
+  .eyebrow{color:var(--teal); font-size:14.5px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; display:flex; align-items:center; gap:10px;}
+  .eyebrow::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--teal);}
+  .eyebrow.red{color:var(--red);} .eyebrow.red::before{background:var(--red);}
+  .eyebrow.amber{color:var(--amber);} .eyebrow.amber::before{background:var(--amber);}
+  .title{font-size:44px; font-weight:800; color:var(--ink); line-height:1.16; margin-top:18px; letter-spacing:-.02em;}
+  .title.sm{font-size:38px;}
+  .title .dim{color:#9aacaa; font-weight:700;} .title .pp{color:var(--teal);} .title .strike{text-decoration:line-through; color:#b3c2c0; font-weight:700;}
+  .subtitle{font-size:19px; color:var(--muted); margin-top:13px; line-height:1.5;}
+  .foot{position:absolute; left:66px; right:66px; bottom:26px; display:flex; justify-content:space-between; font-size:12.5px; color:#a2b3b0; letter-spacing:.04em;}
+  .callout{margin-top:22px; background:#f4faf9; border-left:4px solid var(--teal); border-radius:0 8px 8px 0; padding:16px 22px; font-size:20px; color:#2f4744; line-height:1.5;}
+  .callout.sm{font-size:17px; padding:14px 20px;}
+  .callout .pp{color:var(--teal); font-weight:700;} .callout .rr{color:var(--red); font-weight:700;}
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:26px;}
+  .cards.c2{grid-template-columns:repeat(2,1fr);} .cards.c4{grid-template-columns:repeat(4,1fr);}
+  .card{border:1px solid var(--line); border-radius:14px; padding:20px;}
+  .card .k{color:var(--teal); font-size:12.5px; font-weight:700; letter-spacing:.05em;}
+  .card .t{font-size:20px; font-weight:800; color:var(--ink); margin-top:9px;}
+  .card .d{font-size:14px; color:#748c88; margin-top:7px; line-height:1.5;}
+  .twocol{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:24px;}
+  .panel{border:1px solid var(--line); border-radius:14px; padding:22px;}
+  .panel.red{border-color:#f3c9c9; background:#fdf5f5;} .panel.red h4{color:var(--red);}
+  .panel.green{border-color:#bfe7e1; background:#f2fbf9;} .panel.green h4{color:var(--teal);}
+  .panel h4{font-size:16.5px; color:var(--teal); margin-bottom:11px;}
+  .panel ul{margin-left:18px;} .panel li{font-size:15.5px; color:#2f4744; margin:8px 0; line-height:1.45;}
+  .mono{font-family:ui-monospace,monospace; background:#dcf5f1; color:#0f5f57; padding:1px 7px; border-radius:5px; font-size:.92em;}
+  .bigstate{margin-top:34px; font-size:35px; font-weight:800; color:var(--ink); line-height:1.32; letter-spacing:-.02em;}
+  .bigstate .pp{color:var(--teal);}
+  .steps{display:flex; align-items:stretch; gap:12px; margin-top:28px;}
+  .step{flex:1; border:1px solid var(--line); border-radius:14px; padding:18px 14px; text-align:center; position:relative;}
+  .step .sn{width:28px; height:28px; border-radius:8px; background:var(--teal); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; margin:0 auto 10px; font-size:14px;}
+  .step .stt{font-size:16px; font-weight:800; color:var(--ink);}
+  .step .std{font-size:13px; color:#748c88; margin-top:5px; line-height:1.4;}
+  .step:not(:last-child)::after{content:"›"; position:absolute; right:-11px; top:50%; transform:translateY(-50%); color:var(--teal-l); font-size:21px; font-weight:800; z-index:2;}
+  .dl{margin-top:22px;}
+  .di{display:flex; gap:16px; align-items:flex-start; padding:12px 0; border-bottom:1px solid #eef4f3;}
+  .di .dk{flex:0 0 190px; display:flex; align-items:center; gap:9px;}
+  .di .dk .b{background:var(--teal); color:#fff; font-weight:800; font-size:13px; border-radius:6px; padding:3px 10px;}
+  .di .dk .kt{font-size:17px; font-weight:800; color:var(--ink);}
+  .di .dd{flex:1; font-size:15.5px; color:#40534f; line-height:1.5;}
+  .di .dd b{color:var(--teal);}
+  .timerbox{margin-top:30px; display:flex; align-items:center; gap:26px;}
+  .timer{font-size:96px; font-weight:800; color:var(--teal); letter-spacing:.02em; font-variant-numeric:tabular-nums;}
+  .timer small{font-size:22px; color:#8aa39f; font-weight:700; display:block; letter-spacing:.2em; margin-top:2px;}
+  .checkgrid{display:grid; grid-template-columns:1fr 1fr; gap:6px 26px; margin-top:18px;}
+  .chk{display:flex; gap:9px; align-items:baseline; font-size:15px; color:#2f4744; padding:4.5px 0; border-bottom:1px solid #f0f6f5;}
+  .chk .cb{color:#9db8b4; font-size:14px;}
+  .chk .lv{font-size:11px; font-weight:800; border-radius:4px; padding:1px 6px; flex-shrink:0;}
+  .lv1{background:#e6f3f1; color:#0d9488;} .lv2{background:#fef3c7; color:#b45309;} .lv3{background:#fde8e8; color:#b91c1c;}
+  /* dark cover/closing */
+  .slide.dark{background:var(--bg);}
+  .blob{position:absolute; border-radius:50%; filter:blur(2px);}
+  .blob.b1{width:320px; height:320px; left:-80px; top:-100px; background:var(--teal);}
+  .blob.b2{width:240px; height:240px; right:120px; bottom:-140px; background:#115e59;}
+  .dark .eyebrow{color:var(--teal-l);} .dark .eyebrow::before{background:var(--teal-l);}
+  .cover .big{position:absolute; left:66px; right:66px; bottom:190px; font-size:68px; font-weight:800; color:#fff; line-height:1.16; letter-spacing:-.03em;}
+  .cover .big .pp{color:var(--teal-l);} .cover .big .strike{text-decoration:line-through; color:#4c6663; font-weight:700;}
+  .cover .csub{position:absolute; left:68px; right:66px; bottom:148px; font-size:22px; color:#9ab4b0;}
+  .lect{position:absolute; left:66px; bottom:58px; display:flex; align-items:center; gap:12px;}
+  .lect .av{width:40px; height:40px; border-radius:50%; background:var(--teal); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;}
+  .lect .lc{font-size:12px; color:#9ab4b0; letter-spacing:.15em;} .lect .ln{font-size:16px; color:#fff; font-weight:700;}
+  .eyebrow.top{position:absolute; left:66px; top:50px;}
+  .dark .foot{color:#547571;}
+  .three-cover{position:absolute; right:66px; top:150px; display:flex; flex-direction:column; gap:14px;}
+  .pcv{display:flex; align-items:center; gap:14px;} .pcv .l{width:48px; height:48px; border-radius:10px; background:rgba(94,234,212,.14); color:var(--teal-l); font-weight:800; font-size:21px; display:flex; align-items:center; justify-content:center;}
+  .pcv .w{color:#cfe4e1; font-size:17px; font-weight:600; white-space:nowrap;}
+  .closing .big{position:absolute; left:66px; right:66px; top:260px; font-size:60px; font-weight:800; color:#fff; letter-spacing:-.02em; line-height:1.25;}
+  .closing .big .pp{color:var(--teal-l);}
+  .closing .csub{position:absolute; left:68px; right:66px; top:440px; font-size:21px; color:#9ab4b0; line-height:1.6;}
+  .center-quote{position:absolute; left:100px; right:100px; top:250px; font-size:52px; font-weight:800; color:var(--ink); line-height:1.35; letter-spacing:-.02em; text-align:center;}
+  .center-quote .pp{color:var(--teal);}
+  .center-sub{position:absolute; left:100px; right:100px; top:470px; text-align:center; font-size:21px; color:var(--muted); line-height:1.6;}
+  @media print{@page{size:1280px 720px; margin:0;} body{background:#fff;} .deck{display:block!important; gap:0; padding:0;} .slide{break-after:page; break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- 01 표지 -->
+  <section class="slide dark cover">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="eyebrow top">10TH · REVERSE ENGINEERING</div>
+    <div class="three-cover">
+      <div class="pcv"><div class="l">쓰</div><div class="w">쓰다 · Use — 사용자로서 충분히</div></div>
+      <div class="pcv"><div class="l">뜯</div><div class="w">뜯다 · Decompose — 목록으로 분해</div></div>
+      <div class="pcv"><div class="l">적</div><div class="w">적다 · Specify — 재량이 안 남게</div></div>
+    </div>
+    <div class="big"><span class="strike">프롬프트 → 프로그램</span><br/><span class="pp">프로그램 → 프롬프트</span></div>
+    <div class="csub">거꾸로 만들기 — 한 방 프롬프트 역설계 · 오늘은 만들지 않습니다</div>
+    <div class="foot"><span>거꾸로 만들기 · 한 방 프롬프트 역설계</span><span>01 / 15</span></div>
+  </section>
+
+  <!-- 02 왜 거꾸로 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">PART 0 · 왜 거꾸로 가나</div>
+    <div class="title">프롬프트 실력의 정체</div>
+    <div class="subtitle">지금까지 배운 공식들(R-PCCO, 5요소…)은 전부 '빈칸 채우기 틀' — 문제는 빈칸에 넣을 내용이 어디서 오는가.</div>
+    <div class="twocol">
+      <div class="panel red"><h4>글재주 ✗</h4><ul>
+        <li>문장을 매끄럽게 다듬는 능력이 아니다</li>
+        <li>멋진 표현·긴 분량 ≠ 좋은 프롬프트</li>
+      </ul></div>
+      <div class="panel green"><h4>관찰의 양 ✓</h4><ul>
+        <li>원하는 것을 <b>정확히 보고</b></li>
+        <li><b>목록으로 분해하고</b></li>
+        <li><b>빠짐없이 옮겨 적는</b> 능력</li>
+      </ul></div>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="sn">1</div><div class="stt">관찰</div><div class="std">무엇이 어떻게 동작하는가</div></div>
+      <div class="step"><div class="sn">2</div><div class="stt">분해</div><div class="std">기능·결과물·예외를 목록으로</div></div>
+      <div class="step"><div class="sn">3</div><div class="stt">명세</div><div class="std">AI에게 넘길 한 장으로</div></div>
+    </div>
+    <div class="foot"><span>PART 0 / 왜 거꾸로</span><span>02 / 15</span></div>
+  </div></section>
+
+  <!-- 03 기준 한 줄 -->
+  <section class="slide">
+    <div class="pad">
+      <div class="eyebrow">PART 0 · 오늘의 제출물</div>
+      <div class="center-quote">"이 프롬프트만 받은 AI가,<br/>그 프로그램을 <span class="pp">그대로 만들 수 있는가?</span>"</div>
+      <div class="center-sub">제출물 = 프롬프트 텍스트 1개 · 길이 제한 없음 · 형식 제한 없음 — 기준은 이 한 줄뿐<br/><b style="color:#0d9488">프롬프트에 없는 것은 만들어지지 않는다.</b></div>
+      <div class="foot"><span>PART 0 / 기준 한 줄</span><span>03 / 15</span></div>
+    </div>
+  </section>
+
+  <!-- 04 레벨 점검 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">PART 0 · 솔직한 안내</div>
+    <div class="title">오늘은 <span class="pp">레벨 점검</span>입니다</div>
+    <div class="subtitle">열 번의 수업이 쌓였습니다 — 이제 각자에게 맞는 속도로 갑니다.</div>
+    <div class="twocol">
+      <div class="panel red"><h4>시험 ✗</h4><ul>
+        <li>등수 없음 · 합격/불합격 없음</li>
+        <li>초급반 = 벌점이 아니라 <b>기초를 다지는 코스</b></li>
+      </ul></div>
+      <div class="panel green"><h4>배치 상담 ✓</h4><ul>
+        <li>비슷한 속도끼리 묶어 <b>딱 맞는 속도로</b></li>
+        <li>반영 요소 2개 — <b>본인 희망 + 강사의 원문 검토</b></li>
+      </ul></div>
+    </div>
+    <div class="callout">제출할 때 <span class="pp">희망하는 반(초급/중급)</span>을 함께 적어주세요. 분반 결과는 <span class="pp">추후 공지</span>합니다.</div>
+    <div class="foot"><span>PART 0 / 레벨 점검</span><span>04 / 15</span></div>
+  </div></section>
+
+  <!-- 05 역설계 3단계 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 1 · 오늘의 절차</div>
+    <div class="title">역설계 3단계 — <span class="pp">쓰다 · 뜯다 · 적다</span></div>
+    <div class="subtitle">제일 위험한 건 조금 써보고 바로 적기 — 뜯는 단계를 건너뛴 프롬프트는 반드시 얇다.</div>
+    <div class="cards">
+      <div class="card"><div class="k">① USE</div><div class="t">쓰다</div><div class="d">사용자로서 충분히 써 본다. 정상적으로도 — 그리고 일부러 이상하게도.</div></div>
+      <div class="card"><div class="k">② DECOMPOSE</div><div class="t">뜯다</div><div class="d">본 것을 워크시트에 목록으로 분해한다. 기능·결과물·예외·이상한 점.</div></div>
+      <div class="card"><div class="k">③ SPECIFY</div><div class="t">적다</div><div class="d">목록을 하나의 프롬프트로 재조립한다. AI의 재량이 남지 않게.</div></div>
+    </div>
+    <div class="callout">그래서 오늘 시간표는 — 관찰에 <span class="pp">30분</span>, 작성에 <span class="pp">45분</span>.</div>
+    <div class="foot"><span>PART 1 / 역설계 3단계</span><span>05 / 15</span></div>
+  </div></section>
+
+  <!-- 06 시연 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 1 · 라이브 시연</div>
+    <div class="title">지금 화면을 보세요 — <span class="pp">IG 아카이버</span></div>
+    <div class="subtitle">강사가 실제로 만들어 쓰는 프로그램 — 인스타그램 카드뉴스 보관 도구.</div>
+    <div class="cards c2">
+      <div class="card"><div class="k">사용법의 전부</div><div class="t">링크 넣고 → 시작</div><div class="d">이게 다입니다. 나머지는 여러분이 직접 발견하세요.</div></div>
+      <div class="card"><div class="k">드리는 것</div><div class="t">실행 파일 하나 (소스 없음)</div><div class="d">오늘 측정하는 건 코드 읽기가 아니라 사용자로서의 관찰력.</div></div>
+    </div>
+    <div class="callout">여러분이 재현하고 싶은 세상의 좋은 프로그램들 — 대부분 <span class="pp">소스가 없습니다</span>. 겉과 결과물만으로 속을 추론하는 것, 그게 오늘의 훈련입니다.</div>
+    <div class="foot"><span>PART 1 / 시연</span><span>06 / 15</span></div>
+  </div></section>
+
+  <!-- 07 배포+수칙 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">PART 1 · 배포와 수칙</div>
+    <div class="title sm">사용 수칙 4 — <span class="pp">이유가 있는 규칙들</span></div>
+    <div class="cards c2" style="margin-top:20px">
+      <div class="card"><div class="k">수칙 ①</div><div class="t">링크는 배정받은 것만, 1~2개</div><div class="d">전원이 같은 와이파이 — 요청이 몰리면 인스타그램이 우리를 차단합니다. 조별로 시작 시간도 나눕니다.</div></div>
+      <div class="card"><div class="k">수칙 ②</div><div class="t">"요청 거부" 뜨면 재시도 금지</div><div class="d">재시도할수록 차단이 길어집니다. 샘플 폴더로 관찰을 계속하세요 — 지장 없습니다.</div></div>
+      <div class="card"><div class="k">수칙 ③</div><div class="t">파란 경고창 = "추가 정보 → 실행"</div><div class="d">서명 없는 개인 제작 프로그램의 정상 경고입니다.</div></div>
+      <div class="card"><div class="k">수칙 ④</div><div class="t">맥 사용자는 2인 1조</div><div class="d">짝과 한 화면으로 관찰 — 워크시트와 프롬프트는 각자 씁니다.</div></div>
+    </div>
+    <div class="callout sm">zip 구성: <span class="pp">IG-Archiver.exe</span> + <span class="pp">샘플 결과 폴더</span> — 원하는 위치에 풀고 exe를 더블클릭.</div>
+    <div class="foot"><span>PART 1 / 수칙</span><span>07 / 15</span></div>
+  </div></section>
+
+  <!-- 08 체험·관찰 30분 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 2 · 쓰다 + 뜯다</div>
+    <div class="title">관찰 미션 <span class="dim">— 여러분은 사용자이자 탐정</span></div>
+    <div class="timerbox">
+      <div class="timer">30:00<small>OBSERVE</small></div>
+      <div style="flex:1">
+        <div class="dl" style="margin-top:0">
+          <div class="di"><div class="dk"><span class="b">①</span><span class="kt">첫인상</span></div><div class="dd">화면에 무엇이 있나 — 버튼, 입력칸, 글자 하나까지</div></div>
+          <div class="di"><div class="dk"><span class="b">②</span><span class="kt">써보기</span></div><div class="dd">링크를 넣고 돌려보기 — 무슨 일이 일어나는가, 순서대로</div></div>
+          <div class="di"><div class="dk"><span class="b">③</span><span class="kt">결과물</span></div><div class="dd">무엇이, 어디에, 어떤 모습으로 남았나 — <b>프로그램 바깥도 보세요</b></div></div>
+          <div class="di"><div class="dk"><span class="b">④</span><span class="kt">실험</span></div><div class="dd">일부러 이상하게 — 같은 걸 두 번? 틀린 걸 넣으면? 끝난 걸 또?</div></div>
+          <div class="di"><div class="dk"><span class="b">⑤</span><span class="kt">이상한 점</span></div><div class="dd">불편하면 불평 말고 기록 — <b>"왜 일부러 이렇게 만들었을까?"</b></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="callout sm">프로그램의 진짜 설계는 <span class="pp">'안 될 때'</span>에 숨어 있다.</div>
+    <div class="foot"><span>PART 2 / 체험·관찰 30분</span><span>08 / 15</span></div>
+  </div></section>
+
+  <!-- 09 작성 브리핑 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">PART 3 · 작성 브리핑</div>
+    <div class="title">작성 규칙 셋 <span class="dim">— 그리고 더는 안 가르쳐드립니다</span></div>
+    <div class="subtitle">지난 아홉 번의 수업이 전부 '요령'이었습니다. 오늘은 그걸 꺼내 쓰는 날.</div>
+    <div class="cards">
+      <div class="card"><div class="k">규칙 ①</div><div class="t">45분</div><div class="d">프로그램 재확인은 언제든 허용 — 다시 관찰하러 가는 건 실력입니다.</div></div>
+      <div class="card"><div class="k">규칙 ②</div><div class="t">AI 사용 금지</div><div class="d">측정 대상은 여러분 자신 — AI가 대신 쓰면 AI가 채점받습니다.</div></div>
+      <div class="card"><div class="k">규칙 ③</div><div class="t">서로 공유 금지</div><div class="d">남의 답을 보면 내 위치를 알 수 없게 됩니다.</div></div>
+    </div>
+    <div class="callout">기준은 여전히 한 줄 — <span class="pp">"이 프롬프트만 받은 AI가, 그 프로그램을 그대로 만들 수 있는가?"</span><br/>워크시트의 밑줄들이 여러분의 재료입니다.</div>
+    <div class="foot"><span>PART 3 / 브리핑</span><span>09 / 15</span></div>
+  </div></section>
+
+  <!-- 10 작성 45분 -->
+  <section class="slide">
+    <div class="pad">
+      <div class="eyebrow">PART 4 · 적다</div>
+      <div class="timerbox" style="justify-content:center; margin-top:120px">
+        <div class="timer" style="font-size:130px">45:00<small style="text-align:center">SPECIFY</small></div>
+      </div>
+      <div class="center-sub" style="top:490px">"이 프롬프트만 받은 AI가, 그 프로그램을 그대로 만들 수 있는가?"</div>
+      <div class="foot"><span>PART 4 / 한 방 프롬프트 작성</span><span>10 / 15</span></div>
+    </div>
+  </section>
+
+  <!-- 11 제출 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 5 · 제출</div>
+    <div class="title">제출 — <span class="pp">두 갈래</span> 모두</div>
+    <div class="twocol">
+      <div class="panel green"><h4>① AI 채점기 (점수 확인)</h4><ul>
+        <li>QR 접속 → 닉네임 → 프롬프트 붙여넣기 → 채점</li>
+        <li>4개 축 점수 + 리더보드</li>
+        <li style="color:#0d9488; font-weight:700">세션 코드: ____ (수업 당일 안내)</li>
+      </ul></div>
+      <div class="panel green"><h4>② 원문 제출 (분반 판단 기준)</h4><ul>
+        <li>프롬프트 원문 + <b>희망 반(초급/중급)</b>을 강사에게</li>
+        <li>강사가 원문을 전부 직접 읽습니다</li>
+        <li>리더보드 점수는 참고용</li>
+      </ul></div>
+    </div>
+    <div class="callout">채점기는 정답을 알려주지 않습니다 — 대신 <span class="pp">'다시 관찰하러 갈 질문'</span>을 줍니다. 그게 이 채점기의 설계입니다.</div>
+    <div class="foot"><span>PART 5 / 제출</span><span>11 / 15</span></div>
+  </div></section>
+
+  <!-- 12 셀프 체크 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">PART 5 · 셀프 체크 — 전원 제출 후 공개</div>
+    <div class="title sm">이 프로그램이 실제로 하는 일 <span class="dim">— 내 프롬프트에 몇 개나?</span></div>
+    <div class="checkgrid">
+      <div class="chk"><span class="cb">☐</span><span class="lv lv1">쓰면 보임</span>링크 여러 줄 입력 → 이미지 저장</div>
+      <div class="chk"><span class="cb">☐</span><span class="lv lv2">폴더 열면</span>계정 아이디별 하위 폴더 정리</div>
+      <div class="chk"><span class="cb">☐</span><span class="lv lv1">쓰면 보임</span>로그인 없이 동작</div>
+      <div class="chk"><span class="cb">☐</span><span class="lv lv2">폴더 열면</span>파일명 규칙 — 날짜_시각_코드_순번</div>
+      <div class="chk"><span class="cb">☐</span><span class="lv lv1">쓰면 보임</span>영상(릴스)은 저장 안 함</div>
+      <div class="chk"><span class="cb">☐</span><span class="lv lv2">폴더 열면</span>게시물 정보 JSON 기록 (manifest)</div>
+      <div class="chk"><span class="cb">☐</span><span class="lv lv1">쓰면 보임</span>캐러셀 전체를 순서대로</div>
+      <div class="chk"><span class="cb">☐</span><span class="lv lv2">폴더 열면</span>재실행 시 받은 건 건너뜀 (state)</div>
+      <div class="chk"><span class="cb">☐</span><span class="lv lv1">쓰면 보임</span>폴더 선택 · 시작/중지 · 진행 로그</div>
+      <div class="chk"><span class="cb">☐</span><span class="lv lv2">폴더 열면</span>기본 저장 위치 = 실행 파일 옆</div>
+      <div class="chk"><span class="cb">☐</span><span class="lv lv3">실험해야</span>여러 링크 형식 인식 · 못 읽는 줄은 로그</div>
+      <div class="chk"><span class="cb">☐</span><span class="lv lv3">실험해야</span>중복 링크는 한 번만</div>
+      <div class="chk"><span class="cb">☐</span><span class="lv lv3">추론해야</span>게시물 사이 의도적 딜레이 ⭐</div>
+      <div class="chk"><span class="cb">☐</span><span class="lv lv3">실험해야</span>연속 실패 시 자동 중단</div>
+      <div class="chk"><span class="cb">☐</span><span class="lv lv3">실험해야</span>파일 불러오기 · 폴더 기억 · USB 휴대성</div>
+      <div class="chk" style="border:none"><span class="cb"> </span><span style="color:#9db8b4; font-size:13px">아래로 갈수록 — 탐정의 영역</span></div>
+    </div>
+    <div class="callout sm" style="margin-top:14px">스스로 묻기 — ① 예시 수준까지 구체적이었나 ② '안 될 때'를 적었나 ③ 느린 이유를 사양으로 옮겼나 ④ <span class="pp">"이렇게 되면 완성"</span>을 적었나</div>
+    <div class="foot"><span>PART 5 / 셀프 체크</span><span>12 / 15</span></div>
+  </div></section>
+
+  <!-- 13 딜레이의 비밀 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">PART 5 · 오늘의 클라이맥스</div>
+    <div class="title">"왜 이렇게 <span class="pp">느려요?</span>"</div>
+    <div class="subtitle">게시물 하나 받고, 한참 쉬고, 다음 것 — 답답하셨죠? 그거, 이 프로그램에서 제일 공들인 기능입니다.</div>
+    <div class="twocol">
+      <div class="panel red"><h4>불평 (초급의 언어)</h4><ul>
+        <li>"느리다, 답답하다"</li>
+        <li>버그라고 생각하고 넘어간다</li>
+      </ul></div>
+      <div class="panel green"><h4>사양 (중급의 언어)</h4><ul>
+        <li>"인스타그램은 익명 요청을 빡빡하게 제한한다"</li>
+        <li>"빨리 받으면 차단 → 결과적으로 더 느림"</li>
+        <li><b>"그러니 요청 사이에 일부러 쉬어라"</b> — 이 한 줄</li>
+      </ul></div>
+    </div>
+    <div class="callout">수칙의 링크 제한도, 조별 시작 분산도 전부 같은 이유였다 — <span class="pp">불편함을 사양으로 읽는 눈</span>, 그게 관찰이 명세가 되는 순간.</div>
+    <div class="foot"><span>PART 5 / 불편함은 사양이다</span><span>13 / 15</span></div>
+  </div></section>
+
+  <!-- 14 클로징 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 6 · 클로징</div>
+    <div class="title">오늘 얻은 것 — <span class="pp">역설계의 눈</span></div>
+    <div class="subtitle">아무것도 만들지 않았지만, 만드는 능력의 본체를 단련했다.</div>
+    <div class="steps">
+      <div class="step"><div class="sn">쓰</div><div class="stt">쓰다</div><div class="std">정상적으로도, 일부러 이상하게도</div></div>
+      <div class="step"><div class="sn">뜯</div><div class="stt">뜯다</div><div class="std">기능·결과물·예외를 목록으로</div></div>
+      <div class="step"><div class="sn">적</div><div class="stt">적다</div><div class="std">재량이 안 남는 한 장의 명세로</div></div>
+    </div>
+    <div class="callout">이 세 동작이 몸에 붙으면 — <span class="pp">세상의 모든 좋은 프로그램이 여러분의 교재</span>가 됩니다.</div>
+    <div class="callout sm"><b>도전과제 🏠</b> — 평소 잘 쓰는 앱 하나로 '한 방 프롬프트'를 쓰고, 실제로 AI에게 먹여보세요. 결과물과 원본의 차이 = <span class="pp">내가 못 본 것의 목록</span>.</div>
+    <div class="foot"><span>PART 6 / 클로징</span><span>14 / 15</span></div>
+  </div></section>
+
+  <!-- 15 엔딩 -->
+  <section class="slide dark closing">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="eyebrow top">NEXT</div>
+    <div class="big">좋은 프롬프트는<br/>글재주가 아니라 <span class="pp">관찰의 양</span>이다</div>
+    <div class="csub">원문 검토 → 희망 반영 → 분반 결과는 추후 공지 · 반은 목적지가 아니라 속도입니다<br/>수고하셨습니다!</div>
+    <div class="foot"><span>거꾸로 만들기 · 한 방 프롬프트 역설계</span><span>15 / 15</span></div>
+  </section>
+
+</div>
+</body>
+</html>

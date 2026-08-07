@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node:*)",
+      "Read",
+      "Edit"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)"
+    ]
+  }
+}

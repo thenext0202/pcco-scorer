@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>7차 강의 러닝시트 — 잘 짠 앱을 받아 내 앱으로</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root{--purple:#7c3aed; --purple-bg:#f5f3ff; --ink:#1f2430; --muted:#6b7280;
+        --yellow-bg:#fffbeb; --yellow-line:#f59e0b; --gray-bg:#f3f4f6;}
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:"Pretendard","Malgun Gothic",sans-serif; background:#54545a; color:var(--ink);}
+  .wrap{display:flex; flex-direction:column; align-items:center; gap:20px; padding:20px;}
+  .page{width:794px; min-height:1123px; background:#fff; padding:50px 54px 60px; position:relative;}
+  .doctag{font-size:12px; letter-spacing:.35em; color:var(--purple); font-weight:700;}
+  .doctitle{font-size:34px; font-weight:800; margin-top:14px; letter-spacing:-.02em;}
+  .docsub{font-size:17px; color:var(--muted); margin-top:8px;}
+  .usebox{margin-top:24px; border:1px solid #e5e7eb; border-radius:12px; padding:20px 24px;}
+  .usebox h3{font-size:16px; margin-bottom:10px;}
+  .usebox p{font-size:13px; color:#444b57; line-height:1.9;}
+  .tbl{width:100%; border-collapse:collapse; margin-top:20px; font-size:13px;}
+  .tbl th{background:#faf9ff; color:var(--purple); text-align:left; padding:9px 12px; border-bottom:2px solid #ece9fb; font-size:12px;}
+  .tbl td{padding:9px 12px; border-bottom:1px solid #f1f2f4;} .tbl td:first-child{font-weight:700;}
+  .head{display:flex; align-items:center; gap:13px;}
+  .numbox{background:var(--ink); color:#fff; font-weight:800; font-size:17px; border-radius:8px; padding:7px 13px;}
+  .sec{color:var(--purple); font-weight:700; font-size:13.5px; letter-spacing:.03em;}
+  .ptitle{font-size:25px; font-weight:800; margin-top:16px; letter-spacing:-.01em; line-height:1.25;}
+  .time{display:inline-block; margin-top:10px; font-size:12.5px; color:#fff; background:var(--purple); border-radius:20px; padding:3px 12px; font-weight:700;}
+  .box{border-radius:12px; padding:16px 20px; margin-top:16px;}
+  .box .lab{font-size:12.5px; font-weight:800; letter-spacing:.03em; margin-bottom:7px;}
+  .key{background:var(--purple-bg); border:1px solid #e3ddfb;}
+  .key .lab{color:var(--purple);} .key .body{font-size:16px; font-weight:700; color:#2b2150; line-height:1.5;}
+  .say{background:#16161d;} .say .lab{color:#b9a7f5;} .say .body{font-size:14px; line-height:1.8; color:#e3e3ea;}
+  .tip{background:var(--yellow-bg); border-left:4px solid var(--yellow-line); border-radius:0 10px 10px 0;}
+  .tip .lab{color:#b45309;} .tip .body{font-size:13.5px; color:#6b4a16; line-height:1.65;}
+  .ref{background:var(--gray-bg); border-left:4px solid #9ca3af; border-radius:0 10px 10px 0;}
+  .ref .lab{color:#4b5563;} .ref .body{font-size:13.5px; color:#4b5563; line-height:1.65;}
+  .next{margin-top:18px; font-size:14.5px; color:#374151;} .next b{color:var(--purple);}
+  .pgfoot{position:absolute; bottom:24px; left:0; right:0; text-align:center; color:#aab0bb; font-size:12px;}
+  @media print{@page{size:A4; margin:0;} body{background:#fff;} .wrap{gap:0; padding:0;} .page{break-after:page;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- 인트로 -->
+  <section class="page">
+    <div class="doctag">STRUCTURED RUNNING SHEET</div>
+    <div class="doctitle">잘 짠 앱을 받아 '내 앱'으로</div>
+    <div class="docsub">할 일 체크리스트 PWA · 받아서 개조 · 강사 진행 대본 (정금구)</div>
+    <div class="usebox"><h3>📖 사용법</h3><p>
+      한 페이지 = 한 슬라이드. ★ KEY POINT(보라) = 반드시 전달할 한 문장 · 💬 이렇게 말하세요(검은 박스) = 실제 멘트 · 💡 강사 팁(노랑) · 📌 참고(회색) · → 넘어가며.
+    </p></div>
+    <div class="usebox" style="margin-top:14px"><h3>📚 용어 한 줄 (강사용)</h3><p style="font-size:12.5px; line-height:1.85">
+      <b>PWA</b> 웹인데 폰에 설치·오프라인 되는 앱 · <b>레이어</b> 역할별로 나눈 파일 겹(데이터 store·동작 actions·화면 render·연결 app) · <b>순수 함수</b> 입력만 받아 출력만 내는 함수(actions) · <b>매니페스트</b> 이름·아이콘·색 · <b>서비스워커</b> 캐시→오프라인(코드 바꾸면 버전↑) · <b>localStorage</b> 폰에 데이터 저장 · <b>HTTPS/Vercel</b> 자물쇠 주소/무료 배포처
+    </p></div>
+    <table class="tbl"><thead><tr><th>구분</th><th>시간</th><th>슬라이드</th></tr></thead><tbody>
+      <tr><td>오프닝+복습</td><td>6분</td><td>1~3</td></tr>
+      <tr><td>Part 1 — PWA란? + 5요소</td><td>10분</td><td>4~5</td></tr>
+      <tr><td>Part 2 — 스타터 받기·실행</td><td>6분</td><td>6</td></tr>
+      <tr><td>Part 3 — 구조 투어 ⭐</td><td>18분</td><td>7~9</td></tr>
+      <tr><td>Part 4 — 디자인 개조</td><td>14분</td><td>10~11</td></tr>
+      <tr><td>Part 5 — 기능 개조 ⭐</td><td>15분</td><td>12~13</td></tr>
+      <tr><td>Part 6 — 캐시·배포</td><td>19분</td><td>14~17</td></tr>
+      <tr><td>Part 7 — 폰 설치·공유 ⭐</td><td>10분</td><td>18~19</td></tr>
+      <tr><td>마무리</td><td>8분</td><td>20~22</td></tr>
+    </tbody></table>
+    <div class="pgfoot">— 1 / 23 —</div>
+  </section>
+
+  <!-- 01 -->
+  <section class="page">
+    <div class="head"><span class="numbox">01</span><span class="sec">오프닝</span></div>
+    <div class="ptitle">표지 — "폰에 깔리는 앱"</div><div class="time">⏱ 1분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">오늘은 잘 짜인 앱을 받아 내 입맛대로 고쳐, 내 폰에 깐다.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">6차에선 맨손으로 만들었죠. 오늘 7차는 다릅니다 — 잘 짜인 할 일 앱을 받아서, 구조를 이해하고, 디자인이랑 기능을 내 것으로 고친 다음, 폰에 깔고 친구한테 보낼 거예요.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">6차 수강 전제. Claude Code 기본은 빠르게, '구조 읽기 + 개조 + PWA 배포'에 집중.</div></div>
+    <div class="next">→ 넘어가며: <b>"지금까지 어디까지 왔는지부터."</b></div>
+    <div class="pgfoot">— 2 / 23 —</div>
+  </section>
+
+  <!-- 02 -->
+  <section class="page">
+    <div class="head"><span class="numbox">02</span><span class="sec">오프닝 · 복습</span></div>
+    <div class="ptitle">6차는 맨손으로, 7차는 개조로</div><div class="time">⏱ 3분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">4차 미리보기 → 6차 맨손 빌드 → 7차 잘 짠 앱 개조·배포. 한 단계 위로.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">4차는 브라우저 미리보기, 6차는 내 컴퓨터에서 맨손으로 만들었죠. 오늘은 잘 짜인 걸 받아 이해하고 고치는 거예요. 만드는 게 아니라 '읽고 고치는' 게 핵심입니다 — 사실 이게 실무에서 더 많이 하는 일이에요.</div></div>
+    <div class="next">→ 넘어가며: <b>"그래서 오늘 세 가지가 달라집니다."</b></div>
+    <div class="pgfoot">— 3 / 23 —</div>
+  </section>
+
+  <!-- 03 -->
+  <section class="page">
+    <div class="head"><span class="numbox">03</span><span class="sec">오프닝 · 약속</span></div>
+    <div class="ptitle">읽고 · 고치고 · 배포한다</div><div class="time">⏱ 2분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">구조를 읽는다 → 내 것으로 개조한다(디자인+기능) → 배포·설치한다.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">셋이에요. 하나, 잘 나뉜 구조를 읽으며 "왜 이렇게 짰나"를 배웁니다. 둘, 디자인과 기능을 내 입맛대로 고쳐요. 셋, 배포해서 폰에 깔고 링크로 공유. 끝나면 '받은 앱'이 아니라 '내가 만든 앱'이 됩니다.</div></div>
+    <div class="next">→ 넘어가며: <b>"PWA가 뭔지부터."</b></div>
+    <div class="pgfoot">— 4 / 23 —</div>
+  </section>
+
+  <!-- 04 -->
+  <section class="page">
+    <div class="head"><span class="numbox">04</span><span class="sec">Part 1 · PWA란?</span></div>
+    <div class="ptitle">앱 = 웹페이지 + 다섯 가지</div><div class="time">⏱ 5분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">앱스토어·네이티브 없이, 웹에 5요소를 더하면 폰에 깔리는 앱이 된다.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">PWA는 웹으로 만들었는데 앱처럼 설치·오프라인 되는 거예요. 네이티브 앱은 전용 언어에 앱스토어 심사까지 필요하지만, PWA는 우리가 아는 웹에 다섯 가지만 더하면 됩니다. 여러분 폰의 앱 중 일부도 사실 PWA예요.</div></div>
+    <div class="next">→ 넘어가며: <b>"그 다섯 — 화·정·오·저·배."</b></div>
+    <div class="pgfoot">— 5 / 23 —</div>
+  </section>
+
+  <!-- 05 -->
+  <section class="page">
+    <div class="head"><span class="numbox">05</span><span class="sec">Part 1 · 프레임워크</span></div>
+    <div class="ptitle">PWA 5요소 — 화·정·오·저·배</div><div class="time">⏱ 5분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">화면·정보·오프라인·저장·배포. 오늘 '받은 앱에서 이 다섯을 찾는다'.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">화는 화면, 정은 정보(이름·아이콘=매니페스트), 오는 오프라인(서비스워커), 저는 저장(store.js의 localStorage), 배는 배포. 오늘은 이걸 직접 만드는 게 아니라, 받은 앱에서 '어느 파일이 이 요소인지' 찾을 거예요. 그리고 숨은 전제 — 설치랑 오프라인은 HTTPS에서만 됩니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">칠판에 '화·정·오·저·배' + '레이어 4겹' 적어두고 강의 내내 가리키기.</div></div>
+    <div class="next">→ 넘어가며: <b>"자, 그 앱을 받아 실행해 봅시다."</b></div>
+    <div class="pgfoot">— 6 / 23 —</div>
+  </section>
+
+  <!-- 06 -->
+  <section class="page">
+    <div class="head"><span class="numbox">06</span><span class="sec">Part 2 · 스타터 받기</span></div>
+    <div class="ptitle">이미 작동하는 앱을 받았다</div><div class="time">⏱ 6분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">압축 풀고 node server.js → localhost. 벌써 추가·체크·삭제가 된다.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">나눠드린 압축을 풀고, 그 폴더에서 Claude Code에 "로컬 서버로 띄워줘" 하세요. localhost를 열면 — 이미 작동하는 할 일 앱이 떠요. 추가도 되고 체크도 되죠. 이제 이걸 뜯어볼 겁니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">모두 같은 스타터에서 출발 → 라이브 변수 최소. 모바일 뷰로 폰처럼도 보여주기.</div></div>
+    <div class="next">→ 넘어가며: <b>"이게 어떻게 만들어졌는지 — 구조 투어."</b></div>
+    <div class="pgfoot">— 7 / 23 —</div>
+  </section>
+
+  <!-- 07 -->
+  <section class="page">
+    <div class="head"><span class="numbox">07</span><span class="sec">Part 3 · 구조 투어 ⭐</span></div>
+    <div class="ptitle">레이어 4겹 — 한 파일 = 한 책임</div><div class="time">⏱ 7분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">데이터(store)·동작(actions)·화면(render)·연결(app). 역할별로 나뉘어 '읽힌다'.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">잘 짜인 앱은 파일이 역할별로 나뉘어요. store는 저장만, actions는 계산만(목록을 받아 새 목록을 돌려줌), render는 그리기만, app은 이걸 잇기만. Claude Code에 "이 파일들이 뭐 하는지 쉽게 설명해줘" 하면 한눈에 정리해줍니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">specs/레이어_구조.md를 같이 열어 보여주기. @actions.js로 한 파일씩 설명 요청도 시연.</div></div>
+    <div class="next">→ 넘어가며: <b>"그럼 데이터가 어떻게 흐르나?"</b></div>
+    <div class="pgfoot">— 8 / 23 —</div>
+  </section>
+
+  <!-- 08 -->
+  <section class="page">
+    <div class="head"><span class="numbox">08</span><span class="sec">Part 3 · 데이터 흐름</span></div>
+    <div class="ptitle">입력이 레이어를 타고 흐른다</div><div class="time">⏱ 6분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">입력 → app → actions(계산) → store(저장) → render(화면). 모든 변경은 update() 한 곳.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">할 일을 입력하면, app이 받아서 actions에 넘기고, actions가 새 목록을 계산하고, store가 저장하고, render가 화면을 다시 그려요. 앞 단계의 결과가 다음 단계의 재료. 그리고 저장과 화면은 항상 update()라는 한 곳을 거쳐서, 흐름이 안 꼬여요.</div></div>
+    <div class="box ref"><div class="lab">📌 참고</div><div class="body">2차 'I/O 계약', 6차 '레이어'가 이 앱에 그대로 들어 있다 — 추상이 아니라 실물.</div></div>
+    <div class="next">→ 넘어가며: <b>"그래서 — 구조를 읽으면 고칠 곳이 보입니다."</b></div>
+    <div class="pgfoot">— 9 / 23 —</div>
+  </section>
+
+  <!-- 09 -->
+  <section class="page">
+    <div class="head"><span class="numbox">09</span><span class="sec">Part 3 · 핵심</span></div>
+    <div class="ptitle">구조를 읽으면 고칠 곳이 보인다</div><div class="time">⏱ 5분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">기능 추가는 actions부터, 모양 바꾸기는 render·css부터. 좋은 구조 = 고치기 쉬운 구조.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">이게 오늘의 핵심이에요. 한 파일이 한 가지만 하니까, 뭘 고칠 때 어디를 건드릴지 바로 보입니다. 새 기능은 actions에 계산을 추가하고, 색이나 모양은 css·render를 손대면 돼요. 잘 짠 코드를 '읽는 것'만으로 이걸 배웁니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">"여러분은 오늘 코드를 '구경'하는 게 아니라 '읽고 고치는' 겁니다" — 학습 프레이밍 강조.</div></div>
+    <div class="next">→ 넘어가며: <b>"가벼운 것부터 고쳐봅시다 — 디자인."</b></div>
+    <div class="pgfoot">— 10 / 23 —</div>
+  </section>
+
+  <!-- 10 -->
+  <section class="page">
+    <div class="head"><span class="numbox">10</span><span class="sec">Part 4 · 디자인 개조</span></div>
+    <div class="ptitle">가볍게 — 내 취향으로</div><div class="time">⏱ 7분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">앱 이름·테마색·테마·둥글기 — 즉시 결과가 보이는 것부터. 작은 성공이 쌓인다.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">먼저 쉬운 것. "앱 이름을 바꿔줘", "테마색을 내 색으로", "밝은 테마로". 새로고침하면 바로 바뀌어요. 색·이름은 본인 취향대로 자유롭게 — 벌써 내 앱 같죠?</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">각자 다른 색/이름으로 바꾸게 하면 '내 것' 느낌이 확 산다. 30초 미션처럼.</div></div>
+    <div class="next">→ 넘어가며: <b>"아이콘도 내 이미지로 바꿔봅시다."</b></div>
+    <div class="pgfoot">— 11 / 23 —</div>
+  </section>
+
+  <!-- 11 -->
+  <section class="page">
+    <div class="head"><span class="numbox">11</span><span class="sec">Part 4 · 내 아이콘 [정]</span></div>
+    <div class="ptitle">내 이미지를 홈 화면 아이콘으로</div><div class="time">⏱ 7분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">Claude Code에 이미지 '파일 경로'를 알려주면, 가져와 192·512 아이콘으로 만들어 연결한다.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">미리 준비한 이미지(직접 그렸든 AI로 만들었든)를 쓸 거예요. 그 파일을 Git Bash 창에 끌어다 놓으면 경로가 찍혀요. 그 경로를 Claude Code에 주면서 "이 이미지를 192·512 아이콘으로 만들어 연결해줘" 하면 끝. 'Claude Code에 파일 경로를 알려주면 그 파일을 가져다 쓴다'는 것도 같이 배우는 거죠.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">경로 인식 안 되면 이미지를 프로젝트 폴더에 넣고 파일명으로. Application→Manifest에서 확인.</div></div>
+    <div class="next">→ 넘어가며: <b>"이제 한 단계 위 — 기능을 더해봅시다."</b></div>
+    <div class="pgfoot">— 12 / 23 —</div>
+  </section>
+
+  <!-- 12 -->
+  <section class="page">
+    <div class="head"><span class="numbox">12</span><span class="sec">Part 5 · 기능 개조 ⭐</span></div>
+    <div class="ptitle">어느 레이어를 고치나</div><div class="time">⏱ 8분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">"어느 파일(레이어)을 고치는지"를 같이 말하면 결과가 정확하고, 구조를 이해했다는 신호.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">기능을 추가할 땐 순서가 있어요. 데이터 계산은 actions에, 연결은 app에, 보여주기는 render에. 그래서 Claude Code에 시킬 때 "actions에 함수 만들고, render에 표시해줘"처럼 어느 레이어인지 같이 말하면 정확하게 붙어요. 보여주는 방식만 바꾸는 건(통계·정렬) render만 손대면 되고요.</div></div>
+    <div class="next">→ 넘어가며: <b>"하나 골라서 직접 붙여봅시다."</b></div>
+    <div class="pgfoot">— 13 / 23 —</div>
+  </section>
+
+  <!-- 13 -->
+  <section class="page">
+    <div class="head"><span class="numbox">13</span><span class="sec">Part 5 · 기능 예시</span></div>
+    <div class="ptitle">하나만 골라 붙여본다</div><div class="time">⏱ 7분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">중요 표시·완료율 통계·완료 숨기기 등 하나 추가 → "이건 내 앱"이 된다.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">예를 들어 "중요 표시(별표) 기능 추가해줘 — actions에 함수, render에 별표, 중요한 건 위로". 구조가 좋아서 정확한 자리에 붙어요. 통계나 완료 숨기기 같은 것도 좋고요. 하나만 붙여도, 이제 받은 앱이 아니라 '내가 만든 앱'입니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">수강생마다 다른 기능을 고르게 하면 결과물이 다 달라져 성취감↑. 막히면 "actions부터, 그다음 render" 순서로.</div></div>
+    <div class="next">→ 넘어가며: <b>"고쳤으니 — 캐시를 갱신해야 해요."</b></div>
+    <div class="pgfoot">— 14 / 23 —</div>
+  </section>
+
+  <!-- 14 -->
+  <section class="page">
+    <div class="head"><span class="numbox">14</span><span class="sec">Part 6 · 캐시 [오]</span></div>
+    <div class="ptitle">고쳤으면 캐시 버전을 올린다</div><div class="time">⏱ 4분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">서비스워커가 옛 파일을 캐시해 둬서, 버전 안 올리면 옛 화면이 보인다(v2→v3).</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">서비스워커가 앱 파일을 저장해두기 때문에, 코드를 바꿨는데 옛날 화면이 보일 때가 있어요. 그럴 땐 sw.js의 캐시 버전을 올리면 됩니다. "캐시 버전 올려줘" 한마디. '이상하면 캐시 버전 올리기' — 이거 하나 외우면 평생 덜 헤매요.</div></div>
+    <div class="next">→ 넘어가며: <b>"이제 진짜 폰에 깔려면 — 배포."</b></div>
+    <div class="pgfoot">— 15 / 23 —</div>
+  </section>
+
+  <!-- 15 -->
+  <section class="page">
+    <div class="head"><span class="numbox">15</span><span class="sec">Part 6 · 배포 [배]</span></div>
+    <div class="ptitle">진짜 설치는 배포 후에</div><div class="time">⏱ 4분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">설치·오프라인은 HTTPS에서만. 로컬은 테스트용 — 배포해야 폰에 깔린다.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">폰에 깔리려면 'HTTPS'라는 자물쇠 달린 안전한 주소여야 해요. 내 컴퓨터 localhost는 테스트용 예외고, 진짜 폰에 깔려면 인터넷에 올린 HTTPS 주소가 필요합니다. 그래서 배포해요.</div></div>
+    <div class="next">→ 넘어가며: <b>"가장 쉬운 배포 — Vercel."</b></div>
+    <div class="pgfoot">— 16 / 23 —</div>
+  </section>
+
+  <!-- 16 -->
+  <section class="page">
+    <div class="head"><span class="numbox">16</span><span class="sec">Part 6 · 배포 [배]</span></div>
+    <div class="ptitle">Vercel로 진짜 URL</div><div class="time">⏱ 8분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">GitHub에 올리고 Vercel 연결 → 자동 HTTPS URL. 정적 앱이라 설정 거의 없음.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">"GitHub에 올려줘" → "Vercel에 배포하는 법 알려줘". 코드를 GitHub에 올리고 Vercel에서 그 저장소를 고르면, 자동으로 HTTPS 주소를 만들어줍니다. 무료고 설정도 거의 없어요. Railway에 익숙하면 server.js로 거기 올려도 됩니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">계정·인증 변수 큼 → 사전 로그인 안내, 막히면 강사 배포 화면 공유.</div></div>
+    <div class="next">→ 넘어가며: <b>"6차에선 이게 안 됐죠? 그 차이."</b></div>
+    <div class="pgfoot">— 17 / 23 —</div>
+  </section>
+
+  <!-- 17 -->
+  <section class="page">
+    <div class="head"><span class="numbox">17</span><span class="sec">Part 6 · 6차 회수</span></div>
+    <div class="ptitle">무엇을 만드느냐가 배포를 정한다</div><div class="time">⏱ 3분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">6차 변경기는 내 파일 만져 URL 배포 불가였지만, 할 일 앱은 안 만지니 URL 배포가 정답.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">6차에서 '내 파일 만지는 도구는 URL 배포로 남이 못 쓴다'고 했죠. 오늘 할 일 앱은 남의 파일을 안 만지고 자기 폰에만 저장하니까 정반대 — URL 배포가 정답입니다. 무엇을 만드느냐가 배포 방식을 정합니다.</div></div>
+    <div class="next">→ 넘어가며: <b>"이제 진짜 폰에 깔아봅시다."</b></div>
+    <div class="pgfoot">— 18 / 23 —</div>
+  </section>
+
+  <!-- 18 -->
+  <section class="page">
+    <div class="head"><span class="numbox">18</span><span class="sec">Part 7 · 설치 ⭐</span></div>
+    <div class="ptitle">내 폰 홈 화면에 깐다</div><div class="time">⏱ 6분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">배포 URL을 폰에서 열고 "홈 화면에 추가". 안드로이드/아이폰 방식이 다름.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">발급된 주소를 여러분 폰 브라우저에서 여세요. 안드로이드 크롬은 '홈 화면에 추가' 배너/메뉴, 아이폰은 사파리 공유 버튼 눌러 '홈 화면에 추가'. 누르면 홈 화면에 아이콘이 생기고, 열면 주소창 없는 앱 모드로 떠요.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">아이폰 설치 UX가 달라 헤맴 → Safari 공유 메뉴 스크린샷 미리 띄워두기.</div></div>
+    <div class="next">→ 넘어가며: <b>"그리고 친구한테도."</b></div>
+    <div class="pgfoot">— 19 / 23 —</div>
+  </section>
+
+  <!-- 19 -->
+  <section class="page">
+    <div class="head"><span class="numbox">19</span><span class="sec">Part 7 · 완성 ⭐</span></div>
+    <div class="ptitle">내가 개조한 앱이 폰에 산다</div><div class="time">⏱ 4분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">URL을 단톡방에 공유 → 누구나 설치. 비행기모드로 오프라인까지 확인.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">그 주소를 단톡방에 보내보세요. 받은 친구도 똑같이 깔 수 있어요. "어 이거 네가 만든 거야?" 소리 납니다. 비행기모드로 열어 인터넷 없이도 되는 것까지 보여주면, 받은 게 아니라 '내가 만든 앱'이 완성된 거예요.</div></div>
+    <div class="next">→ 넘어가며: <b>"오늘 만진 걸 정리하고 마칩니다."</b></div>
+    <div class="pgfoot">— 20 / 23 —</div>
+  </section>
+
+  <!-- 20 -->
+  <section class="page">
+    <div class="head"><span class="numbox">20</span><span class="sec">Recap · 회고</span></div>
+    <div class="ptitle">PWA 5요소 + 레이어 4겹</div><div class="time">⏱ 3분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">이 두 지도(5요소·레이어 4겹)면, 다음 앱도 읽고 고쳐 폰에 깔 수 있다.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">오늘 두 가지 지도를 얻었어요. PWA 5요소(화·정·오·저·배)로 '앱이 되려면 뭐가 필요한지', 레이어 4겹(store·actions·render·app)으로 '코드를 어떻게 나누고 어디를 고치는지'. 이 둘이면 다음에 다른 앱을 받아도 읽고 고쳐서 폰에 깔 수 있어요.</div></div>
+    <div class="next">→ 넘어가며: <b>"습관 세 가지로 압축."</b></div>
+    <div class="pgfoot">— 21 / 23 —</div>
+  </section>
+
+  <!-- 21 -->
+  <section class="page">
+    <div class="head"><span class="numbox">21</span><span class="sec">Habits · 습관</span></div>
+    <div class="ptitle">오늘부터, 이 세 가지</div><div class="time">⏱ 2분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">① 고치기 전에 구조부터 읽기 ② 디자인 → 기능 순서 ③ 캐시 버전·HTTPS.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">하나, 고치기 전에 구조부터 — 어느 레이어인지 보기. 둘, 쉬운 디자인부터 고쳐 성공 경험 쌓고 기능으로. 셋, 코드 바꾸면 캐시 버전 올리고, 설치·오프라인은 배포 후 HTTPS에서 확인.</div></div>
+    <div class="next">→ 넘어가며: <b>"질문 받겠습니다."</b></div>
+    <div class="pgfoot">— 22 / 23 —</div>
+  </section>
+
+  <!-- 22 -->
+  <section class="page">
+    <div class="head"><span class="numbox">22</span><span class="sec">마무리 · Q&amp;A</span></div>
+    <div class="ptitle">고맙습니다 · Q&amp;A</div><div class="time">⏱ 3분</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">읽고 · 고치고 · 배포한다 — 이제 어떤 앱이든 내 것으로.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">오늘 잘 짠 앱을 받아 구조를 읽고, 디자인·기능을 내 것으로 고치고, 배포해 폰에 깔았습니다. 핵심은 '구조를 읽으면 고칠 곳이 보인다'예요. 이걸 알면 세상 어떤 코드든 덜 무서워집니다. 질문 받을게요. 고맙습니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">"다음엔 이 앱에 푸시 알림·카메라 같은 폰 기능을 더해보자"로 다음 강의 예고.</div></div>
+    <div class="next">→ 끝.</div>
+    <div class="pgfoot">— 23 / 23 —</div>
+  </section>
+
+</div>
+</body>
+</html>

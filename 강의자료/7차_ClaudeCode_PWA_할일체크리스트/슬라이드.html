@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>7차 강의 슬라이드 — 잘 짠 앱을 받아 내 앱으로</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root{--bg:#0e0e16; --ink:#15151f; --muted:#6b7280; --line:#e5e7eb;
+        --purple:#7c3aed; --purple-l:#a78bfa; --purple-bg:#f5f3ff; --red:#dc2626;}
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:"Pretendard","Malgun Gothic",-apple-system,sans-serif; background:#3a3a40;}
+  .deck{display:flex; flex-direction:column; align-items:center; gap:22px; padding:22px;}
+  .slide{width:1280px; height:720px; position:relative; overflow:hidden; background:#fff; flex:0 0 auto;}
+  .pad{position:absolute; inset:0; padding:60px 72px;}
+  .eyebrow{color:var(--purple); font-size:15px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; display:flex; align-items:center; gap:10px;}
+  .eyebrow::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--purple);}
+  .eyebrow.red{color:var(--red);} .eyebrow.red::before{background:var(--red);}
+  .title{font-size:50px; font-weight:800; color:var(--ink); line-height:1.16; margin-top:24px; letter-spacing:-.02em;}
+  .title .dim{color:#9aa0ac; font-weight:700;} .title .pp{color:var(--purple);}
+  .subtitle{font-size:20px; color:var(--muted); margin-top:16px; line-height:1.5;}
+  .foot{position:absolute; left:72px; right:72px; bottom:32px; display:flex; justify-content:space-between; font-size:13px; color:#aab0bb; letter-spacing:.04em;}
+  table{width:100%; border-collapse:collapse; margin-top:34px; font-size:18px;}
+  thead th{color:var(--purple); font-weight:700; text-align:left; padding:13px 16px; border-bottom:1px solid var(--line); font-size:15px;}
+  tbody td{padding:13px 16px; border-bottom:1px solid #f1f2f4; color:#33373f;}
+  tbody td:first-child{font-weight:700; color:var(--ink);}
+  tbody td.hl{color:var(--purple); font-weight:700;}
+  .callout{margin-top:32px; background:#f7f7fa; border-left:4px solid var(--purple); border-radius:0 8px 8px 0; padding:20px 24px; font-size:21px; color:#3b3f48; line-height:1.5;}
+  .callout.italic{font-style:italic; color:#4b5563;}
+  .reddot{color:var(--red); font-weight:700; font-size:16px; margin-top:28px;}
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:32px;}
+  .cards.c2{grid-template-columns:repeat(2,1fr);} .cards.c4{grid-template-columns:repeat(4,1fr);} .cards.c5{grid-template-columns:repeat(5,1fr);}
+  .card{border:1px solid var(--line); border-radius:14px; padding:22px;}
+  .card .k{color:var(--purple); font-size:13px; font-weight:700; letter-spacing:.05em;}
+  .card .t{font-size:20px; font-weight:800; color:var(--ink); margin-top:10px;}
+  .card .d{font-size:14.5px; color:#7a808b; margin-top:8px; line-height:1.5;}
+  .arrowline{margin-top:24px; text-align:center; color:#7a808b; font-size:17px;}
+  .arrowline .pp{color:var(--purple); font-weight:700;}
+  .steps{display:flex; align-items:stretch; gap:12px; margin-top:38px;}
+  .step{flex:1; border:1px solid var(--line); border-radius:14px; padding:20px 16px; text-align:center; position:relative;}
+  .step .n{width:30px; height:30px; border-radius:8px; background:var(--purple); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:15px;}
+  .step .st{font-size:17px; font-weight:800; color:var(--ink);}
+  .step .sd{font-size:13px; color:#7a808b; margin-top:6px;}
+  .step:not(:last-child)::after{content:"›"; position:absolute; right:-11px; top:50%; transform:translateY(-50%); color:#c4b9f2; font-size:22px; font-weight:800;}
+  .pipe{display:flex; align-items:center; margin-top:40px;}
+  .pbox{flex:1; border:1px solid var(--line); border-radius:14px; padding:18px 12px; text-align:center;}
+  .pbox .k{color:var(--purple); font-size:12px; font-weight:700;}
+  .pbox .t{font-size:18px; font-weight:800; color:var(--ink); margin-top:6px; font-family:ui-monospace,monospace;}
+  .pbox .d{font-size:12px; color:#7a808b; margin-top:6px;}
+  .parrow{flex:0 0 46px; text-align:center; color:var(--purple); font-size:20px; font-weight:800;}
+  .tags{display:flex; flex-wrap:wrap; gap:12px; margin-top:40px;}
+  .tag{background:var(--purple-bg); color:#4c2c97; border-radius:24px; padding:12px 22px; font-size:18px; font-weight:700;}
+  .bigstate{margin-top:54px; font-size:38px; font-weight:800; color:var(--ink); line-height:1.3; letter-spacing:-.02em;}
+  .bigstate .pp{color:var(--purple);}
+  .twocol{display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:32px;}
+  .panel{border:1px solid var(--line); border-radius:14px; padding:22px;}
+  .panel h4{font-size:16px; color:var(--purple); margin-bottom:12px;}
+  .panel ul{margin-left:18px;} .panel li{font-size:15.5px; color:#3b3f48; margin:7px 0; line-height:1.45;}
+  .mono{font-family:ui-monospace,monospace; background:#f3f0fd; color:#5b21b6; padding:1px 7px; border-radius:5px; font-size:.92em;}
+  .slide.dark{background:var(--bg);}
+  .blob{position:absolute; border-radius:50%;}
+  .blob.b1{width:300px; height:300px; left:-70px; top:-90px; background:var(--purple);}
+  .blob.b2{width:230px; height:230px; right:120px; bottom:-130px; background:#5b21b6;}
+  .blob.b3{width:150px; height:150px; right:90px; top:50px; background:#2a2a36;}
+  .dark .eyebrow{color:var(--purple-l);} .dark .eyebrow::before{background:var(--purple-l);}
+  .cover .big{position:absolute; left:72px; right:72px; bottom:188px; font-size:84px; font-weight:800; color:#fff; line-height:1.12; letter-spacing:-.03em; white-space:nowrap;}
+  .cover .big .pp{color:var(--purple-l);}
+  .cover .csub{position:absolute; left:74px; bottom:150px; font-size:23px; color:#9ca3af;}
+  .lect{position:absolute; left:72px; bottom:64px; display:flex; align-items:center; gap:12px;}
+  .lect .av{width:40px; height:40px; border-radius:50%; background:var(--purple); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;}
+  .lect .lc{font-size:12px; color:#9ca3af; letter-spacing:.15em;} .lect .ln{font-size:16px; color:#fff; font-weight:700;}
+  .eyebrow.top{position:absolute; left:72px; top:52px;}
+  .dark .foot{color:#5b6068;}
+  .closing .big{position:absolute; left:72px; right:72px; top:300px; font-size:84px; font-weight:800; color:#fff; letter-spacing:-.02em; white-space:nowrap;}
+  .closing .big .pp{color:var(--purple-l);}
+  .closing .csub{position:absolute; left:74px; top:430px; font-size:23px; color:#9ca3af;}
+  @media print{@page{size:1280px 720px; margin:0;} body{background:#fff;} .deck{display:block!important; gap:0; padding:0;} .slide{break-after:page;}}
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- 01 표지 -->
+  <section class="slide dark cover">
+    <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+    <div class="eyebrow top">7TH · PWA WORKSHOP</div>
+    <div class="big">폰에 깔리는<br/><span class="pp">앱</span>을 만든다</div>
+    <div class="csub">잘 짠 앱을 받아 내 입맛대로 — 진짜 폰 앱이 되는 순간.</div>
+    <div class="foot"><span>Claude Code PWA 실습</span><span>01 / 22</span></div>
+  </section>
+
+  <!-- 02 복습 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">RECAP · 어디까지 왔나</div>
+    <div class="title">6차는 <span class="dim">맨손으로</span>, 7차는 <span class="pp">개조로</span></div>
+    <div class="subtitle">오늘은 잘 짜인 앱을 받아 이해하고, 내 것으로 고쳐 폰에 깝니다.</div>
+    <table>
+      <thead><tr><th>차수</th><th>한 일</th><th>어디서</th><th>공유</th></tr></thead>
+      <tbody>
+        <tr><td>4차</td><td>운세 앱 (Artifacts)</td><td>브라우저 미리보기</td><td>못 남김</td></tr>
+        <tr><td>6차</td><td>파일 변경기 (맨손 빌드)</td><td>내 컴퓨터</td><td>GitHub 코드</td></tr>
+        <tr><td class="hl">7차</td><td class="hl">잘 짠 앱 개조 (PWA)</td><td class="hl">배포 URL + 폰</td><td class="hl">링크로 누구나 설치</td></tr>
+      </tbody>
+    </table>
+    <div class="foot"><span>RECAP / 어디까지 왔나</span><span>02 / 22</span></div>
+  </div></section>
+
+  <!-- 03 오늘의 약속 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">TODAY'S PROMISE</div>
+    <div class="title">오늘, 이렇게 달라집니다</div>
+    <div class="subtitle">잘 짠 앱을 받아 → 구조를 이해하고 → 내 것으로 고쳐 → 폰에 깐다.</div>
+    <div class="cards">
+      <div class="card"><div class="k">01 · READ</div><div class="t">구조를 읽는다</div><div class="d">잘 나뉜 레이어를 보며 "왜 이렇게 짰나"를 배운다.</div></div>
+      <div class="card"><div class="k">02 · REMIX</div><div class="t">내 것으로 개조</div><div class="d">디자인 + 기능을 내 입맛대로. "내가 했다".</div></div>
+      <div class="card"><div class="k">03 · SHIP</div><div class="t">배포 + 설치</div><div class="d">URL로 폰에 깔고 친구에게 링크.</div></div>
+    </div>
+    <div class="foot"><span>TODAY'S PROMISE</span><span>03 / 22</span></div>
+  </div></section>
+
+  <!-- 04 PWA란 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 1 · PWA란?</div>
+    <div class="title">앱 = 웹페이지 + <span class="pp">다섯 가지</span></div>
+    <div class="subtitle">앱스토어·네이티브 개발 없이, 웹에 5요소를 더하면 폰에 깔리는 앱이 됩니다.</div>
+    <table>
+      <thead><tr><th>구분</th><th>네이티브 앱</th><th>PWA (오늘)</th></tr></thead>
+      <tbody>
+        <tr><td>만드는 법</td><td>전용 언어·복잡한 개발</td><td class="hl">웹 + 5요소</td></tr>
+        <tr><td>배포</td><td>앱스토어 심사</td><td class="hl">URL 하나 (링크로 설치)</td></tr>
+        <tr><td>설치</td><td>스토어 다운로드</td><td>"홈 화면에 추가"</td></tr>
+      </tbody>
+    </table>
+    <div class="foot"><span>PART 1 / PWA란?</span><span>04 / 22</span></div>
+  </div></section>
+
+  <!-- 05 PWA 5요소 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 1 · 프레임워크</div>
+    <div class="title">PWA 5요소 — <span class="pp">화·정·오·저·배</span></div>
+    <div class="subtitle">오늘 받은 앱에서 이 다섯을 '찾을' 거예요. 하나라도 비면 그냥 웹페이지.</div>
+    <div class="cards c5">
+      <div class="card"><div class="k">화</div><div class="t">화면</div><div class="d">index·css</div></div>
+      <div class="card"><div class="k">정</div><div class="t">정보</div><div class="d">manifest·아이콘</div></div>
+      <div class="card"><div class="k">오</div><div class="t">오프라인</div><div class="d">sw.js</div></div>
+      <div class="card"><div class="k">저</div><div class="t">저장</div><div class="d">store.js</div></div>
+      <div class="card"><div class="k">배</div><div class="t">배포</div><div class="d">Vercel</div></div>
+    </div>
+    <div class="arrowline">숨은 전제: 설치·오프라인은 <span class="pp">HTTPS</span>에서만 (로컬은 localhost 예외)</div>
+    <div class="foot"><span>PART 1 / 프레임워크</span><span>05 / 22</span></div>
+  </div></section>
+
+  <!-- 06 스타터 받기 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 2 · 스타터 받기</div>
+    <div class="title">이미 <span class="pp">작동하는 앱</span>을 받았다</div>
+    <div class="subtitle">압축 풀고 <span class="mono">node server.js</span> → localhost. 할 일 추가·체크·삭제가 벌써 된다.</div>
+    <div class="callout">"빈손에서 만드는 게 아니라, 잘 짠 걸 받아 <b>뜯어보고 고친다.</b>" — 이게 6차와 다른 점.</div>
+    <div class="foot"><span>PART 2 / 스타터 받기</span><span>06 / 22</span></div>
+  </div></section>
+
+  <!-- 07 구조 투어 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 3 · 구조 투어 ⭐</div>
+    <div class="title">레이어 <span class="pp">4겹</span> — 한 파일 = 한 책임</div>
+    <div class="subtitle">잘 짜인 앱은 역할별로 파일이 나뉜다. 그래서 읽힌다.</div>
+    <div class="cards c4">
+      <div class="card"><div class="k">데이터</div><div class="t">store.js</div><div class="d">저장/불러오기</div></div>
+      <div class="card"><div class="k">동작</div><div class="t">actions.js</div><div class="d">목록→목록 (순수 함수)</div></div>
+      <div class="card"><div class="k">화면</div><div class="t">render.js</div><div class="d">목록→화면 (그리기)</div></div>
+      <div class="card"><div class="k">연결</div><div class="t">app.js</div><div class="d">이벤트를 잇는다</div></div>
+    </div>
+    <div class="foot"><span>PART 3 / 구조 투어</span><span>07 / 22</span></div>
+  </div></section>
+
+  <!-- 08 데이터 흐름 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 3 · 데이터 흐름</div>
+    <div class="title">입력이 <span class="pp">레이어를 타고</span> 흐른다</div>
+    <div class="subtitle">앞 단계의 출력이 다음 단계의 입력. 흐름이 한눈에 보인다.</div>
+    <div class="pipe">
+      <div class="pbox"><div class="k">입력</div><div class="t">사용자</div><div class="d">할 일 입력</div></div>
+      <div class="parrow">→</div>
+      <div class="pbox"><div class="k">연결</div><div class="t">app</div><div class="d">이벤트 감지</div></div>
+      <div class="parrow">→</div>
+      <div class="pbox"><div class="k">동작</div><div class="t">actions</div><div class="d">새 목록 계산</div></div>
+      <div class="parrow">→</div>
+      <div class="pbox"><div class="k">데이터</div><div class="t">store</div><div class="d">저장</div></div>
+      <div class="parrow">→</div>
+      <div class="pbox"><div class="k">화면</div><div class="t">render</div><div class="d">다시 그림</div></div>
+    </div>
+    <div class="callout">모든 변경은 <span class="mono">update()</span> 한 곳을 거친다 — 저장과 화면을 한 번에.</div>
+    <div class="foot"><span>PART 3 / 데이터 흐름</span><span>08 / 22</span></div>
+  </div></section>
+
+  <!-- 09 수정 지도 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 3 · 핵심</div>
+    <div class="title">구조를 읽으면 <span class="pp">고칠 곳</span>이 보인다</div>
+    <div class="bigstate">기능 추가는 <span class="pp">actions</span>부터,<br/>모양 바꾸기는 <span class="pp">render·css</span>부터.</div>
+    <div class="callout">좋은 구조 = 고치기 쉬운 구조. 잘 짠 코드를 읽는 것만으로 '어디를 건드릴지'를 배운다.</div>
+    <div class="foot"><span>PART 3 / 핵심</span><span>09 / 22</span></div>
+  </div></section>
+
+  <!-- 10 디자인 개조 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 4 · 디자인 개조</div>
+    <div class="title">가볍게 — <span class="pp">내 취향</span>으로</div>
+    <div class="subtitle">즉시 결과가 보이는 것부터. 작은 성공이 쌓인다.</div>
+    <div class="cards">
+      <div class="card"><div class="k">이름</div><div class="t">앱 이름 바꾸기</div><div class="d">화면 제목 + 매니페스트</div></div>
+      <div class="card"><div class="k">색</div><div class="t">테마색·테마</div><div class="d">보라 → 내 색 / 밝은 테마</div></div>
+      <div class="card"><div class="k">모양</div><div class="t">둥글기·글자</div><div class="d">styles.css에서</div></div>
+    </div>
+    <div class="callout">새로고침 한 번에 바뀐다. "벌써 내 앱 같죠?"</div>
+    <div class="foot"><span>PART 4 / 디자인 개조</span><span>10 / 22</span></div>
+  </div></section>
+
+  <!-- 11 내 아이콘 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 4 · 내 아이콘 [정]</div>
+    <div class="title">내 이미지를 <span class="pp">홈 화면 아이콘</span>으로</div>
+    <div class="subtitle">Claude Code에 이미지 '파일 경로'를 알려주면, 가져와 규격 아이콘으로 만든다.</div>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div class="st">이미지 준비</div><div class="sd">정사각형 권장</div></div>
+      <div class="step"><div class="n">2</div><div class="st">경로 알려주기</div><div class="sd">Claude Code에</div></div>
+      <div class="step"><div class="n">3</div><div class="st">아이콘 생성</div><div class="sd">192·512 + 연결</div></div>
+    </div>
+    <div class="arrowline">덤: "<span class="pp">파일 경로 알려주기</span>"는 Claude Code의 핵심 스킬</div>
+    <div class="foot"><span>PART 4 / 내 아이콘</span><span>11 / 22</span></div>
+  </div></section>
+
+  <!-- 12 기능 개조 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 5 · 기능 개조 ⭐</div>
+    <div class="title">어느 <span class="pp">레이어</span>를 고치나</div>
+    <div class="subtitle">"무엇을 고칠지"를 같이 말하면 결과가 정확하고, 구조를 이해했다는 신호.</div>
+    <div class="twocol">
+      <div class="panel"><h4>기능을 추가할 때</h4><ul>
+        <li><b>actions</b>에 순수 함수부터 (계산)</li>
+        <li><b>app</b>에서 연결</li>
+        <li><b>render</b>·css로 보여주기</li>
+      </ul></div>
+      <div class="panel"><h4>보여주는 방식만 바꿀 때</h4><ul>
+        <li><b>render</b> 중심 (통계·정렬·숨기기)</li>
+        <li>데이터·동작은 그대로</li>
+      </ul></div>
+    </div>
+    <div class="foot"><span>PART 5 / 기능 개조</span><span>12 / 22</span></div>
+  </div></section>
+
+  <!-- 13 기능 예시 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 5 · 기능 예시</div>
+    <div class="title">하나만 골라 <span class="pp">붙여본다</span></div>
+    <div class="subtitle">구조가 좋아서, 시키면 정확한 자리에 붙는다.</div>
+    <div class="cards">
+      <div class="card"><div class="k">actions·render</div><div class="t">중요 표시(별표)</div><div class="d">중요한 건 위로 정렬</div></div>
+      <div class="card"><div class="k">render</div><div class="t">완료율 통계</div><div class="d">"3/5 완료(60%)"</div></div>
+      <div class="card"><div class="k">render·app</div><div class="t">완료 항목 숨기기</div><div class="d">토글 버튼</div></div>
+    </div>
+    <div class="callout">"이건 내 앱이다" — 받은 걸 고친 게 아니라 <b>내가 만든 게</b> 된다.</div>
+    <div class="foot"><span>PART 5 / 기능 예시</span><span>13 / 22</span></div>
+  </div></section>
+
+  <!-- 14 캐시 갱신 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 6 · 캐시 [오]</div>
+    <div class="title">고쳤으면 <span class="pp">캐시 버전</span>을 올린다</div>
+    <div class="subtitle">서비스워커가 옛 파일을 캐시해 둬서, 안 올리면 옛 화면이 보인다.</div>
+    <div class="callout"><span class="mono">sw.js</span>의 캐시 이름 <span class="mono">todo-pwa-v2</span> → <span class="mono">v3</span>으로. "이상하면 캐시 버전 올리기" — 평생 덜 헤맨다.</div>
+    <div class="foot"><span>PART 6 / 캐시</span><span>14 / 22</span></div>
+  </div></section>
+
+  <!-- 15 왜 배포 HTTPS -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 6 · 배포 [배]</div>
+    <div class="title">진짜 설치는 <span class="pp">배포</span> 후에</div>
+    <div class="subtitle">설치·오프라인은 HTTPS(자물쇠 주소)에서만. 로컬은 테스트용일 뿐.</div>
+    <div class="callout italic">"localhost에선 되는데 폰에선 설치가 안 돼요" — 당연하다. 배포해 HTTPS 주소를 받아야 폰에 깔린다.</div>
+    <div class="foot"><span>PART 6 / 배포</span><span>15 / 22</span></div>
+  </div></section>
+
+  <!-- 16 Vercel -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 6 · 배포 [배]</div>
+    <div class="title">Vercel로 <span class="pp">진짜 URL</span></div>
+    <div class="subtitle">정적 웹앱이라 거의 설정 없이 — GitHub에 올리고 Vercel 연결.</div>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div class="st">GitHub</div><div class="sd">코드 올리기</div></div>
+      <div class="step"><div class="n">2</div><div class="st">Vercel 연결</div><div class="sd">저장소 선택</div></div>
+      <div class="step"><div class="n">3</div><div class="st">배포</div><div class="sd">자동 HTTPS</div></div>
+      <div class="step"><div class="n">4</div><div class="st">열기</div><div class="sd">*.vercel.app</div></div>
+    </div>
+    <div class="arrowline">대안: <span class="pp">Railway</span>(정적 서버 server.js로)</div>
+    <div class="foot"><span>PART 6 / 배포</span><span>16 / 22</span></div>
+  </div></section>
+
+  <!-- 17 배포 트리 회수 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 6 · 6차 떡밥 회수</div>
+    <div class="title">무엇을 만드느냐가 <span class="pp">배포를 정한다</span></div>
+    <div class="subtitle">6차에서 못 했던 URL 배포 — 이번엔 된다.</div>
+    <div class="twocol">
+      <div class="panel"><h4>내 파일을 만지나? (6차 변경기)</h4><ul>
+        <li>예 → 배포 서버는 남의 파일 못 만짐</li>
+        <li>→ <b>GitHub로 코드 공유</b></li>
+      </ul></div>
+      <div class="panel"><h4>남의 파일 안 만지나? (7차 할일앱)</h4><ul>
+        <li>예 → 화면·내 폰 저장뿐</li>
+        <li>→ <b>URL 배포</b> → 링크로 누구나 설치</li>
+      </ul></div>
+    </div>
+    <div class="foot"><span>PART 6 / 6차 회수</span><span>17 / 22</span></div>
+  </div></section>
+
+  <!-- 18 폰 설치 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 7 · 설치 ⭐</div>
+    <div class="title">내 <span class="pp">폰 홈 화면</span>에 깐다</div>
+    <div class="subtitle">배포 URL을 폰에서 열고 "홈 화면에 추가" — 아이콘이 생긴다.</div>
+    <div class="twocol">
+      <div class="panel"><h4>안드로이드 (Chrome)</h4><ul>
+        <li>URL 열면 "홈 화면에 추가" 배너/메뉴</li>
+        <li>아이콘 생성 → 앱처럼 실행</li>
+      </ul></div>
+      <div class="panel"><h4>아이폰 (Safari)</h4><ul>
+        <li>공유 버튼 → "홈 화면에 추가"</li>
+        <li>(iOS는 수동 — 미리 안내)</li>
+      </ul></div>
+    </div>
+    <div class="foot"><span>PART 7 / 설치</span><span>18 / 22</span></div>
+  </div></section>
+
+  <!-- 19 내 앱이 폰에 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 7 · 완성 ⭐</div>
+    <div class="title"><span class="pp">내가 개조한 앱</span>이 폰에 산다</div>
+    <div class="bigstate">단톡방에 URL 톡.<br/>"어 이거 <span class="pp">네가 만든 거야?</span>"</div>
+    <div class="callout">비행기모드로 열어 오프라인까지 확인 — 받은 게 아니라, 내가 만든 앱.</div>
+    <div class="foot"><span>PART 7 / 완성</span><span>19 / 22</span></div>
+  </div></section>
+
+  <!-- 20 회고 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">RECAP · 오늘 만진 것</div>
+    <div class="title">PWA 5요소 + <span class="pp">레이어 4겹</span></div>
+    <div class="subtitle">이 두 지도면, 다음 앱도 읽고 고쳐 폰에 깔 수 있다.</div>
+    <div class="tags">
+      <div class="tag">화·정·오·저·배</div><div class="tag">store(데이터)</div><div class="tag">actions(동작)</div>
+      <div class="tag">render(화면)</div><div class="tag">app(연결)</div><div class="tag">캐시 갱신</div>
+      <div class="tag">Vercel 배포</div><div class="tag">폰 설치</div>
+    </div>
+    <div class="foot"><span>RECAP / 오늘 만진 것</span><span>20 / 22</span></div>
+  </div></section>
+
+  <!-- 21 습관 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">HABITS · 습관</div>
+    <div class="title">오늘부터, 이 <span class="pp">세 가지</span></div>
+    <div class="cards">
+      <div class="card"><div class="k">01</div><div class="t">고치기 전에 구조부터</div><div class="d">입력→출력, 어느 레이어인지 읽기.</div></div>
+      <div class="card"><div class="k">02</div><div class="t">디자인 → 기능 순서</div><div class="d">작은 성공부터 쌓기.</div></div>
+      <div class="card"><div class="k">03</div><div class="t">캐시 버전 + HTTPS</div><div class="d">고치면 버전 ↑, 설치는 배포 후.</div></div>
+    </div>
+    <div class="foot"><span>HABITS / 습관</span><span>21 / 22</span></div>
+  </div></section>
+
+  <!-- 22 마무리 -->
+  <section class="slide dark closing">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="eyebrow top">THANK YOU</div>
+    <div class="big">고맙습니다 <span class="pp">·</span> Q&amp;A</div>
+    <div class="csub">읽고 · 고치고 · 배포한다. 이제 어떤 앱이든 내 것으로.</div>
+    <div class="foot"><span>Claude Code PWA 실습</span><span>22 / 22</span></div>
+  </section>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "file-renamer",
+  "version": "1.0.0",
+  "description": "내 폴더의 파일 이름을 규칙대로 제자리에서 바꾸는 Node 로컬 도구 (교육용 샘플)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test.js",
+    "check": "node --check server.js"
+  },
+  "license": "MIT"
+}

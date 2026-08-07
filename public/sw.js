@@ -2,7 +2,7 @@
 // 수동 구현, 최소 기능만 포함
 
 // 빌드 시마다 자동으로 변경되는 버전 (타임스탬프 기반)
-const BUILD_VERSION = "BUILD_TIMESTAMP_PLACEHOLDER";
+const BUILD_VERSION = "1780561314812";
 const CACHE_NAME = `pcco-scorer-${BUILD_VERSION}`;
 const OFFLINE_URL = "/offline.html";
 

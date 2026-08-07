@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>6차 강의 슬라이드 — Claude Code로 진짜 프로그램 만들기</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root{--bg:#0e0e16; --ink:#15151f; --muted:#6b7280; --line:#e5e7eb;
+        --purple:#7c3aed; --purple-l:#a78bfa; --purple-bg:#f5f3ff; --red:#dc2626;}
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:"Pretendard","Malgun Gothic",-apple-system,sans-serif; background:#3a3a40;}
+  .deck{display:flex; flex-direction:column; align-items:center; gap:22px; padding:22px;}
+  .slide{width:1280px; height:720px; position:relative; overflow:hidden; background:#fff; flex:0 0 auto;}
+  .pad{position:absolute; inset:0; padding:60px 72px;}
+  .eyebrow{color:var(--purple); font-size:15px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; display:flex; align-items:center; gap:10px;}
+  .eyebrow::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--purple);}
+  .eyebrow.red{color:var(--red);} .eyebrow.red::before{background:var(--red);}
+  .title{font-size:50px; font-weight:800; color:var(--ink); line-height:1.16; margin-top:24px; letter-spacing:-.02em;}
+  .title.sm{font-size:42px;}
+  .title .dim{color:#9aa0ac; font-weight:700;} .title .pp{color:var(--purple);}
+  .subtitle{font-size:20px; color:var(--muted); margin-top:16px; line-height:1.5;}
+  .foot{position:absolute; left:72px; right:72px; bottom:32px; display:flex; justify-content:space-between; font-size:13px; color:#aab0bb; letter-spacing:.04em;}
+  table{width:100%; border-collapse:collapse; margin-top:38px; font-size:18px;}
+  thead th{color:var(--purple); font-weight:700; text-align:left; padding:13px 16px; border-bottom:1px solid var(--line); font-size:15px;}
+  tbody td{padding:14px 16px; border-bottom:1px solid #f1f2f4; color:#33373f;}
+  tbody td:first-child{font-weight:700; color:var(--ink);}
+  tbody td.hl{color:var(--purple); font-weight:700;}
+  .callout{margin-top:34px; background:#f7f7fa; border-left:4px solid var(--purple); border-radius:0 8px 8px 0; padding:20px 24px; font-size:21px; color:#3b3f48; line-height:1.5;}
+  .callout.italic{font-style:italic; color:#4b5563;}
+  .reddot{color:var(--red); font-weight:700; font-size:16px; margin-top:28px; display:flex; align-items:center; gap:8px;}
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:34px;}
+  .cards.c2{grid-template-columns:repeat(2,1fr);} .cards.c4{grid-template-columns:repeat(4,1fr);} .cards.c5{grid-template-columns:repeat(5,1fr);}
+  .card{border:1px solid var(--line); border-radius:14px; padding:22px;}
+  .card .k{color:var(--purple); font-size:13px; font-weight:700; letter-spacing:.05em;}
+  .card .t{font-size:20px; font-weight:800; color:var(--ink); margin-top:10px;}
+  .card .d{font-size:14.5px; color:#7a808b; margin-top:8px; line-height:1.5;}
+  .arrowline{margin-top:24px; text-align:center; color:#7a808b; font-size:17px;}
+  .arrowline .pp{color:var(--purple); font-weight:700;}
+  .check{margin-top:32px; columns:2; column-gap:48px;}
+  .check div{font-size:18px; color:#33373f; padding:8px 0; break-inside:avoid;}
+  .check i{color:var(--purple); font-weight:800; margin-right:10px; font-style:normal;}
+  /* steps */
+  .steps{display:flex; align-items:stretch; gap:12px; margin-top:40px;}
+  .step{flex:1; border:1px solid var(--line); border-radius:14px; padding:20px 16px; text-align:center; position:relative;}
+  .step .n{width:30px; height:30px; border-radius:8px; background:var(--purple); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:15px;}
+  .step .st{font-size:17px; font-weight:800; color:var(--ink);}
+  .step .sd{font-size:13px; color:#7a808b; margin-top:6px;}
+  .step:not(:last-child)::after{content:"›"; position:absolute; right:-11px; top:50%; transform:translateY(-50%); color:#c4b9f2; font-size:22px; font-weight:800;}
+  /* pipeline */
+  .pipe{display:flex; align-items:center; gap:0; margin-top:42px;}
+  .pbox{flex:1; border:1px solid var(--line); border-radius:14px; padding:20px; text-align:center;}
+  .pbox .k{color:var(--purple); font-size:13px; font-weight:700;}
+  .pbox .t{font-size:22px; font-weight:800; color:var(--ink); margin-top:8px; font-family:ui-monospace,monospace;}
+  .pbox .d{font-size:13px; color:#7a808b; margin-top:8px;}
+  .parrow{flex:0 0 130px; text-align:center; color:var(--purple); font-size:13px; font-weight:700;}
+  .parrow .a{font-size:22px;}
+  /* tree */
+  .tree{margin-top:30px; background:#0e0e16; color:#cdd1e0; border-radius:14px; padding:26px 30px; font-family:ui-monospace,Consolas,monospace; font-size:16px; line-height:1.9;}
+  .tree .c{color:#7c8aa5;} .tree .p{color:var(--purple-l); font-weight:700;}
+  /* tags */
+  .tags{display:flex; flex-wrap:wrap; gap:12px; margin-top:40px;}
+  .tag{background:var(--purple-bg); color:#4c2c97; border-radius:24px; padding:12px 22px; font-size:18px; font-weight:700;}
+  /* bigstate */
+  .bigstate{margin-top:60px; font-size:40px; font-weight:800; color:var(--ink); line-height:1.3; letter-spacing:-.02em;}
+  .bigstate .pp{color:var(--purple);}
+  /* two col */
+  .twocol{display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:34px;}
+  .panel{border:1px solid var(--line); border-radius:14px; padding:24px;}
+  .panel h4{font-size:16px; color:var(--purple); margin-bottom:12px;}
+  .panel ul{margin-left:18px;} .panel li{font-size:16px; color:#3b3f48; margin:7px 0; line-height:1.5;}
+  .mono{font-family:ui-monospace,monospace; background:#f3f0fd; color:#5b21b6; padding:1px 7px; border-radius:5px; font-size:.92em;}
+  /* dark slides */
+  .slide.dark{background:var(--bg);}
+  .blob{position:absolute; border-radius:50%;}
+  .blob.b1{width:300px; height:300px; left:-70px; top:-90px; background:var(--purple);}
+  .blob.b2{width:230px; height:230px; right:120px; bottom:-130px; background:#5b21b6;}
+  .blob.b3{width:150px; height:150px; right:90px; top:50px; background:#2a2a36;}
+  .dark .eyebrow{color:var(--purple-l);} .dark .eyebrow::before{background:var(--purple-l);}
+  .cover .big{position:absolute; left:72px; bottom:196px; font-size:100px; font-weight:800; color:#fff; line-height:1.05; letter-spacing:-.03em;}
+  .cover .big .pp{color:var(--purple-l);}
+  .cover .csub{position:absolute; left:74px; bottom:150px; font-size:24px; color:#9ca3af;}
+  .lect{position:absolute; left:72px; bottom:64px; display:flex; align-items:center; gap:12px;}
+  .lect .av{width:40px; height:40px; border-radius:50%; background:var(--purple); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;}
+  .lect .lc{font-size:12px; color:#9ca3af; letter-spacing:.15em;} .lect .ln{font-size:16px; color:#fff; font-weight:700;}
+  .eyebrow.top{position:absolute; left:72px; top:52px;}
+  .dark .foot{color:#5b6068;}
+  .closing .big{position:absolute; left:72px; top:300px; font-size:84px; font-weight:800; color:#fff; letter-spacing:-.02em;}
+  .closing .big .pp{color:var(--purple-l);}
+  .closing .csub{position:absolute; left:74px; top:430px; font-size:24px; color:#9ca3af;}
+  @media print{@page{size:1280px 720px; margin:0;} body{background:#fff;} .deck{gap:0; padding:0;} .slide{break-after:page;}}
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- 01 표지 -->
+  <section class="slide dark cover">
+    <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+    <div class="eyebrow top">6TH · CLAUDE CODE WORKSHOP</div>
+    <div class="big">Claude Code로<br/>진짜 <span class="pp">프로그램</span>을 만든다</div>
+    <div class="csub">묘사하면, 내 컴퓨터에서 도는 도구가 된다.</div>
+    <div class="lect"><div class="av">정</div><div><div class="lc">LECTURER</div><div class="ln">정금구</div></div></div>
+    <div class="foot"><span>Claude Code 종합 실습 / 정금구</span><span>01 / 32</span></div>
+  </section>
+
+  <!-- 02 복습 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">RECAP · 지난 강의</div>
+    <div class="title">4차에서 만든 앱, 지금 <span class="pp">어디</span> 있죠?</div>
+    <div class="subtitle">claude.ai로 만든 운세 앱 — 브라우저 안에만 있었습니다. 그리고 오늘도 R-PCCO는 그대로 씁니다.</div>
+    <div class="cards c5">
+      <div class="card"><div class="k">R</div><div class="t">역할</div><div class="d">누가 만드나</div></div>
+      <div class="card"><div class="k">P</div><div class="t">목적</div><div class="d">무엇을</div></div>
+      <div class="card"><div class="k">C</div><div class="t">맥락</div><div class="d">어디서·무슨 파일</div></div>
+      <div class="card"><div class="k">C</div><div class="t">제약</div><div class="d">조건·금지</div></div>
+      <div class="card"><div class="k">O</div><div class="t">출력</div><div class="d">어떤 모양</div></div>
+    </div>
+    <div class="callout">오늘은 같은 R-PCCO로 <b>내 컴퓨터에서 진짜 도는 프로그램</b>을 만듭니다. 맥락(C)에 ‘내 컴퓨터’가 들어갈 뿐.</div>
+    <div class="foot"><span>RECAP / 지난 강의</span><span>02 / 32</span></div>
+  </div></section>
+
+  <!-- 03 오늘의 약속 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">TODAY'S PROMISE</div>
+    <div class="title">90분 뒤, 이렇게 달라집니다</div>
+    <div class="subtitle">도구 하나를 만들며 Claude Code를 통째로, 그리고 다음에도 쓸 ‘구조’를 손에 넣습니다.</div>
+    <div class="cards">
+      <div class="card"><div class="k">01 · MASTERY</div><div class="t">기능 체득</div><div class="d">명령어·도구·권한·디버깅·git까지 한 번씩 손으로.</div></div>
+      <div class="card"><div class="k">02 · DESIGN</div><div class="t">레이어 설계</div><div class="d">2단계 넘으면 쪼개 지침으로 넘겨받는 감각(2차 I/O 계약).</div></div>
+      <div class="card"><div class="k">03 · SCAFFOLD</div><div class="t">재사용 구조</div><div class="d">다음 프로그램도 그대로 시작할 파일 뼈대 한 장.</div></div>
+    </div>
+    <div class="foot"><span>TODAY'S PROMISE</span><span>03 / 32</span></div>
+  </div></section>
+
+  <!-- 04 Part1 문제제기 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 1 · 왜 Claude Code인가</div>
+    <div class="title">브라우저를 닫으면, <span class="dim">아무것도 안 남았다</span></div>
+    <div class="subtitle">Artifacts는 빠르지만 모래상자입니다. 내 파일을 못 만지고, 닫으면 사라집니다.</div>
+    <div class="callout italic">“내 컴퓨터에서 진짜로 돌고, 내 폴더를 다루고, 남길 수 있는 것” — 그게 Claude Code입니다.</div>
+    <div class="foot"><span>PART 1 / 왜 Claude Code인가</span><span>04 / 32</span></div>
+  </div></section>
+
+  <!-- 05 Part1 비교표 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 1 · 핵심 차이</div>
+    <div class="title">Artifacts vs Claude Code <span class="dim">— 모래상자 vs 내 컴퓨터</span></div>
+    <div class="subtitle">같은 ‘AI로 만들기’지만, 도는 곳과 남는 것이 다릅니다.</div>
+    <table>
+      <thead><tr><th>구분</th><th>claude.ai Artifacts (4차)</th><th>Claude Code (6차)</th></tr></thead>
+      <tbody>
+        <tr><td>어디서 도나</td><td>브라우저 모래상자</td><td class="hl">내 컴퓨터에서 진짜로</td></tr>
+        <tr><td>파일 개수</td><td>보통 단일 파일</td><td>여러 파일 프로젝트(레이어)</td></tr>
+        <tr><td>내 파일 접근</td><td>못 함</td><td class="hl">내 폴더·파일 직접</td></tr>
+        <tr><td>잘하는 일</td><td>빠른 웹 시제품</td><td>진짜 도구·자동화·공유까지</td></tr>
+      </tbody>
+    </table>
+    <div class="foot"><span>PART 1 / 핵심 차이</span><span>05 / 32</span></div>
+  </div></section>
+
+  <!-- 06 Part1 슬래시 명령어 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 1 · 슬래시 명령어</div>
+    <div class="title">막히면 <span class="pp">/</span>, 외울 건 네 개</div>
+    <div class="subtitle">슬래시 한 글자로 강력해지는 단축어. 핵심 네 개에, 토큰 아끼는 /compact까지.</div>
+    <div class="cards c5">
+      <div class="card"><div class="k">/help</div><div class="t">도움말</div><div class="d">까먹었을 때 첫 명령.</div></div>
+      <div class="card"><div class="k">/init</div><div class="t">CLAUDE.md 생성</div><div class="d">새 폴더 시작할 때.</div></div>
+      <div class="card"><div class="k">/clear</div><div class="t">대화 비우기</div><div class="d">새 작업 시작 시.</div></div>
+      <div class="card"><div class="k">/permissions</div><div class="t">권한 설정</div><div class="d">허용·차단 규칙.</div></div>
+      <div class="card"><div class="k">/compact</div><div class="t">대화 압축</div><div class="d">길어지면 요약 → 토큰 절약.</div></div>
+    </div>
+    <div class="arrowline">입력 트릭: <span class="pp">!명령</span> 셸 실행 · <span class="pp">@파일</span> 첨부 · <span class="pp">Shift+Tab</span> plan(계획) 모드 전환</div>
+    <div class="foot"><span>PART 1 / 슬래시 명령어</span><span>06 / 32</span></div>
+  </div></section>
+
+  <!-- 07 Part2 만능 5단계 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 2 · 만능 5단계</div>
+    <div class="title">어떤 작업이든, 이 <span class="pp">5단계</span></div>
+    <div class="subtitle">이 흐름만 잡으면 무엇이든 시작할 수 있습니다.</div>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div class="st">폴더 준비</div><div class="sd">작업할 곳으로</div></div>
+      <div class="step"><div class="n">2</div><div class="st">claude 실행</div><div class="sd">그 폴더에서</div></div>
+      <div class="step"><div class="n">3</div><div class="st">의도 설명</div><div class="sd">R-PCCO로</div></div>
+      <div class="step"><div class="n">4</div><div class="st">단계별</div><div class="sd">한 번에 다 X</div></div>
+      <div class="step"><div class="n">5</div><div class="st">확인·반복</div><div class="sd">대화로 다듬기</div></div>
+    </div>
+    <div class="callout">핵심은 3번 — <b>의도 설명</b>. 무엇을·어떻게·왜를 한 문장에 담으면 절반은 끝.</div>
+    <div class="foot"><span>PART 2 / 만능 5단계</span><span>07 / 32</span></div>
+  </div></section>
+
+  <!-- 08 Part2 R-PCCO 묘사 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 2 · 묘사가 코드다</div>
+    <div class="title">코드 말고, <span class="pp">R-PCCO로 묘사</span>한다</div>
+    <div class="subtitle">파일 변경기를 예로 — 코딩 맥락에선 ‘맥락’에 환경·파일·실행이 들어갑니다.</div>
+    <div class="cards c5">
+      <div class="card"><div class="k">역할</div><div class="t">개발자</div><div class="d">간단한 Node 도구를 만드는</div></div>
+      <div class="card"><div class="k">목적</div><div class="t">이름 변경</div><div class="d">폴더 파일을 규칙대로 제자리</div></div>
+      <div class="card"><div class="k">맥락</div><div class="t">내 컴퓨터</div><div class="d">Windows·Node·로컬 서버</div></div>
+      <div class="card"><div class="k">제약</div><div class="t">안전하게</div><div class="d">미리보기·한글·단순하게</div></div>
+      <div class="card"><div class="k">출력</div><div class="t">실행 한 줄</div><div class="d">node server.js로 열리는</div></div>
+    </div>
+    <div class="foot"><span>PART 2 / 묘사가 코드다</span><span>08 / 32</span></div>
+  </div></section>
+
+  <!-- 09 Part2 핵심개념 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 2 · 핵심 개념</div>
+    <div class="title">Context · Tools · Permissions</div>
+    <div class="subtitle">이 세 단어를 이해하면 Claude Code의 모든 동작이 한 번에 보입니다.</div>
+    <div class="cards">
+      <div class="card"><div class="k">CONTEXT</div><div class="t">작업 메모리</div><div class="d">지금 Claude가 아는 모든 것(대화·파일·지침).</div></div>
+      <div class="card"><div class="k">TOOLS</div><div class="t">손대는 능력</div><div class="d">Read·Write·Edit·Bash — 실제로 컴퓨터에 손.</div></div>
+      <div class="card"><div class="k">PERMISSIONS</div><div class="t">안전벨트</div><div class="d">위험한 작업은 ‘1초 읽고’ 승인.</div></div>
+    </div>
+    <div class="callout">파일을 만들 때 뜨는 <b>권한 확인</b> — 빨리 가려고 다 Yes 누르지 말 것(실수 1위).</div>
+    <div class="foot"><span>PART 2 / 핵심 개념</span><span>09 / 32</span></div>
+  </div></section>
+
+  <!-- 10 Part3 로컬서버 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 3 · 로컬 서버 테스트</div>
+    <div class="title">만들었으면 <span class="pp">바로 돌려본다</span></div>
+    <div class="subtitle">Claude가 ‘로컬 서버’를 켜고(포트 3000), 나는 브라우저에서 localhost:3000으로 확인합니다.</div>
+    <div class="bigstate"><span class="mono">node server.js</span> <span class="pp">→</span> localhost:3000</div>
+    <div class="callout">“어, 내 컴퓨터에서 진짜 돈다!” — Artifacts엔 없던 순간. 이게 로컬 서버 테스트.</div>
+    <div class="foot"><span>PART 3 / 로컬 서버 테스트</span><span>10 / 32</span></div>
+  </div></section>
+
+  <!-- 11 Part3 Tools 관찰 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 3 · Tools 관찰</div>
+    <div class="title">지금 얘가 <span class="pp">뭘 하는지</span> 보인다</div>
+    <div class="subtitle">화면의 도구 표시를 읽으면 Claude의 행동이 다 보입니다.</div>
+    <div class="cards c4">
+      <div class="card"><div class="k">Read</div><div class="t">읽는 중</div><div class="d">파일 내용을 확인</div></div>
+      <div class="card"><div class="k">Write / Edit</div><div class="t">만드는 중</div><div class="d">파일 생성·수정</div></div>
+      <div class="card"><div class="k">Bash</div><div class="t">실행 중</div><div class="d">서버·명령 돌리기</div></div>
+      <div class="card"><div class="k">! · @</div><div class="t">편한 기능</div><div class="d">!ls 직접 / @파일 설명</div></div>
+    </div>
+    <div class="foot"><span>PART 3 / Tools 관찰</span><span>11 / 32</span></div>
+  </div></section>
+
+  <!-- 12 Part4 미리보기/plan -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 4 · 안전하게 키우기</div>
+    <div class="title">위험한 작업은 <span class="pp">미리보기·계획</span>부터</div>
+    <div class="subtitle">파일 이름을 진짜로 바꾸는 프로그램 — 잘못 돌리면 큰일입니다.</div>
+    <div class="callout">큰 변경은 <b>plan 모드</b>: 아무것도 안 바꾸고 계획만 먼저. 그리고 항상 미리보기 → 확인 → 적용 → 되돌리기.</div>
+    <div class="reddot">⚠ 안전이 기능보다 먼저 — 되돌릴 수 없는 일은 보여주고 나서.</div>
+    <div class="foot"><span>PART 4 / 안전하게 키우기</span><span>12 / 32</span></div>
+  </div></section>
+
+  <!-- 13 Part4 반복개선 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 4 · 대화로 키운다</div>
+    <div class="title">한 방이 아니라, <span class="pp">대화로 키운다</span></div>
+    <div class="subtitle">Claude Code의 진짜 힘은 기존 코드를 고쳐 나가는 반복 개선입니다.</div>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div class="st">기본 버전</div><div class="sd">작게 시작</div></div>
+      <div class="step"><div class="n">2</div><div class="st">미리보기</div><div class="sd">표로 보여줘</div></div>
+      <div class="step"><div class="n">3</div><div class="st">되돌리기</div><div class="sd">실수 대비</div></div>
+      <div class="step"><div class="n">4</div><div class="st">메뉴·규칙</div><div class="sd">기능 확장</div></div>
+    </div>
+    <div class="callout">작게 요청 → 돌려보고 → 다음. 한 번에 다 시키면 컨텍스트가 꽉 차 품질이 떨어집니다.</div>
+    <div class="foot"><span>PART 4 / 대화로 키운다</span><span>13 / 32</span></div>
+  </div></section>
+
+  <!-- 14 Part5 디버깅 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 5 · 디버깅</div>
+    <div class="title">에러는 적이 아니라 <span class="pp">정보</span>다</div>
+    <div class="subtitle">잘 전달하면 5분 안에 해결됩니다. 디버깅 만능 5요소.</div>
+    <div class="cards c5">
+      <div class="card"><div class="k">1</div><div class="t">무슨 명령</div><div class="d">뭘 했는데</div></div>
+      <div class="card"><div class="k">2</div><div class="t">에러 전체</div><div class="d">일부 X, 전부</div></div>
+      <div class="card"><div class="k">3</div><div class="t">환경</div><div class="d">OS·버전</div></div>
+      <div class="card"><div class="k">4</div><div class="t">언제부터</div><div class="d">뭐 한 뒤</div></div>
+      <div class="card"><div class="k">5</div><div class="t">기대 결과</div><div class="d">원하는 모양</div></div>
+    </div>
+    <div class="callout italic">“안 돼요, 고쳐주세요”는 정보가 0. 5요소를 채워 던지면 Claude가 추측 안 합니다.</div>
+    <div class="foot"><span>PART 5 / 디버깅</span><span>14 / 32</span></div>
+  </div></section>
+
+  <!-- 15 Part6 문제제기 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">PART 6 · 레이어 설계 (핵심)</div>
+    <div class="title">한 파일에 <span class="pp">다 엉켰다</span></div>
+    <div class="bigstate">규칙·미리보기·적용·되돌리기가<br/>한 곳에 뒤섞였다. <span class="pp">2차에서 배운 거 기억나죠?</span></div>
+    <div class="foot"><span>PART 6 / 레이어 설계</span><span>15 / 32</span></div>
+  </div></section>
+
+  <!-- 16 Part6 원칙 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 6 · I/O 계약</div>
+    <div class="title">체인의 성패는 <span class="pp">‘접점’</span>에 달렸다</div>
+    <div class="subtitle">2차 I-MRKO의 그 원칙을, 이번엔 코드로 구현합니다.</div>
+    <div class="callout italic">“성패는 지침이 아니라 지침 사이의 접점에 달렸다. 산문은 체인의 적.”</div>
+    <div class="cards c2">
+      <div class="card"><div class="k">원칙 ①</div><div class="t">한 단계 = 한 책임</div><div class="d">수집은 변환 안 하고, 변환은 저장 안 한다.</div></div>
+      <div class="card"><div class="k">원칙 ②</div><div class="t">접점은 JSON으로</div><div class="d">단계 사이는 구조화된 데이터로만 넘긴다.</div></div>
+    </div>
+    <div class="foot"><span>PART 6 / I/O 계약</span><span>16 / 32</span></div>
+  </div></section>
+
+  <!-- 17 Part6 3단계 분해 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 6 · 3단계 레이어</div>
+    <div class="title">수집 <span class="dim">→</span> 변환계획 <span class="dim">→</span> 출력</div>
+    <div class="subtitle">파일 변경기를 세 단계로 쪼갭니다. 사이엔 JSON 계약이 흐릅니다.</div>
+    <div class="pipe">
+      <div class="pbox"><div class="k">STAGE 1</div><div class="t">collect</div><div class="d">폴더 → 파일목록</div></div>
+      <div class="parrow"><div class="a">→</div>계약1<br/>파일목록 JSON</div>
+      <div class="pbox"><div class="k">STAGE 2</div><div class="t">transform</div><div class="d">규칙 → 변경계획</div></div>
+      <div class="parrow"><div class="a">→</div>계약2<br/>변경계획 JSON</div>
+      <div class="pbox"><div class="k">STAGE 3</div><div class="t">output</div><div class="d">제자리 변경+되돌리기</div></div>
+    </div>
+    <div class="callout">한 덩어리였던 코드가 역할별 파일로 — 레이어가 <b>눈에 보입니다</b>. Artifacts가 못 하던 것.</div>
+    <div class="foot"><span>PART 6 / 3단계 레이어</span><span>17 / 32</span></div>
+  </div></section>
+
+  <!-- 18 Part6 포필범메 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 6 · I/O 계약 4요소</div>
+    <div class="title">접점은 <span class="pp">포·필·범·메</span>로 고정</div>
+    <div class="subtitle">단계 사이로 넘기는 데이터의 약속. 두 지침에 같은 포맷을 적어야 안 깨집니다.</div>
+    <div class="cards c4">
+      <div class="card"><div class="k">포 · FORMAT</div><div class="t">어떤 구조</div><div class="d">JSON / 표 / 헤더 섹션</div></div>
+      <div class="card"><div class="k">필 · REQUIRED</div><div class="t">필수 항목</div><div class="d">반드시 들어갈 필드</div></div>
+      <div class="card"><div class="k">범 · SCOPE</div><div class="t">범위</div><div class="d">개수·분량·깊이 한계</div></div>
+      <div class="card"><div class="k">메 · METADATA</div><div class="t">메타정보</div><div class="d">충돌 표시·개수 등</div></div>
+    </div>
+    <div class="foot"><span>PART 6 / I/O 계약 4요소</span><span>18 / 32</span></div>
+  </div></section>
+
+  <!-- 19 Part6 지침 MD spec-first -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 6 · 단계별 지침 MD</div>
+    <div class="title">지침을 <span class="pp">먼저</span> 쓰고, 그 계약대로 만든다</div>
+    <div class="subtitle">스펙 우선(spec-first) — 각 단계의 입출력 계약을 MD로 먼저 못 박습니다.</div>
+    <div class="twocol">
+      <div class="panel"><h4>specs/ 단계별 지침</h4><ul>
+        <li><span class="mono">01_수집.md</span> — 입력 folderPath / 출력 파일목록</li>
+        <li><span class="mono">02_변환.md</span> — 입력 파일목록+규칙 / 출력 변경계획</li>
+        <li><span class="mono">03_출력.md</span> — 입력 변경계획 / 제자리 변경</li>
+      </ul></div>
+      <div class="panel"><h4>각 지침에 적는 것</h4><ul>
+        <li>역할 — 이 단계가 하는 일</li>
+        <li>입력 / 출력 — 포·필·범·메 계약</li>
+        <li>책임 / 절대 안 하는 것</li>
+      </ul></div>
+    </div>
+    <div class="callout">“이 지침대로 각 단계를 별도 파일로 구현해줘” — 묘사 한 번에 멀티파일이 만들어집니다.</div>
+    <div class="foot"><span>PART 6 / 단계별 지침 MD</span><span>19 / 32</span></div>
+  </div></section>
+
+  <!-- 20 Part6 스킬/검증 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 6 · 재사용 + 검증</div>
+    <div class="title">지침은 <span class="pp">스킬로</span>, 중간엔 <span class="pp">검증을</span></div>
+    <div class="subtitle">레이어를 더 단단하게 만드는 두 가지 — 2차 체인 원칙 그대로.</div>
+    <div class="cards c2">
+      <div class="card"><div class="k">SKILL</div><div class="t">스킬로 재사용</div><div class="d">자주 쓰는 절차를 .claude/skills에 레시피로 저장 → 다음 프로그램에서 또 호출.</div></div>
+      <div class="card"><div class="k">VALIDATE</div><div class="t">검증 단계 끼우기</div><div class="d">변환 뒤 ‘빈 이름·중복’ 검증 한 단계 — 오류가 다음으로 번지지 않게.</div></div>
+    </div>
+    <div class="foot"><span>PART 6 / 재사용 + 검증</span><span>20 / 32</span></div>
+  </div></section>
+
+  <!-- 21 Part7 폴더구조 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 7 · 재사용 스캐폴드</div>
+    <div class="title">어떤 프로그램이든 <span class="pp">이 뼈대</span></div>
+    <div class="subtitle">파일 변경기뿐 아니라, 다음에 만들 무엇이든 이 구조로 시작합니다.</div>
+    <div class="tree">
+my-project/<br/>
+├── <span class="p">CLAUDE.md</span>   <span class="c"># AI가 매 세션 자동으로 읽는 지침</span><br/>
+├── <span class="p">README.md</span>   <span class="c"># 사람용 설명서</span><br/>
+├── <span class="p">DEVLOG.md</span>   <span class="c"># 개발로그 — 무엇을·언제·왜</span><br/>
+├── <span class="p">HANDOVER.md</span> <span class="c"># 핸드오버 — 현재 상태·다음 할 일</span><br/>
+├── <span class="p">.env</span> / .env.example <span class="c"># 비밀·설정</span><br/>
+├── <span class="p">specs/</span>      <span class="c"># 단계별 지침(I/O 계약)</span><br/>
+├── <span class="p">.claude/</span>    <span class="c"># settings.json · skills/</span><br/>
+└── <span class="p">src/</span>        <span class="c"># 실제 코드(단계별 모듈)</span>
+    </div>
+    <div class="foot"><span>PART 7 / 재사용 스캐폴드</span><span>21 / 32</span></div>
+  </div></section>
+
+  <!-- 22 Part7 파일 카탈로그 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 7 · 필수 파일</div>
+    <div class="title">있으면 <span class="pp">안 무너지는</span> 파일들</div>
+    <div class="subtitle">초보가 무너지는 건 실력이 아니라 구조가 없어서입니다.</div>
+    <table>
+      <thead><tr><th>파일</th><th>역할</th><th>AI 자동읽힘</th></tr></thead>
+      <tbody>
+        <tr><td>CLAUDE.md</td><td>프로젝트 지침(개요·규칙·금지)</td><td class="hl">O</td></tr>
+        <tr><td>specs/*.md</td><td>단계별 I/O 계약</td><td class="hl">O</td></tr>
+        <tr><td>README / DEVLOG / HANDOVER</td><td>사람용 설명 · 기록 · 인계</td><td>—</td></tr>
+        <tr><td>.env / .env.example</td><td>비밀·설정 (깃 제외 / 견본)</td><td>—</td></tr>
+        <tr><td>.gitignore</td><td>비밀·쓰레기 깃 제외</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <div class="foot"><span>PART 7 / 필수 파일</span><span>22 / 32</span></div>
+  </div></section>
+
+  <!-- 23 Part7 명령어 맵 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 7 · 워크플로우</div>
+    <div class="title">언제 어떤 <span class="pp">명령어</span>를 쓰나</div>
+    <div class="subtitle">그리고 처음부터 다 만들지 말 것 — 작게 심고 키웁니다.</div>
+    <div class="twocol">
+      <div class="panel"><h4>명령어 타이밍</h4><ul>
+        <li>새 폴더 → <span class="mono">/init</span></li>
+        <li>새 작업 → <span class="mono">/clear</span></li>
+        <li>위험 변경 전 → plan(계획) 모드 <span class="mono">Shift+Tab</span></li>
+        <li>막힘 → <span class="mono">/help</span></li>
+      </ul></div>
+      <div class="panel"><h4>단계별 도입</h4><ul>
+        <li>🥚 최소 — CLAUDE.md·README·.gitignore</li>
+        <li>🐣 권장 — +DEVLOG·.env·specs</li>
+        <li>🐦 풀 — +HANDOVER·settings·SKILL</li>
+      </ul></div>
+    </div>
+    <div class="foot"><span>PART 7 / 워크플로우</span><span>23 / 32</span></div>
+  </div></section>
+
+  <!-- 24 Part8 git -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 8 · git 안전망</div>
+    <div class="title">AI가 망쳐도 <span class="pp">한 줄로</span> 되돌린다</div>
+    <div class="subtitle">git = 시간 여행. 큰 작업 전엔 항상 커밋해 안전망을 칩니다.</div>
+    <div class="cards c2">
+      <div class="card"><div class="k">습관</div><div class="t">작업 전 commit</div><div class="d">변경 전 상태를 박제. 마음에 안 들면 언제든 복귀.</div></div>
+      <div class="card"><div class="k">복구</div><div class="t">git restore</div><div class="d">AI가 100줄 고쳐놨어도 한 줄로 원상복구.</div></div>
+    </div>
+    <div class="callout">“이거 git으로 저장하고 GitHub에 올려줘” — 커밋·원격까지 Claude가 도와줍니다.</div>
+    <div class="foot"><span>PART 8 / git 안전망</span><span>24 / 32</span></div>
+  </div></section>
+
+  <!-- 25 Part9 공유 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 9 · 공유</div>
+    <div class="title">이건 URL로 <span class="dim">남이 못 쓴다</span> — 왜?</div>
+    <div class="subtitle">내 파일을 만지는 도구의 숙명. 배포 방식은 ‘무엇을 만드느냐’가 정합니다.</div>
+    <div class="twocol">
+      <div class="panel"><h4>내 파일을 만지나? → 예</h4><ul>
+        <li>배포된 웹서버는 남의 파일 못 만짐</li>
+        <li>→ <b>GitHub로 코드 공유</b></li>
+        <li>남이 받아 자기 PC에서 <span class="mono">node server.js</span></li>
+      </ul></div>
+      <div class="panel"><h4>남의 파일 안 만지나? → 예</h4><ul>
+        <li>순수 화면·계산·조회</li>
+        <li>→ <b>Vercel URL 배포</b>(4차 운세앱)</li>
+        <li>남이 URL로 바로 사용</li>
+      </ul></div>
+    </div>
+    <div class="callout">교훈: 무엇을 만드느냐가 배포 방식을 정한다.</div>
+    <div class="foot"><span>PART 9 / 공유</span><span>25 / 32</span></div>
+  </div></section>
+
+  <!-- 26 실습 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">WORKSHOP · 실습</div>
+    <div class="title">이제 <span class="pp">직접</span> 따라 만들어봅시다</div>
+    <div class="subtitle">‘따라하기 명령어’를 그대로 Claude Code에 입력하며 한 사이클을 돕니다.</div>
+    <div class="steps">
+      <div class="step"><div class="n">A</div><div class="st">묘사</div><div class="sd">R-PCCO로</div></div>
+      <div class="step"><div class="n">B</div><div class="st">로컬 테스트</div><div class="sd">node server.js</div></div>
+      <div class="step"><div class="n">C</div><div class="st">레이어</div><div class="sd">3단계+지침</div></div>
+      <div class="step"><div class="n">D</div><div class="st">스캐폴드</div><div class="sd">MD·.env</div></div>
+      <div class="step"><div class="n">E</div><div class="st">git·공유</div><div class="sd">커밋·GitHub</div></div>
+    </div>
+    <div class="callout">막히면 만능 문장: “큰 변경이니 먼저 계획만 보여줘” / “이 에러 5요소로 줄게, 고쳐줘”.</div>
+    <div class="foot"><span>WORKSHOP / 실습</span><span>26 / 32</span></div>
+  </div></section>
+
+  <!-- 27 표준 흐름 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">SUMMARY · 표준 흐름</div>
+    <div class="title">프로그램 만들기, <span class="pp">이 순서로</span></div>
+    <div class="subtitle">묘사 → 테스트 → 디버깅 → 레이어 → 스캐폴드 → 공유. 한 사이클.</div>
+    <div class="check">
+      <div><i>1</i>폴더 → claude → /init</div>
+      <div><i>2</i>R-PCCO로 의도 설명 (작게)</div>
+      <div><i>3</i>로컬에서 돌려보기</div>
+      <div><i>4</i>2단계 이상? 레이어 + specs/</div>
+      <div><i>5</i>에러는 디버깅 5요소</div>
+      <div><i>6</i>CLAUDE/README/.env, DEVLOG·HANDOVER</div>
+      <div><i>7</i>반복작업은 SKILL</div>
+      <div><i>8</i>git commit → 공유 결정</div>
+    </div>
+    <div class="foot"><span>SUMMARY / 표준 흐름</span><span>27 / 32</span></div>
+  </div></section>
+
+  <!-- 28 체크리스트 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">TAKEAWAY · 한 장</div>
+    <div class="title">다음 프로그램도 <span class="pp">이 한 장</span>으로 시작한다</div>
+    <div class="subtitle">오늘 만든 건 도구 하나지만, 진짜 배운 건 모든 프로그램에 깔 구조.</div>
+    <div class="check">
+      <div><i>✓</i>폴더 만들고 <span class="mono">/init</span> → CLAUDE.md</div>
+      <div><i>✓</i>R-PCCO로 의도 설명 → 최소 버전</div>
+      <div><i>✓</i>로컬에서 돌려보기</div>
+      <div><i>✓</i>2단계 이상? specs/ 단계별 지침</div>
+      <div><i>✓</i>비밀·설정은 .env / .env.example</div>
+      <div><i>✓</i>DEVLOG·HANDOVER 기록</div>
+      <div><i>✓</i>반복작업은 SKILL.md</div>
+      <div><i>✓</i>git commit → 공유 결정</div>
+    </div>
+    <div class="callout">“프로그램 = 코드 + 구조 파일들.” 구조부터 깔면 혼자서도 안 무너진다.</div>
+    <div class="foot"><span>TAKEAWAY / 한 장</span><span>28 / 32</span></div>
+  </div></section>
+
+  <!-- 29 습관 3가지 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">HABITS · 습관</div>
+    <div class="title">오늘부터, 이 <span class="pp">세 가지</span></div>
+    <div class="cards">
+      <div class="card"><div class="k">01</div><div class="t">R-PCCO로 묘사</div><div class="d">2단계 넘으면 레이어로 쪼개고 단계별 지침.</div></div>
+      <div class="card"><div class="k">02</div><div class="t">미리보기·plan·git</div><div class="d">위험·되돌릴 수 없는 일은 먼저 보여주고.</div></div>
+      <div class="card"><div class="k">03</div><div class="t">작게 → 돌려보고 → 다음</div><div class="d">한 방 X. 작업 바뀌면 /clear.</div></div>
+    </div>
+    <div class="foot"><span>HABITS / 습관</span><span>29 / 32</span></div>
+  </div></section>
+
+  <!-- 30 기능 지도 회고 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">RECAP · 오늘 만진 기능</div>
+    <div class="title">오늘 손으로 만진 <span class="pp">Claude Code</span></div>
+    <div class="subtitle">하루 만에 이만큼을 직접 써봤습니다.</div>
+    <div class="tags">
+      <div class="tag">슬래시 명령어</div><div class="tag">Tools 관찰</div><div class="tag">권한</div>
+      <div class="tag">로컬 서버</div><div class="tag">plan 모드</div><div class="tag">디버깅</div>
+      <div class="tag">레이어 / I-O 계약</div><div class="tag">지침 MD</div><div class="tag">스킬</div>
+      <div class="tag">git</div><div class="tag">공유</div>
+    </div>
+    <div class="foot"><span>RECAP / 오늘 만진 기능</span><span>30 / 32</span></div>
+  </div></section>
+
+  <!-- 31 다음 예고 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">NEXT · 다음 단계</div>
+    <div class="title">각 레이어를 <span class="pp">서브에이전트</span>로</div>
+    <div class="subtitle">오늘의 ‘한 책임’ 레이어가 진짜 ‘AI 팀’이 되는 다음 단계.</div>
+    <div class="cards">
+      <div class="card"><div class="k">15</div><div class="t">MCP</div><div class="d">외부 도구 연결</div></div>
+      <div class="card"><div class="k">16</div><div class="t">Hooks</div><div class="d">안전장치·알림</div></div>
+      <div class="card"><div class="k">18</div><div class="t">서브에이전트</div><div class="d">여러 AI 협업</div></div>
+    </div>
+    <div class="callout">가이드 고급편으로 — 같은 방식으로 더 강해집니다.</div>
+    <div class="foot"><span>NEXT / 다음 단계</span><span>31 / 32</span></div>
+  </div></section>
+
+  <!-- 32 마무리 -->
+  <section class="slide dark closing">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="eyebrow top">THANK YOU</div>
+    <div class="big">고맙습니다 <span class="pp">·</span> Q&amp;A</div>
+    <div class="csub">묘사 → 테스트 → 레이어 → 스캐폴드 → 공유. 이제 혼자서도.</div>
+    <div class="foot"><span>Claude Code 종합 실습 / 정금구</span><span>32 / 32</span></div>
+  </section>
+
+</div>
+</body>
+</html>

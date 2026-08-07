@@ -42,3 +42,9 @@ next-env.d.ts
 
 # claude code local settings
 .claude/
+
+# 강의자료 — 배포용 바이너리·압축본은 제외 (기획서·샘플 소스는 커밋)
+강의자료/**/*.zip
+강의자료/**/*.exe
+강의자료/**/*.Zip
+

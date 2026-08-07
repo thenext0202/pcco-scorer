@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>8차 강의 슬라이드 · 자동화 설계 (PILOT)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root{--bg:#0b1412; --ink:#12201d; --muted:#647067; --line:#e3e9e6;
+        --teal:#0f766e; --teal-l:#5eead4; --teal-bg:#effcf9; --amber:#d97706; --red:#dc2626;}
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:"Pretendard","Malgun Gothic",-apple-system,sans-serif; background:#3a3a40;}
+  .deck{display:flex; flex-direction:column; align-items:center; gap:22px; padding:22px;}
+  .slide{width:1280px; height:720px; position:relative; overflow:hidden; background:#fff; flex:0 0 auto;}
+  .pad{position:absolute; inset:0; padding:52px 66px;}
+  .eyebrow{color:var(--teal); font-size:14.5px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; display:flex; align-items:center; gap:10px;}
+  .eyebrow::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--teal);}
+  .eyebrow.red{color:var(--red);} .eyebrow.red::before{background:var(--red);}
+  .eyebrow.amber{color:var(--amber);} .eyebrow.amber::before{background:var(--amber);}
+  .title{font-size:44px; font-weight:800; color:var(--ink); line-height:1.16; margin-top:18px; letter-spacing:-.02em;}
+  .title.sm{font-size:38px;}
+  .title .dim{color:#9aa6a1; font-weight:700;} .title .pp{color:var(--teal);}
+  .subtitle{font-size:19px; color:var(--muted); margin-top:13px; line-height:1.5;}
+  .foot{position:absolute; left:66px; right:66px; bottom:26px; display:flex; justify-content:space-between; font-size:12.5px; color:#a7b0ab; letter-spacing:.04em;}
+  table{width:100%; border-collapse:collapse; margin-top:24px; font-size:17px;}
+  thead th{color:var(--teal); font-weight:700; text-align:left; padding:11px 15px; border-bottom:1px solid var(--line); font-size:14.5px;}
+  tbody td{padding:10px 15px; border-bottom:1px solid #f0f3f1; color:#31382f;}
+  tbody td:first-child{font-weight:800; color:var(--teal); font-size:19px; text-align:center; width:64px;}
+  tbody td.hl{color:var(--teal); font-weight:700;}
+  .callout{margin-top:22px; background:#f5f8f7; border-left:4px solid var(--teal); border-radius:0 8px 8px 0; padding:16px 22px; font-size:20px; color:#39413c; line-height:1.5;}
+  .callout.sm{font-size:17px; padding:14px 20px;}
+  .callout.italic{font-style:italic; color:#4b5563;}
+  .callout .pp{color:var(--teal); font-weight:700;} .callout .rr{color:var(--red); font-weight:700;}
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:26px;}
+  .cards.c2{grid-template-columns:repeat(2,1fr);} .cards.c4{grid-template-columns:repeat(4,1fr);}
+  .card{border:1px solid var(--line); border-radius:14px; padding:20px;}
+  .card .k{color:var(--teal); font-size:12.5px; font-weight:700; letter-spacing:.05em;}
+  .card .t{font-size:20px; font-weight:800; color:var(--ink); margin-top:9px;}
+  .card .d{font-size:14px; color:#78807a; margin-top:7px; line-height:1.5;}
+  .arrowline{margin-top:20px; text-align:center; color:#78807a; font-size:16.5px;}
+  .arrowline .pp{color:var(--teal); font-weight:700;}
+  .twocol{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:24px;}
+  .twocol.uneven{grid-template-columns:1fr 1.15fr;}
+  .panel{border:1px solid var(--line); border-radius:14px; padding:22px;}
+  .panel.red{border-color:#f3c9c9; background:#fdf5f5;} .panel.red h4{color:var(--red);}
+  .panel.green{border-color:#c7e8df; background:#f4fbf9;} .panel.green h4{color:var(--teal);}
+  .panel h4{font-size:16.5px; color:var(--teal); margin-bottom:11px;}
+  .panel ul{margin-left:18px;} .panel li{font-size:15.5px; color:#39413c; margin:8px 0; line-height:1.45;}
+  .panel .big{font-size:28px; font-weight:800; color:var(--ink); text-align:center; margin:6px 0 4px;}
+  .panel .cap{font-size:13.5px; color:#78807a; text-align:center; line-height:1.5;}
+  .mono{font-family:ui-monospace,monospace; background:#e9f6f3; color:#0b5c55; padding:1px 7px; border-radius:5px; font-size:.92em;}
+  .bigstate{margin-top:34px; font-size:35px; font-weight:800; color:var(--ink); line-height:1.32; letter-spacing:-.02em;}
+  .bigstate .pp{color:var(--teal);}
+  /* factory pipeline */
+  .pipe8{display:flex; align-items:center; margin-top:30px; gap:0;}
+  .p8{flex:1; border:1px solid var(--line); border-radius:11px; padding:14px 5px; text-align:center; background:#fbfdfc;}
+  .p8.hl{border-color:var(--teal); background:var(--teal-bg);}
+  .p8 .n{font-size:11.5px; color:#a7b0ab; font-weight:700;}
+  .p8 .t{font-size:16px; font-weight:800; color:var(--ink); margin-top:3px;}
+  .p8arrow{flex:0 0 18px; text-align:center; color:var(--teal-l); font-size:16px; font-weight:800;}
+  /* numbered steps */
+  .steps{display:flex; align-items:stretch; gap:12px; margin-top:28px;}
+  .step{flex:1; border:1px solid var(--line); border-radius:14px; padding:18px 14px; text-align:center; position:relative;}
+  .step .sn{width:28px; height:28px; border-radius:8px; background:var(--teal); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; margin:0 auto 10px; font-size:14px;}
+  .step .stt{font-size:16px; font-weight:800; color:var(--ink);}
+  .step .std{font-size:13px; color:#78807a; margin-top:5px; line-height:1.4;}
+  .step:not(:last-child)::after{content:"›"; position:absolute; right:-11px; top:50%; transform:translateY(-50%); color:var(--teal-l); font-size:21px; font-weight:800; z-index:2;}
+  /* two-axis */
+  .axis{margin-top:18px; position:relative;}
+  .axis .axlab{font-size:14.5px; font-weight:800; color:var(--teal); margin-bottom:9px; letter-spacing:.02em;}
+  .axrow{display:flex; align-items:center; gap:0;}
+  .achip{flex:1; border:1px solid var(--line); background:#fbfdfc; border-radius:9px; padding:10px 4px; text-align:center; font-size:14px; font-weight:700; color:var(--ink);}
+  .aarr{flex:0 0 15px; text-align:center; color:var(--teal-l); font-weight:800;}
+  .axbody{display:flex; gap:20px; margin-top:18px;}
+  .axleft{flex:0 0 315px;}
+  .layer{border:1px solid var(--line); border-radius:10px; padding:11px 15px; margin-bottom:8px; display:flex; align-items:center; gap:11px; background:#fbfdfc;}
+  .layer .lb{background:var(--teal); color:#fff; font-weight:800; font-size:12.5px; border-radius:6px; padding:3px 9px;}
+  .layer .lt{font-size:15px; font-weight:700; color:var(--ink);} .layer .ld{font-size:12.5px; color:#78807a; margin-left:auto;}
+  .axnote{flex:1; background:var(--teal-bg); border:1px solid #cfeee8; border-radius:12px; padding:20px 22px; display:flex; flex-direction:column; justify-content:center;}
+  .axnote .q{font-size:23px; font-weight:800; color:#0b3d38; line-height:1.4;} .axnote .s{font-size:15px; color:#3c6b64; margin-top:11px; line-height:1.5;}
+  /* signal-light gates */
+  .lights{display:flex; align-items:center; margin-top:30px; gap:0;}
+  .lgate{flex:1; border:1px solid var(--line); border-radius:13px; padding:18px 8px; text-align:center; background:#fbfdfc;}
+  .lgate.big{box-shadow:0 0 0 2px var(--teal);}
+  .lgate .dot{width:32px; height:32px; border-radius:50%; background:#16a34a; margin:0 auto 10px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:17px; box-shadow:0 0 0 5px #dcfce7;}
+  .lgate .t{font-size:16px; font-weight:800; color:var(--ink);} .lgate .d{font-size:12px; color:#78807a; margin-top:4px;}
+  .larrow{flex:0 0 28px; text-align:center; color:var(--teal-l); font-size:19px; font-weight:800;}
+  /* mini I/O card */
+  .minicard{margin-top:26px; border:2px solid var(--teal); border-radius:16px; overflow:hidden; width:660px;}
+  .minicard .mh{background:var(--teal); color:#fff; font-size:18px; font-weight:800; padding:12px 22px;}
+  .minicard .mb{padding:18px 22px;} .minicard .row{display:flex; gap:14px; font-size:18px; margin:8px 0; align-items:baseline;}
+  .minicard .lbl{flex:0 0 128px; color:var(--teal); font-weight:800;} .minicard .val{color:#31382f; font-weight:600;}
+  .tags{display:flex; flex-wrap:wrap; gap:11px; margin-top:28px;}
+  .tag{background:var(--teal-bg); color:#0b5c55; border-radius:24px; padding:11px 20px; font-size:17px; font-weight:700;}
+  .series{display:flex; align-items:stretch; gap:9px; margin-top:28px;}
+  .sc{flex:1; border:1px solid var(--line); border-radius:11px; padding:13px 8px; text-align:center;}
+  .sc.on{background:var(--teal); border-color:var(--teal);}
+  .sc .cn{font-size:11.5px; color:#a7b0ab; font-weight:700;} .sc.on .cn{color:#a7f3e6;}
+  .sc .ct{font-size:14px; font-weight:800; color:var(--ink); margin-top:4px;} .sc.on .ct{color:#fff;}
+  /* definition list (deep) */
+  .dl{margin-top:22px;}
+  .di{display:flex; gap:16px; align-items:flex-start; padding:13px 0; border-bottom:1px solid #f0f3f1;}
+  .di .dk{flex:0 0 150px; display:flex; align-items:center; gap:9px;}
+  .di .dk .b{background:var(--teal); color:#fff; font-weight:800; font-size:13px; border-radius:6px; padding:3px 10px;}
+  .di .dk .kt{font-size:17px; font-weight:800; color:var(--ink);}
+  .di .dd{flex:1; font-size:15.5px; color:#434b45; line-height:1.5;}
+  .di .dd b{color:var(--teal);}
+  /* scenario timeline */
+  .tl{margin-top:24px; border-left:3px solid var(--teal); padding-left:22px;}
+  .tli{position:relative; padding:9px 0;}
+  .tli::before{content:""; position:absolute; left:-28px; top:15px; width:11px; height:11px; border-radius:50%; background:var(--teal);}
+  .tli .th{font-size:16.5px; font-weight:800; color:var(--ink);}
+  .tli .td{font-size:14.5px; color:#6a7169; margin-top:2px;}
+  /* dark cover/closing */
+  .slide.dark{background:var(--bg);}
+  .blob{position:absolute; border-radius:50%; filter:blur(2px);}
+  .blob.b1{width:320px; height:320px; left:-80px; top:-100px; background:var(--teal);}
+  .blob.b2{width:240px; height:240px; right:120px; bottom:-140px; background:#0b5c55;}
+  .dark .eyebrow{color:var(--teal-l);} .dark .eyebrow::before{background:var(--teal-l);}
+  .cover .big{position:absolute; left:66px; right:66px; bottom:190px; font-size:74px; font-weight:800; color:#fff; line-height:1.14; letter-spacing:-.03em;}
+  .cover .big .pp{color:var(--teal-l);}
+  .cover .csub{position:absolute; left:68px; right:66px; bottom:148px; font-size:22px; color:#9aa6a1;}
+  .lect{position:absolute; left:66px; bottom:58px; display:flex; align-items:center; gap:12px;}
+  .lect .av{width:40px; height:40px; border-radius:50%; background:var(--teal); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;}
+  .lect .lc{font-size:12px; color:#9aa6a1; letter-spacing:.15em;} .lect .ln{font-size:16px; color:#fff; font-weight:700;}
+  .eyebrow.top{position:absolute; left:66px; top:50px;}
+  .dark .foot{color:#5b665f;}
+  .pilot-cover{position:absolute; right:66px; top:140px; display:flex; flex-direction:column; gap:10px;}
+  .pcv{display:flex; align-items:center; gap:14px;} .pcv .l{width:44px; height:44px; border-radius:10px; background:rgba(94,234,212,.14); color:var(--teal-l); font-weight:800; font-size:22px; display:flex; align-items:center; justify-content:center;}
+  .pcv .w{color:#cfe9e3; font-size:17px; font-weight:600; white-space:nowrap;}
+  .closing .big{position:absolute; left:66px; right:66px; top:280px; font-size:70px; font-weight:800; color:#fff; letter-spacing:-.02em;}
+  .closing .big .pp{color:var(--teal-l);}
+  .closing .csub{position:absolute; left:68px; right:66px; top:408px; font-size:22px; color:#9aa6a1; line-height:1.5;}
+  @media print{@page{size:1280px 720px; margin:0;} body{background:#fff;} .deck{display:block!important; gap:0; padding:0;} .slide{break-after:page; break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- 01 표지 -->
+  <section class="slide dark cover">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="eyebrow top">8TH · AUTOMATION DESIGN</div>
+    <div class="pilot-cover">
+      <div class="pcv"><div class="l">P</div><div class="w">Pipeline · 쪼갠다</div></div>
+      <div class="pcv"><div class="l">I</div><div class="w">I/O · 정한다</div></div>
+      <div class="pcv"><div class="l">L</div><div class="w">Layer · 나눈다</div></div>
+      <div class="pcv"><div class="l">O</div><div class="w">Oversight · 지킨다</div></div>
+      <div class="pcv"><div class="l">T</div><div class="w">Trace · 남긴다</div></div>
+    </div>
+    <div class="big">자동화는 코드가 아니라<br/><span class="pp">설계</span>다</div>
+    <div class="csub">실전 영상 공장을 해부해, 내 자동화 설계도를 그린다.</div>
+    <div class="foot"><span>자동화 설계 · PILOT</span><span>01 / 30</span></div>
+  </section>
+
+  <!-- 02 진짜 어려움 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">PART 0 · 오프닝</div>
+    <div class="title">자동화의 진짜 어려움은 <span class="pp">설계</span>다</div>
+    <div class="subtitle">"툴만 붙이면 되겠지" — 현실은 대개 세 번째 단계에서 무너진다.</div>
+    <div class="twocol">
+      <div class="panel red"><h4>흔한 착각 ✗</h4><ul>
+        <li>좋은 툴(자동화 앱) 하나 붙이면 알아서 된다</li>
+        <li>AI가 똑똑하니 "다 해줘" 한 번에 시키면 된다</li>
+        <li>결과 → 앞부분은 되는데 <b>3번째 단계에서 뒤엉켜 멈춘다</b></li>
+      </ul></div>
+      <div class="panel green"><h4>진짜 핵심 ✓</h4><ul>
+        <li>일을 <b>어떻게 쪼개고</b>, 단계끼리 <b>뭘 주고받게</b> 할지</li>
+        <li>= 툴이 아니라 <b>설계</b>의 문제</li>
+        <li>5차의 말: "AI가 못하는 게 아니라 <b>전달이 부족</b>한 것"</li>
+      </ul></div>
+    </div>
+    <div class="callout sm">그래서 오늘은 툴 사용법이 아니라 — <span class="pp">설계하는 눈</span>을 기른다.</div>
+    <div class="foot"><span>PART 0 / 오프닝</span><span>02 / 30</span></div>
+  </div></section>
+
+  <!-- 03 오늘의 약속 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">TODAY'S PROMISE</div>
+    <div class="title">남의 공장을 <span class="pp">해부</span>해, 내 <span class="pp">설계도</span>를 그린다</div>
+    <div class="subtitle">코드는 안 짭니다. 오늘의 결과물은 '내 자동화 설계도' 한 장.</div>
+    <div class="cards">
+      <div class="card"><div class="k">01 · 견학</div><div class="t">공장을 통째로</div><div class="d">제품 정보 → 광고 영상. 실제 돌아가는 걸 본다.</div></div>
+      <div class="card"><div class="k">02 · 해부</div><div class="t">PILOT 5칼</div><div class="d">다섯 원칙으로 뜯어 설계 원리를 뽑는다.</div></div>
+      <div class="card"><div class="k">03 · 설계</div><div class="t">내 설계도 1장</div><div class="d">내 업무를 PILOT 5칸으로 그린다.</div></div>
+    </div>
+    <div class="callout">만드는 건 그다음(6·7차 방식) — 오늘은 <span class="pp">설계가 먼저</span>다.</div>
+    <div class="foot"><span>TODAY'S PROMISE</span><span>03 / 30</span></div>
+  </div></section>
+
+  <!-- 04 공장 견학 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 1 · 공장 견학</div>
+    <div class="title">제품 정보 넣으면 <span class="pp">광고 영상</span>이 나온다</div>
+    <div class="subtitle">입력 = 제품 정보 &nbsp;→&nbsp; 출력 = 한국어 음성이 깔린 광고 영상.</div>
+    <div class="callout">🎬 <b>완성 영상 재생</b> — 오늘 유일하게 '원본 그대로' 보여주는 것. 이해가 아니라 <span class="pp">감탄 포인트</span>.</div>
+    <div class="bigstate">사람이 편집한 게 아니라,<br/><span class="pp">단계를 밟는 공장</span>에서 나왔다.</div>
+    <div class="foot"><span>PART 1 / 공장 견학</span><span>04 / 30</span></div>
+  </div></section>
+
+  <!-- 05 8칸 흐름 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 1 · 흐름 지도</div>
+    <div class="title">여덟 칸의 <span class="pp">흐름</span></div>
+    <div class="subtitle">복잡해 보여도, 지금부터 PILOT 다섯 칼로 해부하면 단순해진다.</div>
+    <div class="pipe8">
+      <div class="p8"><div class="n">S0</div><div class="t">접수</div></div><div class="p8arrow">›</div>
+      <div class="p8"><div class="n">S1</div><div class="t">분석</div></div><div class="p8arrow">›</div>
+      <div class="p8"><div class="n">S2</div><div class="t">방향</div></div><div class="p8arrow">›</div>
+      <div class="p8"><div class="n">S3</div><div class="t">대본</div></div><div class="p8arrow">›</div>
+      <div class="p8"><div class="n">S4</div><div class="t">그림</div></div><div class="p8arrow">›</div>
+      <div class="p8"><div class="n">S5</div><div class="t">클립</div></div><div class="p8arrow">›</div>
+      <div class="p8"><div class="n">S6</div><div class="t">검수</div></div><div class="p8arrow">›</div>
+      <div class="p8"><div class="n">S7</div><div class="t">합본</div></div>
+    </div>
+    <div class="arrowline">각 칸은 <span class="pp">판단·글쓰기</span>(Claude)거나 <span class="pp">그림·영상 생성</span>(도구). 섞이지 않는다.</div>
+    <div class="foot"><span>PART 1 / 흐름 지도</span><span>05 / 30</span></div>
+  </div></section>
+
+  <!-- 06 두 예시 동행 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 1 · 오늘의 두 예시</div>
+    <div class="title">공장 옆에 — <span class="pp">내 업무</span>도 같이 본다</div>
+    <div class="subtitle">거창한 영상 공장만이 아니라, 여러분이 바로 쓸 작은 예시를 나란히 놓고 갑니다.</div>
+    <div class="twocol">
+      <div class="panel"><h4>예시 A · 영상 공장 (해부 대상)</h4><ul>
+        <li>제품 정보 → 광고 영상 8단계</li>
+        <li>규모가 크지만 원리가 또렷하게 보임</li>
+      </ul></div>
+      <div class="panel green"><h4>예시 B · 주간 리포트 (내 것)</h4><ul>
+        <li>흩어진 기록 → 주간 리포트 초안</li>
+        <li>누구나 당장 자동화할 만한 크기</li>
+      </ul></div>
+    </div>
+    <div class="callout sm">원칙마다 <span class="pp">둘 다</span>로 확인 — "큰 것도, 작은 내 업무도 똑같이 적용된다".</div>
+    <div class="foot"><span>PART 1 / 두 예시</span><span>06 / 30</span></div>
+  </div></section>
+
+  <!-- 07 P 한방 vs 8칸 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 2 · P — Pipeline (쪼갠다)</div>
+    <div class="title">한 방에? <span class="dim">vs</span> <span class="pp">여러 칸으로</span></div>
+    <div class="subtitle">한 번에 다 시키면 어디서 틀어졌는지 모른다. 쪼개면 틀어진 칸만 다시.</div>
+    <div class="twocol">
+      <div class="panel red"><h4>한 방에 시키기 ✗</h4>
+        <div class="big" style="color:var(--red)">제품 → ??? → 영상</div>
+        <div class="cap">대본이 문제인지 그림이 문제인지 뒤엉킴 · 고칠 곳을 못 찾음</div>
+      </div>
+      <div class="panel green"><h4>단계로 쪼개기 ✓</h4>
+        <div class="big" style="color:var(--teal)">여러 칸으로 분해</div>
+        <div class="cap">틀어진 칸만 다시 · 칸마다 전문화 · 흐름이 눈에 보임</div>
+      </div>
+    </div>
+    <div class="callout sm">"AI가 똑똑하니 한 번에" — 큰 일일수록 <span class="rr">정반대</span>. 똑똑할수록 <span class="pp">쪼개서</span> 시켜야 한다.</div>
+    <div class="foot"><span>PART 2 / P 쪼갠다</span><span>07 / 30</span></div>
+  </div></section>
+
+  <!-- 08 P 실패 사례 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">PART 2 · P — 실패 사례</div>
+    <div class="title">"다 해줘"라고 하면 생기는 일</div>
+    <div class="subtitle">실제로 한 방에 시켜본 결과 — 자동화가 아니라 도박이 된다.</div>
+    <div class="dl">
+      <div class="di"><div class="dk"><span class="b">증상 1</span></div><div class="dd">앞은 그럴듯한데 뒤로 갈수록 <b>대본과 그림이 따로 논다</b> — 어느 단계가 원인인지 알 수 없다.</div></div>
+      <div class="di"><div class="dk"><span class="b">증상 2</span></div><div class="dd">한 군데만 고치고 싶은데 <b>전체를 다시</b> 돌려야 한다 → 시간·비용 폭발.</div></div>
+      <div class="di"><div class="dk"><span class="b">증상 3</span></div><div class="dd">될 때도 있고 안 될 때도 있다 — <b>재현이 안 된다</b>. 자동화의 생명인 '똑같이 나옴'이 깨진다.</div></div>
+    </div>
+    <div class="callout sm">교훈: 큰 일을 한 프롬프트에 욱여넣지 말 것. <span class="pp">쪼개는 순간</span> 자동화가 된다.</div>
+    <div class="foot"><span>PART 2 / 실패 사례</span><span>08 / 30</span></div>
+  </div></section>
+
+  <!-- 09 P 좋은 단계 3조건 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 2 · P — Pipeline (쪼갠다)</div>
+    <div class="title">좋은 단계의 <span class="pp">세 조건</span></div>
+    <div class="cards">
+      <div class="card"><div class="k">01</div><div class="t">하나의 책임</div><div class="d">한 칸은 한 일만. '분석'과 '대본'을 한 칸에 넣지 않는다.</div></div>
+      <div class="card"><div class="k">02</div><div class="t">끝이 분명</div><div class="d">끝나면 딱 떨어지는 결과물. 대본 한 편, 그림 여섯 장.</div></div>
+      <div class="card"><div class="k">03</div><div class="t">다음 칸이 받는다</div><div class="d">앞 칸의 결과가 뒤 칸의 재료가 된다.</div></div>
+    </div>
+    <div class="callout sm">개수의 감: 보통 <span class="pp">3~7단계</span>. 2개면 안 쪼갠 것, 20개면 관리가 더 복잡 — "한 칸=한 책임"이 기준.</div>
+    <div class="foot"><span>PART 2 / P 쪼갠다</span><span>09 / 30</span></div>
+  </div></section>
+
+  <!-- 10 P 두 예시로 쪼개보기 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 2 · P — 두 예시로</div>
+    <div class="title">같은 원리, <span class="pp">두 크기</span>로 쪼개기</div>
+    <div class="axlab" style="color:var(--teal); font-weight:800; font-size:14.5px; margin-top:18px;">예시 A · 영상 공장</div>
+    <div class="pipe8" style="margin-top:9px">
+      <div class="p8"><div class="t">접수</div></div><div class="p8arrow">›</div>
+      <div class="p8"><div class="t">분석</div></div><div class="p8arrow">›</div>
+      <div class="p8"><div class="t">방향</div></div><div class="p8arrow">›</div>
+      <div class="p8"><div class="t">대본</div></div><div class="p8arrow">›</div>
+      <div class="p8"><div class="t">그림</div></div><div class="p8arrow">›</div>
+      <div class="p8"><div class="t">클립</div></div><div class="p8arrow">›</div>
+      <div class="p8"><div class="t">검수</div></div><div class="p8arrow">›</div>
+      <div class="p8"><div class="t">합본</div></div>
+    </div>
+    <div class="axlab" style="color:var(--teal); font-weight:800; font-size:14.5px; margin-top:22px;">예시 B · 주간 리포트</div>
+    <div class="pipe8" style="margin-top:9px">
+      <div class="p8 hl"><div class="t">수집</div></div><div class="p8arrow">›</div>
+      <div class="p8 hl"><div class="t">분류</div></div><div class="p8arrow">›</div>
+      <div class="p8 hl"><div class="t">요약</div></div><div class="p8arrow">›</div>
+      <div class="p8 hl"><div class="t">작성</div></div><div class="p8arrow">›</div>
+      <div class="p8 hl"><div class="t">검토</div></div>
+    </div>
+    <div class="callout sm">크기는 달라도 규칙은 같다 — <span class="pp">한 칸=한 책임, 끝이 분명</span>.</div>
+    <div class="foot"><span>PART 2 / 두 예시</span><span>10 / 30</span></div>
+  </div></section>
+
+  <!-- 11 I 계약으로 잇기 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 3 · I — I/O (정한다)</div>
+    <div class="title">단계를 <span class="pp">계약</span>으로 잇는다</div>
+    <div class="subtitle">칸 사이는 '말'이 아니라 정해진 양식의 결과물로. 각 칸의 입력→출력을 못 박는다.</div>
+    <div class="minicard">
+      <div class="mh">📄 대본 단계 — 입출력 계약</div>
+      <div class="mb">
+        <div class="row"><span class="lbl">들어가는 것</span><span class="val">영상 의도 (누구에게 · 어떤 느낌)</span></div>
+        <div class="row"><span class="lbl">나오는 것</span><span class="val">컷별 대사 + 장면 묘사</span></div>
+      </div>
+    </div>
+    <div class="callout sm">"알아서 잘 넘겨줘"가 아니라 — <span class="pp">뭘 받고 뭘 내놓을지</span>를 미리 정한다.</div>
+    <div class="foot"><span>PART 3 / I 정한다</span><span>11 / 30</span></div>
+  </div></section>
+
+  <!-- 12 I 계약 없으면 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">PART 3 · I — 계약이 없으면</div>
+    <div class="title">양식이 없으면 <span class="dim">중간에</span> 멈춘다</div>
+    <div class="twocol uneven">
+      <div class="panel red"><h4>계약 없음 ✗</h4><ul>
+        <li>대본 칸이 어떤 날은 대사만, 어떤 날은 줄거리만 내놓음</li>
+        <li>다음 칸(그림)이 <b>뭘 받을지 몰라</b> 깨진다</li>
+        <li>사람이 매번 손봐야 함 → 자동화 아님</li>
+      </ul></div>
+      <div class="panel green"><h4>계약 있음 ✓</h4><ul>
+        <li>"항상 컷별 대사+장면 묘사" 양식 고정</li>
+        <li>다음 칸은 <b>믿고</b> 그대로 받아 진행</li>
+        <li>사람 개입 없이 흐른다</li>
+      </ul></div>
+    </div>
+    <div class="callout sm">자동화가 <span class="rr">중간에 멈추는</span> 대부분의 이유 = 단계 사이 <span class="pp">양식이 안 정해져서</span>.</div>
+    <div class="foot"><span>PART 3 / 계약 없으면</span><span>12 / 30</span></div>
+  </div></section>
+
+  <!-- 13 I 계약의 힘 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 3 · I — I/O (정한다)</div>
+    <div class="title">계약이 있으면 — <span class="pp">갈아끼울 수 있다</span></div>
+    <div class="twocol">
+      <div class="panel"><h4>따로따로 가능</h4><ul>
+        <li>칸을 <b>따로 고치고</b>, 따로 테스트</li>
+        <li>앞 칸이 어떻게 만들었는지 몰라도 됨</li>
+        <li>결과물 <b>모양</b>만 약속되면 OK</li>
+      </ul></div>
+      <div class="panel"><h4>실행자 교체</h4><ul>
+        <li>대본을 <b>사람이 쓰든 AI가 쓰든</b></li>
+        <li>"의도 받아 대사 낸다" 계약만 지키면</li>
+        <li>뒤 칸은 신경 안 쓴다</li>
+      </ul></div>
+    </div>
+    <div class="callout">2차 강의의 <span class="pp">입출력 계약(포·필·범·메)</span> — 자동화에선 '단계의 계약'으로 그대로 온다.</div>
+    <div class="foot"><span>PART 3 / I 정한다</span><span>13 / 30</span></div>
+  </div></section>
+
+  <!-- 14 I 아티팩트=서류철 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 3 · I — 비유로</div>
+    <div class="title">단계 사이 결과물 = <span class="pp">서류철</span></div>
+    <div class="subtitle">각 칸이 일한 결과를 '서류(파일)'로 만들어 다음 칸 책상에 올려둔다. 이 서류를 <b>아티팩트</b>라 부른다.</div>
+    <div class="steps">
+      <div class="step"><div class="sn">1</div><div class="stt">분석 서류</div><div class="std">제품 요약·설득 포인트</div></div>
+      <div class="step"><div class="sn">2</div><div class="stt">방향 서류</div><div class="std">의도·톤·스타일</div></div>
+      <div class="step"><div class="sn">3</div><div class="stt">대본 서류</div><div class="std">컷별 대사</div></div>
+      <div class="step"><div class="sn">4</div><div class="stt">그림 서류</div><div class="std">장면 이미지</div></div>
+    </div>
+    <div class="callout sm">서류만 있으면 <span class="pp">누가 이어받아도</span> 일이 굴러간다 — 사람이 바뀌어도, AI로 바뀌어도.</div>
+    <div class="foot"><span>PART 3 / 아티팩트</span><span>14 / 30</span></div>
+  </div></section>
+
+  <!-- 15 L 두 축 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 4 · L — Layer (나눈다) ⭐</div>
+    <div class="title sm">가로로 쪼개고, <span class="pp">세로로 나눈다</span></div>
+    <div class="axis">
+      <div class="axlab">① 가로 → 쪼갠다 · Pipeline (시간 순서)</div>
+      <div class="axrow">
+        <div class="achip">접수</div><div class="aarr">›</div>
+        <div class="achip">분석</div><div class="aarr">›</div>
+        <div class="achip">방향</div><div class="aarr">›</div>
+        <div class="achip">대본</div><div class="aarr">›</div>
+        <div class="achip">그림</div><div class="aarr">›</div>
+        <div class="achip">…</div><div class="aarr">›</div>
+        <div class="achip">합본</div>
+      </div>
+      <div class="axbody">
+        <div class="axleft">
+          <div class="axlab">② 세로 ↓ 나눈다 · Layer (성격 분리)</div>
+          <div class="layer"><span class="lb">지식</span><span class="lt">안 변하는 규칙·자료</span></div>
+          <div class="layer"><span class="lb">스펙</span><span class="lt">각 칸의 계약서</span></div>
+          <div class="layer"><span class="lb">지휘자</span><span class="lt">순서대로 시킴</span></div>
+          <div class="layer"><span class="lb">창구</span><span class="lt">요청 넣는 곳</span></div>
+        </div>
+        <div class="axnote">
+          <div class="q">두 축으로 분해한다.</div>
+          <div class="s">가로(P)는 <b>시간</b>, 세로(L)는 <b>성격</b>. 이 두 축이 오늘 강의의 뼈대 — 6차 '파일=한 책임'이 시스템 규모로 커진 것.</div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>PART 4 / L 나눈다</span><span>15 / 30</span></div>
+  </div></section>
+
+  <!-- 16 L 네 층 하나씩 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 4 · L — 네 층을 하나씩</div>
+    <div class="title sm">각 층은 <span class="pp">무엇을 맡나</span></div>
+    <div class="dl">
+      <div class="di"><div class="dk"><span class="b">지식</span><span class="kt"></span></div><div class="dd">안 변하는 <b>재료·규칙</b>. 제품 지식, 제작 지침, 스타일 템플릿. "무엇을 아는가"만 담고 실행은 모름.</div></div>
+      <div class="di"><div class="dk"><span class="b">스펙</span></div><div class="dd">각 칸의 <b>계약서</b>. 입력→출력·규칙. 언어중립 — 누가 실행해도 똑같이 읽힘.</div></div>
+      <div class="di"><div class="dk"><span class="b">지휘자</span></div><div class="dd">칸들을 <b>순서대로 시키고 상태를 관리</b>. 창의·생성은 안 함. '순서·상태·호출'만.</div></div>
+      <div class="di"><div class="dk"><span class="b">창구</span></div><div class="dd">사람이 <b>요청을 넣고 결과를 받는 곳</b>. 웹 화면이든 채팅이든.</div></div>
+    </div>
+    <div class="callout sm">규칙을 바꾸려면 <span class="pp">지식층</span>만, 순서를 바꾸려면 <span class="pp">지휘자층</span>만 — 서로 안 건드린다.</div>
+    <div class="foot"><span>PART 4 / 네 층</span><span>16 / 30</span></div>
+  </div></section>
+
+  <!-- 17 L 얇은 지휘자 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 4 · L — Layer (나눈다)</div>
+    <div class="title">얇은 지휘자 — <span class="pp">갈아끼운다</span></div>
+    <div class="subtitle">지휘자는 '순서·상태·호출'만. 창의도 생성도 안 한다. 그래서 통째로 교체가 된다.</div>
+    <div class="twocol">
+      <div class="panel"><h4>오늘 — 지휘자 = Cowork</h4>
+        <div class="big">사람이 트리거</div>
+        <div class="cap">세션에서 켜서 8단계를 돌린다</div>
+      </div>
+      <div class="panel green"><h4>내일 — 지휘자 = Python + API</h4>
+        <div class="big">사람 없이 무인</div>
+        <div class="cap">지식·계약은 그대로, 지휘자만 교체</div>
+      </div>
+    </div>
+    <div class="callout">지휘자가 <span class="pp">얇아서</span> 갈아끼울 수 있다 — 이게 잘 나눈 설계의 진짜 힘.</div>
+    <div class="foot"><span>PART 4 / L 나눈다</span><span>17 / 30</span></div>
+  </div></section>
+
+  <!-- 18 L WHAT/HOW/WHERE -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 4 · L — 왜 나누면 강한가</div>
+    <div class="title">무엇을 · 어떻게 · 어디서 <span class="pp">를 가른다</span></div>
+    <div class="cards">
+      <div class="card"><div class="k">WHAT · 지식</div><div class="t">무엇을 아는가</div><div class="d">규칙·자료. 바꿔도 실행 코드는 안 건드림.</div></div>
+      <div class="card"><div class="k">HOW · 지휘자</div><div class="t">어떻게 시키나</div><div class="d">순서·상태. 언어만 바꿔 다시 써도 됨.</div></div>
+      <div class="card"><div class="k">WHERE · 창구</div><div class="t">어디서 받나</div><div class="d">화면·채팅. 입구만 바꿔도 속은 그대로.</div></div>
+    </div>
+    <div class="callout sm">섞여 있으면 하나 바꾸려다 전부 건드린다. <span class="pp">가르면</span> 한 곳만 고쳐도 된다 — 그래서 안 무너진다.</div>
+    <div class="foot"><span>PART 4 / WHAT·HOW·WHERE</span><span>18 / 30</span></div>
+  </div></section>
+
+  <!-- 19 개념상자 MCP/API -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">🔌 개념 상자 · API와 MCP</div>
+    <div class="title">도구를 <span class="pp">어떻게 부르나</span></div>
+    <div class="subtitle">지휘자가 그림·영상 도구를 부른다 — 그 방식이 MCP와 API. 딱 두 줄만.</div>
+    <div class="twocol">
+      <div class="panel"><h4>MCP</h4>
+        <div class="big">🔌 AI에 도구 꽂는 USB</div>
+        <div class="cap">붙이면 Claude가 바로 쓴다 · <b>지금 공장이 쓰는 방식</b></div>
+      </div>
+      <div class="panel green"><h4>API</h4>
+        <div class="big">🧾 프로그램 주문 창구</div>
+        <div class="cap">정해진 양식으로 주문 → 정해진 답 · <b>무인 이식 후</b></div>
+      </div>
+    </div>
+    <div class="callout sm">SDK·REST·폴링 같은 말도 나오지만 — 오늘은 <span class="pp">이 두 줄</span>만 챙기면 충분.</div>
+    <div class="foot"><span>개념 상자 / API·MCP</span><span>19 / 30</span></div>
+  </div></section>
+
+  <!-- 20 개념상자 이식 대응표 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">🔌 개념 상자 · 일은 그대로</div>
+    <div class="title">MCP <span class="dim">now</span> → API <span class="pp">later</span></div>
+    <div class="subtitle">같은 일을, 오늘은 MCP로 / 내일은 API로 부를 뿐. 설계는 안 바뀐다.</div>
+    <table>
+      <thead><tr><th>하는 일</th><th>오늘 · Cowork (MCP)</th><th>내일 · 무인 (API)</th></tr></thead>
+      <tbody>
+        <tr><td style="text-align:left;color:var(--ink)">판단·글쓰기</td><td>Cowork 안의 Claude</td><td class="hl">Claude API</td></tr>
+        <tr><td style="text-align:left;color:var(--ink)">그림·영상 생성</td><td>생성 도구 MCP</td><td class="hl">생성 도구 API(REST)</td></tr>
+        <tr><td style="text-align:left;color:var(--ink)">사람 승인</td><td>채팅으로 확인</td><td class="hl">웹 화면에서 승인</td></tr>
+      </tbody>
+    </table>
+    <div class="callout sm">일(왼쪽)은 그대로, <span class="pp">부르는 방식(오른쪽)만</span> 바뀐다 — 지휘자가 얇으니 가능.</div>
+    <div class="foot"><span>개념 상자 / 이식</span><span>20 / 30</span></div>
+  </div></section>
+
+  <!-- 21 O 신호등 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 5 · O — Oversight (지킨다)</div>
+    <div class="title">비싼 길목엔 <span class="pp">사람 관문</span></div>
+    <div class="subtitle">자동화라고 다 무인이 아니다. 되돌리기 어렵거나 비싼 단계 앞에 검수 관문.</div>
+    <div class="lights">
+      <div class="lgate"><div class="dot">✓</div><div class="t">대본 검수</div><div class="d">산으로 가기 전</div></div>
+      <div class="larrow">›</div>
+      <div class="lgate big"><div class="dot">✓</div><div class="t">스토리보드</div><div class="d">영상 직전 = 가장 비쌈</div></div>
+      <div class="larrow">›</div>
+      <div class="lgate"><div class="dot">✓</div><div class="t">영상 검수</div><div class="d">합치기 전</div></div>
+      <div class="larrow">›</div>
+      <div class="lgate"><div class="dot">✓</div><div class="t">최종 승인</div><div class="d">내보내기 전</div></div>
+    </div>
+    <div class="callout sm">특히 <span class="pp">스토리보드 검수</span> — 영상 만들기 직전이라 여기서 막으면 가장 큰 낭비를 막는다.</div>
+    <div class="foot"><span>PART 5 / O 지킨다</span><span>21 / 30</span></div>
+  </div></section>
+
+  <!-- 22 O 어디에 브레이크 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 5 · O — 어디에 달까</div>
+    <div class="title">"<span class="pp">어디에 브레이크</span>를 달까"가 설계</div>
+    <div class="twocol uneven">
+      <div class="panel"><h4>관문을 다는 기준</h4><ul>
+        <li>그 뒤가 <b>비싼가</b>? (영상 생성처럼 돈·시간)</li>
+        <li>틀리면 <b>되돌리기 어려운가</b>? (발행·발송)</li>
+        <li>둘 다 예 → 그 앞에 관문</li>
+      </ul></div>
+      <div class="panel"><h4>관문의 작동</h4><ul>
+        <li>자동 점검(체크리스트)</li>
+        <li>→ 사람 승인</li>
+        <li>→ 아니면 <b>직전 칸으로 되돌림</b>(반려 루프)</li>
+      </ul></div>
+    </div>
+    <div class="callout sm">관문 0개 → 이상한 게 끝까지 간다. 너무 많음 → 사람이 계속 붙어 자동화 아님. <span class="pp">비싼 길목에만</span>.</div>
+    <div class="foot"><span>PART 5 / 브레이크</span><span>22 / 30</span></div>
+  </div></section>
+
+  <!-- 23 T 파일이 상태 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">PART 6 · T — Trace (남긴다) ⭐</div>
+    <div class="title">파일이 곧 <span class="pp">상태</span>다</div>
+    <div class="subtitle">상태를 사람 머리·프로그램 메모리가 아니라 전부 파일로. 실행 1건 = 폴더 하나.</div>
+    <div class="twocol">
+      <div class="panel"><h4>runs / 날짜_제품 / 폴더</h4><ul>
+        <li>중간 결과물·미디어를 전부 여기 쌓음</li>
+        <li>세션 끊겨도 → 다음 칸부터 이어서</li>
+        <li>이미 만든 건 건너뜀 (멱등 · 재시작 안전)</li>
+      </ul></div>
+      <div class="panel green"><h4>그래서 — 갈아끼운다</h4>
+        <div class="big" style="font-size:24px">MCP now → API later</div>
+        <div class="cap">상태가 파일에 다 있으니 지휘자만 바꾸면 무인 공장. 5차의 '기록'이 곧 T.</div>
+      </div>
+    </div>
+    <div class="callout sm">원칙 하나: <span class="pp">"메모리에 숨은 상태 금지. 상태는 전부 파일에."</span></div>
+    <div class="foot"><span>PART 6 / T 남긴다</span><span>23 / 30</span></div>
+  </div></section>
+
+  <!-- 24 T 재시작 시나리오 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">PART 6 · T — 왜 강력한가</div>
+    <div class="title">끊겨도 <span class="pp">이어서</span> 돈다</div>
+    <div class="subtitle">대본까지 만들고 노트북이 꺼졌다. 파일에 상태가 있으면 —</div>
+    <div class="tl">
+      <div class="tli"><div class="th">① 다시 켠다</div><div class="td">폴더를 열어 "어디까지 됐나" 확인 — 대본 서류까지 있음</div></div>
+      <div class="tli"><div class="th">② 그림 단계부터 이어감</div><div class="td">이미 있는 접수·분석·대본은 건너뜀 (멱등)</div></div>
+      <div class="tli"><div class="th">③ 지휘자를 바꿔도 동일</div><div class="td">Cowork로 시작했어도 Python이 같은 폴더 읽어 이어감</div></div>
+    </div>
+    <div class="callout sm">여기서 <span class="pp">PILOT 다섯 원칙이 하나로</span> 모인다 — 상태가 남으니 멈춰도, 갈아끼워도 굴러간다.</div>
+    <div class="foot"><span>PART 6 / 재시작</span><span>24 / 30</span></div>
+  </div></section>
+
+  <!-- 25 실습 안내 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 7 · 설계 실습 ⭐</div>
+    <div class="title">내 자동화 <span class="pp">설계도</span> 그리기</div>
+    <div class="subtitle">PILOT 5칸에 내 업무 하나를. 완성 못 해도 P·I만 채우면 절반은 성공.</div>
+    <table>
+      <thead><tr><th>글자</th><th>채울 것</th><th>한 줄 질문</th></tr></thead>
+      <tbody>
+        <tr><td>P</td><td class="hl">단계로 쪼개기</td><td>내 업무를 3~7단계로?</td></tr>
+        <tr><td>I</td><td class="hl">입력→출력</td><td>각 단계 뭐 받아 뭐 내나?</td></tr>
+        <tr><td>L</td><td>지식·실행·창구</td><td>안 변하는 것 / 시키는 것?</td></tr>
+        <tr><td>O</td><td>사람 관문</td><td>꼭 확인할 지점은?</td></tr>
+        <tr><td>T</td><td>작업 폴더</td><td>무엇을 파일로 남기나?</td></tr>
+      </tbody>
+    </table>
+    <div class="foot"><span>PART 7 / 설계 실습</span><span>25 / 30</span></div>
+  </div></section>
+
+  <!-- 26 예시 주간리포트 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 7 · 예시</div>
+    <div class="title">예시 — <span class="pp">"주간 리포트 자동화"</span></div>
+    <div class="pipe8">
+      <div class="p8 hl"><div class="n">1</div><div class="t">수집</div></div><div class="p8arrow">›</div>
+      <div class="p8 hl"><div class="n">2</div><div class="t">분류</div></div><div class="p8arrow">›</div>
+      <div class="p8 hl"><div class="n">3</div><div class="t">요약</div></div><div class="p8arrow">›</div>
+      <div class="p8 hl"><div class="n">4</div><div class="t">작성</div></div><div class="p8arrow">›</div>
+      <div class="p8 hl"><div class="n">5</div><div class="t">검토</div></div>
+    </div>
+    <div class="twocol" style="margin-top:22px">
+      <div class="panel"><h4>I · 입력→출력</h4><ul>
+        <li>수집: 기간 → 기록 원본</li>
+        <li>요약: 묶음 → 3줄 요약</li>
+        <li>작성: 요약 → 리포트 초안</li>
+      </ul></div>
+      <div class="panel green"><h4>L · O · T</h4><ul>
+        <li><b>L</b> 지식=양식 / 실행=수집·요약 / 창구="이번 주 리포트"</li>
+        <li><b>O</b> 작성 뒤 사람 확인 + 최종 승인</li>
+        <li><b>T</b> 날짜_주제 폴더에 단계별 저장</li>
+      </ul></div>
+    </div>
+    <div class="foot"><span>PART 7 / 예시</span><span>26 / 30</span></div>
+  </div></section>
+
+  <!-- 27 자주 막히는 지점 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 7 · 자가 점검</div>
+    <div class="title">자주 <span class="pp">막히는 지점</span> — 이렇게 뚫는다</div>
+    <div class="dl">
+      <div class="di"><div class="dk"><span class="b">막힘 1</span></div><div class="dd">"단계를 몇 개로?" → <b>3~7개</b>. 한 칸이 두 가지 일 하면 쪼갠다.</div></div>
+      <div class="di"><div class="dk"><span class="b">막힘 2</span></div><div class="dd">"입력·출력이 헷갈려요" → <b>앞 칸의 출력 = 내 칸의 입력</b>인지 확인.</div></div>
+      <div class="di"><div class="dk"><span class="b">막힘 3</span></div><div class="dd">"관문을 어디에?" → <b>되돌리기 어렵거나 비싼 단계 앞</b> 딱 한두 곳.</div></div>
+      <div class="di"><div class="dk"><span class="b">막힘 4</span></div><div class="dd">"다 못 채웠어요" → 괜찮다. <b>P·I만</b> 있으면 자동화의 뼈대는 완성.</div></div>
+    </div>
+    <div class="callout sm">설계도가 서면 절반은 끝 — 만드는 건 6·7차의 <span class="pp">Claude Code</span> 방식으로.</div>
+    <div class="foot"><span>PART 7 / 자가 점검</span><span>27 / 30</span></div>
+  </div></section>
+
+  <!-- 28 PILOT 요약 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">RECAP · 한 장 요약</div>
+    <div class="title">PILOT — <span class="pp">다섯 원칙</span></div>
+    <table>
+      <thead><tr><th>글자</th><th>원칙</th><th>한 줄</th><th>공장에서</th></tr></thead>
+      <tbody>
+        <tr><td>P</td><td class="hl">Pipeline · 쪼갠다</td><td>큰 일을 순서 단계로 (가로)</td><td>접수→…→합본 8칸</td></tr>
+        <tr><td>I</td><td class="hl">I/O · 정한다</td><td>단계마다 입력→출력 계약</td><td>칸 사이 결과 파일 양식</td></tr>
+        <tr><td>L</td><td class="hl">Layer · 나눈다</td><td>지식·실행·창구 층 (세로)</td><td>지식/스펙/지휘/창구 4층</td></tr>
+        <tr><td>O</td><td class="hl">Oversight · 지킨다</td><td>비싼 지점 앞 사람 관문</td><td>대본·스토리보드·영상·최종</td></tr>
+        <tr><td>T</td><td class="hl">Trace · 남긴다</td><td>상태를 전부 파일로</td><td>runs / 날짜_제품 /</td></tr>
+      </tbody>
+    </table>
+    <div class="arrowline">뼈대 <span class="pp">P·L</span> · 관절 <span class="pp">I</span> · 브레이크 <span class="pp">O</span> · 피 <span class="pp">T</span></div>
+    <div class="foot"><span>RECAP / 한 장 요약</span><span>28 / 30</span></div>
+  </div></section>
+
+  <!-- 29 시리즈 지도 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">SERIES · 어디까지 왔나</div>
+    <div class="title">자동화는 코드가 아니라 <span class="pp">설계</span>다</div>
+    <div class="subtitle">"잘 쪼개고 잘 이으면, 지휘자는 갈아끼우면 된다." — 여러분 설계도가 그 시작.</div>
+    <div class="series">
+      <div class="sc"><div class="cn">1차</div><div class="ct">프롬프트</div></div>
+      <div class="sc"><div class="cn">2차</div><div class="ct">지침 I/O</div></div>
+      <div class="sc"><div class="cn">5차</div><div class="ct">자동화 이해</div></div>
+      <div class="sc"><div class="cn">6차</div><div class="ct">도구 만들기</div></div>
+      <div class="sc"><div class="cn">7차</div><div class="ct">앱 만들기</div></div>
+      <div class="sc on"><div class="cn">8차</div><div class="ct">자동화 설계</div></div>
+    </div>
+    <div class="callout">1·2차의 프롬프트·계약, 5차의 자동화, 6·7차의 만들기 — 오늘 <span class="pp">설계로 묶였다.</span></div>
+    <div class="foot"><span>SERIES / 어디까지 왔나</span><span>29 / 30</span></div>
+  </div></section>
+
+  <!-- 30 마무리 -->
+  <section class="slide dark closing">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="eyebrow top">THANK YOU</div>
+    <div class="big">고맙습니다 <span class="pp">·</span> Q&amp;A</div>
+    <div class="csub">해부해서 원리를 얻었다 — 이제 어떤 자동화든 PILOT로 설계할 수 있다.</div>
+    <div class="foot"><span>자동화 설계 · PILOT</span><span>30 / 30</span></div>
+  </section>
+
+</div>
+</body>
+</html>

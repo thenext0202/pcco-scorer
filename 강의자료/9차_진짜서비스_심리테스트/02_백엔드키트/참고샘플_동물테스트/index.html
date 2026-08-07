@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>나는 무슨 동물일까? 🐾</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main id="app">
+
+    <!-- 시작 화면 -->
+    <section id="screen-start" class="screen">
+      <div class="emoji-big">🐾</div>
+      <h1>나는 무슨 동물일까?</h1>
+      <p class="desc">5가지 질문으로 알아보는<br />내 안의 동물 유형</p>
+      <button id="btn-start" class="btn primary">시작하기</button>
+      <p class="tiny" id="start-stats"></p>
+    </section>
+
+    <!-- 질문 화면 -->
+    <section id="screen-quiz" class="screen hidden">
+      <div class="progress"><div id="progress-bar"></div></div>
+      <p id="q-count" class="q-count"></p>
+      <h2 id="q-text"></h2>
+      <div id="choices" class="choices"></div>
+    </section>
+
+    <!-- 결과 화면 -->
+    <section id="screen-result" class="screen hidden">
+      <p class="result-label" id="r-label">당신의 동물 유형은</p>
+      <div id="r-emoji" class="emoji-big"></div>
+      <h1 id="r-name"></h1>
+      <p id="r-desc" class="desc"></p>
+      <div id="r-match" class="match"></div>
+      <p id="r-stats" class="stats"></p>
+      <button id="btn-share" class="btn primary">📤 결과 공유 링크 복사</button>
+      <p id="share-note" class="note hidden">🔌 창고 연결 대기 중 — Supabase를 연결하면 켜집니다</p>
+      <button id="btn-retry" class="btn ghost">다시 하기</button>
+    </section>
+
+  </main>
+
+  <!-- CLAUDE.md 규칙: 로드 순서 고정 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
