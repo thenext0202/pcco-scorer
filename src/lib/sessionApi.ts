@@ -153,6 +153,11 @@ export async function submitScore(
 
 /**
  * 리더보드 조회 (상위 N명)
+ *
+ * ★ 재제출 허용 (11차~, 초급반 "쏘고→읽고→고친다" 루프):
+ * submitScore는 매번 insert하므로 한 사람이 여러 행을 가질 수 있다.
+ * 여기서 닉네임별 최고점 1행으로 집계한다 — 클라이언트 집계라 DB 마이그레이션 불필요.
+ * attempts(제출 횟수)와 improvement(첫 제출 대비 상승폭, "오늘의 성장왕")를 함께 계산.
  */
 export async function getLeaderboard(
   sessionId: string,
@@ -163,17 +168,47 @@ export async function getLeaderboard(
     .from("submissions")
     .select("*")
     .eq("session_id", sessionId)
-    .order("total_score", { ascending: false })
-    .order("created_at", { ascending: true }) // 동점일 경우 먼저 제출한 사람 우선
-    .limit(limit);
+    .order("created_at", { ascending: true }); // 시간순 전체 조회 — 첫 제출/최고점 판정용
 
   if (error) {
     throw new Error(`Failed to fetch leaderboard: ${error.message}`);
   }
 
-  const submissions = data as Submission[];
+  const all = data as Submission[];
 
-  return submissions.map((sub, index) => {
+  // 닉네임별 집계: 최고점 행 + 첫 제출 행 + 제출 횟수
+  const byNickname = new Map<
+    string,
+    { best: Submission; first: Submission; attempts: number }
+  >();
+  for (const sub of all) {
+    const key = sub.nickname.trim();
+    const agg = byNickname.get(key);
+    if (!agg) {
+      byNickname.set(key, { best: sub, first: sub, attempts: 1 });
+    } else {
+      agg.attempts += 1;
+      // 시간순 순회이므로 동점이면 먼저 제출한 행이 유지된다
+      if (sub.total_score > agg.best.total_score) {
+        agg.best = sub;
+      }
+    }
+  }
+
+  const ranked = Array.from(byNickname.values())
+    .sort(
+      (a, b) =>
+        b.best.total_score - a.best.total_score ||
+        new Date(a.best.created_at).getTime() -
+          new Date(b.best.created_at).getTime() // 동점일 경우 먼저 제출한 사람 우선
+    )
+    .slice(0, limit);
+
+  return ranked.map(({ best: sub, first, attempts }, index) => {
+    const extras = {
+      attempts,
+      improvement: sub.total_score - first.total_score,
+    };
     // elements_json은 JSONB라서 런타임에 다양한 구조를 가질 수 있음
     const elementsJson = sub.elements_json as Record<
       string,
@@ -196,6 +231,7 @@ export async function getLeaderboard(
           output: elementsJson.output?.score ?? 0,
         },
         created_at: sub.created_at,
+        ...extras,
       };
     } else if (mode === "image") {
       return {
@@ -213,6 +249,7 @@ export async function getLeaderboard(
           reality: elementsJson.reality?.score ?? 0,
         },
         created_at: sub.created_at,
+        ...extras,
       };
     } else if (mode === "reverse") {
       return {
@@ -229,6 +266,7 @@ export async function getLeaderboard(
           structure: elementsJson.structure?.score ?? 0,
         },
         created_at: sub.created_at,
+        ...extras,
       };
     } else if (mode === "vibe") {
       return {
@@ -246,6 +284,7 @@ export async function getLeaderboard(
           output: elementsJson.output?.score ?? 0,
         },
         created_at: sub.created_at,
+        ...extras,
       };
     } else {
       return {
@@ -263,6 +302,7 @@ export async function getLeaderboard(
           output: elementsJson.output?.score ?? 0,
         },
         created_at: sub.created_at,
+        ...extras,
       };
     }
   });

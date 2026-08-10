@@ -196,8 +196,40 @@ export default function BoardPage() {
         {/* 리더보드 */}
         <div className="space-y-4">
           <h2 className="text-2xl font-semibold text-slate-300">
-            🏆 리더보드 (상위 10명)
+            🏆 리더보드 (닉네임별 최고점 · 상위 10명)
           </h2>
+
+          {/* 🌱 오늘의 성장왕 — 첫 제출 대비 상승폭 1위 (재제출 루프 동기부여) */}
+          {(() => {
+            const growthKing = entries.reduce<LeaderboardEntry | null>(
+              (best, e) => {
+                const imp = e.improvement ?? 0;
+                if (imp <= 0) return best;
+                if (!best || imp > (best.improvement ?? 0)) return e;
+                return best;
+              },
+              null
+            );
+            if (!growthKing) return null;
+            return (
+              <div className="bg-emerald-900/40 border border-emerald-500/50 rounded-lg px-6 py-4 flex items-center gap-4">
+                <span className="text-3xl">🌱</span>
+                <div>
+                  <p className="text-lg font-semibold text-emerald-300">
+                    오늘의 성장왕 — {growthKing.nickname}
+                  </p>
+                  <p className="text-sm text-emerald-200/80">
+                    첫 제출보다{" "}
+                    <b className="text-emerald-300">
+                      +{growthKing.improvement}점
+                    </b>{" "}
+                    올렸습니다 ({growthKing.attempts}회 도전) — 실력은 두 번째
+                    제출에서 늡니다
+                  </p>
+                </div>
+              </div>
+            );
+          })()}
 
           {entries.length === 0 ? (
             <div className="text-center py-20">
@@ -285,11 +317,22 @@ export default function BoardPage() {
                           </span>
                         </div>
 
-                        {/* 닉네임 */}
+                        {/* 닉네임 + 도전 횟수/향상폭 */}
                         <div>
                           <p className="text-2xl font-semibold text-white">
                             {entry.nickname}
                           </p>
+                          {(entry.attempts ?? 1) > 1 && (
+                            <p className="text-sm text-slate-400 mt-0.5">
+                              🔁 {entry.attempts}회 도전
+                              {(entry.improvement ?? 0) > 0 && (
+                                <span className="text-emerald-400 font-semibold">
+                                  {" "}
+                                  · 첫 제출 +{entry.improvement}점
+                                </span>
+                              )}
+                            </p>
+                          )}
                         </div>
                       </div>
 

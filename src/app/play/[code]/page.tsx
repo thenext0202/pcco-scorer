@@ -73,6 +73,8 @@ export default function PlayPage() {
   const handleScoreComplete = (result: AnyScoreResult, prompt: string) => {
     setLastResult(result);
     setLastPrompt(prompt);
+    // ★ 재제출 루프 (11차~): 새로 채점하면 다시 등록할 수 있게 잠금 해제
+    setHasSubmitted(false);
   };
 
   const handleSubmitToLeaderboard = async () => {
@@ -82,7 +84,7 @@ export default function PlayPage() {
     try {
       await submitScore(session.id, nickname, lastPrompt, lastResult);
       setHasSubmitted(true);
-      toast.success("리더보드에 등록되었습니다! 🎉");
+      toast.success("리더보드에 등록되었습니다! 🎉 재제출하면 최고 점수만 남습니다.");
     } catch (err) {
       toast.error(
         err instanceof Error ? err.message : "제출에 실패했습니다."
@@ -220,7 +222,6 @@ export default function PlayPage() {
             onSubmit={handleScoreComplete}
             submitButtonText="채점하기"
             enableAutoSave={false}
-            hideRetryButton
           />
         )}
         {session.mode === "image" && (
@@ -228,7 +229,6 @@ export default function PlayPage() {
             onSubmit={handleScoreComplete}
             submitButtonText="채점하기"
             enableAutoSave={false}
-            hideRetryButton
           />
         )}
         {session.mode === "vibe" && (
@@ -236,7 +236,6 @@ export default function PlayPage() {
             onSubmit={handleScoreComplete}
             submitButtonText="채점하기"
             enableAutoSave={false}
-            hideRetryButton
           />
         )}
         {session.mode === "reverse" && (
@@ -244,7 +243,6 @@ export default function PlayPage() {
             onSubmit={handleScoreComplete}
             submitButtonText="채점하기"
             enableAutoSave={false}
-            hideRetryButton
           />
         )}
         {session.mode === "prompt" && (
@@ -252,7 +250,6 @@ export default function PlayPage() {
             onSubmit={handleScoreComplete}
             submitButtonText="채점하기"
             enableAutoSave={false}
-            hideRetryButton
           />
         )}
 
@@ -262,6 +259,10 @@ export default function PlayPage() {
             <CardContent className="pt-6 text-center space-y-3">
               <p className="font-semibold text-slate-900">
                 ✅ 리더보드에 등록되었습니다!
+              </p>
+              <p className="text-sm text-slate-600">
+                🔁 고쳐서 다시 채점하고 등록하면 <b>최고 점수만</b> 리더보드에
+                남습니다 — 다시 도전해보세요!
               </p>
               <Link href={`/play/${code}/board`} className="block">
                 <Button

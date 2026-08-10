@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>11차 강의 러닝시트 · 그린다 — 머릿속에 구조를 그리는 법</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root{--teal:#0d9488; --teal-bg:#f0fdfa; --ink:#1a2430; --muted:#6b7280;
+        --yellow-bg:#fffbeb; --yellow-line:#f59e0b; --gray-bg:#f3f4f6; --blue-bg:#eef4ff; --blue-line:#3b6fd4;
+        --red-bg:#fef2f2; --red-line:#dc2626;}
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:"Pretendard","Malgun Gothic",sans-serif; background:#54545a; color:var(--ink);}
+  .wrap{display:flex; flex-direction:column; align-items:center; gap:20px; padding:20px;}
+  .page{width:794px; min-height:1123px; background:#fff; padding:48px 52px 56px; position:relative;}
+  .doctag{font-size:12px; letter-spacing:.35em; color:var(--teal); font-weight:700;}
+  .doctitle{font-size:32px; font-weight:800; margin-top:13px; letter-spacing:-.02em;}
+  .docsub{font-size:16px; color:var(--muted); margin-top:8px;}
+  .usebox{margin-top:20px; border:1px solid #e5e7eb; border-radius:12px; padding:16px 20px;}
+  .usebox h3{font-size:15px; margin-bottom:8px;}
+  .usebox p{font-size:12.5px; color:#444b57; line-height:1.8;}
+  .tbl{width:100%; border-collapse:collapse; margin-top:16px; font-size:12.5px;}
+  .tbl th{background:#e6f7f5; color:var(--teal); text-align:left; padding:8px 11px; border-bottom:2px solid #b9e8e2; font-size:11.5px;}
+  .tbl td{padding:7px 11px; border-bottom:1px solid #f1f2f4;} .tbl td:first-child{font-weight:700;}
+  .head{display:flex; align-items:center; gap:12px;}
+  .numbox{background:var(--ink); color:#fff; font-weight:800; font-size:16px; border-radius:8px; padding:6px 12px;}
+  .sec{color:var(--teal); font-weight:700; font-size:13px; letter-spacing:.03em;}
+  .ptitle{font-size:23px; font-weight:800; margin-top:14px; letter-spacing:-.01em; line-height:1.25;}
+  .time{display:inline-block; margin-top:9px; font-size:12px; color:#fff; background:var(--teal); border-radius:20px; padding:3px 11px; font-weight:700;}
+  .box{border-radius:11px; padding:13px 17px; margin-top:12px;}
+  .box .lab{font-size:12px; font-weight:800; letter-spacing:.03em; margin-bottom:6px;}
+  .key{background:var(--teal-bg); border:1px solid #b9e8e2;}
+  .key .lab{color:var(--teal);} .key .body{font-size:15px; font-weight:700; color:#0f4a44; line-height:1.5;}
+  .say{background:#16161d;} .say .lab{color:#8ee8dd;} .say .body{font-size:13.5px; line-height:1.85; color:#e8e8ef;}
+  .screen{background:var(--blue-bg); border-left:4px solid var(--blue-line); border-radius:0 10px 10px 0;}
+  .screen .lab{color:#2f57a8;} .screen .body{font-size:13px; color:#26406f; line-height:1.6;}
+  .tip{background:var(--yellow-bg); border-left:4px solid var(--yellow-line); border-radius:0 10px 10px 0;}
+  .tip .lab{color:#b45309;} .tip .body{font-size:12.5px; color:#6b4a16; line-height:1.6;}
+  .ref{background:var(--gray-bg); border-left:4px solid #9ca3af; border-radius:0 10px 10px 0;}
+  .ref .lab{color:#4b5563;} .ref .body{font-size:12.5px; color:#4b5563; line-height:1.6;}
+  .warn{background:var(--red-bg); border-left:4px solid var(--red-line); border-radius:0 10px 10px 0;}
+  .warn .lab{color:#b91c1c;} .warn .body{font-size:12.5px; color:#7f1d1d; line-height:1.6;}
+  .next{margin-top:14px; font-size:14px; color:#374151;} .next b{color:var(--teal);}
+  .pgfoot{position:absolute; bottom:22px; left:0; right:0; text-align:center; color:#aab0bb; font-size:11.5px;}
+  @media print{@page{size:A4; margin:0;} body{background:#fff;} .wrap{gap:0; padding:0;} .page{break-after:page;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ═══════════ 표지 / 사용법 ═══════════ -->
+  <section class="page">
+    <div class="doctag">STRUCTURED RUNNING SHEET</div>
+    <div class="doctitle">그린다 — 머릿속에 구조를 그리는 법</div>
+    <div class="docsub">초급반 1강 · 레이어 4겹 실습 세션 · 강사 진행 대본 (정금구)</div>
+    <div class="usebox"><h3>📖 사용법</h3><p>
+      한 페이지 = 한 슬라이드. ★ KEY POINT(청록) = 반드시 전달할 한 문장 · 🖥 화면(파랑) = 이 슬라이드에 띄울 것 · 💬 이렇게 말하세요(검정) = 실제 멘트 · 💡 강사 팁(노랑) · ⚠️ 주의(빨강) · 📌 참고(회색) · → 넘어가며.<br>
+      <b>이 수업은 채점 플랫폼을 쓰지 않는다 — 오늘의 산출물은 점수가 아니라 워크시트에 그려진 구조도 1장이다.</b>
+    </p></div>
+    <div class="usebox" style="margin-top:12px"><h3>📚 핵심 개념 한 줄 (강사용)</h3><p style="font-size:12px; line-height:1.75">
+      <b>레이어 4겹</b> = 데이터(뭘 기억하나) · 동작(뭘 하나) · 화면(어떻게 보이나) · 연결(밖과 어떻게 닿나) — 6차 용어 그대로<br>
+      <b>핵심 메시지</b> = "그릴 수 없으면 시킬 수 없다" · <b>후렴</b> = "화면에 안 보인다고 없는 게 아니다"<br>
+      <b>성공 판정</b> = 잘 그린 구조도 수가 아니라 <b>「연결」 칸을 채운 사람 수</b> · <b>13차 연결</b> = 오늘 워크시트가 13차의 재료<br>
+      <b>수업 전 준비</b> = ① 02 워크시트 인쇄(인원+여유) ② 03 정답지(강사만) ③ 04 예비소재 리스트 2~3부 ④ 화이트보드·마커 ⑤ 타이머 ⑥ 조 편성(3~4인)
+    </p></div>
+    <table class="tbl"><thead><tr><th>구분</th><th>시간</th><th>슬라이드</th></tr></thead><tbody>
+      <tr><td>Part 0 — 오프닝: 왜 그리는가 · 초급반 안내</td><td>15분</td><td>1~4</td></tr>
+      <tr><td>Part 1 — 레이어 4겹 개요</td><td>3분</td><td>5</td></tr>
+      <tr><td>Part 2 — 네 칸 각론 + 후렴 ⭐</td><td>27분</td><td>6~10</td></tr>
+      <tr><td>실습 1 — 다같이 해부 (메모앱, 문답식) ⭐</td><td>15분</td><td>11</td></tr>
+      <tr><td>실습 2 — 조별 해부 (당근마켓)</td><td>25분</td><td>12</td></tr>
+      <tr><td>실습 3 — 내 것 그리기</td><td>25분</td><td>13</td></tr>
+      <tr><td>실습 4 — 상호리뷰</td><td>6분</td><td>14</td></tr>
+      <tr><td>클로징 — 13차 예고 · 숙제 · 엔딩</td><td>4분</td><td>15~16</td></tr>
+    </tbody></table>
+    <div class="pgfoot">— 1 / 17 —</div>
+  </section>
+
+  <!-- ═══════════ 01 표지 ═══════════ -->
+  <section class="page">
+    <div class="head"><span class="numbox">01</span><span class="sec">Part 0 · 오프닝</span></div>
+    <div class="ptitle">표지 — "오늘은 문장을 쓰지 않습니다"</div><div class="time">⏱ 2분 (00–02)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">앱 = 화면이 아니라 앱 = 네 칸. 오늘은 프롬프트를 한 줄도 안 쓰고, 그림만 그린다.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">표지 — "앱 = 화면"에 취소선, 그 아래 "앱 = 네 칸". 우측에 데·동·화·연 4줄.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">안녕하세요, 초급반 첫 시간입니다. 미리 말씀드리면 — 오늘은 프롬프트를 한 문장도 쓰지 않습니다. 대신 그림을 그립니다. 지난 진단 때 다들 느끼셨을 거예요. 뭘 써야 할지 모르겠는 그 막막함. 그건 문장력 문제가 아니었습니다. 머릿속에 그릴 게 없어서였어요. 오늘 그 그림 그리는 법부터 갑니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">말하는 동안 <b>워크시트를 지금 배포</b>한다 — 뒤에서 앞으로 넘기게 하면 멘트 끊기지 않는다. "지금 나눠드리는 종이가 오늘의 전부입니다. 펜만 있으면 됩니다."</div></div>
+    <div class="next">→ 넘어가며: <b>"왜 그릴 게 없느냐 — 범인부터 잡고 시작하죠."</b></div>
+    <div class="pgfoot">— 2 / 17 —</div>
+  </section>
+
+  <!-- ═══════════ 02 왜 안 그려지나 ═══════════ -->
+  <section class="page">
+    <div class="head"><span class="numbox">02</span><span class="sec">Part 0 · 오프닝</span></div>
+    <div class="ptitle">왜 안 그려지나 — 우리는 앱을 화면으로만 본다</div><div class="time">⏱ 6분 (02–08)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">프롬프트를 못 쓰는 게 아니라, 그릴 게 없어서 못 쓰는 것 — 화면 뒤의 세 가지가 안 보이기 때문.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">"우리가 보는 것(버튼·목록·색깔)" / "있어야 하는 것(남는 것·저절로 일어나는 일·안 가본 화면·밖과 닿는 통로)" 대비.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">여러분 오늘 아침부터 지금까지 앱 몇 개나 쓰셨어요? 카톡, 지도, 유튜브… 수십 개죠. 그런데 그중 하나를 골라서 "이거랑 똑같은 거 만들어줘"라고 AI한테 시킨다고 해보세요. 뭐라고 쓰실 건가요? …버튼이 있고, 목록이 있고. 그게 다예요. 우리는 앱을 매일 쓰지만 화면으로만 봅니다. 그런데 앱이 되려면 화면 말고 세 가지가 더 있어야 해요. 껐다 켜도 남아 있는 것. 아무도 안 눌렀는데 저절로 일어나는 일. 그리고 바깥세상과 닿는 통로. 이게 안 보이니까 그릴 게 없고, 그릴 게 없으니까 쓸 게 없는 겁니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">"오늘 아침부터 앱 몇 개나?"는 실제로 손을 들게 하지 말고 수사적 질문으로 빠르게. 여기서 시간을 쓰면 뒤가 밀린다.</div></div>
+    <div class="next">→ 넘어가며: <b>"그래서 오늘의 문장이 이겁니다."</b></div>
+    <div class="pgfoot">— 3 / 17 —</div>
+  </section>
+
+  <!-- ═══════════ 03 핵심 메시지 ═══════════ -->
+  <section class="page">
+    <div class="head"><span class="numbox">03</span><span class="sec">Part 0 · 오프닝</span></div>
+    <div class="ptitle">핵심 메시지 — 그릴 수 없으면 시킬 수 없다</div><div class="time">⏱ 2분 (08–10)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">그림이 생기면 프롬프트는 '옮겨 적는 일'이 된다 — 오늘 하루를 지배하는 한 문장.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">"그릴 수 없으면 시킬 수 없다" 중앙에 크게.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">그릴 수 없으면, 시킬 수 없다. 오늘 이 문장 하나만 가져가시면 됩니다. AI는 여러분이 시키는 대로 만듭니다. 그런데 시키려면 내 머릿속에 먼저 그림이 있어야 해요. 거꾸로 말하면 — 그림만 있으면, 프롬프트는 그걸 문장으로 옮겨 적는 일밖에 안 됩니다. 쓰는 게 어려운 게 아니라 그리는 게 어려운 거고, 그래서 오늘은 그리는 법만 합니다.</div></div>
+    <div class="next">→ 넘어가며: <b>"이 수업이 어디로 가는지, 지도부터 보여드릴게요."</b></div>
+    <div class="pgfoot">— 4 / 17 —</div>
+  </section>
+
+  <!-- ═══════════ 04 초급반 안내 ═══════════ -->
+  <section class="page">
+    <div class="head"><span class="numbox">04</span><span class="sec">Part 0 · 오프닝</span></div>
+    <div class="ptitle">초급반 안내 — 하나의 소재로 3주 관통</div><div class="time">⏱ 5분 (10–15)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">11 그린다 → 13 쓴다 → 15 굳힌다 (지금 잡힌 계획 3회 — 초급반 자체는 계속 이어진다). 소재는 하나를 3주 관통 — 여기서 못 박는다.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">3단계 카드(11 그린다[오늘, 강조] / 13 쓴다 / 15 굳힌다) + "오늘 나가는 준비물은 내 구조도 1장".</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">초급반은 오늘로 끝나는 게 아니라 계속 이어집니다. 먼저 세 번의 계획이 잡혀 있어요. 오늘은 그립니다 — 만들고 싶은 것의 구조를 네 칸으로. 다음 시간엔 씁니다 — 오늘 그린 그림을 프롬프트로 바꿔서 실제로 만듭니다. 마지막 시간엔 굳힙니다 — 만들면서 반복된 작업을 지침으로 만들어요. 그리고 제일 중요한 규칙 하나. 소재는 각자 자유입니다. 진짜 만들고 싶은 걸 정하세요. 대신 — 한 번 정하면 3주 내내 그거 하나로 갑니다. 오늘 그린 그림이 다음 시간에 진짜로 만들어지고, 그다음 시간에 지침으로 굳는 거예요. 그러니까 오늘 수업 끝나고 나가실 때 손에 들려 있어야 하는 건 딱 한 장 — 내 구조도입니다.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">"소재 3주 관통"을 여기서 확실히 못 박을 것 — 뒤(실습 3)에서 소재를 정할 때 "다음 주에 바꾸면 안 되나요?"가 나오면 이 슬라이드를 다시 가리킨다. 바꾸면 3주 서사가 끊긴다.</div></div>
+    <div class="next">→ 넘어가며: <b>"그럼 그 네 칸이 뭔지 — 오늘의 프레임워크입니다."</b></div>
+    <div class="pgfoot">— 5 / 17 —</div>
+  </section>
+
+  <!-- ═══════════ 05 레이어 4겹 개요 ═══════════ -->
+  <section class="page">
+    <div class="head"><span class="numbox">05</span><span class="sec">Part 1 · 프레임워크</span></div>
+    <div class="ptitle">레이어 4겹 — 데이터 · 동작 · 화면 · 연결</div><div class="time">⏱ 3분 (15–18)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">어떤 앱이든 네 칸으로 쪼개진다 — 칸마다 스스로에게 던지는 질문이 하나씩 있다.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">4칸 카드 — 연결 칸만 청록 배경으로 강조. "네 번째 칸이 오늘의 승부처".</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">네 칸입니다. 데이터 — 뭘 기억하나. 동작 — 뭘 하나. 화면 — 어떻게 보이나. 연결 — 밖과 어떻게 닿나. 워크시트 1쪽에 이 표가 그대로 있어요. 칸마다 질문이 하나씩 붙어 있죠? 이 질문이 오늘의 도구 전부입니다. 그리고 네 번째 칸, 연결 — 얘가 오늘의 승부처인데, 왜인지는 조금 있다가 알게 됩니다.</div></div>
+    <div class="box ref"><div class="lab">📌 참고</div><div class="body">"레이어 4겹"은 6차(Claude Code 실전)에서 쓴 용어 그대로다. 6차를 들은 수강생에게는 "그때 그 네 겹입니다"라고 연결해줘도 좋다 — 단 6차 내용 복습으로 새지 말 것.</div></div>
+    <div class="next">→ 넘어가며: <b>"첫 번째 칸부터 — 뭘 기억하나."</b></div>
+    <div class="pgfoot">— 6 / 17 —</div>
+  </section>
+
+  <!-- ═══════════ 06 데이터 ═══════════ -->
+  <section class="page">
+    <div class="head"><span class="numbox">06</span><span class="sec">Part 2 · ① 데이터</span></div>
+    <div class="ptitle">① 데이터 — 뭘 기억하나</div><div class="time">⏱ 7분 (18–25)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">판별 질문 하나 — "껐다 다시 열면 뭐가 그대로여야 하나?" 휴지통도, 정렬 설정도 데이터다.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">"쉽게 나옴(본문·시각·고정·폴더) / 잘 안 떠오름(휴지통·정렬 설정)" + 30초 퀴즈(쇼핑 장바구니).</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">데이터를 찾는 질문은 하나예요. 앱을 완전히 껐다가 다시 열었을 때, 뭐가 그대로 있어야 하나? 메모앱으로 해보죠. 메모 내용 — 당연히 남아야죠. 만든 시각, 고정해둔 것, 폴더 — 이런 건 쉽게 나옵니다. 그런데 두 개가 잘 안 나와요. 하나, 휴지통. 지운 메모가 30일 동안 살아 있죠? 지운 것도 기억하고 있다는 겁니다. 둘, 정렬 설정. 최신순으로 바꿔놓으면 다음에 켜도 최신순이죠? 설정도 데이터예요. 자 30초 퀴즈 — 쇼핑 앱 장바구니. 껐다 켜도 남아 있어야 하는 게 뭐뭐일까요? 옆 사람과 30초.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">퀴즈 답은 2~3개만 받고 끊는다(담은 상품·수량·옵션 — "가격이 바뀌면?"까지 나오면 최상). 레이어마다 30초 퀴즈가 리듬 장치다 — 길어지면 다음 퀴즈를 줄인다.</div></div>
+    <div class="next">→ 넘어가며: <b>"두 번째 칸 — 오늘 첫 번째 하이라이트입니다."</b></div>
+    <div class="pgfoot">— 7 / 17 —</div>
+  </section>
+
+  <!-- ═══════════ 07 동작 ⭐ ═══════════ -->
+  <section class="page">
+    <div class="head"><span class="numbox">07</span><span class="sec">Part 2 · ② 동작 ⭐</span></div>
+    <div class="ptitle">② 동작 — 뭘 하나 · "저장 버튼이 없는데 저장이 된다"</div><div class="time">⏱ 8분 (25–33)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">동작은 두 줄 — 사용자가 시키는 것 / 앱이 알아서 하는 것. 두 번째 줄이 안 보이는 줄이다.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">"사용자가 시키는 것 / 앱이 알아서 하는 것" 대비 + "그럼 그 일을 한 건 누구입니까?" 콜아웃.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">동작 칸은 두 줄로 나눠 적습니다. 윗줄 — 사용자가 시키는 것. 쓰고, 지우고, 검색하고. 이건 쉬워요. 문제는 아랫줄입니다. 아무도 안 시켰는데 일어나는 일. 여러분, 메모앱에서 저장 버튼 눌러보신 적 있어요? …메모앱엔 저장 버튼이 없습니다. 없는데, 저장은 되죠. (3초 침묵) …그럼 그 일을 한 건 누구입니까?</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의 — 3초의 침묵</div><div class="body">"있습니까?" 다음 <b>3초를 반드시 침묵</b>한다. 바로 답하면 효과가 사라진다. 수강생 표정이 "어…?"가 될 때까지 기다렸다가 이어간다.</div></div>
+    <div class="box say"><div class="lab">💬 이어서 (10차 연결)</div><div class="body">앱이 알아서 한 겁니다. 첫 줄이 제목이 되는 것도, 휴지통이 30일 뒤에 비워지는 것도 — 전부 아무도 안 시킨 일이에요. 10차 들으신 분들, 기억나세요? "왜 이렇게 느려요?" 하던 그 프로그램 — 그 느린 게 사실 사양이었죠. 같은 종류의 눈입니다. 안 보이는 동작을 보는 눈.</div></div>
+    <div class="next">→ 넘어가며: <b>"세 번째 칸은 제일 만만해 보이는데 — 함정이 있습니다."</b></div>
+    <div class="pgfoot">— 8 / 17 —</div>
+  </section>
+
+  <!-- ═══════════ 08 화면 ═══════════ -->
+  <section class="page">
+    <div class="head"><span class="numbox">08</span><span class="sec">Part 2 · ③ 화면</span></div>
+    <div class="ptitle">③ 화면 — 어떻게 보이나 · 안 가본 화면도 화면</div><div class="time">⏱ 6분 (33–39)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">화면은 세는 것부터 — 첫 화면 · 전환 지점 · 안 가본 화면. 안 가봤다고 없는 게 아니다.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">3항목(첫 화면 / 전환 지점 / 안 가본 화면도 화면) + 30초 퀴즈(메모앱 화면 몇 개?).</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">화면 칸은 제일 쉬워 보이죠 — 맨날 보는 거니까. 그런데 함정이 있습니다. 화면은 '세는 것'부터예요. 첫째, 첫 화면 — 앱을 열면 제일 먼저 뭐가 보이나. 둘째, 전환 지점 — 어딜 누르면 화면이 바뀌나. 셋째가 함정인데 — 안 가본 화면도 화면입니다. 설정 화면, 휴지통 화면, 검색 결과 화면. 안 가봤다고 없는 게 아니에요. 30초 퀴즈 — 메모앱, 화면이 몇 개일까요? 휴지통은 세셨나요?</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">답(목록·작성/보기·폴더·휴지통 = 4개 안팎)은 정확한 숫자보다 "휴지통을 셌는가"가 포인트. 시간이 밀렸으면 이 슬라이드를 4분으로 줄인다 — 퀴즈를 손들기로만.</div></div>
+    <div class="next">→ 넘어가며: <b>"자 — 마지막 칸. 오늘의 승부처입니다."</b></div>
+    <div class="pgfoot">— 9 / 17 —</div>
+  </section>
+
+  <!-- ═══════════ 09 연결 ⭐ ═══════════ -->
+  <section class="page">
+    <div class="head"><span class="numbox">09</span><span class="sec">Part 2 · ④ 연결 ⭐ 승부처</span></div>
+    <div class="ptitle">④ 연결 — 밖과 어떻게 닿나</div><div class="time">⏱ 5분 (39–44)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">연결은 사람이 늘거나 기기가 늘 때 생기는 칸 — 판별 질문은 "혼자 쓰면 없어도 되는 기능은?"</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">"혼자·폰 하나면(칸이 빈다) / 사람·기기가 늘면(로그인·동기화·공유·알림)" 대비.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">마지막 칸, 연결. 질문은 이겁니다 — 이 앱을 나 혼자, 폰 하나로만 쓴다면 없어도 되는 기능이 뭔가? 로그인 — 혼자면 필요 없죠. 공유 — 받을 사람이 없죠. 알림 — 나한테 뭘 알려요. 동기화 — 기기가 하나인데요. 이것들이 전부 연결 칸입니다. 사람이 늘거나, 기기가 늘 때 생기는 칸이에요. 그리고 이 칸이 왜 승부처냐 — 눈에 안 보이거든요. 이따가 여러분이 직접 그려보면 알게 됩니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁 — 미리 예고해둔다</div><div class="body">여기서 <b>"장담하는데, 이따 여러분 구조도에서 이 칸이 비어 있을 겁니다"</b>라고 예고해두면 실습 순회 때 지적이 부드러워진다 — 실패가 아니라 <b>예정된 코스</b>가 된다. "비면 제가 말한 대로 된 것뿐이에요."</div></div>
+    <div class="next">→ 넘어가며: <b>"이 네 칸을 한 문장으로 줄이면 —"</b></div>
+    <div class="pgfoot">— 10 / 17 —</div>
+  </section>
+
+  <!-- ═══════════ 10 후렴 ═══════════ -->
+  <section class="page">
+    <div class="head"><span class="numbox">10</span><span class="sec">Part 2 · 후렴</span></div>
+    <div class="ptitle">후렴 — 화면에 안 보인다고 없는 게 아니다</div><div class="time">⏱ 1분 (44–45)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">한 문장으로 강의부를 닫는다 — "화면에 안 보인다고 없는 게 아니다."</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">"화면에 안 보인다고 없는 게 아니다" 중앙 + "알림은 앱을 켜지도 않았는데 옵니다".</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">강의는 여기까지입니다. 한 문장으로 줄일게요 — 화면에 안 보인다고, 없는 게 아니다. 자동 저장도, 휴지통도, 로그인도 전부 화면 뒤에 있었죠. 마지막으로 하나만 생각해보세요. 알림은 — 앱을 켜지도 않았는데 옵니다. …네, 대답은 안 받겠습니다. 이따가 직접 찾으실 거예요.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의 — 답을 받지 않는다</div><div class="body">"알림은 누가 보내나"의 답을 여기서 받으면 <b>조별 해부(당근마켓 푸시 알림)의 결정적 순간이 미리 소모된다.</b> 질문만 던지고 바로 실습으로 넘어간다.</div></div>
+    <div class="next">→ 넘어가며: <b>"이제 그려봅시다 — 같이 그립니다."</b></div>
+    <div class="pgfoot">— 11 / 17 —</div>
+  </section>
+
+  <!-- ═══════════ 11 다같이 해부 ⭐ ═══════════ -->
+  <section class="page">
+    <div class="head"><span class="numbox">11</span><span class="sec">실습 1 · 다같이 해부 ⭐ 오늘의 중심</span></div>
+    <div class="ptitle">다같이 해부 — 메모앱 (문답으로 채우는 화이트보드)</div><div class="time">⏱ 15분 (45–60)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">강사는 답을 말하지 않는다 — 질문을 던지고, 답을 받아 적고, 분류는 "이거 어느 칸이지?"로 되물어 수강생이 하게 한다.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">빈 4칸 슬라이드를 띄워두고, 실제 작성은 화이트보드에서. "답이 아니라 질문을 훔쳐 가세요" 콜아웃.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요 (시작 멘트)</div><div class="body">이제 같이 하나 그려봅시다. 메모앱입니다. 제가 채우는 게 아니에요 — 저는 질문만 하고, 답은 여러분이 합니다. 그리고 오늘 훔쳐 가실 건 답이 아니라 질문입니다. 이따가 내 것을 그릴 때, 집에서 혼자 그릴 때 — 지금 제가 던지는 질문들을 그대로 자기한테 던지면 됩니다. 자, 첫 칸. 메모앱을 껐다 켜도 남아 있어야 하는 게 뭐죠?</div></div>
+    <div class="box ref"><div class="lab">📌 발문 시나리오 (상세 표는 03_정답지 §A)</div><div class="body">① 데이터 — "껐다 켜도 남아야 하는 건?" 막히면: "지운 메모는 어디 가죠?" · "정렬 바꿔두면 유지되죠 — 어느 칸이에요?" ② 동작 — "버튼으로 시키는 일은?" → "아무도 안 눌렀는데 일어나는 일은?" (07의 저장 버튼 질문 회수) ③ 화면 — "모두 몇 개죠? 같이 세봅시다" → "휴지통 세셨어요?" ④ 연결 — "나 혼자만 쓰면 필요 없는 건?" ⑤ 자르기 — <b>이것만 강사가 직접 시연</b>: "그림 그리기 기능도 넣을까요? … 3주 안에 되겠어요? <b>자르죠.</b>"</div></div>
+    <div class="box tip"><div class="lab">💡 운영 3규칙</div><div class="body">① <b>답을 말하지 않는다</b> — 막히면 답 대신 더 작은 질문으로 쪼갠다. ② <b>틀린 답도 일단 적는다</b> — "이거 어느 칸이지?"를 되물어 수강생이 옮기게 한다. 이 이동이 최고의 학습 순간. ③ <b>질문 뒤 3초는 기다린다</b> — 침묵을 강사가 먼저 못 견디면 문답이 강의로 퇴화한다.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body"><b>완성된 4칸을 먼저 띄우지 말 것.</b> 정답지(03)는 강사 머릿속 커닝페이퍼다. 그리고 답이 안 나온다고 강사가 채우기 시작하면 그냥 시범 강의가 된다 — 힌트 질문을 한 단계 더 쪼개는 게 맞는 대응이다.</div></div>
+    <div class="next">→ 넘어가며: <b>"같이 했으니 이제 조별로 — 이번엔 질문도 여러분이 던집니다."</b></div>
+    <div class="pgfoot">— 12 / 17 —</div>
+  </section>
+
+  <!-- ═══════════ 12 조별 해부 ═══════════ -->
+  <section class="page">
+    <div class="head"><span class="numbox">12</span><span class="sec">실습 2 · 조별 해부</span></div>
+    <div class="ptitle">조별 해부 — 당근마켓, 범위를 자른다</div><div class="time">⏱ 25분 (60–85)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">범위 선언이 먼저 — "글 올리고 채팅하는 부분만". 발표는 다른 조의 빠진 칸을 지적하는 교차 점검.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">타이머 25:00 + 진행 3단계. 범위는 칠판에도 크게: "중고 물건 글 올리고 채팅하는 부분만" (동네생활✗ 알바✗ 부동산✗ 중고차✗).</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요 (시작 멘트)</div><div class="body">이번엔 다 아는 앱 — 당근마켓입니다. 단, 통째로는 안 해요. 제가 아까 메모앱에서 뭐라고 했죠? 자르자. 오늘 범위는 '중고 물건 글 올리고 채팅하는 부분만'입니다. 동네생활, 알바, 부동산, 중고차 — 전부 안 합니다. 워크시트 2쪽에 조별로 15분간 네 칸을 채우세요. 동작 칸은 두 줄인 거 잊지 마시고요. 15분 뒤에 조별로 발표하는데 — 발표 규칙이 하나 있습니다. 다른 조 발표를 들으면서, 그 조에서 빠진 칸을 찾아서 지적해주세요.</div></div>
+    <div class="box tip"><div class="lab">💡 순회 질문 5종 (답을 주지 말고 질문만 · 03_정답지 §B)</div><div class="body">데이터 얇음 → "껐다 켜면 뭐가 그대로예요?" · 동작 얇음 → "아무도 아무 버튼도 안 눌러도 일어나는 일은요?" · 화면 얇음 → "채팅은 어디서 봐요? 그건 같은 화면이에요?" · 연결 빔 → "이 앱을 혼자 쓴다면 없어도 되는 기능은요?" · 범위 이탈 → "그건 이번엔 안 만들기로 했죠."</div></div>
+    <div class="box warn"><div class="lab">⚠️ 정답 공개 때 반드시 짚을 3가지</div><div class="body">① <b>판매 상태</b>(판매중·예약중·거래완료 — 보이는데도 안 적는 대표 데이터) ② <b>동네 인증</b>(GPS — 연결) ③ <b>푸시 알림</b>. ②③을 아무도 못 잡았으면 던진다 — <b>"알림은 앱을 켜지도 않았는데 왔죠. 그럼 그 일을 한 건 누구입니까?"</b> (슬라이드 10의 후렴이 여기서 회수된다.)</div></div>
+    <div class="box ref"><div class="lab">📌 참고</div><div class="body">화면 정답은 6개(홈·글 상세·글쓰기·채팅 목록·채팅방·프로필) — 공개하며 "자르기 전엔 몇 개였을까요?"를 던진다. 25분 초과 조짐이면 <b>작성 시간을 줄이고 발표는 유지</b> — 교차 점검이 이 실습의 핵심이다.</div></div>
+    <div class="next">→ 넘어가며: <b>"남의 앱은 뜯었으니 — 이제 내 것을 그립니다."</b></div>
+    <div class="pgfoot">— 13 / 17 —</div>
+  </section>
+
+  <!-- ═══════════ 13 내 것 그리기 ═══════════ -->
+  <section class="page">
+    <div class="head"><span class="numbox">13</span><span class="sec">실습 3 · 내 것 그리기</span></div>
+    <div class="ptitle">내 것 그리기 — 3주를 관통할 구조도 1장</div><div class="time">⏱ 25분 (85–110)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">합격 기준 3개 — 화면 3개 이하 · 한 문장 설명 · 혼자 써도 쓸모. 자른 것은 「안 만들 것」 3줄에.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">합격 기준 3카드 + 「이번엔 안 만들 것」 콜아웃. 타이머 병행.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요 (시작 멘트)</div><div class="body">이제 오늘의 본론입니다. 3주 동안 만들 내 것을 정하고, 워크시트 3쪽에 네 칸으로 그리세요. 합격 기준은 셋 — 화면 3개 이하, 한 문장으로 설명될 것, 그리고 웬만하면 나 혼자 써도 쓸모 있는 것. 크게 그리고 싶은 욕심이 나면 — 아까 제가 메모앱에서 한 것처럼 자르세요. 자른 건 버리는 게 아닙니다. 4쪽 '이번엔 안 만들 것'에 적어두는 거예요. 적어두고 미루는 겁니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁 — 백지인 사람</div><div class="body">5분이 지나도 백지인 사람에게는 <b>04_예비소재_리스트를 조용히</b> 건넨다 — 전체 공지로 뿌리면 다들 고민을 멈춘다. 건넬 때: "고르는 것도 설계예요. 제일 작은 걸로."</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의 — 소재가 큰 사람</div><div class="body">"배달앱 만들 거예요" 류에는 합격 기준 3개를 들이대고 자르게 한다 — <b>"그거 다 만들면 몇 주 걸릴까요? 없으면 아예 안 되는 것 하나만 고르면요?"</b> 잘라낸 건 「안 만들 것」에 적게 한다. 소재 변경 요청은 슬라이드 04(3주 관통)로 돌려보낸다.</div></div>
+    <div class="box ref"><div class="lab">📌 순회 운영</div><div class="body">앞 20분은 소재·범위 위주로 순회, <b>마지막 5분은 연결 칸만 본다</b> — "연결 칸 비어 있는 분?" 하고 손들게 한 뒤 "정상입니다. 리뷰 때 채울 거예요"로 안심시킨다. 이 손 든 수가 수업 후 체크 ①의 사전 수치다.</div></div>
+    <div class="next">→ 넘어가며: <b>"혼자 본 그림엔 구멍이 안 보입니다 — 바꿔서 봅시다."</b></div>
+    <div class="pgfoot">— 14 / 17 —</div>
+  </section>
+
+  <!-- ═══════════ 14 상호리뷰 ═══════════ -->
+  <section class="page">
+    <div class="head"><span class="numbox">14</span><span class="sec">실습 4 · 상호리뷰</span></div>
+    <div class="ptitle">상호리뷰 — 질문 3개를 적어서 교환</div><div class="time">⏱ 6분 (110–116)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">말로 하지 않고 적는다 — 데이터·연결·화면 검증 질문 3개를 상대 워크시트 4쪽에 써서 돌려준다.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">질문 3개(껐다 켜면 뭐가 그대로? / 혼자면 없어도 되는 기능은? / 첫 화면에 뭐가 보여요?) + "적어서 건네세요".</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">옆 사람과 워크시트를 통째로 바꾸세요. 그리고 화면의 세 질문에 대한 답을 — 말로 하지 말고 — 상대 워크시트 4쪽에 적어주세요. 상대의 구조도만 보고 답할 수 있으면 그 구조도는 합격입니다. 답을 못 찾겠으면 그 질문 옆에 물음표를 크게 그려주세요. 그 물음표가 오늘의 숙제가 됩니다. 3분 뒤에 돌려받고, 자기 것 확인하는 데 3분.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">침묵 방지 장치가 곧 "적어서"다 — 구두 리뷰를 허용하면 어색해서 "좋네요"로 끝난다. <b>구두 금지를 명시적으로 선언</b>할 것. 홀수 인원이면 강사가 마지막 한 명과 짝이 된다 (강사 리뷰는 특혜가 아니라 인원 조정임을 밝힌다).</div></div>
+    <div class="next">→ 넘어가며: <b>"그 종이, 버리지 마세요 — 다음 시간의 재료입니다."</b></div>
+    <div class="pgfoot">— 15 / 17 —</div>
+  </section>
+
+  <!-- ═══════════ 15 13차 예고 + 숙제 ═══════════ -->
+  <section class="page">
+    <div class="head"><span class="numbox">15</span><span class="sec">클로징 · 13차 예고</span></div>
+    <div class="ptitle">13차 예고 — 오늘 그린 칸이 그대로 프롬프트가 된다</div><div class="time">⏱ 3분 (116–119)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">변환표는 3~4초만 보여주고 넘긴다 — 설명 금지. 숙제 = 빈 칸 채워서 워크시트 그대로 가져오기.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">변환표 4줄(데이터→맥락+제약 / 동작→목적+제약 / 화면→출력+맥락 / 연결→제약) + 숙제(필수/심화).</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">다음 시간 예고입니다. 오늘 그린 네 칸이 — 이렇게 그대로 프롬프트 재료가 됩니다. (변환표를 3~4초 보여주고) 자세한 건 다음 시간에 합니다. 숙제는 하나 — 오늘 빈 칸, 특히 연결 칸을 채워서, 이 워크시트를 다음 시간에 그대로 가져오세요. 다음 시간의 재료가 이 종이입니다. 여유 있으신 분은 평소 잘 쓰는 앱 하나를 더 해부해보세요 — 연결 칸부터 채우면 더 어렵고, 더 늡니다.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의 — 설명하지 말 것</div><div class="body">변환표에서 R-PCCO를 설명하기 시작하면 시간이 무너진다. <b>"자세한 건 다음 시간에" 한 마디로 자르고 3~4초 만에 넘긴다.</b> "맥락이 뭐예요?" 질문이 나와도 "다음 시간 첫 슬라이드입니다"로 받는다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">숙제 압박 금지 — "안 해오면 다음 수업 못 따라와요" 류의 협박은 초급반 정서에 역효과. "이 종이가 재료"라는 사실만 담백하게.</div></div>
+    <div class="next">→ 넘어가며: <b>"오늘의 문장으로 끝냅시다."</b></div>
+    <div class="pgfoot">— 16 / 17 —</div>
+  </section>
+
+  <!-- ═══════════ 16 엔딩 ═══════════ -->
+  <section class="page">
+    <div class="head"><span class="numbox">16</span><span class="sec">클로징 · 엔딩</span></div>
+    <div class="ptitle">엔딩 — 그릴 수 없으면 시킬 수 없다</div><div class="time">⏱ 1분 (119–120)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">핵심 메시지로 닫는다. 워크시트 지참을 마지막으로 한 번 더.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">엔딩(다크) — "그릴 수 없으면 시킬 수 없다" + "워크시트 꼭 챙겨 오세요".</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">오늘 우리는 프롬프트를 한 줄도 안 썼습니다. 대신 다들 손에 그림이 한 장씩 생겼죠. 다음 시간엔 그 그림을 화면에 띄웁니다 — 진짜로 만들어요. 오늘의 문장 같이 읽고 끝내죠. 그릴 수 없으면 — 시킬 수 없다. 워크시트 꼭 챙겨 오세요. 수고하셨습니다!</div></div>
+    <div class="box ref"><div class="lab">📌 수업 후 강사 체크리스트</div><div class="body">① <b>「연결」 칸을 채운 인원 / 전체</b> ← 성공 판정이자 13차 난이도 기준 ② 소재를 못 정했거나 너무 큰 사람 명단(13차 개별 케어) ③ 밀린 구간 기록 ④ 동네 인증·푸시 알림을 잡은 조 ⑤ <b>13차 전 플랫폼 3종 수정</b> — 재제출 UI 잠금 해제 · 닉네임별 최고점 집계 · (권장) 향상폭 "오늘의 성장왕" (00_인수인계 §10-②).</div></div>
+    <div class="pgfoot">— 17 / 17 —</div>
+  </section>
+
+</div>
+</body>
+</html>

@@ -42,6 +42,8 @@ export interface PromptLeaderboardEntry {
     output: number;
   };
   created_at: string;
+  attempts?: number;      // 총 제출 횟수 (재제출 집계, 11차~)
+  improvement?: number;   // 첫 제출 대비 최고점 상승폭 ("오늘의 성장왕")
 }
 
 // I-MRKO 지침 채점 리더보드 엔트리
@@ -60,6 +62,8 @@ export interface InstructionLeaderboardEntry {
     output: number;
   };
   created_at: string;
+  attempts?: number;      // 총 제출 횟수 (재제출 집계, 11차~)
+  improvement?: number;   // 첫 제출 대비 최고점 상승폭 ("오늘의 성장왕")
 }
 
 // SSDHR 이미지 프롬프트 채점 리더보드 엔트리 (3차 강의)
@@ -78,6 +82,8 @@ export interface ImageLeaderboardEntry {
     reality: number;
   };
   created_at: string;
+  attempts?: number;      // 총 제출 횟수 (재제출 집계, 11차~)
+  improvement?: number;   // 첫 제출 대비 최고점 상승폭 ("오늘의 성장왕")
 }
 
 // 바이브 코딩 5요소 채점 리더보드 엔트리 (4차 강의 — R-PCCO 코딩 응용)
@@ -97,6 +103,8 @@ export interface VibeLeaderboardEntry {
     output: number;
   };
   created_at: string;
+  attempts?: number;      // 총 제출 횟수 (재제출 집계, 11차~)
+  improvement?: number;   // 첫 제출 대비 최고점 상승폭 ("오늘의 성장왕")
 }
 
 // 프롬프트 역설계 채점 리더보드 엔트리 (10차 강의)
@@ -115,6 +123,8 @@ export interface ReverseLeaderboardEntry {
     structure: number;
   };
   created_at: string;
+  attempts?: number;      // 총 제출 횟수 (재제출 집계, 11차~)
+  improvement?: number;   // 첫 제출 대비 최고점 상승폭 ("오늘의 성장왕")
 }
 
 // 통합 타입

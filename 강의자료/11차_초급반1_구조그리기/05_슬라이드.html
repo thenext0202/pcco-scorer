@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>11차 강의 슬라이드 · 그린다 — 머릿속에 구조를 그리는 법</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root{--bg:#0c1f1d; --ink:#152321; --muted:#66807c; --line:#e2ecea;
+        --teal:#0d9488; --teal-l:#5eead4; --teal-bg:#f0fdfa; --amber:#d97706; --red:#dc2626;}
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:"Pretendard","Malgun Gothic",-apple-system,sans-serif; background:#3a3a40;}
+  .deck{display:flex; flex-direction:column; align-items:center; gap:22px; padding:22px;}
+  .slide{width:1280px; height:720px; position:relative; overflow:hidden; background:#fff; flex:0 0 auto;}
+  .pad{position:absolute; inset:0; padding:52px 66px;}
+  .eyebrow{color:var(--teal); font-size:14.5px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; display:flex; align-items:center; gap:10px;}
+  .eyebrow::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--teal);}
+  .eyebrow.red{color:var(--red);} .eyebrow.red::before{background:var(--red);}
+  .eyebrow.amber{color:var(--amber);} .eyebrow.amber::before{background:var(--amber);}
+  .title{font-size:44px; font-weight:800; color:var(--ink); line-height:1.16; margin-top:18px; letter-spacing:-.02em;}
+  .title.sm{font-size:38px;}
+  .title .dim{color:#9aacaa; font-weight:700;} .title .pp{color:var(--teal);} .title .strike{text-decoration:line-through; color:#b3c2c0; font-weight:700;}
+  .subtitle{font-size:19px; color:var(--muted); margin-top:13px; line-height:1.5;}
+  .foot{position:absolute; left:66px; right:66px; bottom:26px; display:flex; justify-content:space-between; font-size:12.5px; color:#a2b3b0; letter-spacing:.04em;}
+  .callout{margin-top:22px; background:#f4faf9; border-left:4px solid var(--teal); border-radius:0 8px 8px 0; padding:16px 22px; font-size:20px; color:#2f4744; line-height:1.5;}
+  .callout.sm{font-size:17px; padding:14px 20px;}
+  .callout .pp{color:var(--teal); font-weight:700;} .callout .rr{color:var(--red); font-weight:700;}
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:26px;}
+  .cards.c2{grid-template-columns:repeat(2,1fr);} .cards.c4{grid-template-columns:repeat(4,1fr);}
+  .card{border:1px solid var(--line); border-radius:14px; padding:20px;}
+  .card .k{color:var(--teal); font-size:12.5px; font-weight:700; letter-spacing:.05em;}
+  .card .t{font-size:20px; font-weight:800; color:var(--ink); margin-top:9px;}
+  .card .d{font-size:14px; color:#748c88; margin-top:7px; line-height:1.5;}
+  .card.hot{background:var(--teal-bg); border-color:#8fd8cf;}
+  .card.hot .t{color:var(--teal);}
+  .card.blank{min-height:210px; background:#fbfdfd; border-style:dashed; border-color:#c6d9d6;}
+  .twocol{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:24px;}
+  .panel{border:1px solid var(--line); border-radius:14px; padding:22px;}
+  .panel.red{border-color:#f3c9c9; background:#fdf5f5;} .panel.red h4{color:var(--red);}
+  .panel.green{border-color:#bfe7e1; background:#f2fbf9;} .panel.green h4{color:var(--teal);}
+  .panel h4{font-size:16.5px; color:var(--teal); margin-bottom:11px;}
+  .panel ul{margin-left:18px;} .panel li{font-size:15.5px; color:#2f4744; margin:8px 0; line-height:1.45;}
+  .mono{font-family:ui-monospace,monospace; background:#dcf5f1; color:#0f5f57; padding:1px 7px; border-radius:5px; font-size:.92em;}
+  .bigstate{margin-top:34px; font-size:35px; font-weight:800; color:var(--ink); line-height:1.32; letter-spacing:-.02em;}
+  .bigstate .pp{color:var(--teal);}
+  .steps{display:flex; align-items:stretch; gap:12px; margin-top:28px;}
+  .step{flex:1; border:1px solid var(--line); border-radius:14px; padding:18px 14px; text-align:center; position:relative;}
+  .step .sn{width:28px; height:28px; border-radius:8px; background:var(--teal); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; margin:0 auto 10px; font-size:14px;}
+  .step .stt{font-size:16px; font-weight:800; color:var(--ink);}
+  .step .std{font-size:13px; color:#748c88; margin-top:5px; line-height:1.4;}
+  .step:not(:last-child)::after{content:"›"; position:absolute; right:-11px; top:50%; transform:translateY(-50%); color:var(--teal-l); font-size:21px; font-weight:800; z-index:2;}
+  .dl{margin-top:22px;}
+  .di{display:flex; gap:16px; align-items:flex-start; padding:12px 0; border-bottom:1px solid #eef4f3;}
+  .di .dk{flex:0 0 190px; display:flex; align-items:center; gap:9px;}
+  .di .dk .b{background:var(--teal); color:#fff; font-weight:800; font-size:13px; border-radius:6px; padding:3px 10px;}
+  .di .dk .kt{font-size:17px; font-weight:800; color:var(--ink);}
+  .di .dd{flex:1; font-size:15.5px; color:#40534f; line-height:1.5;}
+  .di .dd b{color:var(--teal);}
+  .timerbox{margin-top:30px; display:flex; align-items:center; gap:26px;}
+  .timer{font-size:96px; font-weight:800; color:var(--teal); letter-spacing:.02em; font-variant-numeric:tabular-nums;}
+  .timer small{font-size:22px; color:#8aa39f; font-weight:700; display:block; letter-spacing:.2em; margin-top:2px;}
+  .checkgrid{display:grid; grid-template-columns:1fr 1fr; gap:6px 26px; margin-top:18px;}
+  .chk{display:flex; gap:9px; align-items:baseline; font-size:15px; color:#2f4744; padding:4.5px 0; border-bottom:1px solid #f0f6f5;}
+  .chk .cb{color:#9db8b4; font-size:14px;}
+  .chk .lv{font-size:11px; font-weight:800; border-radius:4px; padding:1px 6px; flex-shrink:0;}
+  .lv1{background:#e6f3f1; color:#0d9488;} .lv2{background:#fef3c7; color:#b45309;} .lv3{background:#fde8e8; color:#b91c1c;}
+  /* dark cover/closing */
+  .slide.dark{background:var(--bg);}
+  .blob{position:absolute; border-radius:50%; filter:blur(2px);}
+  .blob.b1{width:320px; height:320px; left:-80px; top:-100px; background:var(--teal);}
+  .blob.b2{width:240px; height:240px; right:120px; bottom:-140px; background:#115e59;}
+  .dark .eyebrow{color:var(--teal-l);} .dark .eyebrow::before{background:var(--teal-l);}
+  .cover .big{position:absolute; left:66px; right:66px; bottom:190px; font-size:68px; font-weight:800; color:#fff; line-height:1.16; letter-spacing:-.03em;}
+  .cover .big .pp{color:var(--teal-l);} .cover .big .strike{text-decoration:line-through; color:#4c6663; font-weight:700;}
+  .cover .csub{position:absolute; left:68px; right:66px; bottom:148px; font-size:22px; color:#9ab4b0;}
+  .lect{position:absolute; left:66px; bottom:58px; display:flex; align-items:center; gap:12px;}
+  .lect .av{width:40px; height:40px; border-radius:50%; background:var(--teal); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;}
+  .lect .lc{font-size:12px; color:#9ab4b0; letter-spacing:.15em;} .lect .ln{font-size:16px; color:#fff; font-weight:700;}
+  .eyebrow.top{position:absolute; left:66px; top:50px;}
+  .dark .foot{color:#547571;}
+  .three-cover{position:absolute; right:66px; top:150px; display:flex; flex-direction:column; gap:14px;}
+  .pcv{display:flex; align-items:center; gap:14px;} .pcv .l{width:48px; height:48px; border-radius:10px; background:rgba(94,234,212,.14); color:var(--teal-l); font-weight:800; font-size:21px; display:flex; align-items:center; justify-content:center;}
+  .pcv .w{color:#cfe4e1; font-size:17px; font-weight:600; white-space:nowrap;}
+  .closing .big{position:absolute; left:66px; right:66px; top:260px; font-size:60px; font-weight:800; color:#fff; letter-spacing:-.02em; line-height:1.25;}
+  .closing .big .pp{color:var(--teal-l);}
+  .closing .csub{position:absolute; left:68px; right:66px; top:440px; font-size:21px; color:#9ab4b0; line-height:1.6;}
+  .center-quote{position:absolute; left:100px; right:100px; top:250px; font-size:52px; font-weight:800; color:var(--ink); line-height:1.35; letter-spacing:-.02em; text-align:center;}
+  .center-quote .pp{color:var(--teal);}
+  .center-sub{position:absolute; left:100px; right:100px; top:470px; text-align:center; font-size:21px; color:var(--muted); line-height:1.6;}
+  @media print{@page{size:1280px 720px; margin:0;} body{background:#fff;} .deck{display:block!important; gap:0; padding:0;} .slide{break-after:page; break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- 01 표지 -->
+  <section class="slide dark cover">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="eyebrow top">BEGINNER 1 · LAYERS</div>
+    <div class="three-cover">
+      <div class="pcv"><div class="l">데</div><div class="w">데이터 — 뭘 기억하나</div></div>
+      <div class="pcv"><div class="l">동</div><div class="w">동작 — 뭘 하나</div></div>
+      <div class="pcv"><div class="l">화</div><div class="w">화면 — 어떻게 보이나</div></div>
+      <div class="pcv"><div class="l">연</div><div class="w">연결 — 밖과 어떻게 닿나</div></div>
+    </div>
+    <div class="big"><span class="strike">앱 = 화면</span><br/><span class="pp">앱 = 네 칸</span></div>
+    <div class="csub">그린다 — 머릿속에 구조를 그리는 법 · 오늘은 문장을 쓰지 않습니다</div>
+    <div class="foot"><span>그린다 · 구조를 네 칸으로</span><span>01 / 16</span></div>
+  </section>
+
+  <!-- 02 왜 안 그려지나 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">PART 0 · 왜 안 그려지나</div>
+    <div class="title">우리는 앱을 <span class="pp">화면으로만</span> 봅니다</div>
+    <div class="subtitle">매일 수십 개의 앱을 쓰지만 — 기억나는 건 버튼과 색깔뿐. 그래서 만들려고 하면 그릴 게 없다.</div>
+    <div class="twocol">
+      <div class="panel red"><h4>우리가 보는 것</h4><ul>
+        <li>버튼 · 목록 · 색깔</li>
+        <li>예쁘다 / 불편하다</li>
+        <li>지금 눈앞의 화면 한 장</li>
+      </ul></div>
+      <div class="panel green"><h4>있어야 하는 것</h4><ul>
+        <li><b>남는 것</b> — 껐다 켜도 그대로인 것</li>
+        <li><b>저절로 일어나는 일</b> — 아무도 안 눌렀는데</li>
+        <li><b>안 가본 화면</b> — 설정 · 휴지통</li>
+        <li><b>밖과 닿는 통로</b> — 로그인 · 알림 · 공유</li>
+      </ul></div>
+    </div>
+    <div class="callout"><span class="pp">프롬프트를 못 쓰는 게 아니라</span> — 그릴 게 없어서 못 쓰는 것.</div>
+    <div class="foot"><span>PART 0 / 왜 안 그려지나</span><span>02 / 16</span></div>
+  </div></section>
+
+  <!-- 03 핵심 메시지 -->
+  <section class="slide">
+    <div class="pad">
+      <div class="eyebrow">PART 0 · 오늘의 문장</div>
+      <div class="center-quote">"그릴 수 없으면<br/><span class="pp">시킬 수 없다</span>"</div>
+      <div class="center-sub">오늘은 문장을 한 줄도 쓰지 않습니다 — 대신 네 칸을 그립니다.<br/><b style="color:#0d9488">그림이 생기면, 프롬프트는 옮겨 적는 일이 됩니다.</b></div>
+      <div class="foot"><span>PART 0 / 핵심 메시지</span><span>03 / 16</span></div>
+    </div>
+  </section>
+
+  <!-- 04 초급반 안내 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">초급반 안내 · 지금 잡힌 계획 3회</div>
+    <div class="title">하나의 소재로 <span class="pp">3주를 관통</span>합니다</div>
+    <div class="subtitle">초급반은 계속 이어집니다 — 먼저 잡힌 계획이 이 셋. 소재는 각자 자유, 오늘 그린 그림이 다음 시간에 만들어지고 그다음 시간에 지침으로 굳습니다.</div>
+    <div class="steps">
+      <div class="step" style="border-color:#0d9488; background:#f0fdfa;"><div class="sn">11</div><div class="stt">그린다 — 오늘</div><div class="std">구조를 네 칸으로<br/>워크시트 + 상호리뷰</div></div>
+      <div class="step"><div class="sn">13</div><div class="stt">쓴다</div><div class="std">구조도를 프롬프트로<br/>실제로 만든다</div></div>
+      <div class="step"><div class="sn">15</div><div class="stt">굳힌다</div><div class="std">반복되는 작업을<br/>지침으로</div></div>
+    </div>
+    <div class="callout">오늘 나가는 준비물은 <span class="pp">내 구조도 1장</span> — 이 종이가 3주짜리 재료입니다.</div>
+    <div class="foot"><span>초급반 안내</span><span>04 / 16</span></div>
+  </div></section>
+
+  <!-- 05 레이어 4겹 개요 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 1 · 프레임워크</div>
+    <div class="title">레이어 4겹 — <span class="pp">데이터 · 동작 · 화면 · 연결</span></div>
+    <div class="subtitle">어떤 앱이든 이 네 칸으로 쪼개진다. 칸마다 스스로에게 던지는 질문이 하나씩 있다.</div>
+    <div class="cards c4">
+      <div class="card"><div class="k">① 데이터</div><div class="t">뭘 기억하나</div><div class="d">앱을 껐다 다시 열면 뭐가 그대로여야 하나?</div></div>
+      <div class="card"><div class="k">② 동작</div><div class="t">뭘 하나</div><div class="d">버튼을 누르면 무슨 일이? 아무도 안 눌러도 일어나는 일은?</div></div>
+      <div class="card"><div class="k">③ 화면</div><div class="t">어떻게 보이나</div><div class="d">첫 화면에 뭐가 보이나? 몇 개고 어디서 바뀌나?</div></div>
+      <div class="card hot"><div class="k">④ 연결</div><div class="t">밖과 어떻게 닿나</div><div class="d">나 혼자 쓰면 없어도 되는 기능은 무엇인가?</div></div>
+    </div>
+    <div class="callout">네 번째 칸이 <span class="pp">오늘의 승부처</span>입니다 — 이유는 곧 알게 됩니다.</div>
+    <div class="foot"><span>PART 1 / 레이어 4겹</span><span>05 / 16</span></div>
+  </div></section>
+
+  <!-- 06 데이터 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 2 · 첫 번째 칸</div>
+    <div class="title">① 데이터 — <span class="pp">뭘 기억하나</span></div>
+    <div class="subtitle">판별 질문은 하나 — "앱을 껐다 다시 열면, 뭐가 그대로여야 하나?"</div>
+    <div class="twocol">
+      <div class="panel"><h4>쉽게 나옵니다</h4><ul>
+        <li>메모 본문</li>
+        <li>만든 시각 · 수정 시각</li>
+        <li>고정 여부</li>
+        <li>폴더</li>
+      </ul></div>
+      <div class="panel green"><h4>잘 안 떠오릅니다</h4><ul>
+        <li><b>휴지통</b> — 지운 것도 기억한다</li>
+        <li><b>정렬 설정</b> — 설정도 데이터다</li>
+      </ul></div>
+    </div>
+    <div class="callout sm">⏱ 30초 퀴즈 — <span class="pp">쇼핑 앱 장바구니</span>: 껐다 켜도 남아 있어야 하는 건 뭐뭐일까요?</div>
+    <div class="foot"><span>PART 2 / ① 데이터</span><span>06 / 16</span></div>
+  </div></section>
+
+  <!-- 07 동작 ⭐ -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">PART 2 · 두 번째 칸 ⭐</div>
+    <div class="title">② 동작 — <span class="pp">뭘 하나</span></div>
+    <div class="subtitle">동작은 두 줄로 나눠 적는다 — 사용자가 시키는 것, 그리고 아무도 안 시켰는데 일어나는 것.</div>
+    <div class="twocol">
+      <div class="panel"><h4>사용자가 시키는 것</h4><ul>
+        <li>새로 쓰기 · 수정 · 삭제</li>
+        <li>검색 · 고정 · 공유</li>
+      </ul></div>
+      <div class="panel green"><h4>앱이 알아서 하는 것</h4><ul>
+        <li><b>자동 저장</b></li>
+        <li>첫 줄을 제목으로 승격</li>
+        <li>휴지통 30일 뒤 자동 비움</li>
+      </ul></div>
+    </div>
+    <div class="callout">메모앱엔 저장 버튼이 없습니다. 없는데 저장은 되죠 — <span class="rr">그럼 그 일을 한 건 누구입니까?</span></div>
+    <div class="foot"><span>PART 2 / ② 동작</span><span>07 / 16</span></div>
+  </div></section>
+
+  <!-- 08 화면 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 2 · 세 번째 칸</div>
+    <div class="title">③ 화면 — <span class="pp">어떻게 보이나</span></div>
+    <div class="subtitle">화면은 '몇 개인지 세는 것'부터 시작한다.</div>
+    <div class="dl">
+      <div class="di"><div class="dk"><span class="b">①</span><span class="kt">첫 화면</span></div><div class="dd">앱을 열면 제일 먼저 뭐가 보이나 — 목록? 빈 종이? 버튼?</div></div>
+      <div class="di"><div class="dk"><span class="b">②</span><span class="kt">전환 지점</span></div><div class="dd">어디를 누르면 화면이 바뀌나 — 바뀌는 지점을 화살표로 잇는다</div></div>
+      <div class="di"><div class="dk"><span class="b">③</span><span class="kt">안 가본 화면</span></div><div class="dd"><b>안 가본 화면도 화면이다</b> — 설정 · 휴지통 · 검색 결과. 안 가봤다고 없는 게 아니다</div></div>
+    </div>
+    <div class="callout sm">⏱ 30초 퀴즈 — 메모앱의 화면은 몇 개일까요? <span class="pp">휴지통은 세셨나요?</span></div>
+    <div class="foot"><span>PART 2 / ③ 화면</span><span>08 / 16</span></div>
+  </div></section>
+
+  <!-- 09 연결 ⭐ -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">PART 2 · 네 번째 칸 ⭐ 승부처</div>
+    <div class="title">④ 연결 — <span class="pp">밖과 어떻게 닿나</span></div>
+    <div class="subtitle">가장 많이 백지가 되는 칸 — 로그인·공유·알림·동기화는 눈에 안 보이기 때문.</div>
+    <div class="twocol">
+      <div class="panel red"><h4>혼자 · 폰 하나면</h4><ul>
+        <li>이 칸이 <b>빈다</b> — 그리고 그게 정상</li>
+        <li>비어 있다는 걸 <b>확인하고 비우는 것</b>과 그냥 잊는 것은 다르다</li>
+      </ul></div>
+      <div class="panel green"><h4>사람이 늘면 · 기기가 늘면</h4><ul>
+        <li>사람이 늘면 — <b>로그인 · 공유 · 알림</b></li>
+        <li>기기가 늘면 — <b>동기화 · 저장 위치</b></li>
+      </ul></div>
+    </div>
+    <div class="callout">연결은 <span class="pp">사람이 늘거나 기기가 늘 때 생기는 칸</span>입니다.</div>
+    <div class="foot"><span>PART 2 / ④ 연결</span><span>09 / 16</span></div>
+  </div></section>
+
+  <!-- 10 후렴 -->
+  <section class="slide">
+    <div class="pad">
+      <div class="eyebrow">PART 2 · 후렴</div>
+      <div class="center-quote">"화면에 안 보인다고<br/><span class="pp">없는 게 아니다</span>"</div>
+      <div class="center-sub">알림은 — 앱을 켜지도 않았는데 옵니다.</div>
+      <div class="foot"><span>PART 2 / 후렴</span><span>10 / 16</span></div>
+    </div>
+  </section>
+
+  <!-- 11 시범 해부 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">실습 1 · 다같이 해부 ⭐</div>
+    <div class="title">메모앱을 <span class="pp">다같이</span> 해부합니다 <span class="dim">— 15분</span></div>
+    <div class="subtitle">강사는 질문만 합니다 — 답은 여러분이, 받아 적는 건 화이트보드가.</div>
+    <div class="cards c4">
+      <div class="card blank"><div class="k">① 데이터</div></div>
+      <div class="card blank"><div class="k">② 동작</div></div>
+      <div class="card blank"><div class="k">③ 화면</div></div>
+      <div class="card blank"><div class="k">④ 연결</div></div>
+    </div>
+    <div class="callout">답을 외우지 말고 — <span class="pp">질문</span>을 훔쳐 가세요. 혼자 그릴 때 자기에게 던질 질문입니다.</div>
+    <div class="foot"><span>실습 1 / 다같이 해부</span><span>11 / 16</span></div>
+  </div></section>
+
+  <!-- 12 조별 해부 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">실습 2 · 조별 해부</div>
+    <div class="title sm">당근마켓 — <span class="pp">글 올리고 채팅하는 부분만</span></div>
+    <div class="timerbox">
+      <div class="timer">25:00<small>DECOMPOSE</small></div>
+      <div style="flex:1">
+        <div class="dl" style="margin-top:0">
+          <div class="di"><div class="dk"><span class="b">①</span><span class="kt">범위 자르기</span></div><div class="dd">동네생활 ✗ · 알바 ✗ · 부동산 ✗ · 중고차 ✗ — <b>범위부터 자릅니다</b></div></div>
+          <div class="di"><div class="dk"><span class="b">②</span><span class="kt">조별 작성 15분</span></div><div class="dd">워크시트 2쪽에 네 칸을 채웁니다 — 동작 칸은 두 줄로</div></div>
+          <div class="di"><div class="dk"><span class="b">③</span><span class="kt">발표 10분</span></div><div class="dd">다른 조의 <b>빠진 칸</b>을 지적합니다 — 그다음 정답 공개</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="callout sm">설계의 첫걸음은 <span class="pp">범위를 자르는 것</span>입니다.</div>
+    <div class="foot"><span>실습 2 / 조별 해부</span><span>12 / 16</span></div>
+  </div></section>
+
+  <!-- 13 내 것 그리기 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">실습 3 · 내 것 그리기</div>
+    <div class="title">3주를 관통할 <span class="pp">내 구조도 1장</span> — 25분</div>
+    <div class="subtitle">진짜 만들고 싶은 것을 정하고, 워크시트 3쪽에 네 칸으로 그립니다. 합격 기준은 셋.</div>
+    <div class="cards">
+      <div class="card"><div class="k">기준 ①</div><div class="t">화면 3개 이하</div><div class="d">3개가 넘으면 3주 안에 못 만듭니다 — 자르세요.</div></div>
+      <div class="card"><div class="k">기준 ②</div><div class="t">한 문장 설명</div><div class="d">"~할 때마다 ~해서 ~을 본다"로 말해지면 합격.</div></div>
+      <div class="card"><div class="k">기준 ③</div><div class="t">혼자 써도 쓸모</div><div class="d">필수는 아니지만 — 아니면 연결 칸이 무거워집니다.</div></div>
+    </div>
+    <div class="callout"><span class="pp">「이번엔 안 만들 것」 3줄</span> — 버리는 게 아니라, 적어두고 미루는 것입니다.</div>
+    <div class="foot"><span>실습 3 / 내 것 그리기</span><span>13 / 16</span></div>
+  </div></section>
+
+  <!-- 14 상호리뷰 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">실습 4 · 상호리뷰</div>
+    <div class="title">질문 3개 — <span class="pp">적어서</span> 건네세요</div>
+    <div class="subtitle">옆 사람과 워크시트를 교환하고, 세 가지 질문의 답을 상대의 4쪽에 적어줍니다.</div>
+    <div class="dl">
+      <div class="di"><div class="dk"><span class="b">①</span><span class="kt">데이터 검증</span></div><div class="dd">"껐다 켜면 <b>뭐가 그대로</b>예요?" — 구조도에서 답을 찾을 수 있어야 한다</div></div>
+      <div class="di"><div class="dk"><span class="b">②</span><span class="kt">연결 검증</span></div><div class="dd">"혼자 쓴다면 <b>없어도 되는 기능</b>은요?" — 연결 칸이 비었다면 지금 채울 기회</div></div>
+      <div class="di"><div class="dk"><span class="b">③</span><span class="kt">화면 검증</span></div><div class="dd">"<b>첫 화면</b>에 뭐가 보여요?" — 말문이 막히면 화면 칸이 얇은 것</div></div>
+    </div>
+    <div class="callout sm">말로 하지 말고 <span class="pp">적어서</span> 건네세요 — 적힌 질문은 숙제의 재료가 됩니다.</div>
+    <div class="foot"><span>실습 4 / 상호리뷰</span><span>14 / 16</span></div>
+  </div></section>
+
+  <!-- 15 13차 예고 + 숙제 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">NEXT · 13차 예고</div>
+    <div class="title sm">오늘 그린 칸이 — <span class="pp">그대로 프롬프트가 됩니다</span></div>
+    <div class="dl">
+      <div class="di"><div class="dk"><span class="b">데이터</span><span class="kt">→ 맥락 + 제약</span></div><div class="dd">"할 일은 껐다 켜도 남아야 한다"</div></div>
+      <div class="di"><div class="dk"><span class="b">동작</span><span class="kt">→ 목적 + 제약</span></div><div class="dd">"체크하면 아래로 내려간다"</div></div>
+      <div class="di"><div class="dk"><span class="b">화면</span><span class="kt">→ 출력 + 맥락</span></div><div class="dd">"폰 세로 화면, 단일 파일"</div></div>
+      <div class="di"><div class="dk"><span class="b">연결</span><span class="kt">→ 제약</span></div><div class="dd">"로그인 없이, 링크로 공유"</div></div>
+    </div>
+    <div class="callout sm"><b>숙제 🏠</b> — <span class="pp">필수:</span> 빈 칸(특히 연결)을 채워 <b>이 워크시트를 13차에 그대로 가져오기</b> · <span class="pp">심화:</span> 평소 잘 쓰는 앱 하나를 네 칸으로 해부해보기</div>
+    <div class="foot"><span>NEXT / 13차 예고 + 숙제</span><span>15 / 16</span></div>
+  </div></section>
+
+  <!-- 16 엔딩 -->
+  <section class="slide dark closing">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="eyebrow top">SEE YOU · 13차</div>
+    <div class="big">그릴 수 없으면<br/><span class="pp">시킬 수 없다</span></div>
+    <div class="csub">다음 시간엔 오늘 그린 그림을 화면에 띄웁니다 · 워크시트 꼭 챙겨 오세요<br/>수고하셨습니다!</div>
+    <div class="foot"><span>그린다 · 구조를 네 칸으로</span><span>16 / 16</span></div>
+  </section>
+
+</div>
+</body>
+</html>
