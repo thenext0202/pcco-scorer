@@ -316,6 +316,38 @@ public/                    # 정적 파일
    - `/play/[code]/board`: 제목 "닉네임별 최고점" 명시 + **🌱 오늘의 성장왕 카드**(improvement 1위, "실력은 두 번째 제출에서 는다") + 엔트리에 "🔁 N회 도전 · 첫 제출 +M점"
    - `submitScore`는 그대로 매번 insert (이력 보존) — 재제출 이력이 improvement 계산의 근거. Realtime INSERT 구독도 재제출에 그대로 반응
 
+### 강의 자료실 (`/downloads`) 추가 (2026-08-21)
+
+1. **목적** — 강의자료 중 **수강생용 부록**(슬라이드·워크시트·실습 키트)을 랜딩에서 직접 다운로드. **전 차수 슬라이드는 반드시 포함, 러닝시트는 강사용이라 전 차수 제외**
+   - 접근 제한 없음 (링크만 알면 누구나) · 강사 전용 자료는 **아예 배포 폴더에 넣지 않는 방식**으로 차단
+
+2. **파일 서빙 방식 — `public/downloads/` 동봉**
+   - `public/downloads/c01 ~ c12/` 에 파일 복사 → git push하면 Railway가 정적 서빙 (약 17MB, 26개 파일 — 1~12차 전 차수 슬라이드 포함)
+   - 1~5차는 강의자료 폴더가 없어 슬라이드 PDF만 존재 (2026-08-21 사용자가 직접 전달)
+   - 디스크에는 **ASCII 파일명**(`slides.pdf`, `structure-worksheet.docx`)으로 두고, 수강생이 받을 한글 파일명은 `<a download="11강_구조그리기_슬라이드.pdf">` 로 지정 — URL 퍼센트 인코딩 회피 + 저장 시엔 한글 유지 (동일 오리진이라 `download` 속성이 그대로 먹는다)
+   - ⚠️ `.gitignore`는 `강의자료/**/*.zip|exe`만 제외한다. `public/downloads/`는 제외 대상이 아니므로 커밋된다 (의도된 동작)
+   - **10차 배포키트(18.7MB, IG-Archiver.exe 포함)는 의도적으로 제외** — 저장소 용량 + 브라우저 exe 다운로드 경고 때문. 필요하면 Supabase Storage에 올리고 `resources.ts`에 외부 URL로 추가할 것
+
+3. **신규 파일**
+   - `src/data/resources.ts` — 차수별 자료 메타데이터(`ResourceGroup[]`). **용량은 하드코딩하지 않는다**
+   - `src/app/downloads/page.tsx` — Server Component. 빌드 시점에 `fs.statSync`로 실제 파일 용량 계산 + **파일이 없으면 그 항목을 목록에서 자동 제외**(죽은 링크 방지)
+   - `src/components/ResourceLibrary.tsx` — Client Component (framer-motion). 차수 바로가기 칩 + 확장자별 색상 아이콘 + 강의 복습 섹션(`/#course-N`) 역링크
+
+4. **진입 동선 2곳** — `Hero.tsx`("강의 자료실" 버튼, 커리큘럼 버튼 옆) · `CTA.tsx`(하단 보조 버튼)
+
+5. **★ 자료 선별 원칙 (위반 금지)**
+   - 배포 O: **슬라이드 PDF (전 차수 필수)** · 워크시트/템플릿 docx · 실습 키트 zip · 강의별로 지정한 프롬프트/가이드
+   - 배포 X: **러닝시트 — 강사용이다 (2026-08-21 사용자 지시로 전 차수 제외)** · 기획안 · 인수인계 · 해부 정답지 · 채점기준표 · 구조지도 강사원본
+   - 7차는 프롬프트 txt · 배포 치트시트도 제외 (사용자 지시)
+   - 특히 **10차 채점기준표는 진단·분반 오염** 위험 — 절대 넣지 말 것
+
+### 새 강의 자료 추가 절차 (자료실)
+
+1. `public/downloads/c{NN}/` 폴더 생성 후 수강생용 파일만 **ASCII 이름으로** 복사
+   (관례: `slides.pdf` · `*-worksheet.docx` · `*-kit.zip`)
+2. `src/data/resources.ts`의 `resourceGroups`에 그룹 한 덩어리 추가 (`courseId`는 `content.ts`의 `courses[].id`와 반드시 일치 — 복습 섹션 역링크가 이걸로 걸린다)
+3. 끝. 페이지·용량·목록은 자동 반영 (파일이 없으면 조용히 빠짐)
+
 ## 코딩 규칙
 - TypeScript strict mode 사용
 - 함수형 컴포넌트 사용

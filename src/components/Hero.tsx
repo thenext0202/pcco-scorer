@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Sparkles, ChevronDown, BookOpen, ExternalLink } from "lucide-react";
+import { ArrowRight, Sparkles, ChevronDown, BookOpen, ExternalLink, Download } from "lucide-react";
 import { heroContent, courses } from "@/data/content";
 import { useState } from "react";
 
@@ -99,6 +99,8 @@ export default function Hero() {
             <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-1 transition-transform flex-shrink-0" />
           </a>
 
+          {/* 보조 CTA — 커리큘럼 / 자료실 */}
+          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto max-w-md sm:max-w-none">
           {/* Curriculum Toggle Button */}
           <button
             onClick={() => setShowCurriculum(!showCurriculum)}
@@ -112,6 +114,17 @@ export default function Hero() {
               }`}
             />
           </button>
+
+          {/* 강의 자료실 */}
+          <a
+            href="/downloads"
+            className="group relative px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg glass-card hover:bg-accent-primary/10 hover:border-accent-primary transition-all duration-300 flex items-center justify-center gap-2 w-full sm:w-auto max-w-md"
+          >
+            <Download className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+            <span className="whitespace-nowrap">강의 자료실</span>
+            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+          </a>
+          </div>
 
           {/* Curriculum Accordion */}
           <AnimatePresence>
