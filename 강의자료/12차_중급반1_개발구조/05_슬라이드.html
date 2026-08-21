@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>12차 강의 슬라이드 · 구조를 그린다 — 개발 세계의 지도</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root{--bg:#0c1f1d; --ink:#152321; --muted:#66807c; --line:#e2ecea;
+        --teal:#0d9488; --teal-l:#5eead4; --teal-bg:#f0fdfa; --amber:#d97706; --red:#dc2626;}
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:"Pretendard","Malgun Gothic",-apple-system,sans-serif; background:#3a3a40;}
+  .deck{display:flex; flex-direction:column; align-items:center; gap:22px; padding:22px;}
+  .slide{width:1280px; height:720px; position:relative; overflow:hidden; background:#fff; flex:0 0 auto;}
+  .pad{position:absolute; inset:0; padding:52px 66px;}
+  .eyebrow{color:var(--teal); font-size:14.5px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; display:flex; align-items:center; gap:10px;}
+  .eyebrow::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--teal);}
+  .eyebrow.red{color:var(--red);} .eyebrow.red::before{background:var(--red);}
+  .eyebrow.amber{color:var(--amber);} .eyebrow.amber::before{background:var(--amber);}
+  .title{font-size:44px; font-weight:800; color:var(--ink); line-height:1.16; margin-top:18px; letter-spacing:-.02em;}
+  .title.sm{font-size:38px;}
+  .title .dim{color:#9aacaa; font-weight:700;} .title .pp{color:var(--teal);} .title .strike{text-decoration:line-through; color:#b3c2c0; font-weight:700;}
+  .subtitle{font-size:19px; color:var(--muted); margin-top:13px; line-height:1.5;}
+  .foot{position:absolute; left:66px; right:66px; bottom:26px; display:flex; justify-content:space-between; font-size:12.5px; color:#a2b3b0; letter-spacing:.04em;}
+  .callout{margin-top:22px; background:#f4faf9; border-left:4px solid var(--teal); border-radius:0 8px 8px 0; padding:16px 22px; font-size:20px; color:#2f4744; line-height:1.5;}
+  .callout.sm{font-size:17px; padding:14px 20px;}
+  .callout .pp{color:var(--teal); font-weight:700;} .callout .rr{color:var(--red); font-weight:700;}
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:26px;}
+  .cards.c2{grid-template-columns:repeat(2,1fr);} .cards.c4{grid-template-columns:repeat(4,1fr);}
+  .card{border:1px solid var(--line); border-radius:14px; padding:20px;}
+  .card .k{color:var(--teal); font-size:12.5px; font-weight:700; letter-spacing:.05em;}
+  .card .t{font-size:20px; font-weight:800; color:var(--ink); margin-top:9px;}
+  .card .d{font-size:14px; color:#748c88; margin-top:7px; line-height:1.5;}
+  .card.hot{border-color:#7fd4c9; background:var(--teal-bg);}
+  .twocol{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:24px;}
+  .panel{border:1px solid var(--line); border-radius:14px; padding:22px;}
+  .panel.red{border-color:#f3c9c9; background:#fdf5f5;} .panel.red h4{color:var(--red);}
+  .panel.green{border-color:#bfe7e1; background:#f2fbf9;} .panel.green h4{color:var(--teal);}
+  .panel h4{font-size:16.5px; color:var(--teal); margin-bottom:11px;}
+  .panel ul{margin-left:18px;} .panel li{font-size:15.5px; color:#2f4744; margin:8px 0; line-height:1.45;}
+  .mono{font-family:ui-monospace,monospace; background:#dcf5f1; color:#0f5f57; padding:1px 7px; border-radius:5px; font-size:.92em;}
+  .steps{display:flex; align-items:stretch; gap:12px; margin-top:28px;}
+  .step{flex:1; border:1px solid var(--line); border-radius:14px; padding:18px 14px; text-align:center; position:relative;}
+  .step.on{border-color:#7fd4c9; background:var(--teal-bg);}
+  .step .sn{width:28px; height:28px; border-radius:8px; background:var(--teal); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; margin:0 auto 10px; font-size:14px;}
+  .step .stt{font-size:16px; font-weight:800; color:var(--ink);}
+  .step .std{font-size:13px; color:#748c88; margin-top:5px; line-height:1.4;}
+  .step:not(:last-child)::after{content:"›"; position:absolute; right:-11px; top:50%; transform:translateY(-50%); color:var(--teal-l); font-size:21px; font-weight:800; z-index:2;}
+  .dl{margin-top:22px;}
+  .di{display:flex; gap:16px; align-items:flex-start; padding:12px 0; border-bottom:1px solid #eef4f3;}
+  .di .dk{flex:0 0 190px; display:flex; align-items:center; gap:9px;}
+  .di .dk .b{background:var(--teal); color:#fff; font-weight:800; font-size:13px; border-radius:6px; padding:3px 10px;}
+  .di .dk .kt{font-size:17px; font-weight:800; color:var(--ink);}
+  .di .dd{flex:1; font-size:15.5px; color:#40534f; line-height:1.5;}
+  .di .dd b{color:var(--teal);}
+  /* 12차 신설 — 폴더 트리 지도 */
+  .tree{margin-top:24px; background:#f6faf9; border:1px solid var(--line); border-radius:14px; padding:20px 28px; font-family:ui-monospace,Consolas,monospace; font-size:17.5px; line-height:1.8; color:#2f4744; white-space:pre;}
+  .tree .hl{background:#d9f3ef; color:#0f5f57; border-radius:5px; padding:0 7px; font-weight:700;}
+  .tree .cm{color:#8aa39f;}
+  .tree .rd{color:var(--red); font-weight:700;}
+  .ltag{display:inline-block; font-size:11.5px; font-weight:800; border-radius:4px; padding:1px 7px; background:#e6f3f1; color:#0d9488; vertical-align:middle;}
+  /* dark cover/closing */
+  .slide.dark{background:var(--bg);}
+  .blob{position:absolute; border-radius:50%; filter:blur(2px);}
+  .blob.b1{width:320px; height:320px; left:-80px; top:-100px; background:var(--teal);}
+  .blob.b2{width:240px; height:240px; right:120px; bottom:-140px; background:#115e59;}
+  .dark .eyebrow{color:var(--teal-l);} .dark .eyebrow::before{background:var(--teal-l);}
+  .cover .big{position:absolute; left:66px; right:66px; bottom:190px; font-size:68px; font-weight:800; color:#fff; line-height:1.16; letter-spacing:-.03em;}
+  .cover .big .pp{color:var(--teal-l);} .cover .big .strike{text-decoration:line-through; color:#4c6663; font-weight:700;}
+  .cover .csub{position:absolute; left:68px; right:66px; bottom:148px; font-size:22px; color:#9ab4b0;}
+  .eyebrow.top{position:absolute; left:66px; top:50px;}
+  .dark .foot{color:#547571;}
+  .three-cover{position:absolute; right:66px; top:150px; display:flex; flex-direction:column; gap:14px;}
+  .pcv{display:flex; align-items:center; gap:14px;} .pcv .l{width:48px; height:48px; border-radius:10px; background:rgba(94,234,212,.14); color:var(--teal-l); font-weight:800; font-size:21px; display:flex; align-items:center; justify-content:center;}
+  .pcv .w{color:#cfe4e1; font-size:17px; font-weight:600; white-space:nowrap;}
+  .closing .big{position:absolute; left:66px; right:66px; top:260px; font-size:60px; font-weight:800; color:#fff; letter-spacing:-.02em; line-height:1.25;}
+  .closing .big .pp{color:var(--teal-l);}
+  .closing .csub{position:absolute; left:68px; right:66px; top:440px; font-size:21px; color:#9ab4b0; line-height:1.6;}
+  .center-quote{position:absolute; left:100px; right:100px; top:250px; font-size:52px; font-weight:800; color:var(--ink); line-height:1.35; letter-spacing:-.02em; text-align:center;}
+  .center-quote .pp{color:var(--teal);}
+  .center-sub{position:absolute; left:100px; right:100px; top:470px; text-align:center; font-size:21px; color:var(--muted); line-height:1.6;}
+  @media print{@page{size:1280px 720px; margin:0;} body{background:#fff;} .deck{display:block!important; gap:0; padding:0;} .slide{break-after:page; break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- 01 표지 -->
+  <section class="slide dark cover">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="eyebrow top">12TH · DEV STRUCTURE — 중급반 1강</div>
+    <div class="three-cover">
+      <div class="pcv"><div class="l">지</div><div class="w">지형 — 개발 세계는 어떻게 나뉘나</div></div>
+      <div class="pcv"><div class="l">골</div><div class="w">골목 — 폴더는 왜 이렇게 갈라졌나</div></div>
+      <div class="pcv"><div class="l">문</div><div class="w">문패 — 파일들은 무슨 신분인가</div></div>
+    </div>
+    <div class="big"><span class="strike">만든다</span> <span class="pp">이해한다</span></div>
+    <div class="csub">구조를 그린다 — 개발 세계의 지도 · 오늘은 아무것도 만들지 않습니다. 대신 전부 이해합니다</div>
+    <div class="foot"><span>구조를 그린다 · 개발 세계의 지도</span><span>01 / 24</span></div>
+  </section>
+
+  <!-- 02 반전 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">PART 0 · 중급반 개강</div>
+    <div class="title">10차엔 소스를 감췄습니다 — <span class="pp">오늘은 다 펼칩니다</span></div>
+    <div class="subtitle">여러분은 관찰로 뽑힌 반입니다. 이제 겉이 아니라 속을 봅니다.</div>
+    <div class="twocol">
+      <div class="panel red"><h4>10차 — 소스를 감췄다</h4><ul>
+        <li>실행 파일 하나만 드렸다 (소스 비공개)</li>
+        <li>겉과 결과물만으로 속을 <b>추론</b>했다</li>
+        <li>측정한 것 = 사용자로서의 관찰력</li>
+      </ul></div>
+      <div class="panel green"><h4>오늘 — 속 지도를 펼친다</h4><ul>
+        <li>교재 = <b>여러분이 매주 점수 받던 그 채점기</b></li>
+        <li>폴더 하나하나, 파일 하나하나 — <b>왜 있는지</b></li>
+        <li>얻는 것 = 개발 세계를 읽는 지도</li>
+      </ul></div>
+    </div>
+    <div class="callout">진단받던 그 도구가, <span class="pp">오늘의 교재</span>입니다.</div>
+    <div class="foot"><span>PART 0 / 중급반 개강</span><span>02 / 24</span></div>
+  </div></section>
+
+  <!-- 03 중급반 안내 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">PART 0 · 중급반 안내</div>
+    <div class="title">개발 지식 시리즈 — <span class="pp">내 앱 설계 3종 세트</span></div>
+    <div class="subtitle">격주로 초급반과 교차합니다. 지금 잡힌 계획은 3회 — 이후는 진행을 보고 이어집니다.</div>
+    <div class="steps">
+      <div class="step on"><div class="sn">12</div><div class="stt">구조를 그린다</div><div class="std">웹 작동 원리 · 폴더 구조 · 좋은 구조 → 숙제: 내 앱 <b>구조도</b></div></div>
+      <div class="step"><div class="sn">14</div><div class="stt">화면을 그린다</div><div class="std">HTML·CSS·JS · 컴포넌트 · UX/UI → 숙제: 내 앱 <b>화면도</b></div></div>
+      <div class="step"><div class="sn">16</div><div class="stt">데이터를 그린다</div><div class="std">DB · 테이블 · 보안 → 숙제: 내 앱 <b>데이터도</b></div></div>
+    </div>
+    <div class="callout">세 장을 모으면 <span class="pp">「내 앱 설계 3종 세트」</span> — 그다음에, 진짜로 만듭니다.</div>
+    <div class="callout sm">매 회차는 <span class="pp">직전 숙제 리뷰</span>로 시작합니다 — 오늘의 숙제가 14차의 첫 재료.</div>
+    <div class="foot"><span>PART 0 / 시리즈 안내</span><span>03 / 24</span></div>
+  </div></section>
+
+  <!-- 04 핵심 메시지 -->
+  <section class="slide">
+    <div class="pad">
+      <div class="eyebrow">PART 0 · 오늘의 문장</div>
+      <div class="center-quote">"모든 파일에는 <span class="pp">자리</span>가 있고,<br/>그 자리에는 <span class="pp">이유</span>가 있다"</div>
+      <div class="center-sub">여러분은 이미 전부 해봤습니다 — 만들고, 배포하고, 키까지 숨겨봤죠.<br/><b style="color:#0d9488">이미 다 해봤습니다. 오늘은 이름을 배웁니다.</b></div>
+      <div class="foot"><span>PART 0 / 핵심 메시지</span><span>04 / 24</span></div>
+    </div>
+  </section>
+
+  <!-- 05 주소창의 여정 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 1 · 지형 — 여정 ①</div>
+    <div class="title">주소창의 여정 <span class="dim">— 엔터 후 3초 동안 생긴 일</span></div>
+    <div class="subtitle">채점기 주소를 치고 엔터를 눌렀을 때, 화면이 뜨기까지.</div>
+    <div class="steps">
+      <div class="step"><div class="sn">1</div><div class="stt">주소 입력</div><div class="std">손님이 주문서를 쓴다 — "채점기 주세요"</div></div>
+      <div class="step"><div class="sn">2</div><div class="stt">요청</div><div class="std">브라우저가 주문서를 서버로 보낸다</div></div>
+      <div class="step"><div class="sn">3</div><div class="stt">서버</div><div class="std">주방이 화면 재료(설계도)를 준비한다</div></div>
+      <div class="step"><div class="sn">4</div><div class="stt">응답 · 그리기</div><div class="std">받은 설계도로 브라우저가 화면을 그린다</div></div>
+    </div>
+    <div class="callout">서버가 보내는 건 완성된 그림이 아니라 <span class="pp">설계도</span> — 그림은 <span class="pp">여러분 손안의 브라우저</span>가 그립니다.</div>
+    <div class="callout sm">인터넷의 모든 것이 이 <span class="pp">요청 → 응답</span> 한 왕복의 반복입니다 — 검색도, 영상도, 채점도.</div>
+    <div class="foot"><span>PART 1 / 주소창의 여정</span><span>05 / 24</span></div>
+  </div></section>
+
+  <!-- 06 브라우저와 서버 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 1 · 지형 — 등장인물 소개</div>
+    <div class="title">브라우저와 서버 — <span class="pp">두 대의 컴퓨터</span></div>
+    <div class="subtitle">방금 여정의 양 끝 — 사실 둘 다 그냥 컴퓨터(에서 도는 프로그램)입니다.</div>
+    <div class="twocol">
+      <div class="panel green"><h4>브라우저 — 내 손안의 컴퓨터에서</h4><ul>
+        <li>주소를 <b>요청으로 바꿔</b> 보내는 손님</li>
+        <li>받은 설계도로 <b>화면을 그리는 화가</b></li>
+        <li>크롬·사파리·엣지 — <b>이름만 다른 같은 직업</b></li>
+      </ul></div>
+      <div class="panel green"><h4>서버 — 어딘가의 컴퓨터에서</h4><ul>
+        <li>요청을 기다렸다 <b>응답하는 일</b>을 맡은 컴퓨터</li>
+        <li>특수 장비 ✗ — <b>여러분 노트북도 서버가 될 수 있다</b></li>
+        <li>단, 노트북을 덮으면 가게도 닫힌다 → 그래서 <b>안 꺼지는 컴퓨터를 빌린다</b> (Railway)</li>
+      </ul></div>
+    </div>
+    <div class="callout">서버 = 신비한 기계 <span class="rr">✗</span> — 응답하는 일을 맡은, <span class="pp">안 꺼지는 컴퓨터</span> <span class="pp">✓</span></div>
+    <div class="foot"><span>PART 1 / 브라우저와 서버</span><span>06 / 24</span></div>
+  </div></section>
+
+  <!-- 07 큰 지형 — 4겹의 실명 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 1 · 지형 — 7차 레이어 4겹, 오늘은 본명으로</div>
+    <div class="title">개발 세계의 큰 지형 — <span class="pp">4겹의 실명</span></div>
+    <div class="subtitle">데이터 · 동작 · 화면 · 연결 — 그 네 칸을 개발 세계는 이렇게 부릅니다. 지금부터 하나씩 자세히.</div>
+    <div class="cards c4">
+      <div class="card"><div class="k">화면 →</div><div class="t">프론트엔드</div><div class="d">손님 앞의 <b>홀</b> — 브라우저에서 실행되는 전부</div></div>
+      <div class="card"><div class="k">동작 →</div><div class="t">백엔드</div><div class="d">손님이 못 들어가는 <b>주방 안쪽</b> — 서버에서 실행</div></div>
+      <div class="card"><div class="k">데이터 →</div><div class="t">DB</div><div class="d">껐다 켜도 남는 <b>창고</b> — 표로 저장하는 전문 프로그램</div></div>
+      <div class="card"><div class="k">연결 →</div><div class="t">API</div><div class="d">프로그램끼리의 <b>주문 창구</b> — 정해진 양식의 대화</div></div>
+    </div>
+    <div class="callout">이미 다 해봤습니다. <span class="pp">오늘은 이름을 배웁니다.</span> — 지금부터 네 지형을 한 곳씩 밟습니다.</div>
+    <div class="foot"><span>PART 1 / 큰 지형</span><span>07 / 24</span></div>
+  </div></section>
+
+  <!-- 08 프론트엔드 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 1 · 지형 ① 프론트엔드</div>
+    <div class="title">프론트엔드 — <span class="pp">홀</span> <span class="dim">· 사용자의 기기에서 실행되는 전부</span></div>
+    <div class="dl" style="margin-top:18px">
+      <div class="di"><div class="dk"><span class="b">정의</span><span class="kt">어디서 도나</span></div><div class="dd"><b>여러분의 브라우저 안</b>에서 실행된다 — 버튼·글씨·색·애니메이션, 눈에 보이고 손에 닿는 전부</div></div>
+      <div class="di"><div class="dk"><span class="b">재료</span><span class="kt">삼형제 예고</span></div><div class="dd">뼈대(HTML) · 옷(CSS) · 움직임(JS) — <b>14차의 주인공들</b>, 오늘은 이름만</div></div>
+      <div class="di"><div class="dk"><span class="b">구분</span><span class="kt">UI vs UX</span></div><div class="dd"><b>UI = 생김새</b>(버튼 색·배치) / <b>UX = 경험</b>(몇 번 눌러야 하나, 헷갈리지 않나). "예쁘다"는 UI, "채점하자마자 등록 버튼이 보여 편하다"는 UX</div></div>
+    </div>
+    <div class="callout">기억할 것 — 프론트엔드 코드는 <span class="rr">전부 사용자에게 보입니다</span> (브라우저에 내려받아 실행되니까).<br/>그래서 <span class="pp">비밀은 여기 못 둡니다</span> — 백엔드가 필요한 첫 번째 이유.</div>
+    <div class="foot"><span>PART 1 / 프론트엔드</span><span>08 / 24</span></div>
+  </div></section>
+
+  <!-- 09 백엔드 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 1 · 지형 ② 백엔드</div>
+    <div class="title">백엔드 — <span class="pp">주방 안쪽</span> <span class="dim">· 왜 손님에게 안 보여주나</span></div>
+    <div class="subtitle">서버에서 실행되는 것 — 계산하고, 판단하고, 저장을 지시한다. 숨기는 데는 세 가지 이유가 있습니다.</div>
+    <div class="cards">
+      <div class="card"><div class="k">이유 ①</div><div class="t">비밀</div><div class="d">API 키·채점 기준은 손님 손에 들어가면 안 된다 — 프론트는 전부 보이니까, 비밀은 서버에만</div></div>
+      <div class="card"><div class="k">이유 ②</div><div class="t">신뢰</div><div class="d">점수 계산을 손님 쪽에서 하면? <b>조작할 수 있다.</b> 심판은 주방에 있어야 한다</div></div>
+      <div class="card"><div class="k">이유 ③</div><div class="t">힘</div><div class="d">무거운 계산은 좋은 컴퓨터(서버)가 — 손님 폰이 약해도 결과만 받으면 된다</div></div>
+    </div>
+    <div class="callout">채점기가 <span class="pp">여러분 폰에서 채점하지 않는 이유</span> — 셋 다입니다.</div>
+    <div class="foot"><span>PART 1 / 백엔드</span><span>09 / 24</span></div>
+  </div></section>
+
+  <!-- 10 DB -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 1 · 지형 ③ DB</div>
+    <div class="title">DB — <span class="pp">창고</span> <span class="dim">· 왜 그냥 파일이 아닌가</span></div>
+    <div class="subtitle">데이터를 표(테이블)로 저장하는 전문 프로그램 — 행 = 기록 한 건, 열 = 항목.</div>
+    <div class="twocol">
+      <div class="panel red"><h4>"엑셀 파일에 쓰면 안 되나요?"</h4><ul>
+        <li>두 명만 동시에 써도 <b>꼬인다</b></li>
+        <li>수만 건에서 찾기가 <b>느리다</b></li>
+        <li>"점수 칸에 글자" 같은 <b>실수를 못 막는다</b></li>
+      </ul></div>
+      <div class="panel green"><h4>DB — 창고 전문가</h4><ul>
+        <li><b>동시에 100명</b>이 제출해도 안 깨진다</li>
+        <li>수만 건 중 "닉네임 A의 최고점"을 <b>즉시</b> 찾는다</li>
+        <li>규칙 위반을 <b>창고가 막아준다</b></li>
+      </ul></div>
+    </div>
+    <div class="callout">리더보드 = 표 하나 — <span class="mono">닉네임 | 점수 | 제출 시각</span>. 앱을 꺼도, 서버가 재시작돼도 <span class="pp">창고는 남는다</span>. <span class="dim">(창고 속은 16차에서 통째로)</span></div>
+    <div class="foot"><span>PART 1 / DB</span><span>10 / 24</span></div>
+  </div></section>
+
+  <!-- 11 API -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 1 · 지형 ④ API</div>
+    <div class="title">API — <span class="pp">주문 창구</span> <span class="dim">· 프로그램이 프로그램에게 말 거는 법</span></div>
+    <div class="subtitle">사람은 화면(UI)으로 앱과 대화하고 — 프로그램은 API로 대화합니다. 정해진 양식으로 묻고, 정해진 형식으로 답합니다.</div>
+    <div class="dl">
+      <div class="di"><div class="dk"><span class="b">양식</span><span class="kt">주문서 예시</span></div><div class="dd">요청: "이 프롬프트 채점해줘 (텍스트)" → 응답: "점수표 (정해진 형식)" — <b>양식이 정해져 있어 기계끼리 통한다</b></div></div>
+      <div class="di"><div class="dk"><span class="b">세상</span><span class="kt">어디에나</span></div><div class="dd">지도 앱이 길을 아는 것, 날씨 앱이 기온을 아는 것 — 전부 <b>남의 API를 불러 쓰는 것</b></div></div>
+      <div class="di"><div class="dk"><span class="b">채점기</span><span class="kt">두 군데</span></div><div class="dd">① 브라우저 → 채점기 서버의 <span class="mono">/api/score</span> (우리가 만든 창구) ② 채점기 서버 → <b>Claude API</b> (우리 서버가 손님이 되어 채점을 주문)</div></div>
+    </div>
+    <div class="callout">양식이 정해져 있으니 — <span class="pp">서로 모르는 프로그램끼리도 협업</span>합니다. 그게 연결의 힘.</div>
+    <div class="foot"><span>PART 1 / API</span><span>11 / 24</span></div>
+  </div></section>
+
+  <!-- 12 채점기 하나에 다 있다 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 1 · 지형 — 실물 대조</div>
+    <div class="title">채점기 하나에 <span class="pp">다 있다</span></div>
+    <div class="subtitle">9차의 5요소 기억나시죠 — 몸·기억·무대·창고·맥박. 오늘은 그 '몸' 속으로 들어갑니다.</div>
+    <div class="dl">
+      <div class="di"><div class="dk"><span class="b">Next.js</span><span class="kt">몸</span></div><div class="dd"><b>홀과 주방을 한 몸에</b> — 화면(프론트엔드)과 동작(백엔드)이 한 폴더에 사는 조립 키트</div></div>
+      <div class="di"><div class="dk"><span class="b">Supabase</span><span class="kt">창고</span></div><div class="dd">DB — 리더보드 점수가 사는 곳. <b>우리 폴더 밖</b>, 다른 회사 서버에 있다. 우리가 가진 건 열쇠와 주소뿐 — 그래서 '연결'이 필요</div></div>
+      <div class="di"><div class="dk"><span class="b">Railway</span><span class="kt">무대</span></div><div class="dd">배포 — 조리된 앱이 24시간 서 있는 곳. push하면 맥박처럼 자동으로 올라간다</div></div>
+    </div>
+    <div class="callout">오늘 지도의 대상은 이 <span class="pp">'몸' 폴더</span> — 여러분이 매주 쓰던 채점기의 속입니다. <span class="dim">(잠시 후 10분 휴식 뒤, 폴더를 엽니다)</span></div>
+    <div class="foot"><span>PART 1 / 실물 대조</span><span>12 / 24</span></div>
+  </div></section>
+
+  <!-- 13 지도 1층: 루트 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 2 · 골목 — 지도 1층</div>
+    <div class="title sm">루트 — 폴더를 열면 처음 보이는 것들</div>
+    <div class="tree">프롬포트 채점/
+├─ <span class="hl">package.json</span>      <span class="cm">← 재료 목록 — 이름·부품·명령어</span>
+├─ 설정 파일들           <span class="cm">← 주방 세팅 (tsconfig 등 4개)</span>
+├─ <span class="hl">.env.local</span>        <span class="cm">← 열쇠 서랍 🔑 (git엔 절대 안 올라감)</span>
+├─ .gitignore          <span class="cm">← 문지기 — 못 올라갈 것들의 명단</span>
+├─ <span class="hl">README.md</span> · <span class="hl">CLAUDE.md</span>  <span class="cm">← 문패 2장 — 사람용 · AI용</span>
+├─ docs/ · public/     <span class="cm">← 문서 · 그대로 내보내는 것들</span>
+├─ <span class="rd">node_modules/</span>      <span class="cm">← 창고 — 내가 안 만듦 (제일 무거움)</span>
+└─ <span class="hl">src/</span>               <span class="cm">← 내가 만든 것의 전부</span></div>
+    <div class="callout">내가 만든 건 <span class="pp">절반뿐</span> — 나머지는 도구와 관례가 만들었습니다. 그 정체를 지금 밝힙니다.</div>
+    <div class="foot"><span>PART 2 / 지도 1층 · 루트</span><span>13 / 24</span></div>
+  </div></section>
+
+  <!-- 14 안 만든 파일들의 정체 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">PART 2 · 골목 — 오늘의 하이라이트 ①</div>
+    <div class="title sm">내가 안 만든 파일들의 정체 <span class="dim">— 요리로 읽기</span></div>
+    <div class="dl" style="margin-top:18px">
+      <div class="di"><div class="dk"><span class="b">목록</span><span class="kt">package.json</span></div><div class="dd"><b>재료 목록</b> — 앱 이름, 필요한 부품(패키지), 실행 명령. <b>이 목록만 있으면 누구든 같은 환경을 재현한다</b></div></div>
+      <div class="di"><div class="dk"><span class="b">창고</span><span class="kt">node_modules</span></div><div class="dd"><b>장 봐온 창고</b> — <span class="mono">npm install</span>이 목록을 보고 가게(npm)에서 부품을 사다 채운다. 수만 개 파일, 제일 무겁다</div></div>
+      <div class="di"><div class="dk"><span class="b">조리</span><span class="kt">빌드</span></div><div class="dd">쓰기 좋은 코드를 <b>돌리기 좋은 형태로</b> 변환·압축 — <span class="mono">npm run build</span> → .next 폴더</div></div>
+      <div class="di"><div class="dk"><span class="b">열쇠</span><span class="kt">.env</span></div><div class="dd"><b>열쇠 서랍</b> — 비밀값을 코드와 분리. 코드에 직접 쓰면 GitHub에 올라가는 순간 <b>전 세계 공개</b></div></div>
+      <div class="di"><div class="dk"><span class="b">문지기</span><span class="kt">.gitignore</span></div><div class="dd">비밀(.env) · <b>재생 가능한 것</b>(창고·조리 결과) · 개인 설정 — 셋을 GitHub에서 막는다</div></div>
+    </div>
+    <div class="callout">Q. 그럼 — <span class="rr">node_modules를 지우면 앱은 죽을까요?</span> (손 들어봅시다)</div>
+    <div class="foot"><span>PART 2 / 안 만든 파일들</span><span>14 / 24</span></div>
+  </div></section>
+
+  <!-- 15 이름 정리 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 2 · 골목 — 이름 정리</div>
+    <div class="title sm">그 많던 이름들 — <span class="pp">러시아 인형</span> <span class="dim">· "그거 다 Next.js 아니었어?"</span></div>
+    <div class="subtitle">언어 = 말 · 라이브러리 = 내가 부르는 부품 상자 · 프레임워크 = 나를 끼워 넣는 조립 키트</div>
+    <div class="steps">
+      <div class="step"><div class="sn">JS</div><div class="stt">JavaScript</div><div class="std">브라우저가 알아듣는 유일한 <b>언어</b> — 웹의 모국어</div></div>
+      <div class="step"><div class="sn">TS</div><div class="stt">TypeScript</div><div class="std">JS에 <b>약속(타입)</b>을 얹은 것 — 실수를 실행 전에 잡는다</div></div>
+      <div class="step"><div class="sn">R</div><div class="stt">React</div><div class="std">화면을 <b>부품으로 조립</b>하는 라이브러리</div></div>
+      <div class="step on"><div class="sn">N</div><div class="stt">Next.js</div><div class="std">React로 <b>앱 전체</b>를 짓는 프레임워크 — 폴더 규칙까지 정해줌</div></div>
+    </div>
+    <div class="callout">채점기는 <span class="pp">Next.js로 지은 앱</span>이고, 속은 <span class="pp">React 부품</span>이고, 부품은 <span class="pp">TypeScript</span>로 쓰였고, TS는 결국 <span class="pp">JavaScript</span>입니다.</div>
+    <div class="callout sm">"폴더가 곧 주소" 규칙도 Next.js가 정한 것 — 잠시 후 만납니다. 깊은 얘기는 14차에서.</div>
+    <div class="foot"><span>PART 2 / 이름 정리</span><span>15 / 24</span></div>
+  </div></section>
+
+  <!-- 16 문패 2장 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 2 · 골목 — 문패</div>
+    <div class="title">문패 2장 — <span class="pp">사람용과 AI용</span></div>
+    <div class="subtitle">6차에서 만들었던 그 두 파일 — 문서도 구조의 일부입니다.</div>
+    <div class="twocol">
+      <div class="panel green"><h4>README.md — 사람용 문패</h4><ul>
+        <li>뭐 하는 앱인지, <b>어떻게 켜는지</b></li>
+        <li>폴더를 연 사람이 <b>제일 먼저</b> 읽는 파일</li>
+        <li>대문자 이름 = "나부터 읽어라"(READ ME!)라는 관례</li>
+        <li>6개월 뒤의 나도 '처음 온 사람'이다</li>
+      </ul></div>
+      <div class="panel green"><h4>CLAUDE.md — AI용 문패</h4><ul>
+        <li>규칙 · <b>함정</b> · 히스토리를 AI에게</li>
+        <li>AI는 매번 <b>처음 출근한 직원</b> — 수칙이 없으면 같은 사고를 반복한다</li>
+        <li>문서가 곧 <b>AI의 기억</b></li>
+        <li>6차에서 우리가 직접 만든 그 파일</li>
+      </ul></div>
+    </div>
+    <div class="callout">채점기의 CLAUDE.md는 <span class="pp">39KB — A4 30장</span>. 11개 강의의 역사가 전부 적혀 있습니다.</div>
+    <div class="foot"><span>PART 2 / 문패 2장</span><span>16 / 24</span></div>
+  </div></section>
+
+  <!-- 17 지도 2층: src -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 3 · 골목 — 지도 2층</div>
+    <div class="title sm">src — 내가 만든 것의 <span class="pp">다섯 골목</span></div>
+    <div class="tree">src/
+├─ <span class="hl">app/</span>          <span class="cm">← 주소가 있는 것들의 동네</span>  <span class="ltag">화면</span> <span class="ltag">연결</span>
+├─ <span class="hl">components/</span>   <span class="cm">← 화면 부품 26개 — 레고</span>      <span class="ltag">화면</span>
+├─ <span class="hl">lib/</span>          <span class="cm">← 동작 — 채점 기준·세션 처리</span>  <span class="ltag">동작</span>
+├─ <span class="hl">types/</span>        <span class="cm">← 계약 — 주고받는 것의 약속</span>   <span class="ltag">계약</span>
+└─ <span class="hl">data/</span>         <span class="cm">← content.ts 한 파일 = 225KB</span> <span class="ltag">데이터</span></div>
+    <div class="callout">한 폴더가 두 겹에 걸치기도 합니다 — <span class="pp">지도는 단순화</span>입니다. 실물은 경계가 흐려요.<br/>그래도 지도 없이 다니는 것보다 백 배 낫습니다. (숙제에서 태그 두 개 붙여도 됩니다)</div>
+    <div class="foot"><span>PART 3 / 지도 2층 · src</span><span>17 / 24</span></div>
+  </div></section>
+
+  <!-- 18 폴더가 곧 주소다 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 3 · 골목 — app 확대</div>
+    <div class="title">폴더가 곧 <span class="pp">주소</span>다</div>
+    <div class="subtitle">app 골목의 규칙 (Next.js가 정한 관례) — 폴더 경로가 그대로 URL이 됩니다.</div>
+    <div class="dl">
+      <div class="di"><div class="dk"><span class="b">/</span><span class="kt">랜딩</span></div><div class="dd"><span class="mono">app/page.tsx</span> — 강의 소개 첫 화면</div></div>
+      <div class="di"><div class="dk"><span class="b">/practice</span><span class="kt">실습</span></div><div class="dd"><span class="mono">app/practice/</span> — 채점 연습하던 그 페이지</div></div>
+      <div class="di"><div class="dk"><span class="b">/play/ABCD</span><span class="kt">세션</span></div><div class="dd"><span class="mono">app/play/[code]/</span> — <b>대괄호 = 변하는 주소</b> (세션 코드마다 다른 방)</div></div>
+      <div class="di"><div class="dk"><span class="b">/api/score</span><span class="kt">창구</span></div><div class="dd"><span class="mono">app/api/score/</span> — <b>화면 없는 골목</b>. 주소는 있는데 보이는 건 없다 — 채점 백엔드</div></div>
+    </div>
+    <div class="callout">Q. 그럼 채점기의 <span class="pp">화면(주소)</span>은 모두 몇 개일까요? — 매주 쓰신 앱입니다. (폰으로 눌러봐도 됩니다)</div>
+    <div class="foot"><span>PART 3 / 폴더가 곧 주소</span><span>18 / 24</span></div>
+  </div></section>
+
+  <!-- 19 JS vs Python -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 3 · 골목 — 언어가 달라지면?</div>
+    <div class="title sm">같은 원리, <span class="pp">다른 생김새</span></div>
+    <div class="subtitle">파이썬 프로젝트를 열어도 길을 잃지 않는 법 — 이름만 바뀝니다.</div>
+    <div class="twocol">
+      <div class="panel green"><h4>JavaScript — 우리 채점기</h4><ul>
+        <li><span class="mono">package.json</span> — 재료 목록</li>
+        <li><span class="mono">node_modules/</span> — 창고</li>
+        <li><span class="mono">src/</span> — 소스 (내가 만든 것)</li>
+      </ul></div>
+      <div class="panel green"><h4>Python — 이름만 다르다</h4><ul>
+        <li><span class="mono">requirements.txt</span> — 재료 목록</li>
+        <li><span class="mono">venv/</span> — 창고</li>
+        <li><span class="mono">main.py · src/</span> — 소스</li>
+      </ul></div>
+    </div>
+    <div class="callout">이름은 달라도 <span class="pp">자리는 같다</span> — 재료 목록 · 창고 · 소스. 오늘 배운 건 Next.js의 지도가 아니라 <span class="pp">자리를 읽는 법</span>입니다.</div>
+    <div class="foot"><span>PART 3 / JS vs Python</span><span>19 / 24</span></div>
+  </div></section>
+
+  <!-- 20 좋은 구조의 원칙 5 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 4 · 오늘의 하이라이트 ②</div>
+    <div class="title">좋은 구조의 <span class="pp">원칙 5</span></div>
+    <div class="cards" style="margin-top:20px">
+      <div class="card"><div class="k">원칙 ①</div><div class="t">한 폴더 = 한 책임</div><div class="d">이유를 한 줄로 못 쓰는 폴더는 없어야 할 폴더다</div></div>
+      <div class="card"><div class="k">원칙 ②</div><div class="t">화면과 동작을 섞지 않는다</div><div class="d">섞으면 로직 고치다 화면이 깨진다 — 서로 인질이 된다</div></div>
+      <div class="card"><div class="k">원칙 ③</div><div class="t">주고받는 것은 계약으로</div><div class="d">types/ — 점수의 생김새를 약속. 2차 I/O 계약의 코드판</div></div>
+      <div class="card hot"><div class="k">원칙 ④ ⭐</div><div class="t">데이터와 코드를 섞지 않는다</div><div class="d">강의 내용은 전부 content.ts 한 파일 — 코드 수술 없이 강의가 추가된다</div></div>
+      <div class="card"><div class="k">원칙 ⑤</div><div class="t">문패를 단다</div><div class="d">사람용(README)과 AI용(CLAUDE.md) — 문서도 구조다</div></div>
+      <div class="card" style="border-style:dashed"><div class="k">숙제에서</div><div class="t">이 다섯이 채점 기준</div><div class="d">여러분의 구조도는 이 원칙으로 스스로 검사합니다</div></div>
+    </div>
+    <div class="callout sm">증거 — 이 채점기에 강의가 <span class="pp">11개</span> 추가되는 동안, 대부분의 회차에서 고친 파일은 <span class="pp">content.ts 하나</span>였습니다.</div>
+    <div class="foot"><span>PART 4 / 좋은 구조의 원칙</span><span>20 / 24</span></div>
+  </div></section>
+
+  <!-- 21 채점 버튼의 여정 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 4 · 여정 ② — 총정리</div>
+    <div class="title sm">채점 버튼 하나의 여정 <span class="dim">— 수백 번 누른 그 버튼</span></div>
+    <div class="steps" style="margin-top:24px">
+      <div class="step" style="padding:15px 8px"><div class="sn">1</div><div class="stt" style="font-size:14.5px">채점하기 버튼</div><div class="std">화면 부품<br/><span class="ltag">화면</span></div></div>
+      <div class="step" style="padding:15px 8px"><div class="sn">2</div><div class="stt" style="font-size:14.5px">/api/score</div><div class="std">화면 없는 골목으로<br/><span class="ltag">연결</span></div></div>
+      <div class="step on" style="padding:15px 8px"><div class="sn">3</div><div class="stt" style="font-size:14.5px">채점 기준 + Claude</div><div class="std">서버에서만 🔑<br/><span class="ltag">동작</span></div></div>
+      <div class="step" style="padding:15px 8px"><div class="sn">4</div><div class="stt" style="font-size:14.5px">결과 카드</div><div class="std">점수를 그린다<br/><span class="ltag">화면</span></div></div>
+      <div class="step" style="padding:15px 8px"><div class="sn">5</div><div class="stt" style="font-size:14.5px">Supabase 저장</div><div class="std">창고에 기록<br/><span class="ltag">데이터</span></div></div>
+      <div class="step" style="padding:15px 8px"><div class="sn">6</div><div class="stt" style="font-size:14.5px">리더보드</div><div class="std">창고를 읽어 그린다<br/><span class="ltag">화면</span></div></div>
+    </div>
+    <div class="callout">열쇠(.env)는 <span class="pp">3번 — 서버 쪽에서만</span> 열립니다. 브라우저에 뒀다면 여러분 모두가 제 API 키를 가져갈 수 있었어요. <span class="dim">(원리는 16차에서)</span></div>
+    <div class="callout sm">아까는 <span class="pp">주소</span>로 들어왔고, 이번엔 <span class="pp">버튼</span>으로 들어왔습니다 — 이 여정이 그려지면, 오늘 지도는 완성입니다.</div>
+    <div class="foot"><span>PART 4 / 채점 버튼의 여정</span><span>21 / 24</span></div>
+  </div></section>
+
+  <!-- 22 숙제 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">PART 5 · 숙제</div>
+    <div class="title">숙제 — <span class="pp">내 앱 폴더 구조 설계</span></div>
+    <div class="subtitle">만들고 싶은 앱 하나를 정해, 오늘 배운 원칙대로 폴더 트리를 설계지에 그려옵니다. 종이와 펜이면 충분합니다.</div>
+    <div class="cards">
+      <div class="card"><div class="k">합격 기준 ①</div><div class="t">최상위 폴더 3~6개</div><div class="d">더 많으면 책임이 안 갈라진 것</div></div>
+      <div class="card"><div class="k">합격 기준 ②</div><div class="t">모든 폴더에 "왜" 한 줄</div><div class="d">이유를 못 쓰는 폴더는 지운다</div></div>
+      <div class="card"><div class="k">합격 기준 ③</div><div class="t">4겹 태그</div><div class="d">폴더마다 데·동·화·연 중 하나 이상 (두 개도 OK)</div></div>
+    </div>
+    <div class="callout sm"><b>보너스</b> — "내가 안 만들 파일" 자리 1개 이상 비워두기 (node_modules처럼 도구가 만들어줄 자리)</div>
+    <div class="callout"><span class="pp">14차는 이 종이로 시작합니다</span> — 반드시 지참! 다음 시간엔 이 구조 위에 화면을 그립니다.</div>
+    <div class="foot"><span>PART 5 / 숙제</span><span>22 / 24</span></div>
+  </div></section>
+
+  <!-- 23 엔딩 -->
+  <section class="slide dark closing">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="eyebrow top">NEXT · 14차 — 화면을 그린다</div>
+    <div class="big">모든 파일에는 자리가 있고,<br/>그 자리에는 <span class="pp">이유</span>가 있다</div>
+    <div class="csub">오늘 처음으로 — 지도를 들고 개발 세계에 들어왔습니다 · 설계지 꼭 챙겨 오세요<br/>수고하셨습니다!</div>
+    <div class="foot"><span>구조를 그린다 · 개발 세계의 지도</span><span>23 / 24</span></div>
+  </section>
+
+  <!-- 24 부록: 전체 지도 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">부록 · 질문이 나오면 이 장을 띄우세요</div>
+    <div class="title sm">전체 지도 <span class="pp">한 장</span> <span class="dim">— 오늘 배운 골목 전부</span></div>
+    <div class="tree" style="font-size:15.5px; line-height:1.62; margin-top:16px">프롬포트 채점/
+├─ <span class="hl">package.json</span> 재료 목록 <span class="cm">(+lock = 영수증)</span> · 설정 파일 4종 <span class="cm">— 주방 세팅</span>
+├─ <span class="hl">.env.local</span> 열쇠 서랍 🔑 · <span class="hl">.gitignore</span> 문지기 <span class="cm">— 비밀·재생 가능한 것을 막음</span>
+├─ <span class="hl">README.md</span> 사람용 문패 · <span class="hl">CLAUDE.md</span> AI용 문패 <span class="cm">(39KB)</span>
+├─ docs/ 문서 · public/ 그대로 내보내는 것
+├─ <span class="rd">node_modules/</span> 창고 <span class="cm">— 지워도 npm install로 재생</span> · <span class="rd">.next/</span> 조리 결과 <span class="cm">— 빌드 산출물</span>
+└─ <span class="hl">src/</span> — 내가 만든 것의 전부
+   ├─ <span class="hl">app/</span> 주소 동네 — 페이지 + api 창구 <span class="ltag">화면</span> <span class="ltag">연결</span>  <span class="cm">폴더가 곧 주소 · [code]=변하는 주소</span>
+   ├─ <span class="hl">components/</span> 화면 부품 26개 — 레고 <span class="ltag">화면</span>
+   ├─ <span class="hl">lib/</span> 동작 — 채점 기준·세션 처리 <span class="ltag">동작</span>
+   ├─ <span class="hl">types/</span> 계약 — 주고받는 것의 약속
+   └─ <span class="hl">data/</span> content.ts 225KB — 콘텐츠 데이터 <span class="ltag">데이터</span></div>
+    <div class="callout sm">채점 버튼의 여정: 버튼(components) → /api/score → 채점 기준+Claude(lib·🔑) → 결과 카드 → Supabase(폴더 밖 창고) → 리더보드<br/>원칙 5 — 한 폴더 한 책임 · 화면·동작 분리 · 계약 따로 · 데이터·코드 분리 · 문패</div>
+    <div class="foot"><span>부록 / 전체 지도</span><span>24 / 24</span></div>
+  </div></section>
+
+</div>
+</body>
+</html>
