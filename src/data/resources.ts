@@ -312,4 +312,26 @@ export const resourceGroups: ResourceGroup[] = [
       },
     ],
   },
+  {
+    courseId: "course-11",
+    label: "13차",
+    title: "쓴다 — 구조도를 프롬프트로 옮기는 법",
+    framework: "변환표 4줄",
+    items: [
+      {
+        file: "/downloads/c13/slides.pdf",
+        downloadName: "13강_프롬프트쓰기_슬라이드.pdf",
+        title: "슬라이드",
+        description: "수업에서 띄운 슬라이드 전체",
+        kind: "pdf",
+      },
+      {
+        file: "/downloads/c13/translate-worksheet.docx",
+        downloadName: "13강_번역_워크시트.docx",
+        title: "번역 워크시트",
+        description: "구조도 재작성 캔버스 + 칸→문장 초벌 + 조립 칸 + 실행 기록 (A4 5쪽)",
+        kind: "docx",
+      },
+    ],
+  },
 ];
