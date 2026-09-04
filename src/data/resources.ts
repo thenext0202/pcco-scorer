@@ -334,4 +334,33 @@ export const resourceGroups: ResourceGroup[] = [
       },
     ],
   },
+  {
+    courseId: "course-12",
+    label: "14차",
+    title: "화면을 그린다 — 보이는 것의 해부",
+    framework: "화면 해부 4단",
+    items: [
+      {
+        file: "/downloads/c14/slides.pdf",
+        downloadName: "14강_화면그리기_슬라이드.pdf",
+        title: "슬라이드",
+        description: "수업에서 띄운 슬라이드 전체 (부록 「전체 화면 지도 한 장」 포함)",
+        kind: "pdf",
+      },
+      {
+        file: "/downloads/c14/screen-worksheet.docx",
+        downloadName: "14강_화면도_숙제템플릿.docx",
+        title: "화면도 (숙제 템플릿)",
+        description: "내 앱 화면을 그리는 양식 — 화면 목록·이동·상자·부품·상태 4칸, 작성 순서 5단계 + 완성 예시 포함",
+        kind: "docx",
+      },
+      {
+        file: "/downloads/c14/screen-glossary.docx",
+        downloadName: "14강_화면용어사전.docx",
+        title: "화면 용어 사전",
+        description: "블록형 핸드북 — HTML·CSS·JS·컴포넌트·상태를 처음부터 짚는 용어집 17항목",
+        kind: "docx",
+      },
+    ],
+  },
 ];

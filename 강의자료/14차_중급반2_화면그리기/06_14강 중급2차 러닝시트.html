@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>14차 러닝시트 — 화면을 그린다 (중급반 2강)</title>
+<style>
+  :root{--teal:#0d9488; --teal-bg:#f0fdfa; --ink:#1a2430; --muted:#6b7280;
+        --yellow-bg:#fffbeb; --yellow-line:#f59e0b; --gray-bg:#f3f4f6; --blue-bg:#eef4ff; --blue-line:#3b6fd4;
+        --red-bg:#fef2f2; --red-line:#dc2626;}
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:"Pretendard","Malgun Gothic","Noto Sans CJK KR",sans-serif; background:#54545a; color:var(--ink);}
+  .wrap{display:flex; flex-direction:column; align-items:center; gap:20px; padding:20px;}
+  .page{width:794px; min-height:1123px; background:#fff; padding:48px 52px 56px; position:relative;}
+  .doctag{font-size:12px; letter-spacing:.35em; color:var(--teal); font-weight:700;}
+  .doctitle{font-size:32px; font-weight:800; margin-top:13px; letter-spacing:-.02em;}
+  .docsub{font-size:16px; color:var(--muted); margin-top:8px;}
+  .usebox{margin-top:20px; border:1px solid #e5e7eb; border-radius:12px; padding:16px 20px;}
+  .usebox h3{font-size:15px; margin-bottom:8px;}
+  .usebox p{font-size:12.5px; color:#444b57; line-height:1.8;}
+  .tbl{width:100%; border-collapse:collapse; margin-top:16px; font-size:12.5px;}
+  .tbl th{background:#e6f7f5; color:var(--teal); text-align:left; padding:8px 11px; border-bottom:2px solid #b9e8e2; font-size:11.5px;}
+  .tbl td{padding:7px 11px; border-bottom:1px solid #f1f2f4;} .tbl td:first-child{font-weight:700;}
+  .head{display:flex; align-items:center; gap:12px;}
+  .numbox{background:var(--ink); color:#fff; font-weight:800; font-size:16px; border-radius:8px; padding:6px 12px;}
+  .sec{color:var(--teal); font-weight:700; font-size:13px; letter-spacing:.03em;}
+  .ptitle{font-size:23px; font-weight:800; margin-top:14px; letter-spacing:-.01em; line-height:1.25;}
+  .time{display:inline-block; margin-top:9px; font-size:12px; color:#fff; background:var(--teal); border-radius:20px; padding:3px 11px; font-weight:700;}
+  .box{border-radius:11px; padding:13px 17px; margin-top:12px;}
+  .box .lab{font-size:12px; font-weight:800; letter-spacing:.03em; margin-bottom:6px;}
+  .key{background:var(--teal-bg); border:1px solid #b9e8e2;}
+  .key .lab{color:var(--teal);} .key .body{font-size:15px; font-weight:700; color:#0f4a44; line-height:1.5;}
+  .say{background:#16161d;} .say .lab{color:#8ee8dd;} .say .body{font-size:13.5px; line-height:1.85; color:#e8e8ef;}
+  .screen{background:var(--blue-bg); border-left:4px solid var(--blue-line); border-radius:0 10px 10px 0;}
+  .screen .lab{color:#2f57a8;} .screen .body{font-size:13px; color:#26406f; line-height:1.6;}
+  .tip{background:var(--yellow-bg); border-left:4px solid var(--yellow-line); border-radius:0 10px 10px 0;}
+  .tip .lab{color:#b45309;} .tip .body{font-size:12.5px; color:#6b4a16; line-height:1.6;}
+  .ref{background:var(--gray-bg); border-left:4px solid #9ca3af; border-radius:0 10px 10px 0;}
+  .ref .lab{color:#4b5563;} .ref .body{font-size:12.5px; color:#4b5563; line-height:1.6;}
+  .warn{background:var(--red-bg); border-left:4px solid var(--red-line); border-radius:0 10px 10px 0;}
+  .warn .lab{color:#b91c1c;} .warn .body{font-size:12.5px; color:#7f1d1d; line-height:1.6;}
+  .next{margin-top:14px; font-size:14px; color:#374151;} .next b{color:var(--teal);}
+  .pgfoot{position:absolute; bottom:22px; left:0; right:0; text-align:center; color:#aab0bb; font-size:11.5px;}
+  @media print{@page{size:A4; margin:0;} body{background:#fff;} .wrap{gap:0; padding:0;} .page{break-after:page;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ═══════════ 표지 / 사용법 ═══════════ -->
+  <section class="page">
+    <div class="doctag">STRUCTURED RUNNING SHEET</div>
+    <div class="doctitle">화면을 그린다 — 보이는 것의 해부</div>
+    <div class="docsub">중급반 2강 · 개발 지식 시리즈 ② · 강의+숙제형 · 약 160분 (휴식 10분 포함) · 강사 진행 대본 (정금구)</div>
+    <div class="usebox"><h3>📖 사용법</h3><p>
+      한 페이지 = 한 슬라이드. ★ KEY POINT(청록) = 반드시 전달할 한 문장 · 🖥 화면(파랑) = 이 슬라이드에 띄울 것 · 💬 이렇게 말하세요(검정) = 실제 멘트 · 💡 강사 팁(노랑) · ⚠️ 주의(빨강) · 📌 참고(회색) · → 넘어가며. <b>각 페이지 왼쪽 위 검은 번호 = 슬라이드 번호</b>이며 하단에도 "슬라이드 NN"을 병기했다 (러닝시트 쪽번호는 표지 때문에 슬라이드 번호+1).<br>
+      <b>3대 원칙 — ① 개념 강의: 수강생 전원 개발이 처음이다. HTML이 뭔지, CSS는 왜 따로인지, 부품은 왜 부품인지를 바닥부터. ② 코드 최소 노출: 코드는 슬라이드 07 한 장(뼈대 7줄 + 옷 2줄, 읽지 않고 세는 용도)뿐 — 그 외 에디터·개발자도구·코드 조각 전부 안 띄운다. 움직임(JS) 코드는 절대 X. 태그 이름 설명도 사전으로. ③ 한 줄 복습: 이전 것(7차 4겹·4차 Where·12차 17/18/20/21)은 한 줄로 소환만. 복습은 짧게, 새 개념은 길게.</b>
+    </p></div>
+    <div class="usebox" style="margin-top:12px"><h3>📚 핵심 개념 한 줄 (강사용)</h3><p style="font-size:12px; line-height:1.75">
+      <b>화면 해부 4단</b> = 뼈대(HTML — 상자 속 상자) · 옷(CSS — 같은 뼈대 다른 옷) · 움직임(JS — 누르면 일어난다) · 부품(컴포넌트 — 반복에 이름 붙이기). 12차 슬라이드 08에서 예고한 이름 그대로 — "근육"·"동작"으로 바꿔 부르지 말 것<br>
+      <b>렌즈 둘</b> = UI(생김새=뼈대+옷) / UX(겪는 것=움직임+상태+이동) · <b>핵심 개념</b> = 상태 — "화면 하나는 그림 여러 장이다"(비어·기다림·성공·실패)<br>
+      <b>핵심 메시지</b> = "화면은 한 장의 그림이 아니라, 부품과 상태의 조립이다" · <b>후렴</b> = "매주 눌렀습니다. 오늘은 그게 뭔지 압니다"<br>
+      <b>숫자 셋만</b> = 부품 31 · 화면 7 · 화면 전환 3번 · <b>수업 전 준비</b> = ① 02_화면도 인쇄(전원, 슬라이드 20에서 배포) ② 04_용어사전 인쇄(전원, 시작 때 배포) ③ 03_화면지도_강사원본 숙지(투영 금지) ④ 타이머 (구조도 발표 없음 — 수강생 설계지는 수업 중 펼치지 않는다) · 채점 세션 불필요
+    </p></div>
+    <table class="tbl"><thead><tr><th>구분</th><th>시간</th><th>슬라이드</th></tr></thead><tbody>
+      <tr><td>Part 0 — 오프닝: 12차 한 장 복습 · 시리즈 위치 · 핵심 메시지</td><td>15분</td><td>1~3</td></tr>
+      <tr><td>Part 1 — 삼형제: 설계도 세 장 · 개요 · 뼈대 · 정체 공개(코드 한 장) · 옷 · 움직임 · 왜 셋 · UI/UX ⭐</td><td>52분</td><td>4~11</td></tr>
+      <tr><td>☕ 휴식</td><td>10분</td><td>—</td></tr>
+      <tr><td>Part 2 — 부품: 컴포넌트 · 빈칸 · 부품 지도 · 사온 부품</td><td>33분</td><td>12~15</td></tr>
+      <tr><td>Part 3 — 상태 ⭐ · 이동 · 여정 ② 화면판 ⭐</td><td>28분</td><td>16~18</td></tr>
+      <tr><td>Part 4 — 좋은 화면의 원칙 5 ⭐</td><td>12분</td><td>19</td></tr>
+      <tr><td>Part 5 — 숙제 브리핑 · 16차 예고 · 클로징</td><td>10분</td><td>20~22</td></tr>
+      <tr><td>예비 — "코드는 언제?" 답변용 / 부록 — 전체 화면 지도 (질의응답용 · 앱 대신 띄우기)</td><td>—</td><td>23 / 24</td></tr>
+    </tbody></table>
+    <div class="pgfoot">— 표지 · 1 / 25 —</div>
+  </section>
+
+  <!-- 01 -->
+  <section class="page">
+    <div class="head"><span class="numbox">01</span><span class="sec">Part 0 · 오프닝</span></div>
+    <div class="ptitle">표지 — "코드는 오늘 딱 한 장만"</div><div class="time">⏱ 2분 (00–02)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">중급반 2강 — 매주 눌렀던 화면을 뜯는 날. 용어사전을 지금 배포한다. 코드는 딱 한 장(슬라이드 07)뿐.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">표지 — "한 장의 그림"에 취소선, "부품과 상태의 조립". 오른쪽에 4단(뼈·옷·움·부).</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">중급반 두 번째 시간입니다. 지난주에 지도를 얻었죠 — 폴더가 왜 그렇게 갈라졌는지. 오늘은 그 지도에서 딱 한 동네, '화면' 폴더 안으로 들어갑니다. 먼저 종이 한 장 돌립니다 — 화면 용어 사전이에요. 지난주 사전이랑 같은 방식입니다. 하나도 못 외워도 됩니다. 별표 다섯 개만 오늘 몸에 붙으면 성공이에요. 그리고 미리 말씀드리면, 오늘 코드는 딱 한 장, 아홉 줄만 봅니다. HTML·CSS·자바스크립트를 배우는 날인데 그게 다냐 싶으시죠? 이유는 그 한 장에서 말씀드릴게요. 대신 여러분이 매주 눌렀던 그 채점기 화면을, 오늘 전부 뜯어봅니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">"코드는 한 장뿐"을 첫 1분에 선언하면 "언제 코드 보나요"가 수업 중간에 튀어나오는 걸 줄인다. 화면도(숙제)는 지금 주지 말 것 — 슬라이드 20에서 배포.</div></div>
+    <div class="next">→ 넘어가며: <b>"들어가기 전에 지난주 한 장으로 복습합니다."</b></div>
+    <div class="pgfoot">— 슬라이드 01 · 2 / 25 —</div>
+  </section>
+
+  <!-- 02 -->
+  <section class="page">
+    <div class="head"><span class="numbox">02</span><span class="sec">Part 0 · 지난 시간 복습</span></div>
+    <div class="ptitle">12차 한 장 복습 — 지형 · 골목 · 문패 · 여정 두 개</div><div class="time">⏱ 8분 (02–10)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">12차를 카드 넷으로 되살린다 — 4겹 실명 · 폴더 · 원칙 5 · 여정 둘. 마지막 카드(여정)가 오늘로 넘어가는 다리. 수강생 구조도는 펼치지 않는다 — "[화] 폴더가 한 줄이었다"만.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">cards 4 (지형 / 골목 / 문패·원칙 5 / 여정 두 개(hot)). 콜아웃 "구조도는 오늘 안 펼칩니다 — [화] 폴더 한 줄을 엽니다". 후렴.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">지난주 한 장으로 갑니다. 첫째, 지형. 레이어 4겹에 실명을 붙였죠 — 화면은 프론트엔드, 동작은 백엔드, 데이터는 DB, 연결은 API. 프론트는 코드가 전부 보이니까 비밀은 서버에 둔다 — 비밀·신뢰·힘. DB는 엑셀이랑 비슷하게 생겼지만 동시성·검색·규칙이 다르다. API는 주문서 양식. 둘째, 골목. 폴더를 열어보니 절반은 내가 안 만든 거였죠 — 재료 목록, 창고, 열쇠, 문지기. 그리고 src 다섯 골목 — app, components는 레고, lib, types, data. 셋째, 문패. 오늘의 문장이 "모든 파일에는 자리가 있고, 그 자리에는 이유가 있다"였고, 원칙 다섯 — 한 폴더 한 책임, 화면과 동작 분리, 계약은 따로, 데이터와 코드 분리, 문패. 넷째, 여정 두 개. 주소창의 여정에서 "서버는 설계도를 보내고 그림은 폰이 그린다"고 했는데 — 그 설계도가 오늘 주인공이에요. 그리고 채점 버튼의 여정 여섯 걸음 — 오늘 끝에 화면 눈으로 다시 봅니다. 숙제로 구조도 그려 오셨죠. 오늘 수업 중엔 안 펼칩니다. 딱 하나만 기억하세요 — 거기 [화] 폴더가 한 줄로 있었다는 것. "screens/, 보이는 화면들." 오늘 그 한 줄을 엽니다. 한 줄이 여러 장의 그림이 되는 걸 보실 거예요.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">카드 넷을 손가락으로 하나씩 — 각 카드 1분 반, 총 6분 + 마무리 2분. 복습이지만 12차에 막혔던 용어(비밀·신뢰·힘 / 동시성·검색·규칙)는 한 번 더 소리 내어 준다. 구조도 제출 여부는 묻지 않는다 — 가져온 사람도 안 가져온 사람도 오늘은 같은 출발선.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">복습은 8분을 넘기지 않는다 — 12차 재강의가 되면 Part 1이 밀린다. 4겹 실명 이상으로 파고들지 않기. <b>"오늘 그 한 줄을 엽니다" 문장은 사수</b> — 12차→14차를 잇는 유일한 다리.</div></div>
+    <div class="next">→ 넘어가며: <b>"오늘이 시리즈 어디쯤인지, 그리고 오늘의 문장."</b></div>
+    <div class="pgfoot">— 슬라이드 02 · 3 / 25 —</div>
+  </section>
+
+  <!-- 03 -->
+  <section class="page">
+    <div class="head"><span class="numbox">03</span><span class="sec">Part 0 · 시리즈 위치 · 핵심 메시지</span></div>
+    <div class="ptitle">구조도 → 화면도 → 데이터도 / "부품과 상태의 조립"</div><div class="time">⏱ 5분 (10–15)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">핵심 메시지와 후렴을 심는다. "화면은 한 장의 그림이 아니다" — 오늘 끝에 이 문장이 몸으로 이해되면 성공.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">steps 3 (12 완료 / 14 진행 중 / 16). 큰 콜아웃 핵심 메시지. 아래 후렴.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">지난주가 구조도, 오늘이 화면도, 다음이 데이터도 — 세 장 모으면 「내 앱 설계 3종 세트」. 이건 그대로예요. 오늘의 문장은 이겁니다. "화면은 한 장의 그림이 아니라, 부품과 상태의 조립이다." 지금은 무슨 말인지 몰라도 됩니다. 화면이 그림 아니면 뭐냐 — 라고 생각하시는 게 정상이에요. 오늘 두 시간 반 뒤에 이 문장이 "아 당연하지"가 되면 수업 성공입니다. 그리고 하나 더. 여러분은 이 채점기를 열 번 넘게 눌렀습니다. 채점 버튼 누르고, 빙글 도는 거 기다리고, 결과 카드 읽고, 리더보드 봤죠. 그 모든 순간이 누군가 설계한 부품이고 상태입니다. 매주 눌렀습니다. 오늘은 그게 뭔지 압니다.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">"부품"·"상태"를 여기서 설명하지 않는다 — 문장만 심는다. 설명하기 시작하면 11·15가 빈다. "3회 코스" 프레이밍 금지(계속 이어지는 반).</div></div>
+    <div class="next">→ 넘어가며: <b>"시작은 지난주 첫 여정에서 — 주소창의 여정, 기억나시죠?"</b></div>
+    <div class="pgfoot">— 슬라이드 03 · 4 / 25 —</div>
+  </section>
+
+  <!-- 04 -->
+  <section class="page">
+    <div class="head"><span class="numbox">04</span><span class="sec">Part 1 · 여정 ① — 설계도 세 장</span></div>
+    <div class="ptitle">서버가 보낸 설계도는 세 장이었습니다</div><div class="time">⏱ 7분 (15–22)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">12차 05를 한 줄로 소환하고, 그 "설계도"가 사실 세 장(뼈대·옷·움직임)임을 심는다. 이름은 아직 안 붙인다.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">steps 4 (주소 → 서버 답 → 설계도 세 장(on) → 폰이 겹쳐 그린다). 콜아웃 "그리는 건 내 폰".</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">지난주 첫 여정, 한 줄만 다시. 주소를 치면 서버가 답하는데, 서버는 그림을 보내는 게 아니라 설계도를 보내고, 그림은 여러분 폰이 그린다 — 여기까지 했죠. 오늘 여기서 한 발 더. 그 설계도가 사실 한 장이 아니라 세 장입니다. 첫 장에는 "이 화면에 뭐가 있는지"가 적혀 있어요. 제목이 있고, 버튼이 있고, 카드가 있다. 둘째 장에는 "그게 어떻게 생겼는지" — 파랗고, 크고, 둥글다. 셋째 장에는 "누르면 뭐가 일어나는지". 여러분 폰은 이 세 장을 받아서 포개 놓고 한 화면을 그립니다. 그래서 같은 세 장을 받아도 폰 화면이랑 PC 화면이 다를 수 있어요 — 그리는 게 서버가 아니라 내 기계니까. 이건 이따 둘째 장에서 다시 만납니다. 오늘 전반부는 이 세 장을 한 장씩 펼치는 시간입니다.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">HTML·CSS·JS 실명은 다음 장(05)에서 — 여기선 "첫 장·둘째 장·셋째 장"으로만. HTTP·DNS 등 12차에서도 금지한 용어는 당연히 금지.</div></div>
+    <div class="box ref"><div class="lab">📌 참고</div><div class="body">12차 05 소환 문장 그대로: "서버는 설계도를 보내고, 그림은 브라우저가 그린다." 12차 06의 "서버는 그냥 컴퓨터"는 오늘 안 건드린다.</div></div>
+    <div class="next">→ 넘어가며: <b>"세 장에 이름을 붙여봅시다 — 지난주에 예고했던 이름들이에요."</b></div>
+    <div class="pgfoot">— 슬라이드 04 · 5 / 25 —</div>
+  </section>
+
+  <!-- 05 -->
+  <section class="page">
+    <div class="head"><span class="numbox">05</span><span class="sec">Part 1 · 4단 개요</span></div>
+    <div class="ptitle">삼형제 + 부품 — 이름표만</div><div class="time">⏱ 5분 (22–27)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">뼈대=HTML · 옷=CSS · 움직임=JavaScript · 부품=컴포넌트. 이름표만 붙이고 상세는 다음 네 장에. UI/UX 렌즈도 이름만.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">cards 4 (뼈대·옷·움직임·부품(hot)). 콜아웃 렌즈 둘(UI/UX).</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">지난주 프론트엔드 설명할 때 "삼형제는 14차의 주인공, 오늘은 이름만"이라고 했죠. 그 삼형제입니다. 첫 장, 뭐가 있는지 — 뼈대. 개발자들은 HTML이라고 부릅니다. 둘째 장, 어떻게 생겼는지 — 옷. CSS. 셋째 장, 누르면 뭐가 일어나는지 — 움직임. 자바스크립트. 그리고 넷째, 이 세 장을 한 덩어리로 묶어서 이름 붙인 것 — 부품, 컴포넌트. 지난주 폴더 지도에 components가 있었죠, "레고". 오늘 왜 레고인지 제대로 배웁니다. 렌즈도 둘 있어요. 지난주에 UI는 생김새, UX는 경험이라고 이름만 붙였는데, 오늘 이 4단 위에 얹습니다. UI는 뼈대+옷, UX는 움직임+상태+이동. 이건 다 이름표예요. 지금부터 하나씩, 제대로.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">① 여기서 상세를 풀지 않기 — 06~08이 비어버린다. ② 12차 08 "삼형제 예고"를 회수하는 한 문장만 — 프론트엔드 재강의 금지. ③ "근육"·"동작"이라 부르지 않기 — 12차 예고 이름(뼈대·옷·움직임) 그대로. "동작"은 레이어 4겹 백엔드 칸과 충돌한다.</div></div>
+    <div class="next">→ 넘어가며: <b>"첫 장부터. 화면은 상자로 되어 있습니다."</b></div>
+    <div class="pgfoot">— 슬라이드 05 · 6 / 25 —</div>
+  </section>
+
+  <!-- 06 -->
+  <section class="page">
+    <div class="head"><span class="numbox">06</span><span class="sec">Part 1 · 1단 뼈대 — HTML</span></div>
+    <div class="ptitle">화면은 상자 속 상자입니다</div><div class="time">⏱ 8분 (27–35)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">모든 것은 상자 · 상자마다 이름표 · 상자는 겹친다. 결과 카드 목업 위에 손가락으로 상자를 따라 그린다 — "화면을 상자로 보는 눈"이 오늘 첫 습관. 퀴즈 ① "상자 몇 개?"</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">왼쪽 결과 카드 목업(점선 상자 + 이름표 칩: 카드·숫자·배지·제목·행·문단·버튼). 오른쪽 dl 3. 콜아웃 손들기.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">왼쪽이 여러분이 매주 보던 결과 카드예요. 근데 점선으로 그렸죠. 이게 오늘 첫 눈입니다 — 화면에 보이는 건 전부 상자예요. 큰 카드가 상자, 그 안에 숫자 87이 상자, 옆에 A등급 배지도 동그랗지만 상자. 요소별 점수 제목이 상자, 그 아래 역할 17/20 한 줄이 상자, 그 안에 파란 막대도 상자. 상자마다 이름표가 붙어요. "이건 제목", "이건 버튼", "이건 목록". 왜 이름표가 필요하냐면, 여러분 폰이 이름표를 보고 역할에 맞게 그리거든요. 같은 네모여도 제목이면 크게, 버튼이면 눌리게. 그리고 상자는 겹칩니다. 카드 안에 제목, 제목 옆에 버튼 — 상자 속 상자. 첫째 장, 뼈대, HTML은 딱 이겁니다 — 이 상자들의 목록과 겹침을 적어 놓은 글. 계산도 못 하고 판단도 못 해요. "뭐가 있다"만 적습니다. 자, 손들기 — 왼쪽 그림에 상자가 몇 개일까요? (답 받고) 제가 세면 열한 개예요. 근데 숫자보다 중요한 건, 방금 여러분이 화면을 상자로 셌다는 겁니다. 그 눈이 생긴 거예요.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">목업 위를 손가락(또는 레이저)으로 상자 하나하나 따라 그리며 말하기 — "상자로 보는 눈"은 말이 아니라 손동작으로 옮는다. 퀴즈 답이 제각각인 게 정상 — "세는 눈"이 목적.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">태그 이름(div·h1·button)을 입 밖에 내지 않는다. 이름표는 우리말(제목·문단·버튼·입력칸·목록·카드)로만. 질문 나오면 "사전에 있어요, 검색하면 10분".</div></div>
+    <div class="next">→ 넘어가며: <b>"이 상자들, 개발자는 실제로 어떻게 적을까요 — 딱 한 장만 보여드립니다."</b></div>
+    <div class="pgfoot">— 슬라이드 06 · 7 / 25 —</div>
+  </section>
+
+
+  <!-- 07 -->
+  <section class="page">
+    <div class="head"><span class="numbox">07</span><span class="sec">Part 1 · 정체 공개 — 오늘 유일한 코드</span></div>
+    <div class="ptitle">그 상자들, 실제로는 이렇게 생겼습니다 — 읽지 말고 세어 보세요</div><div class="time">⏱ 4분 (35–39)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">오늘 코드는 이 한 장(뼈대 7줄 + 옷 2줄)이 전부. 목적은 탈신비화 하나 — "상자 여섯 개 = 여섯 줄, 별거 아니네." 읽히지 않고 세게 한다.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">왼쪽 아까 카드 일부(상자 6개) / 오른쪽 뼈대 7줄(여는 이름표·닫는 이름표, 줄마다 "← 카드 상자" 주석) + 옷 2줄(우리말로 적은 CSS). 콜아웃 "오늘 코드는 여기까지".</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">아까 코드는 안 띄운다고 했는데, 딱 한 장만 예외로 합니다. 읽으라고 띄우는 게 아니에요 — 세어 보라고 띄우는 겁니다. 왼쪽, 아까 그 카드에서 상자 여섯 개만 남겼어요. 카드, 숫자, 배지, 카드, 제목, 버튼. 오른쪽이 그 여섯 상자를 개발자가 실제로 적는 방식이에요. 꺾쇠 안에 이름표가 있죠 — 이게 "상자 열기"고, 슬래시 붙은 게 "상자 닫기". 그 사이가 상자 하나예요. 첫 줄 상자 열기, 그 안에 숫자 상자, 배지 상자, 그리고 닫기. 다음 카드 열고, 제목 상자, 버튼 상자, 닫기. 세어 보세요 — 여섯 개죠. 뼈대, HTML은 이게 다예요. 상자를 열고 닫는 글. 아래 두 줄은 옷이에요. 상자 이름을 부르고, 그 옷을 적어요 — "배지는 초록 배경에 둥글게", "점수는 아주 크게". 이름표의 영어 이름은 사전에 있어요. 오늘 코드는 여기까지입니다. 나머지는 다음 시즌. 다시 상자 그림으로 돌아갑니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">"별거 아니네" 표정이 나오면 성공. 줄을 손가락으로 세며 "하나, 둘, 셋…" — 읽지 않는다. 옷 2줄은 실제 CSS 문법이 아니라 우리말로 적었다 — "진짜는 영어지만 뜻은 이겁니다" 한 마디면 충분.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">4분 초과 금지. div·span·h3가 뭔지 설명하지 않는다(사전으로). "더 보여달라" 나오면 예비 슬라이드 23 — "오늘은 이 아홉 줄이 전부". 움직임(JS) 코드는 어떤 경우에도 띄우지 않는다 — 초심자에게 진짜 소음이다.</div></div>
+    <div class="next">→ 넘어가며: <b>"자, 이 상자들 — 옷을 벗기면 어떻게 생겼을까요?"</b></div>
+    <div class="pgfoot">— 슬라이드 07 · 8 / 25 —</div>
+  </section>
+
+  <!-- 07 -->
+  <section class="page">
+    <div class="head"><span class="numbox">08</span><span class="sec">Part 1 · 2단 옷 — CSS</span></div>
+    <div class="ptitle">같은 뼈대, 다른 옷 — 옷을 벗기면</div><div class="time">⏱ 8분 (39–47)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">옷이 정하는 넷 — 색·크기·자리·간격. 등급 배지 = 같은 뼈대에 여섯 벌 옷. 반응형 = 같은 뼈대에 폰 옷·PC 옷 (4차 Where 한 줄).</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">왼쪽 옷 벗긴 화면(검정 테두리·명조체) / 가운데 옷 입힌 화면 / 오른쪽 dl 4(색·크기·자리·간격) + 반응형 콜아웃.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">왼쪽 보세요. 아까 그 결과 카드에서 옷을 벗긴 겁니다. 뼈대는 하나도 안 바꿨어요 — 숫자 87 있고, A등급 있고, 요소별 점수 있고, 복사 버튼 있죠. 근데 1995년 홈페이지처럼 생겼습니다. (웃음 나면 성공) 가운데가 옷 입힌 거. 같은 뼈대예요. 옷이 정하는 게 네 가지입니다. 색 — 등급 배지 보세요, S는 호박색, A는 초록, B는 파랑, C는 회색, D 주황, F 빨강. 배지 뼈대는 하나인데 옷이 여섯 벌이에요. 크기 — 87은 크게, "/100"은 작게. 같은 숫자 상자인데 옷이 다른 거죠. 자리 — 복사 버튼이 제목 오른쪽에 붙어 있죠, 그것도 옷이 정합니다. 간격 — 카드 사이 숨 쉴 틈, 둥근 모서리. 전부 둘째 장, 옷, CSS의 일이에요. 그리고 아까 예고한 거 — 같은 세 장을 받아도 폰이랑 PC가 다른 이유. 옷을 두 벌 만들어 두는 겁니다. 폰 옷, PC 옷. 뼈대는 하나. 실습 화면의 버튼들이 폰에선 세로로 쌓이고 PC에선 가로로 나란히 서는 게 그거예요. 이걸 반응형이라고 합니다. 4차 때 "디바이스를 안 적으면 PC 기준으로 나와서 폰에서 깨진다"고 했죠 — 폰 옷을 안 만들어 준 겁니다. 그 한 줄이 이거였어요.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">"옷 벗긴 화면"에서 웃음이 나면 뼈대/옷 분리가 몸에 붙은 것. 배지 여섯 색은 손가락으로 하나씩 짚으며 — "뼈대 하나, 옷 여섯".</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">4차 Where는 한 줄만 — 5요소 재강의 금지. 옷이 "움직임"을 만든다고 말하지 않기 — "누르면 색이 바뀐다"의 '누르면'은 다음 장.</div></div>
+    <div class="next">→ 넘어가며: <b>"뼈대 있고 옷 입었는데, 눌러도 아무 일도 안 일어나면? 그건 앱이 아니라 전단지죠."</b></div>
+    <div class="pgfoot">— 슬라이드 08 · 9 / 25 —</div>
+  </section>
+
+  <!-- 08 -->
+  <section class="page">
+    <div class="head"><span class="numbox">09</span><span class="sec">Part 1 · 3단 움직임 — JavaScript</span></div>
+    <div class="ptitle">누르면 일어난다 — 뼈대+옷은 전단지</div><div class="time">⏱ 8분 (47–55)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">사건 → 반응 → 상자가 바뀐다. "채점 버튼이 하는 일 3"을 실물로. 삼형제 중 계산·판단은 움직임만. 서버 얘기는 하지 않는다.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">steps 3 (사건·반응(on)·상자가 바뀐다). dl 3 채점 버튼이 하는 일. 콜아웃 "전부 사건→반응".</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">셋째 장, 움직임. 규칙은 하나예요 — "이런 일이 생기면, 이렇게 하라." 이런 일을 사건이라고 합니다. 누른다, 입력한다, 시간이 지난다, 결과가 도착한다. 그러면 반응이 있죠. 반응은 결국 상자를 건드리는 거예요 — 바뀌거나, 생기거나, 사라지거나, 다른 화면으로 가거나. 채점 버튼으로 볼게요. 여러분이 채점하기를 누르면 — 첫째, 버튼 글자가 "채점 중…"으로 바뀌고 버튼이 잠깁니다. 두 번 못 누르게. 둘째, 결과 자리에 회색 상자 세 개가 나타나요. "받았어요, 만드는 중"이라는 뜻. 셋째, 결과가 오면 회색 상자가 사라지고 결과 카드가 생기고, 화면이 스르륵 결과로 내려갑니다. 이 세 가지 전부 셋째 장, 움직임, 자바스크립트예요. 이것만이 아닙니다. 글자를 칠 때마다 "123/1000자"가 바뀌죠? 사건은 입력, 반응은 숫자 상자 갱신. 30자 안 되면 빨간 안내 뜨죠? 복사 누르면 "복사 완료!" 뜨죠? 전부 사건 → 반응. 삼형제 중에 계산하고 판단하는 건 얘 하나예요. 뼈대는 "뭐가 있다", 옷은 "어떻게 생겼다"만 말하고, "30자보다 짧은가?"를 따지는 건 움직임뿐입니다.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">① 서버에서 무슨 일이 있는지는 12차 영역 — "결과가 오면"까지만. ② "회색 상자"를 <b>상태</b>라고 부르지 않는다 — 15에서 처음 이름을 붙인다. 여기선 현상("회색 상자가 나타난다")으로만. ③ Java≠JavaScript 언급은 질문 나올 때만(사전에 있음).</div></div>
+    <div class="next">→ 넘어가며: <b>"그런데 왜 굳이 세 장으로 나눌까요? 한 장에 다 쓰면 편할 텐데."</b></div>
+    <div class="pgfoot">— 슬라이드 09 · 10 / 25 —</div>
+  </section>
+
+  <!-- 09 -->
+  <section class="page">
+    <div class="head"><span class="numbox">10</span><span class="sec">Part 1 · 왜 세 장인가</span></div>
+    <div class="ptitle">한 장에 다 쓰면 옷 바꾸다 뼈가 부러집니다</div><div class="time">⏱ 6분 (55–61)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">역할이 다른 것은 따로 둔다 — 12차 원칙 ②(화면·동작 분리)가 화면 안쪽에서도 반복된다. 종이가 다르면 사람이 달라도 된다.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">twocol red(한 장에 다 쓰면) / green(세 장으로 나누면). 콜아웃 "같은 원리가 크기만 다르게".</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">지난주 원칙 두 번째, 기억나세요? "화면과 동작을 섞지 않는다 — 섞으면 서로 인질이 된다." 화면 안쪽에서도 똑같은 일이 벌어집니다. 세 장을 한 장에 다 써 놓으면 어떻게 되냐면 — 배지 색 하나 바꾸려다 상자 구조가 깨져요. 버튼 동작을 고치는데 디자인이 흔들려요. 디자이너랑 개발자가 같은 종이 놓고 싸웁니다. 폰 옷이랑 PC 옷을 만들려면 뼈대를 두 번 써야 해요. 세 장으로 나누면? 옷만 갈아입힙니다, 뼈대는 그대로. 움직임만 고칩니다, 생김새는 그대로. 옷은 디자이너가 만지고 움직임은 개발자가 만지고 — 종이가 다르니까 사람이 달라도 돼요. 그리고 같은 뼈대에 옷 두 벌 — 아까 반응형. 결국 지난주랑 같은 원리예요. 역할이 다른 건 따로 둔다. 폴더에서도 그랬고, 화면 안에서도 그렇습니다. 크기만 다를 뿐 계속 반복되는 원리예요.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">"같은 원리가 크기만 다르게 반복된다"는 12차→14차→16차를 꿰는 문장 — 16차(테이블 분리)에서 또 쓴다. 지금 강조해 두면 좋다.</div></div>
+    <div class="box ref"><div class="lab">📌 참고</div><div class="body">"요즘은 부품 안에 세 장이 같이 들어 있기도 하다"는 질문 나올 때만(사전 "브라우저가 그리는 순서" 항목). 역할이 셋이라는 점은 변하지 않는다.</div></div>
+    <div class="next">→ 넘어가며: <b>"삼형제 끝. 이제 지난주에 이름만 붙였던 렌즈 둘을 이 위에 얹습니다."</b></div>
+    <div class="pgfoot">— 슬라이드 10 · 11 / 25 —</div>
+  </section>
+
+  <!-- 10 -->
+  <section class="page">
+    <div class="head"><span class="numbox">11</span><span class="sec">Part 1 · UI vs UX · 휴식 전</span></div>
+    <div class="ptitle">UI는 생김새, UX는 겪는 것</div><div class="time">⏱ 6분 (61–67) → ☕ 휴식 10분 (67–77)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">UI = 뼈대+옷 / UX = 움직임+상태+이동. 둘은 따로 좋고 따로 나쁘다. 채점기 UX 증거 셋(하단 고정 등록 카드·자동 스크롤·끝 버튼 숨김).</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">twocol UI / UX(green). 콜아웃 "예쁜데 불편한 앱". 휴식 예고.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">지난주 프론트엔드에서 "UI는 생김새, UX는 경험"이라고 했죠. 이제 그게 4단 어디인지 말할 수 있어요. UI는 뼈대와 옷입니다 — 배지 여섯 색, 큰 숫자 87, 초록 점 주황 점, 둥근 카드. 판단 기준은 "예쁜가, 알아보기 쉬운가". UX는 움직임과, 이따 배울 상태와 이동이에요 — 겪는 것. 채점기에서 세 가지만 볼게요. 세션에서 채점이 끝나면 초록 등록 카드가 화면 맨 아래 딱 붙어 있죠? 스크롤 안 해도 다음에 뭘 할지 보이게. 결과가 오면 화면이 알아서 결과 위치로 내려가죠? 그리고 세션 모드에선 결과 카드 끝의 "다른 프롬프트 채점하기" 버튼을 일부러 숨겨요 — "끝났다"는 신호가 등록 버튼을 가리면 안 되니까. 판단 기준은 "몇 번 눌러야 하나, 기다릴 때 불안한가, 다음에 뭘 할지 보이나". 둘은 따로 좋고 따로 나빠요. 예쁜데 불편한 앱, 못생겼는데 편한 앱 — 둘 다 있죠. 떠오르는 앱 있으세요? (한두 명) 좋습니다. 10분 쉽니다. 쉬고 나면 부품을 뜯어요.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">사례가 안 나오면 "은행 앱 — 예쁜데 이체까지 여섯 번 누른다". 휴식은 정시 재개 — 후반부(부품·상태)가 오늘의 본체다.</div></div>
+    <div class="next">→ 넘어가며(휴식 후): <b>"지난주 폴더 지도에 components가 있었죠 — 레고. 왜 레고인지 지금 배웁니다."</b></div>
+    <div class="pgfoot">— 슬라이드 11 · 12 / 25 —</div>
+  </section>
+
+  <!-- 11 -->
+  <section class="page">
+    <div class="head"><span class="numbox">12</span><span class="sec">Part 2 · 4단 부품 — 컴포넌트</span></div>
+    <div class="ptitle">반복되는 상자 묶음에 이름을 붙이면 부품</div><div class="time">⏱ 9분 (77–86)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">반복 → 이름 / 고치면 다 바뀜 / 부품 속 부품. "다섯 번 그릴래요, 한 번 만들래요?" 화면 = 부품의 조립.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">왼쪽 같은 결과 카드에 청록 실선 동그라미(ⓟ 카드·배지·점수 행·버튼). 오른쪽 dl 3. 콜아웃 레고.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">아까 그 카드를 다시 보는데, 이번엔 청록색 테두리가 붙었죠. 요소별 점수 아래 "역할 17/20 막대" 한 줄, "목적 18/20 막대" 한 줄 — 같은 모양이 다섯 번 나와요. 여기서 질문 — 다섯 번 그릴래요, 한 번 만들래요? 개발자는 한 번 만듭니다. "점수 행"이라는 부품을 하나 만들어 놓고 다섯 번 불러요. 이게 부품, 컴포넌트입니다 — 반복되는 상자 묶음에 이름을 붙인 것. 왜 좋으냐. 막대 색을 바꾸고 싶다 — 부품 하나 고치면 다섯 행이 같이 바뀝니다. 버튼 부품을 고치면 앱 전체 버튼이 한 번에 바뀌어요. 그리고 부품 안에 부품이 들어갑니다. 결과 카드라는 부품 안에 카드 부품이 있고, 그 안에 배지 부품이 있어요. 그래서 오늘 문장이 "부품의 조립"이에요 — 화면은 부품을 조립한 거고, 부품은 더 작은 부품을 조립한 겁니다. 지난주에 "components는 레고"라고 이름만 붙였죠. 레고가 왜 레고냐 — 같은 부품을 여러 번 끼울 수 있어서예요.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">"다섯 번 그릴래요, 한 번 만들래요?"는 실제로 답을 받는다 — 전원이 "한 번"이라고 말하는 순간 부품 개념이 몸에 붙는다. 12차 17에서 이름만 붙었던 컴포넌트를 여기서 바닥부터 — 짧게 넘기지 않기.</div></div>
+    <div class="next">→ 넘어가며: <b>"근데 같은 부품인데 어떻게 글자가 다르죠? 부품엔 빈칸이 있어요."</b></div>
+    <div class="pgfoot">— 슬라이드 12 · 13 / 25 —</div>
+  </section>
+
+  <!-- 12 -->
+  <section class="page">
+    <div class="head"><span class="numbox">13</span><span class="sec">Part 2 · 부품의 빈칸</span></div>
+    <div class="ptitle">부품에는 빈칸이 있습니다 — 같은 부품, 다른 재료</div><div class="time">⏱ 8분 (86–94)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">빈칸 = 재료 넣는 자리. 배지 부품 하나에 글자 5종, 등급 배지엔 빈칸 둘(글자·옷), 버튼엔 넷. 빈칸 덕에 하나로 수십 개.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">cards 5 (같은 배지 부품, 다른 글자·색). dl 2 (등급 배지 빈칸 둘 / 버튼 빈칸 넷). 콜아웃 "빈칸으로 안 되는 차이가 있으면?".</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">초대장 양식 아시죠. "____님을 ____에 초대합니다." 빈칸 두 개 채우면 초대장 백 장이 나와요. 부품도 똑같습니다. 위에 다섯 개 보세요 — 프롬프트 채점, 지침 채점, 이미지, 바이브, 역설계. 배지 부품은 하나예요. 빈칸에 다른 글자, 다른 색을 넣은 겁니다. 등급 배지는 빈칸이 둘 — 글자 S부터 F, 그리고 옷, 색. 버튼은 넷 — 글자, 크기, 잠겼나 안 잠겼나, 옷. "채점하기"랑 "채점 중…"이랑 "리더보드에 등록하기"는 다 같은 버튼 부품에 다른 재료예요. 빈칸이 있어서 부품 하나로 수십 개를 만듭니다. 그럼 반대로 — 빈칸으로 안 되는 차이가 있으면 어떻게 할까요? 다음 장에서 퀴즈로.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">"props"라는 단어 금지 — "빈칸"으로 통일한다(사전에 영어 이름 있음). 등급 배지 여섯 색을 다시 하나씩 짚지 않기 — 08에서 했다.</div></div>
+    <div class="next">→ 넘어가며: <b>"채점기 부품이 몇 개인지 지도로 볼게요."</b></div>
+    <div class="pgfoot">— 슬라이드 13 · 14 / 25 —</div>
+  </section>
+
+  <!-- 13 -->
+  <section class="page">
+    <div class="head"><span class="numbox">14</span><span class="sec">Part 2 · 채점기 부품 지도</span></div>
+    <div class="ptitle">부품 31개 — 부품은 늘어나는 게 정상</div><div class="time">⏱ 9분 (94–103)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">채점기 5 · 결과 카드 5 · 랜딩 8 · 기타 5 · 사온 ui 8. 퀴즈 ② "채점기 5개를 왜 하나로 못 만들었나" → 부품 쪼개기 기준의 첫 등장: "빈칸으로 안 되는 차이가 있으면 부품을 가른다."</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">.tree components/ 5줄. 콜아웃 손들기 + 답.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">지난주 지도에 "components 26개"라고 썼죠. 오늘 세어 보니 31개예요. 그 사이 자료실 같은 게 생겨서 다섯 개 늘었습니다. 부품은 늘어나는 게 정상이에요. 묶어서 보면 — 채점기 다섯, 프롬프트·지침·이미지·바이브·역설계. 결과 카드 다섯, 아까 뜯은 그 카드가 모드마다 한 벌씩. 홈 화면 부품 여덟 — 홈 화면은 이 여덟 개를 위에서 아래로 쌓은 거예요. 기타 다섯. 그리고 맨 아래 빨간 줄, ui 여덟 개 — 사온 거예요, 다음 장에서. 자, 퀴즈. 채점기가 다섯 개죠. 아까 빈칸 배웠으니까, 빈칸 있는 부품 하나로 만들면 되지 않나요? 왜 다섯 개로 갈랐을까요? (손 확인, 답 받고) 답은 — 빈칸으로 안 덮이는 차이가 있어서예요. 입력칸 개수가 다르고, 안내문이 다르고, 요소 개수가 달라요. 프롬프트는 5요소, 이미지는 SSDHR. 그런 건 글자 갈아 끼우는 걸로 안 됩니다. 그래서 규칙 — 빈칸으로 안 되는 차이가 있으면 부품을 가른다. 반대로 버튼·배지·카드는 빈칸으로 다 덮이니까 하나예요. 이게 여러분이 화면도 그릴 때 "이거 부품으로 묶을까 말까"를 정하는 기준입니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">퀴즈는 답 받고 공개 — "빈칸으로 안 되는 차이"는 오늘 숙제(부품 동그라미)의 판단 기준이므로 한 번 더 반복해도 좋다. 파일명(PromptScorer 등)은 말하지 않기 — 우리말 이름으로.</div></div>
+    <div class="next">→ 넘어가며: <b>"맨 아래 빨간 줄 — 사온 부품 이야기."</b></div>
+    <div class="pgfoot">— 슬라이드 14 · 15 / 25 —</div>
+  </section>
+
+  <!-- 14 -->
+  <section class="page">
+    <div class="head"><span class="numbox">15</span><span class="sec">Part 2 · 손수 vs 사온 부품</span></div>
+    <div class="ptitle">화면도 절반은 사온 것입니다</div><div class="time">⏱ 7분 (103–110)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">이름 셋만 — 기성 부품(ui 8) · 옷장 · 움직임 상자. 12차 "안 만든 파일들"의 화면판: 잘 만든 게 있으면 사 오는 것도 설계.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">dl 3 (기성 부품 / 옷장 / 움직임 상자). 콜아웃 12차 호응 + "셋이면 충분".</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">지난주 "내가 만든 건 절반뿐, 나머진 도구가 만든다"고 했죠 — node_modules. 화면도 마찬가지예요. ui 폴더 여덟 개 — 버튼, 배지, 카드, 입력칸, 글상자, 알림, 회색 뼈대, 토스트. 이건 남이 잘 만들어서 공개한 부품 세트를 내 폴더로 가져온 거예요. 버튼 하나도 제대로 만들려면 잠김 상태, 키보드로 눌리나, 색이 상태마다 어떻게 바뀌나를 다 챙겨야 하거든요. 그거 다 한 걸 사 옵니다. 둘째, 옷장. 옷을 한 벌씩 새로 짓지 않고 "파란 배경", "둥근 모서리", "가운데 정렬" 같은 옷 조각을 미리 만들어 둔 옷장에서 골라 입혀요. 채점기 옷은 거의 전부 이 옷장에서 골랐습니다. 등급 배지 여섯 색도. 셋째, 움직임 상자. 상자가 뚝 나타나는 대신 스르륵 나타나게 하는 연출 도구. 홈 화면 카드들이 스크롤 따라 떠오르는 거. 이건 없어도 앱은 돼요 — 선택. 이름 셋이면 오늘은 충분합니다. 더는 안 나열해요. 기억할 건 하나 — 잘 만든 게 있으면 사 오는 것도 설계라는 것.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">라이브러리 이름 3개 이상 나열 금지. 영어 이름(shadcn·Tailwind·framer-motion)은 슬라이드에 괄호로만 — 입으로는 우리말(기성 부품·옷장·움직임 상자). "bg-blue-500" 같은 옷장 이름은 절대 말하지 않기(코드다).</div></div>
+    <div class="next">→ 넘어가며: <b>"부품 끝. 이제 오늘의 승부처 — 아까부터 계속 나온 그 '회색 상자'가 뭔지."</b></div>
+    <div class="pgfoot">— 슬라이드 15 · 16 / 25 —</div>
+  </section>
+
+  <!-- 15 -->
+  <section class="page">
+    <div class="head"><span class="numbox">16</span><span class="sec">Part 3 · 상태 ⭐ 오늘의 승부처</span></div>
+    <div class="ptitle">화면 하나는 그림 여러 장입니다</div><div class="time">⏱ 11분 (110–121)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">비어 있음 · 기다림 · 성공 · 실패. 사람은 성공만 그린다 — AI에게 시킬 때 빠뜨리는 세 장이 오늘 숙제의 본체. 퀴즈 ③ "화면은 몇 번 바뀌나" → 3번.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">상태 4장 미니 목업 나란히(기다림 hot). 콜아웃 손들기. 아래 "빠뜨리는 세 장".</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">채점 화면 하나를 네 장으로 그렸습니다. 첫 장, 아직 아무것도 안 쳤을 때 — 회색 안내문이 있고, "최소 30자"가 빨갛게 있고, 버튼이 잠겨 있어요. 둘째 장, 누른 직후 — 버튼 글자가 "채점 중…"으로 바뀌고 잠기고, 결과 자리에 회색 상자 세 개. 아까부터 계속 나온 그 회색 상자예요. 셋째 장, 결과가 왔을 때 — 카드. 넷째 장, 안 됐을 때 — 빨간 알림 "채점에 실패했습니다". 이걸 상태라고 합니다. 화면은 하나인데, 지금 어떤 상황이냐에 따라 다르게 보이는 것. 그래서 오늘 문장 — 화면은 한 장의 그림이 아니에요. 최소 네 장이에요. 손들기 — 채점 버튼을 누르고 결과까지, 화면이 몇 번 바뀔까요? (답 받고) 세 번입니다. 누름, 기다림, 결과. 실패하면 셋째 대신 넷째. 여기서 오늘 제일 중요한 얘기. 여러분이 AI에게 화면을 시킬 때 — 4차 때 "메모앱 만들어줘"라고 썼을 때 — 머릿속에 있던 그림이 몇 장이었어요? 한 장이죠. 셋째 장, 성공한 화면. 사람은 완성된 것만 상상합니다. 비어 있을 때, 기다릴 때, 실패했을 때는 아무도 안 그려요. 그래서 AI가 만든 앱이 그 순간에 이상해집니다. 기다림 화면이 없으면 어떻게 되냐면 — 눌렀는데 아무 일도 없어 보이니까 또 누르죠. 두 번 채점됩니다. 둘째 장의 회색 상자는 "받았어요"라는 대답이에요. 그 회색 상자, 뭔지 아시겠어요? 뼈대만 먼저 보여주는 거예요 — 옷도 내용도 없이 상자만. 오늘 첫 개념이 여기서 다시 나옵니다.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">이 장은 밀려도 절대 안 줄인다 — 오늘의 승부처. 네 장을 손가락으로 하나씩 짚으며. "상태"라는 단어를 이 장에서 처음 붙인다(08·09에선 현상으로만 불렀는지 확인).</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">"몇 장이었어요? 한 장이죠"에서 고개 끄덕임이 나오면 성공 — 4차 자기 경험과 연결되는 순간. 상태가 4개보다 많다는 질문("짧아서 못 보냄도 상태 아닌가요")은 "맞아요, 4칸은 최소"로.</div></div>
+    <div class="next">→ 넘어가며: <b>"한 화면 안은 여기까지. 이제 화면과 화면 사이 — 길."</b></div>
+    <div class="pgfoot">— 슬라이드 16 · 17 / 25 —</div>
+  </section>
+
+  <!-- 16 -->
+  <section class="page">
+    <div class="head"><span class="numbox">17</span><span class="sec">Part 3 · 이동 — 화면 사이의 길</span></div>
+    <div class="ptitle">버튼마다 "어디로"가 정해져 있습니다</div><div class="time">⏱ 8분 (121–129)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">화면 7개 + 화살표. 도착 화살표 없는 화면은 존재하지 않는 화면, 돌아오는 길 없는 화면은 감옥. 상태 변화(같은 화면)와 이동(다른 화면)은 다르다.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">화면 7개 상자 + 화살표 지도(홈→실습/호스트/자료실/설치, 실습→참가, 호스트→리더보드, 참가→리더보드). 콜아웃 12차 한 줄.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">지난주 "폴더가 곧 주소"라고 했죠 — 그때 화면이 여섯 개였는데 자료실이 생겨서 일곱 개예요. 화면도 늘어납니다. 오늘은 주소가 아니라 화살표를 봅니다. 홈에서 "실습"을 누르면 실습으로, 강사는 호스트로, 자료실로. 실습에서 코드를 넣으면 참가로. 호스트에서 세션을 만들면 리더보드로. 참가에서 채점하고 등록하면 리더보드로. 버튼마다 "어디로"가 정해져 있어요. 규칙 둘. 도착 화살표가 하나도 없는 화면은 — 존재하지 않는 화면이에요. 아무도 못 가니까. 돌아오는 길이 없는 화면은 감옥이에요. 이따 화면도 그릴 때 이 둘을 체크합니다. 그리고 구분 하나 — 아까 상태는 같은 화면이 바뀌는 거였죠. 이동은 다른 화면으로 가는 거예요. 채점 버튼은 상태를 바꾸고, 등록 버튼은 이동시킵니다. 다른 일이에요.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">12차 18 "폴더가 곧 주소"는 한 줄만. [code] 변하는 주소 얘기는 안 꺼낸다. 화살표를 손가락으로 따라가며 — "어디로"를 소리 내어.</div></div>
+    <div class="next">→ 넘어가며: <b>"지난주 마지막 여정 기억나시죠 — 채점 버튼의 여정. 같은 3초를 오늘 눈으로 다시 봅니다."</b></div>
+    <div class="pgfoot">— 슬라이드 17 · 18 / 25 —</div>
+  </section>
+
+  <!-- 17 -->
+  <section class="page">
+    <div class="head"><span class="numbox">18</span><span class="sec">Part 3 · 여정 ② 화면판 ⭐</span></div>
+    <div class="ptitle">채점 버튼의 여정, 화면 안쪽에서</div><div class="time">⏱ 9분 (129–138)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">12차 21과 같은 6스텝을 4단 태그로 다시 본다: 움직임 → 상태 → (서버) → 부품 → 부품 → 이동. "12차엔 지형으로, 오늘은 화면으로, 16차엔 창고로."</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">steps 6 (3번 서버는 회색 처리). 태그 칩 움직임/뼈대·옷/부품/이동. 콜아웃 12차 대응 + 3회 관통 문장.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">지난주 마지막에 이 여섯 걸음을 봤죠. 버튼, 연결, 서버, 결과 카드, 창고, 리더보드. 오늘은 같은 여섯 걸음을 화면 눈으로 봅니다. 하나, 버튼을 누른다 — 글자 바뀌고 잠긴다, 움직임. 둘, 회색 상자 세 개 — 기다림 상태, 뼈대만 있고 회색 옷. 셋, 서버가 채점한다 — 이건 지난주에 본 그 3초, 오늘은 통과. 넷, 결과 카드가 생긴다 — 부품이 조립돼서 나타나고, 움직임이 화면을 내려준다. 다섯, 등록 카드가 화면 아래에 딱 붙는다 — 부품이고, 하단 고정은 옷. 여섯, 등록하면 리더보드로 — 이동. 같은 여섯 걸음이에요. 지난주엔 화면·연결·동작·화면·데이터·화면으로 봤고, 오늘은 움직임·상태·서버·부품·부품·이동으로 봤습니다. 다음 시간엔 이 3초를 창고 눈으로 봐요 — 점수가 어디 저장되고 리더보드가 어디서 읽어 오는지. 같은 3초를 세 번 다르게 보면, 설계 3종 세트가 완성됩니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">12차 21과 "같은 여섯 걸음"임을 명시 — 수미상관이 3회차를 꿰는 장치. 여섯 걸음을 손가락으로 세며.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">3번 서버 스텝은 한 줄로 통과 — 12차 영역(열쇠·API)을 다시 풀지 않는다. 5번 "창고 저장"도 오늘은 "등록 카드"까지만 — 저장은 16차.</div></div>
+    <div class="next">→ 넘어가며: <b>"오늘 배운 걸 판단 기준 다섯 개로 정리합니다 — 숙제 채점 기준이기도 해요."</b></div>
+    <div class="pgfoot">— 슬라이드 18 · 19 / 25 —</div>
+  </section>
+
+  <!-- 18 -->
+  <section class="page">
+    <div class="head"><span class="numbox">19</span><span class="sec">Part 4 · 좋은 화면의 원칙 5 ⭐</span></div>
+    <div class="ptitle">좋은 화면의 원칙 다섯</div><div class="time">⏱ 12분 (138–150)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">① 한 화면=한 목적 ② 반복되면 부품 ③ 상태를 빠뜨리지 않는다 ⭐ ④ 폰 먼저 ⑤ 보이는 것과 하는 것을 나눈다. ③은 절대 안 줄인다.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">cards 6 (③ hot, 6번째 대시 "숙제 채점 기준"). 콜아웃 증거(끝 버튼 숨김의 이유가 코드 주석에).</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">다섯 개예요. 첫째, 한 화면에는 한 목적. 실습은 채점만, 리더보드는 순위만. 한 화면에 채점도 하고 순위도 보고 세션도 만들면, 어디를 눌러야 할지 몰라요. 둘째, 반복되면 부품. 버튼·배지·카드는 부품 하나를 여러 곳에서. 안 그러면 색 하나 바꾸는 데 수십 군데 수술. 셋째, 이게 오늘의 핵심 — 상태를 빠뜨리지 않는다. 비어 있을 때, 기다릴 때, 실패했을 때. 기다림이 없으면 두 번 누르고 두 번 채점됩니다. 여러분 화면도에서 제가 제일 먼저 보는 게 이거예요. 넷째, 폰 먼저. 같은 뼈대에 폰 옷부터 만든다. 등록 카드가 폰에서 하단에 붙는 게 그거고, 4차 Where가 그거예요. 다섯째, 보이는 것과 하는 것을 나눈다 — 뼈대·옷과 움직임. 옷 바꾸다 채점이 멈추면 서로 인질. 지난주 원칙 둘째의 화면판이죠. 증거 하나만. 세션 화면에서 결과 끝의 "다른 프롬프트 채점하기" 버튼을 일부러 숨긴다고 했죠 — 그 이유가 실제 코드에 주석으로 적혀 있어요. "끝났다는 신호가 등록 버튼을 가리지 않도록." 원칙 첫째, 한 목적. 좋은 화면은 이유가 적혀 있는 화면입니다 — 지난주 폴더랑 똑같아요. 이 다섯이 여러분 숙제의 채점 기준입니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">밀리면 ①②⑤를 한 줄씩으로 압축, <b>③은 절대 안 줄임</b>, ④는 4차 한 줄로. "이유가 적혀 있는 화면"은 12차 "이유를 쓴 순서"와 같은 문장 구조 — 일부러 맞췄다.</div></div>
+    <div class="next">→ 넘어가며: <b>"숙제입니다 — 종이 돌릴게요."</b></div>
+    <div class="pgfoot">— 슬라이드 19 · 20 / 25 —</div>
+  </section>
+
+  <!-- 19 -->
+  <section class="page">
+    <div class="head"><span class="numbox">20</span><span class="sec">Part 5 · 숙제 브리핑</span></div>
+    <div class="ptitle">숙제 — 내 앱 화면도 (화면도 배포)</div><div class="time">⏱ 8분 (150–158)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">화면도 배포. 1~2쪽을 실물로 넘기며 5단계. 합격 기준 3을 소리 내어 2회. "16차는 이 종이로 시작" 못 박기.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">cards 3 합격 기준(③ hot). 보너스·16차 재료. 콜아웃 "16차는 이 종이로".</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">(화면도 배포) 지난주 설계지랑 같은 방식이에요 — 1쪽이 쓰는 법, 2쪽이 완성 예시, 3·4쪽이 내 차례. (1쪽 들고) 다섯 단계. 하나, 내 앱의 화면들을 적는다 — 구조도에 [화] 폴더가 있던 분은 거기서, 없으면 지금 머릿속에서. 3개 이하 권장. 둘, 그 화면들을 네모로 놓고 "어느 버튼을 누르면 어디로" 화살표. 셋, 대표 화면 하나 골라서 큰 상자부터 그린다 — 아까 결과 카드처럼, 상자마다 이름표. 넷, 두 번 이상 나오는 상자에 동그라미 치고 부품 이름. 다섯, 상태 네 칸 — 비어 있을 때, 기다릴 때, 잘 됐을 때, 실패했을 때 뭐가 보이나. (2쪽 들고) 막막하면 2쪽부터. 지난주 예시 「점심 메뉴 뽑기」 구조도의 screens 폴더를 그대로 연 거예요. 뽑기 화면 하나를 상자로 그리고, 메뉴 카드랑 버튼에 부품 동그라미, 상태 네 칸 다 채워져 있습니다. 베끼지 말고 형식을 빌리세요. 합격 기준 셋. 하나, 화면 목록과 화살표. 둘, 대표 화면 상자 그림에 부품 동그라미와 "왜 부품인가" 한 줄. 셋, 상태 네 칸 중 세 칸 이상. 다시 한번 — 화면 목록과 화살표, 상자 그림에 부품 동그라미, 상태 세 칸 이상. 그림 못 그려도 됩니다. 네모, 화살표, 글자면 돼요. 예쁘게가 아니라 빠뜨리지 않게. 16차는 이 종이로 시작합니다. 반드시 가져오세요. 구조도가 없어도 2쪽 소재로 시작할 수 있어요.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">종이를 실물로 넘기며 — 1쪽 순서표, 2쪽 견본을 들어 보인다. 4쪽 하단 "보이는 데이터" 칸을 짚으며 "이게 16차 재료"라고 한 마디. 소재 막힌 사람은 "화면 3개 이하, 대표 화면 1장"으로 작게. 브리핑 중 구조도를 꺼내게 하지 않는다 — 화면도는 구조도 없이 시작 가능한 종이다.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">합격 기준은 소리 내어 정확히 2회. "16차는 이 종이로 시작"을 못 박는다. 구조도 미제출자에게 질책 프레임 금지 — 2쪽 소재로 시작 가능함을 조용히.</div></div>
+    <div class="next">→ 넘어가며: <b>"마지막으로 다음 시간 예고 — 화면에 보이는 것들, 어디서 왔을까요?"</b></div>
+    <div class="pgfoot">— 슬라이드 20 · 21 / 25 —</div>
+  </section>
+
+  <!-- 20 -->
+  <section class="page">
+    <div class="head"><span class="numbox">21</span><span class="sec">Part 5 · 16차 예고</span></div>
+    <div class="ptitle">화면에 보이는 것은 어디서 오나</div><div class="time">⏱ 2분 (158–160)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">점수·등급·리더보드 이름은 화면이 만든 게 아니라 창고에서 온 것. 12차 떡밥 회수 "창고 속은 16차에". 화면도의 「보이는 데이터」 칸이 16차 재료.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">결과 카드 목업에 호박색 "창고" 표시(87·17/20·리더보드 이름). dl 3 (화면이 만든 것 / 못 만드는 것 / 16차).</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">오늘 결과 카드를 네 번 봤죠. 마지막으로 한 번 더 — 호박색 표시 보세요. 87점, A등급, 역할 17점, 리더보드의 민지 92점. 이건 화면이 만든 게 아니에요. 상자도 옷도 움직임도 부품도 다 화면이 만들었지만, 저 숫자와 이름은 어디선가 와야 합니다. 지난주에 "창고"라고 했던 곳. 다음 시간에 그 창고 속을 봅니다 — 표가 어떻게 생겼고, 뭐가 규칙이고, 열쇠가 왜 서버에만 있는지. 화면도 4쪽 맨 아래 "이 화면에 보이는 데이터" 칸, 그게 16차 첫 재료예요. 오늘은 여기까지.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">DB·테이블·SQL 설명 금지 — "창고에서 온 것" 한 문장 + 화면도 칸 지목만. 2분 넘기지 않기.</div></div>
+    <div class="next">→ 넘어가며: <b>(엔딩 슬라이드로)</b></div>
+    <div class="pgfoot">— 슬라이드 21 · 22 / 25 —</div>
+  </section>
+
+  <!-- 21 -->
+  <section class="page">
+    <div class="head"><span class="numbox">22</span><span class="sec">Part 5 · 엔딩</span></div>
+    <div class="ptitle">엔딩 — "부품과 상태의 조립"</div><div class="time">⏱ 클로징 (160)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">핵심 메시지를 처음과 같은 문장으로 닫는다 — 아침엔 이해 안 됐던 문장이 지금은 당연해졌는지 묻는다. 화면도 지참 재확인.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">dark closing — 핵심 메시지 + 후렴 + "화면도 꼭 챙겨 오세요".</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">아침에 이 문장 보여드렸죠. "화면은 한 장의 그림이 아니라, 부품과 상태의 조립이다." 그때는 화면이 그림 아니면 뭐냐 싶으셨을 거예요. 지금은요? 상자로 보이고, 옷이 보이고, 누르면 뭐가 일어날지 보이고, 어디가 부품인지 보이고, 그리고 — 비어 있을 때랑 기다릴 때랑 실패했을 때 어떻게 생겼을지 보이죠. 그 눈으로 내일부터 앱을 켜 보세요. 매주 눌렀습니다. 오늘은 그게 뭔지 압니다. 아, 코드를 왜 아홉 줄만 보여줬냐 — 이 눈이 없으면 코드는 기호의 바다예요. 아까 그 아홉 줄이 읽힌 건 상자를 먼저 봤기 때문이고, 나머지는 이 눈이 생긴 다음에 — 다음 시즌에. 화면도 꼭 챙겨 오세요. 수고하셨습니다.</div></div>
+    <div class="box ref"><div class="lab">📌 수업 후 체크 (01 기획안 §10)</div><div class="body">① 합격 기준 2회 언급했는가 ② 막힌 용어 기록(04 보강·16차 한 줄 복습 대상) ③ 밀린 구간 — 특히 Part 3(상태·이동) 실제 소요 ④ "코드 보여달라" 요청 횟수(다음 시즌 수요 신호) ⑤ 화면도 「보이는 데이터」 칸 작성 여부 → 16차 오프닝 재료 ⑥ 랜딩 course-12(12·14 Part 묶기) 반영 확인</div></div>
+    <div class="pgfoot">— 슬라이드 22 · 23 / 25 —</div>
+  </section>
+
+  <!-- 22 예비 -->
+  <section class="page">
+    <div class="head"><span class="numbox">23</span><span class="sec">예비 · "코드는 언제 보나요?"</span></div>
+    <div class="ptitle">예비 슬라이드 — 질문이 나올 때만</div><div class="time">⏱ 시간 배정 없음</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">"오늘 본 아홉 줄이 전부 — 다음 시즌." 슬라이드 07을 근거로 답하고 궁금증은 사전으로.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">center-quote "다음 시즌에 — 오늘 본 아홉 줄이 전부입니다" + 부제.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">좋은 질문이에요. 오늘은 아까 그 아홉 줄이 전부입니다. 다음 시즌에 봅니다. 이유는 하나 — 오늘 배운 4단의 눈이 없으면 코드는 기호의 바다예요. 아까 아홉 줄이 읽힌 건 상자를 먼저 봤기 때문이에요. 뼈대·옷·움직임·부품으로 화면을 볼 수 있게 된 사람에게 코드는 "아, 이게 그 상자구나"가 됩니다. 그 눈이 지금 생기는 중이에요. 궁금하신 분은 사전에 실명이 다 있으니까 집에서 10분만 검색해 보세요 — 오늘 배운 이름표가 그대로 나올 겁니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">질문이 안 나오면 건너뛴다. 나오면 이 장을 띄우고 30초 — 길게 변명하지 않기. 14차는 12차보다 이 질문이 셀 수 있다(슬라이드 07에서 맛을 봤으니). "한 장이 전부"를 흔들지 않는다.</div></div>
+    <div class="pgfoot">— 슬라이드 23 · 24 / 25 —</div>
+  </section>
+
+  <!-- 23 부록 -->
+  <section class="page">
+    <div class="head"><span class="numbox">24</span><span class="sec">부록 · 전체 화면 지도 한 장</span></div>
+    <div class="ptitle">부록 — 질문이 나오면 이 장을 띄운다 (앱을 열지 않는다)</div><div class="time">⏱ 시간 배정 없음 · 질의응답·숙제 브리핑 보조</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">화면 7 + 화살표 + 부품 31 + 상태 4 + 여정 ② 화면판 + 원칙 5가 한 장에. 강의 중 슬라이드↔브라우저 전환 없음 — 실제 앱을 켜서 보여주지 않는다.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">.tree 화면 7개(각 화면의 부품·상태·이동) + 부품/상태 요약 + 콜아웃(여정 ②·원칙 5).</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body"><b>본편에서 미리 쓰지 말 것</b> — 06(한 화면 안)→16(여러 장)→17(화면 사이)의 단계적 공개가 무너진다. 쓰는 순간 = 숙제 브리핑 중 "우리 앱 화면이 몇 개인지 어떻게 세요?" 같은 질문, 질의응답, 클로징 후 배경 화면.</div></div>
+    <div class="box ref"><div class="lab">📌 FAQ (03 강사원본 §9)</div><div class="body">"태그 이름 알려주세요" → 사전 1부, 집에서 검색 10분 / "React가 뭐예요" → 12차 15 한 줄: 화면을 부품으로 조립하는 라이브러리, 오늘의 '부품'이 그 부품 / "디자이너와 뭐가 달라요" → 디자이너는 옷과 UX, 개발자는 뼈대와 움직임 — 그래서 세 장(10) / "우리 앱은 화면이 하나뿐" → 한 화면이어도 상태는 네 장 / "폰·PC 둘 다 그려야 하나요" → 대표 화면은 폰 기준, PC 차이 1곳만 보너스 / "상태가 4개보다 많은데요" → 많아도 됨, 4칸은 최소.</div></div>
+    <div class="pgfoot">— 슬라이드 24 · 25 / 25 —</div>
+  </section>
+
+</div>
+</body>
+</html>
