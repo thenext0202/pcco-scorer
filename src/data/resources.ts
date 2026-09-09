@@ -335,6 +335,28 @@ export const resourceGroups: ResourceGroup[] = [
     ],
   },
   {
+    courseId: "course-11",
+    label: "15차",
+    title: "굳힌다 — 반복을 지침으로",
+    framework: "I-MRKO 5칸 + 판별 3조건",
+    items: [
+      {
+        file: "/downloads/c15/slides.pdf",
+        downloadName: "15강_지침굳히기_슬라이드.pdf",
+        title: "슬라이드",
+        description: "수업에서 띄운 슬라이드 전체",
+        kind: "pdf",
+      },
+      {
+        file: "/downloads/c15/instruction-worksheet.docx",
+        downloadName: "15강_지침_워크시트.docx",
+        title: "지침 워크시트",
+        description: "반복 업무 찾기(판별 3조건·체크리스트·재료 3개) + 5칸 초벌 + 조립(헤더 5개) + 시험 기록·비교 3질문 (A4 5쪽)",
+        kind: "docx",
+      },
+    ],
+  },
+  {
     courseId: "course-12",
     label: "14차",
     title: "화면을 그린다 — 보이는 것의 해부",

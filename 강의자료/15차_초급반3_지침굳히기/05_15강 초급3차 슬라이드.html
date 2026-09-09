@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>15차 강의 슬라이드 · 굳힌다 — 반복을 지침으로</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root{--bg:#0c1f1d; --ink:#152321; --muted:#66807c; --line:#e2ecea;
+        --teal:#0d9488; --teal-l:#5eead4; --teal-bg:#f0fdfa; --amber:#d97706; --red:#dc2626;}
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:"Pretendard","Malgun Gothic",-apple-system,sans-serif; background:#3a3a40;}
+  .deck{display:flex; flex-direction:column; align-items:center; gap:22px; padding:22px;}
+  .slide{width:1280px; height:720px; position:relative; overflow:hidden; background:#fff; flex:0 0 auto;}
+  .pad{position:absolute; inset:0; padding:52px 66px;}
+  .eyebrow{color:var(--teal); font-size:14.5px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; display:flex; align-items:center; gap:10px;}
+  .eyebrow::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--teal);}
+  .eyebrow.red{color:var(--red);} .eyebrow.red::before{background:var(--red);}
+  .eyebrow.amber{color:var(--amber);} .eyebrow.amber::before{background:var(--amber);}
+  .title{font-size:44px; font-weight:800; color:var(--ink); line-height:1.16; margin-top:18px; letter-spacing:-.02em;}
+  .title.sm{font-size:38px;}
+  .title .dim{color:#9aacaa; font-weight:700;} .title .pp{color:var(--teal);} .title .strike{text-decoration:line-through; color:#b3c2c0; font-weight:700;}
+  .subtitle{font-size:19px; color:var(--muted); margin-top:13px; line-height:1.5;}
+  .foot{position:absolute; left:66px; right:66px; bottom:26px; display:flex; justify-content:space-between; font-size:12.5px; color:#a2b3b0; letter-spacing:.04em;}
+  .callout{margin-top:22px; background:#f4faf9; border-left:4px solid var(--teal); border-radius:0 8px 8px 0; padding:16px 22px; font-size:20px; color:#2f4744; line-height:1.5;}
+  .callout.sm{font-size:17px; padding:14px 20px;}
+  .callout .pp{color:var(--teal); font-weight:700;} .callout .rr{color:var(--red); font-weight:700;}
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:26px;}
+  .cards.c2{grid-template-columns:repeat(2,1fr);} .cards.c4{grid-template-columns:repeat(4,1fr);}
+  .card{border:1px solid var(--line); border-radius:14px; padding:20px;}
+  .card .k{color:var(--teal); font-size:12.5px; font-weight:700; letter-spacing:.05em;}
+  .card .t{font-size:20px; font-weight:800; color:var(--ink); margin-top:9px;}
+  .card .d{font-size:14px; color:#748c88; margin-top:7px; line-height:1.5;}
+  .card.hot{background:var(--teal-bg); border-color:#8fd8cf;}
+  .card.hot .t{color:var(--teal);}
+  .card.blank{min-height:210px; background:#fbfdfd; border-style:dashed; border-color:#c6d9d6;}
+  .twocol{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:24px;}
+  .panel{border:1px solid var(--line); border-radius:14px; padding:22px;}
+  .panel.red{border-color:#f3c9c9; background:#fdf5f5;} .panel.red h4{color:var(--red);}
+  .panel.green{border-color:#bfe7e1; background:#f2fbf9;} .panel.green h4{color:var(--teal);}
+  .panel h4{font-size:16.5px; color:var(--teal); margin-bottom:11px;}
+  .panel ul{margin-left:18px;} .panel li{font-size:15.5px; color:#2f4744; margin:8px 0; line-height:1.45;}
+  .mono{font-family:ui-monospace,monospace; background:#dcf5f1; color:#0f5f57; padding:1px 7px; border-radius:5px; font-size:.92em;}
+  .bigstate{margin-top:34px; font-size:35px; font-weight:800; color:var(--ink); line-height:1.32; letter-spacing:-.02em;}
+  .bigstate .pp{color:var(--teal);}
+  .steps{display:flex; align-items:stretch; gap:12px; margin-top:28px;}
+  .step{flex:1; border:1px solid var(--line); border-radius:14px; padding:18px 14px; text-align:center; position:relative;}
+  .step .sn{width:28px; height:28px; border-radius:8px; background:var(--teal); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; margin:0 auto 10px; font-size:14px;}
+  .step .stt{font-size:16px; font-weight:800; color:var(--ink);}
+  .step .std{font-size:13px; color:#748c88; margin-top:5px; line-height:1.4;}
+  .step:not(:last-child)::after{content:"›"; position:absolute; right:-11px; top:50%; transform:translateY(-50%); color:var(--teal-l); font-size:21px; font-weight:800; z-index:2;}
+  .dl{margin-top:22px;}
+  .di{display:flex; gap:16px; align-items:flex-start; padding:12px 0; border-bottom:1px solid #eef4f3;}
+  .di .dk{flex:0 0 190px; display:flex; align-items:center; gap:9px;}
+  .di .dk .b{background:var(--teal); color:#fff; font-weight:800; font-size:13px; border-radius:6px; padding:3px 10px;}
+  .di .dk .kt{font-size:17px; font-weight:800; color:var(--ink);}
+  .di .dd{flex:1; font-size:15.5px; color:#40534f; line-height:1.5;}
+  .di .dd b{color:var(--teal);}
+  .timerbox{margin-top:30px; display:flex; align-items:center; gap:26px;}
+  .timer{font-size:96px; font-weight:800; color:var(--teal); letter-spacing:.02em; font-variant-numeric:tabular-nums;}
+  .timer small{font-size:22px; color:#8aa39f; font-weight:700; display:block; letter-spacing:.2em; margin-top:2px;}
+  .checkgrid{display:grid; grid-template-columns:1fr 1fr; gap:6px 26px; margin-top:18px;}
+  .chk{display:flex; gap:9px; align-items:baseline; font-size:15px; color:#2f4744; padding:4.5px 0; border-bottom:1px solid #f0f6f5;}
+  .chk .cb{color:#9db8b4; font-size:14px;}
+  .chk .lv{font-size:11px; font-weight:800; border-radius:4px; padding:1px 6px; flex-shrink:0;}
+  .lv1{background:#e6f3f1; color:#0d9488;} .lv2{background:#fef3c7; color:#b45309;} .lv3{background:#fde8e8; color:#b91c1c;}
+  /* dark cover/closing */
+  .slide.dark{background:var(--bg);}
+  .blob{position:absolute; border-radius:50%; filter:blur(2px);}
+  .blob.b1{width:320px; height:320px; left:-80px; top:-100px; background:var(--teal);}
+  .blob.b2{width:240px; height:240px; right:120px; bottom:-140px; background:#115e59;}
+  .dark .eyebrow{color:var(--teal-l);} .dark .eyebrow::before{background:var(--teal-l);}
+  .cover .big{position:absolute; left:66px; right:66px; bottom:190px; font-size:68px; font-weight:800; color:#fff; line-height:1.16; letter-spacing:-.03em;}
+  .cover .big .pp{color:var(--teal-l);} .cover .big .strike{text-decoration:line-through; color:#4c6663; font-weight:700;}
+  .cover .csub{position:absolute; left:68px; right:66px; bottom:148px; font-size:22px; color:#9ab4b0;}
+  .lect{position:absolute; left:66px; bottom:58px; display:flex; align-items:center; gap:12px;}
+  .lect .av{width:40px; height:40px; border-radius:50%; background:var(--teal); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;}
+  .lect .lc{font-size:12px; color:#9ab4b0; letter-spacing:.15em;} .lect .ln{font-size:16px; color:#fff; font-weight:700;}
+  .eyebrow.top{position:absolute; left:66px; top:50px;}
+  .dark .foot{color:#547571;}
+  .three-cover{position:absolute; right:66px; top:150px; display:flex; flex-direction:column; gap:14px;}
+  .pcv{display:flex; align-items:center; gap:14px;} .pcv .l{width:48px; height:48px; border-radius:10px; background:rgba(94,234,212,.14); color:var(--teal-l); font-weight:800; font-size:21px; display:flex; align-items:center; justify-content:center;}
+  .pcv .w{color:#cfe4e1; font-size:17px; font-weight:600; white-space:nowrap;}
+  .closing .big{position:absolute; left:66px; right:66px; top:260px; font-size:60px; font-weight:800; color:#fff; letter-spacing:-.02em; line-height:1.25;}
+  .closing .big .pp{color:var(--teal-l);}
+  .closing .csub{position:absolute; left:68px; right:66px; top:440px; font-size:21px; color:#9ab4b0; line-height:1.6;}
+  .center-quote{position:absolute; left:100px; right:100px; top:250px; font-size:52px; font-weight:800; color:var(--ink); line-height:1.35; letter-spacing:-.02em; text-align:center;}
+  .center-quote .pp{color:var(--teal);}
+  .center-sub{position:absolute; left:100px; right:100px; top:470px; text-align:center; font-size:21px; color:var(--muted); line-height:1.6;}
+  @media print{@page{size:1280px 720px; margin:0;} body{background:#fff;} .deck{display:block!important; gap:0; padding:0;} .slide{break-after:page; break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- 01 표지 -->
+  <section class="slide dark cover">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="eyebrow top">BEGINNER 3 · INSTRUCTION</div>
+    <div class="three-cover">
+      <div class="pcv"><div class="l">I</div><div class="w">정체성 — 이름·역할·성격</div></div>
+      <div class="pcv"><div class="l">M</div><div class="w">임무 — 주로 하는 일</div></div>
+      <div class="pcv"><div class="l">R</div><div class="w">규칙 — 숫자·금지어·포맷</div></div>
+      <div class="pcv"><div class="l">K</div><div class="w">지식 — 한 번 올려두는 자료</div></div>
+      <div class="pcv"><div class="l">O</div><div class="w">출력 — 매번 나오는 포맷</div></div>
+    </div>
+    <div class="big"><span class="strike">매번 다시 말하기</span><br/><span class="pp">한 번만 써두기</span></div>
+    <div class="csub">굳힌다 — 반복을 지침으로 · 오늘은 가져올 것이 없습니다, 재료는 머릿속에 있습니다</div>
+    <div class="foot"><span>굳힌다 · 반복을 지침으로</span><span>01 / 20</span></div>
+  </section>
+
+  <!-- 02 지난 시간 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 0 · 지난 시간</div>
+    <div class="title">변환표 4줄, 그리고 <span class="pp">쏘고 → 보고 → 고친다</span></div>
+    <div class="subtitle">지난 시간엔 구조도 네 칸을 프롬프트로 옮겨 화면을 띄웠습니다 — 한 장으로만 되살립니다.</div>
+    <div class="cards">
+      <div class="card"><div class="k">변환표 4줄</div><div class="t">칸이 요소로</div><div class="d">데이터→맥락+제약 · 동작→목적+제약 · 화면→출력+디바이스 · 연결→제약</div></div>
+      <div class="card"><div class="k">엔진</div><div class="t">쏘고 → 보고 → 고친다</div><div class="d">실행하고, 화면과 구조도를 비교하고, 프롬프트를 고쳐 새 대화에서 다시</div></div>
+      <div class="card hot"><div class="k">비교 3질문</div><div class="t">화면이 채점표</div><div class="d">그렸는데 없다 / 폰에서 깨진다 / 안 그렸는데 있다</div></div>
+    </div>
+    <div class="callout">그 프롬프트, <span class="pp">다음 주에 또 쓰시나요?</span> — 안 쓰죠. 앱은 한 번이면 끝입니다. 오늘은 <b>매주 다시 하는 일</b> 이야기입니다.</div>
+    <div class="foot"><span>PART 0 / 지난 시간</span><span>02 / 20</span></div>
+  </div></section>
+
+  <!-- 03 강사 데모 ⭐ -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">PART 0 · 강사 데모 ⭐</div>
+    <div class="title">같은 한 줄, <span class="pp">두 곳에</span> — 「강의 기획 작업실」</div>
+    <div class="subtitle">제가 늘 하는 일이 강의 기획입니다. 주제 한 줄만 던져보겠습니다 — 두 곳에.</div>
+    <div class="twocol">
+      <div class="panel red"><h4>(a) 지침 없는 새 대화</h4><ul>
+        <li>입력: <span class="mono">다음 주 초급반: 지침</span></li>
+        <li>되묻거나, 산문으로 길게, 시간 배분 없음</li>
+        <li>매번 이 상태에서 다시 설명해야 합니다</li>
+      </ul></div>
+      <div class="panel green"><h4>(b) 지침이 등록된 프로젝트</h4><ul>
+        <li>입력: <span class="mono">다음 주 초급반: 지침</span> — <b>똑같이 한 줄</b></li>
+        <li>개요표 → 타임라인 → 리스크표 → 산출물, <b>늘 쓰던 순서로</b></li>
+        <li>재료를 바꿔도 틀이 같습니다</li>
+      </ul></div>
+    </div>
+    <div class="callout">요청은 똑같이 한 줄이었습니다. 차이는 <span class="pp">제가 미리 써둔 한 페이지</span>예요 — 오늘 여러분 것도 한 페이지입니다.</div>
+    <div class="foot"><span>PART 0 / 강사 데모</span><span>03 / 20</span></div>
+  </div></section>
+
+  <!-- 04 핵심 메시지 -->
+  <section class="slide">
+    <div class="pad">
+      <div class="eyebrow">PART 0 · 오늘의 문장</div>
+      <div class="center-quote">"재료만 바뀌는 일은<br/><span class="pp">지침이 된다</span>"</div>
+      <div class="center-sub">앱은 프롬프트로 — 한 번이면 끝.<br/><b style="color:#0d9488">매주 다시 하는 일은 지침으로 — 한 번 써두면 매번 붙습니다.</b></div>
+      <div class="foot"><span>PART 0 / 핵심 메시지</span><span>04 / 20</span></div>
+    </div>
+  </section>
+
+  <!-- 05 프롬프트 vs 지침 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 1 · 처음 듣는 분 기준으로</div>
+    <div class="title">프롬프트는 <span class="pp">주문</span>, 지침은 <span class="pp">가게 매뉴얼</span></div>
+    <div class="subtitle">주문은 손님이 올 때마다 합니다. 매뉴얼은 벽에 한 번 붙여두면 알바가 바뀌어도 같은 방식으로 일합니다.</div>
+    <div class="dl">
+      <div class="di"><div class="dk"><span class="b">비유</span><span class="kt">주문 vs 매뉴얼</span></div><div class="dd">"아메리카노 하나요"는 매번 — "컵은 왼손, 영수증은 접어서"는 <b>벽에 한 번</b></div></div>
+      <div class="di"><div class="dk"><span class="b">정의</span><span class="kt">지침이란</span></div><div class="dd"><b>매 대화의 맨 앞에 자동으로 붙는 글.</b> 내가 안 써도 AI는 매번 그걸 먼저 읽고 시작한다</div></div>
+      <div class="di"><div class="dk"><span class="b">왜</span><span class="kt">있는가</span></div><div class="dd">"너는 ○○ 전문가야, 형식은 이렇게, 말투는 이렇게"를 <b>매번 다시 치지 않으려고</b></div></div>
+      <div class="di"><div class="dk"><span class="b">실물</span><span class="kt">어디에 있나</span></div><div class="dd">claude.ai <b>프로젝트 → 지침</b> 칸. (없으면 대화 맨 앞에 붙여도 같은 효과)</div></div>
+    </div>
+    <div class="callout sm">지난 시간 프롬프트에서 <span class="pp">한 번도 안 바뀐 문장</span>이 있었죠 — "폰 세로", "HTML 한 파일". 그게 벌써 매뉴얼감이었습니다.</div>
+    <div class="foot"><span>PART 1 / 프롬프트 vs 지침</span><span>05 / 20</span></div>
+  </div></section>
+
+  <!-- 06 판별 3조건 ⭐ -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 1 · 지침이 되는 일 ⭐</div>
+    <div class="title">판별 3조건 — <span class="pp">주기 · 형식 · 재료</span></div>
+    <div class="subtitle">셋 다 통과하면 지침. 하나라도 탈락하면 프롬프트로 충분합니다.</div>
+    <div class="cards">
+      <div class="card"><div class="k">① 주기</div><div class="t">주 1회 이상 다시 하나?</div><div class="d">통과: 주간 보고, 매주 강의 기획<br/>탈락: 앱 만들기 (한 번)</div></div>
+      <div class="card"><div class="k">② 형식</div><div class="t">결과물의 틀이 매번 같은가?</div><div class="d">통과: 보고서 4섹션, 기획안 표 3개<br/>탈락: 매번 다른 형식의 부탁</div></div>
+      <div class="card"><div class="k">③ 재료</div><div class="t">바뀌는 건 재료뿐인가?</div><div class="d">통과: 이번 주 숫자, 이번 주 주제<br/>탈락: 목적 자체가 매번 바뀜</div></div>
+    </div>
+    <div class="callout">지난 시간의 앱은 몇 개 통과하죠? — <span class="rr">0개.</span> 주간 보고는? — <span class="pp">3개.</span> 그래서 오늘 소재가 바뀝니다.</div>
+    <div class="foot"><span>PART 1 / 판별 3조건</span><span>06 / 20</span></div>
+  </div></section>
+
+  <!-- 07 내 반복 업무 찾기 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">PART 1 · 내 소재</div>
+    <div class="title">내 반복 업무 찾기 — <span class="pp">워크시트 2쪽</span>, 5분</div>
+    <div class="timerbox">
+      <div class="timer">5:00<small>FIND</small></div>
+      <div style="flex:1">
+        <div class="dl" style="margin-top:0">
+          <div class="di"><div class="dk"><span class="b">①</span><span class="kt">매주 다시 만드는 것</span></div><div class="dd">한 줄로 적고 <b>판별 3조건에 체크</b> — 셋 다면 오늘 소재. 안 떠오르면 손 드세요, 리스트를 드립니다</div></div>
+          <div class="di"><div class="dk"><span class="b">②</span><span class="kt">매번 다시 말하던 것</span></div><div class="dd">말투·길이·형식·금지·받는 사람·배경 — <b>체크만</b> 하세요. 견본(강의 기획)이 옆에 있습니다</div></div>
+          <div class="di"><div class="dk"><span class="b">③</span><span class="kt">재료 3개</span></div><div class="dd">이번 주·지난 주·다음 주, 또는 주제 3개 — <b>한 줄씩.</b> 이따 시험에 넣을 것</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="callout">②에서 체크한 줄이 그대로 <span class="pp">규칙과 지식의 초벌</span>입니다 — 새로 지어낼 게 없습니다.</div>
+    <div class="foot"><span>PART 1 / 내 반복 업무 찾기</span><span>07 / 20</span></div>
+  </div></section>
+
+  <!-- 08 변환표 ⭐ -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 2 · 오늘의 프레임워크 ⭐</div>
+    <div class="title">5요소가 <span class="pp">5칸</span>이 됩니다 — I · M · R · K · O</div>
+    <div class="dl">
+      <div class="di"><div class="dk"><span class="b">역할</span><span class="kt">→ I 정체성</span></div><div class="dd">+ <b>이름 + 성격</b> — 대화가 길어져도 안 흔들리게</div></div>
+      <div class="di"><div class="dk"><span class="b">목적</span><span class="kt">→ M 임무</span></div><div class="dd">이번 한 번 → <b>주로 하는 일 2~3개 + 범위 밖 처리</b></div></div>
+      <div class="di"><div class="dk"><span class="b">제약</span><span class="kt">→ R 규칙 ★</span></div><div class="dd">이번 조건 → <b>항상 지키는 방식</b> — 숫자·금지어·고정 포맷으로</div></div>
+      <div class="di"><div class="dk"><span class="b">맥락</span><span class="kt">→ K 지식</span></div><div class="dd">매번 설명 → <b>한 번 올려두는 자료</b></div></div>
+      <div class="di"><div class="dk"><span class="b">출력</span><span class="kt">→ O 출력</span></div><div class="dd">이번 형식 → <b>매번 나오는 기본 포맷</b></div></div>
+    </div>
+    <div class="callout">새 것이 아니라 <span class="pp">아는 것의 상시판</span>입니다 — 지난 시간 다섯 칸이 "매번"으로 바뀐 것뿐.</div>
+    <div class="foot"><span>PART 2 / 변환표</span><span>08 / 20</span></div>
+  </div></section>
+
+  <!-- 09 I 정체성 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 2 · ① I</div>
+    <div class="title">정체성 — <span class="pp">이름 · 역할 · 성격</span></div>
+    <div class="subtitle">알바 명찰을 생각하세요 — 이름, 담당, 그리고 "이 사람은 이렇게 일한다".</div>
+    <div class="dl">
+      <div class="di"><div class="dk"><span class="b">비유</span><span class="kt">명찰</span></div><div class="dd">"김○○ · 카운터 담당 · 빠르고 말 짧음" — 명찰이 있으면 <b>누가 와도 같은 사람처럼</b> 일한다</div></div>
+      <div class="di"><div class="dk"><span class="b">정의</span><span class="kt">이름 + 역할 + 성격 2~3개</span></div><div class="dd">"너는 <b>'기획실장'</b>이라는 10년차 강의 기획자. 성격: 표로 말한다, 시간부터 센다, 근거 없이 칭찬 안 한다"</div></div>
+      <div class="di"><div class="dk"><span class="b">왜</span><span class="kt">이름이 필요한가</span></div><div class="dd">이름이 있으면 <b>대화가 길어져도 캐릭터가 안 흔들린다</b> — 역할만 있으면 10번째 대답에서 말투가 바뀐다</div></div>
+    </div>
+    <div class="twocol" style="margin-top:14px">
+      <div class="panel red"><h4>흔들리는 정체성</h4><ul><li>"너는 친절한 AI 비서야"</li><li>"세계 최고의 천재 기획자" — <b>과장은 오히려 톤을 흔든다</b></li></ul></div>
+      <div class="panel green"><h4>굳는 정체성</h4><ul><li>실재할 법한 이름 + 경력 + 분야</li><li>성격은 <b>일하는 방식</b>으로 — "숫자 먼저", "사족 없음"</li></ul></div>
+    </div>
+    <div class="foot"><span>PART 2 / ① 정체성</span><span>09 / 20</span></div>
+  </div></section>
+
+  <!-- 10 M 임무 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 2 · ② M</div>
+    <div class="title">임무 — <span class="pp">주로 하는 일, 그리고 그 밖의 일</span></div>
+    <div class="subtitle">가게가 파는 것을 세 가지로 정하면 손님도 알바도 헷갈리지 않습니다.</div>
+    <div class="dl">
+      <div class="di"><div class="dk"><span class="b">비유</span><span class="kt">메뉴판 3줄</span></div><div class="dd">"커피·빵·샌드위치" — 파스타를 시키면 "저희는 안 합니다, 샌드위치는요?" 하고 <b>본업으로 돌린다</b></div></div>
+      <div class="di"><div class="dk"><span class="b">정의</span><span class="kt">일 2~3개 + 범위 밖 처리</span></div><div class="dd">"① 주제 한 줄 → 기획안 초안 ② 타임라인 배분 ③ 리스크표. <b>그 외 요청은 한 줄로 답하고 본업으로</b>"</div></div>
+      <div class="di"><div class="dk"><span class="b">왜</span><span class="kt">좁혀야 하나</span></div><div class="dd"><b>"뭐든 다 해주는 AI는 결국 뭐 하나 제대로 못 한다"</b> — 범위를 좁혀야 품질이 오른다</div></div>
+    </div>
+    <div class="callout">임무는 <span class="pp">"하는 것"</span>, 지식은 <span class="pp">"참고하는 것"</span> — 이따 지식 칸에서 이 구분이 다시 나옵니다.</div>
+    <div class="foot"><span>PART 2 / ② 임무</span><span>10 / 20</span></div>
+  </div></section>
+
+  <!-- 11 R 규칙 ⭐ -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">PART 2 · ③ R ⭐ 오늘의 승부처</div>
+    <div class="title">규칙 — <span class="pp">해석의 여지가 있는 규칙은 작동하지 않는다</span></div>
+    <div class="subtitle">매뉴얼에 "친절하게"라고 쓰면 알바마다 다르게 일합니다. 숫자 · 금지어 · 고정 포맷 — 셋 중 하나로 바꿉니다.</div>
+    <div class="twocol">
+      <div class="panel red"><h4>형용사 — 세 산출물이 제각각</h4><ul>
+        <li>"간결하게" — AI의 간결과 내 간결은 다르다</li>
+        <li>"보기 좋게", "전문적으로"</li>
+        <li>"짧고 자세히" — <b>모순</b></li>
+      </ul></div>
+      <div class="panel green"><h4>측정 가능 — 세 산출물이 같은 틀</h4><ul>
+        <li><b>숫자</b> — "결론 1줄 + 근거 3줄"</li>
+        <li><b>금지어</b> — "'~것 같습니다' 금지, 이모지 금지"</li>
+        <li><b>고정 포맷</b> — "표는 3열, 헤더 고정"</li>
+        <li>+ <b>이유</b> — "(팀장이 1분 안에 읽으므로)" → 새 상황에도 응용</li>
+      </ul></div>
+    </div>
+    <div class="callout">이따 시험에서 <span class="rr">세 산출물이 제각각인 분</span> — 규칙에 형용사만 있는 겁니다. 2쪽 체크리스트를 보세요, 거기 이미 적어뒀잖아요.</div>
+    <div class="foot"><span>PART 2 / ③ 규칙</span><span>11 / 20</span></div>
+  </div></section>
+
+  <!-- 12 K 지식 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 2 · ④ K</div>
+    <div class="title">지식 — <span class="pp">매번 설명하던 것을 한 번 올려둔다</span></div>
+    <div class="subtitle">가게 벽의 메뉴판과 단골 명부 — 알바가 매번 물어보지 않아도 되게.</div>
+    <div class="dl">
+      <div class="di"><div class="dk"><span class="b">비유</span><span class="kt">벽에 붙인 것들</span></div><div class="dd">단골 명부 · 배달 구역 지도 · 지난 달 행사 사진 — <b>참고하는 것</b>이지 하는 일이 아니다</div></div>
+      <div class="di"><div class="dk"><span class="b">정의</span><span class="kt">항상 참고하는 자료</span></div><div class="dd">"[수강생] 초급반 = 비개발자, 격주 120분, claude.ai 무료 / [지난 회차] 11차 구조 → 13차 프롬프트"</div></div>
+      <div class="di"><div class="dk"><span class="b">왜</span><span class="kt">있는가</span></div><div class="dd">"우리 팀은 5명이고 보고는 팀장에게…"를 <b>매주 다시 설명하지 않으려고</b> — 2쪽 ②의 "매번 설명하던 배경"이 여기로</div></div>
+    </div>
+    <div class="callout sm"><span class="rr">넣지 말 것</span> — 비밀번호 · 개인정보 · 회사 기밀 · 매출 숫자. 가명이나 [자리표시]로. <span class="pp">지식 vs 임무</span> — 참고하는 것인가, 하는 것인가?</div>
+    <div class="foot"><span>PART 2 / ④ 지식</span><span>12 / 20</span></div>
+  </div></section>
+
+  <!-- 13 O 출력 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">PART 2 · ⑤ O</div>
+    <div class="title">출력 — <span class="pp">매번 요청 안 해도 나오는 포맷</span></div>
+    <div class="subtitle">영수증 양식 — 손님이 "영수증 이렇게 뽑아주세요"라고 매번 말하지 않습니다.</div>
+    <div class="dl">
+      <div class="di"><div class="dk"><span class="b">비유</span><span class="kt">영수증 양식</span></div><div class="dd">항목 → 금액 → 합계 → 날짜. <b>양식이 정해져 있으니</b> 누가 뽑아도 같은 모양</div></div>
+      <div class="di"><div class="dk"><span class="b">정의</span><span class="kt">순서 + 섹션 + 길이</span></div><div class="dd">"항상 <b>## 개요 (표) → ## 타임라인 → ## 리스크 → ## 산출물</b> 순서, 헤더 고정, 800자 이내"</div></div>
+      <div class="di"><div class="dk"><span class="b">왜</span><span class="kt">고정하나</span></div><div class="dd">지난 시간 출력은 "이번 한 번"의 형식 — 지침의 출력은 <b>기본값</b>. 다음 작업의 <b>입력</b>이 되기도 한다</div></div>
+    </div>
+    <div class="callout">셋의 <span class="pp">섹션 순서가 다르면</span> 출력 칸이 빈 겁니다 — "매번 어떤 순서로?" 그 답을 헤더로.</div>
+    <div class="foot"><span>PART 2 / ⑤ 출력</span><span>13 / 20</span></div>
+  </div></section>
+
+  <!-- 14 예시의 함정 ⭐ -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">PART 2 · 함정 ⭐</div>
+    <div class="title">예시의 함정 — <span class="pp">예시 1개는 복사, 3개는 감옥</span></div>
+    <div class="subtitle">"지난 주 보고서를 통째로 붙이면 되겠네?" — 그러면 AI는 그 보고서 안에 갇힙니다.</div>
+    <div class="twocol">
+      <div class="panel red"><h4>지침에 예시를 넣으면</h4><ul>
+        <li>이모지 썼으면 매번 이모지, 3문단이면 매번 3문단</li>
+        <li>지난 보고서의 <b>숫자·문장까지 베낀다</b></li>
+        <li>예시 3개면 그 안에서만 돈다</li>
+      </ul></div>
+      <div class="panel green"><h4>대신 이렇게</h4><ul>
+        <li>지침엔 <b>규칙</b> — "항상 이렇게" (형식만 옮긴다)</li>
+        <li>예시는 <b>프롬프트</b>에 — "이번엔 이런 느낌으로"</li>
+        <li>예외: <b>"항상 이 포맷" 템플릿 1개</b>는 예시가 아니라 규칙</li>
+      </ul></div>
+    </div>
+    <div class="callout">지난 보고서에서 <span class="pp">형식만</span> 꺼내 규칙으로 — "결론 1줄 · 표 3열 · 계획 3줄". 본문은 빼세요.</div>
+    <div class="foot"><span>PART 2 / 예시의 함정</span><span>14 / 20</span></div>
+  </div></section>
+
+  <!-- 15 다같이 지침 쓰기 ⭐ -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">실습 1 · 다같이 지침 쓰기 ⭐</div>
+    <div class="title">「주간 보고 작업실」을 <span class="pp">다같이</span> 씁니다 <span class="dim">— 8분</span></div>
+    <div class="subtitle">이번에도 강사는 질문만 — 문장은 여러분 입에서 나옵니다. 헤더 다섯 개만 제가 붙입니다.</div>
+    <div class="twocol">
+      <div class="panel"><h4>질문 순서 (훔쳐 가세요)</h4><ul>
+        <li>이 보고서 담당 AI, <b>이름</b>은? 경력은? 성격 둘?</li>
+        <li>주로 시킬 일 <b>둘</b>? 다른 걸 시키면?</li>
+        <li>"간결하게" — <b>몇 줄</b>? "보기 좋게" — 몇 열?</li>
+        <li>매주 <b>다시 설명하던 건</b>? 팀·팀장·형식</li>
+        <li>매번 <b>어떤 순서</b>로 나오면?</li>
+      </ul></div>
+      <div class="panel green"><h4>→ 지침으로</h4><ul>
+        <li><b>## 정체성</b> '보고왕', 8년차, 숫자 먼저·사족 없음</li>
+        <li><b>## 임무</b> 주간 보고 정리 · 다음 주 계획 3줄 · 그 외는 한 줄</li>
+        <li><b>## 규칙</b> 결론 1줄+3항목 (1분 안에 읽으므로) · 표 3열 · '~것 같습니다' 금지</li>
+        <li><b>## 지식</b> [팀] [진행 중] [형식]</li>
+        <li><b>## 출력</b> 결론 → 한 일(표) → 계획</li>
+      </ul></div>
+    </div>
+    <div class="callout">"간결하게"가 <span class="pp">"결론 1줄 + 3개"</span>로 바뀌는 순간 — 그 한 번의 번역이 오늘 세 산출물을 가릅니다.</div>
+    <div class="foot"><span>실습 1 / 다같이 지침 쓰기</span><span>15 / 20</span></div>
+  </div></section>
+
+  <!-- 16 완성형 생김새 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">브리핑 · 완성형의 생김새</div>
+    <div class="title sm">300~700자, 헤더 5개 — <span class="pp">이 생김새만 기억하세요</span></div>
+    <div class="callout" style="margin-top:22px; font-size:15.5px; line-height:1.7; font-family:ui-monospace,monospace;">
+      <span style="color:#b45309; font-weight:700;">## 정체성</span><br/>너는 '보고왕'이라는 8년차 사무직 팀원이다. 성격: 숫자 먼저, 사족 없음.<br/>
+      <span style="color:#b45309; font-weight:700;">## 임무</span><br/>① 이번 주 메모를 주간 보고로 정리 ② 다음 주 계획 3줄. 그 외 요청은 한 줄로 답하고 "주간 보고부터"로 돌린다.<br/>
+      <span style="color:#dc2626; font-weight:700;">## 규칙</span><br/>결론 1줄 + 항목 3개 이내 (팀장이 1분 안에 읽으므로) · 표는 3열 · "~것 같습니다" 금지 · 없는 성과를 지어내지 않는다<br/>
+      <span style="color:#b45309; font-weight:700;">## 지식</span><br/>[팀] 마케팅팀 5명, 보고 대상 팀장 · [진행 중] 프로젝트 A, B · [형식] 지난 주 구조 그대로<br/>
+      <span style="color:#0d9488; font-weight:700;">## 출력</span><br/>항상: ## 이번 주 결론 (1줄) → ## 한 일 (표: 항목/결과/비고) → ## 다음 주 계획 (3줄)
+    </div>
+    <div class="checkgrid" style="margin-top:18px;">
+      <div class="chk"><span class="lv lv2">헤더 5개</span> 샵 두 개 + 한 칸 — 그대로 타이핑</div>
+      <div class="chk"><span class="lv lv3">규칙</span> 숫자 · 금지어 · 포맷 — 형용사 0개</div>
+      <div class="chk"><span class="lv lv1">지식</span> 매번 설명하던 것 — 민감 정보 없음</div>
+      <div class="chk"><span class="lv lv1">예시</span> 0개 (고정 포맷 템플릿 1개는 예외)</div>
+    </div>
+    <div class="foot"><span>브리핑 / 완성형의 생김새</span><span>16 / 20</span></div>
+  </div></section>
+
+  <!-- 17 엔진 + 규칙 + 등록 3갈래 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">브리핑 · 오늘의 엔진 · 규칙 둘 · 등록 위치</div>
+    <div class="title">박고 → 재료 셋 넣고 → <span class="pp">흔들린 줄을 고친다</span></div>
+    <div class="steps">
+      <div class="step"><div class="sn">1</div><div class="stt">박고 — 등록</div><div class="std">4쪽 지침을 claude.ai에<br/>완성도 상관없이</div></div>
+      <div class="step"><div class="sn">2</div><div class="stt">재료 셋 넣고 — 시험</div><div class="std">새 대화 3개에<br/>재료 <b>한 줄씩</b></div></div>
+      <div class="step" style="border-color:#0d9488; background:#f0fdfa;"><div class="sn">3</div><div class="stt">고친다 — 지침</div><div class="std">세 산출물 비교 →<br/>지침 <b>한 줄</b> 고쳐 다시</div></div>
+    </div>
+    <div class="twocol" style="margin-top:18px">
+      <div class="panel red"><h4>규칙 둘</h4><ul>
+        <li><b>대화 말고 지침을 고친다</b> — 대화로 고치면 다음 주에 또 말해야 한다</li>
+        <li><b>한 번에 한 줄만</b> — 뭐가 세 산출물을 바꿨는지 알 수 있게 (5쪽 기록표)</li>
+      </ul></div>
+      <div class="panel green"><h4>등록 위치 — 되는 것부터</h4><ul>
+        <li>① claude.ai <b>프로젝트 → 지침</b> (새 대화마다 자동으로 붙는다)</li>
+        <li>② 안 되면 — <b>대화 맨 앞에 지침</b>, 한 줄 띄우고 재료</li>
+        <li>③ 그래도 안 되면 — 짝 계정에서 ①</li>
+      </ul></div>
+    </div>
+    <div class="callout sm">오늘의 피드백은 점수가 아니라 <span class="pp">세 산출물이 같은 틀인가</span>입니다. 노트북이든 폰이든 됩니다.</div>
+    <div class="foot"><span>브리핑 / 엔진 · 규칙 · 등록</span><span>17 / 20</span></div>
+  </div></section>
+
+  <!-- 18 초벌 + 등록·첫 시험 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">실습 2 · 초벌 지침 + 첫 시험</div>
+    <div class="title sm">초벌 12분 — 그리고 <span class="pp">등록 · 첫 시험(v1)</span> 8분</div>
+    <div class="timerbox">
+      <div class="timer" style="font-size:72px;">12:00<small>DRAFT</small></div>
+      <div class="timer" style="font-size:72px; color:#d97706;">8:00<small>TEST</small></div>
+      <div style="flex:1">
+        <div class="dl" style="margin-top:0">
+          <div class="di"><div class="dk"><span class="b">①</span><span class="kt">초벌은 손으로</span></div><div class="dd">3쪽 5칸 각 1~3줄 → 4쪽 헤더 밑에 조립. <b>규칙은 2쪽 체크리스트에서 옮겨 적기</b></div></div>
+          <div class="di"><div class="dk"><span class="b">②</span><span class="kt">등록 + 재료 3개</span></div><div class="dd">4쪽을 지침 칸에 타이핑 → 새 대화 3개에 <b>재료 한 줄씩</b> — 완성도 상관없이 전원</div></div>
+          <div class="di"><div class="dk"><span class="b">③</span><span class="kt">그대로 두기</span></div><div class="dd">셋이 제각각이어도 <b>아직 고치지 않습니다</b> — 비교가 먼저입니다</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="callout">재료 한 줄에 <span class="pp">세 번째 산출물이 뜨는 순간</span> — 나머지를 지침이 대신 말한 겁니다.</div>
+    <div class="foot"><span>실습 2 / 초벌 + 첫 시험</span><span>18 / 20</span></div>
+  </div></section>
+
+  <!-- 19 한 번 고치기 + 쇼케이스 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">실습 3 · 한 번 고치기 + 쇼케이스</div>
+    <div class="title">세 산출물을 지침 옆에 놓고 — <span class="pp">비교 3질문</span></div>
+    <div class="subtitle">한 줄만 고쳐 다시 시험합니다(v2). 오늘은 한 바퀴만 — 나머지는 다음 주 실제 업무에서.</div>
+    <div class="dl">
+      <div class="di"><div class="dk"><span class="b">①</span><span class="kt">되묻거나 엉뚱하다</span></div><div class="dd">재료 한 줄에 "어느 팀이죠?" → <b>지식이 비었거나 임무가 없다</b> — 매번 설명하던 것을 지식에</div></div>
+      <div class="di"><div class="dk"><span class="b">②</span><span class="kt">셋이 제각각이다</span></div><div class="dd">길이·순서·말투가 다르다 → <b>규칙이 형용사</b> — 숫자·금지어·고정 포맷으로</div></div>
+      <div class="di"><div class="dk"><span class="b">③</span><span class="kt">안 시킨 걸 매번 한다</span></div><div class="dd">사족·이모지·지난 것 베끼기 → <b>금지 규칙 한 줄</b>, 또는 붙여둔 예시를 뺀다</div></div>
+    </div>
+    <div class="callout">쇼케이스 형식 — <span class="pp">"셋이 제각각이었는데 → 이 줄을 고쳤더니 → 같은 틀이 됐다"</span> — 산출물 자랑이 아니라 고친 한 줄을 발표합니다.</div>
+    <div class="foot"><span>실습 3 / 한 번 고치기 + 쇼케이스</span><span>19 / 20</span></div>
+  </div></section>
+
+  <!-- 20 엔딩 -->
+  <section class="slide dark closing">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="eyebrow top">BEGINNER · 3 OF 3 DONE</div>
+    <div class="big">지침은<br/><span class="pp">세 번째 재료에서 증명된다</span></div>
+    <div class="csub">그리고(11차) → 썼고(13차) → 굳혔습니다(15차) · 앱은 프롬프트로, 매주 하는 일은 지침으로<br/>다음 시간 안내: ________ · 수고하셨습니다!</div>
+    <div class="foot"><span>굳힌다 · 반복을 지침으로</span><span>20 / 20</span></div>
+  </section>
+
+</div>
+</body>
+</html>
