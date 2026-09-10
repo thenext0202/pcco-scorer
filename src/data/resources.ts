@@ -313,7 +313,7 @@ export const resourceGroups: ResourceGroup[] = [
     ],
   },
   {
-    courseId: "course-11",
+    courseId: "course-13",
     label: "13차",
     title: "쓴다 — 구조도를 프롬프트로 옮기는 법",
     framework: "변환표 4줄",
@@ -335,7 +335,7 @@ export const resourceGroups: ResourceGroup[] = [
     ],
   },
   {
-    courseId: "course-11",
+    courseId: "course-15",
     label: "15차",
     title: "굳힌다 — 반복을 지침으로",
     framework: "I-MRKO 5칸 + 판별 3조건",
@@ -357,7 +357,7 @@ export const resourceGroups: ResourceGroup[] = [
     ],
   },
   {
-    courseId: "course-12",
+    courseId: "course-14",
     label: "14차",
     title: "화면을 그린다 — 보이는 것의 해부",
     framework: "화면 해부 4단",

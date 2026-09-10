@@ -50,6 +50,12 @@ export default function Home() {
       <CourseDetail courseId="course-11" />
       <div className="section-divider max-w-6xl mx-auto" />
       <CourseDetail courseId="course-12" />
+      <div className="section-divider max-w-6xl mx-auto" />
+      <CourseDetail courseId="course-13" />
+      <div className="section-divider max-w-6xl mx-auto" />
+      <CourseDetail courseId="course-14" />
+      <div className="section-divider max-w-6xl mx-auto" />
+      <CourseDetail courseId="course-15" />
     </main>
   );
 }
