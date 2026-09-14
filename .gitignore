@@ -48,3 +48,6 @@ next-env.d.ts
 강의자료/**/*.exe
 강의자료/**/*.Zip
 
+
+# 강의 산출물 (공개 리포에 미포함)
+/Claude outputs/

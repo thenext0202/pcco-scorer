@@ -378,7 +378,7 @@ public/                    # 정적 파일
 
 2. **랜딩 — ★ 2026-09-10 사용자 지시로 "매 차수 = 카드 1개"로 전환.** 13·14·15차를 `courses`(카드)와 `courseDetails`(상세)에 **별도 항목 course-13 / course-14 / course-15**로 분리. course-11의 Part 5·6 → course-13·course-15 상세로, course-12의 Part 4·5(14차) → course-14 상세로 이관(course-12는 12차 단독으로 텍스트 정리). `page.tsx`에 CourseDetail 3개 마운트. resources.ts c13/c14/c15의 courseId를 course-13/14/15로. **CourseDetail 헤더 "N차 강의 복습하기"는 courses 배열 index+1** — 배열 순서를 course-1…course-15로 유지할 것. 이전 "course-11에 Part로 묶기" 방식은 폐기
 
-3. **자료실 — `public/downloads/c15/`** `slides.pdf` · `instruction-worksheet.docx`, resources.ts c15 그룹(courseId course-11, label "15차"). 러닝시트·정답지·소재 리스트·인수인계 배포 금지
+3. **자료실 — `public/downloads/c15/`** `slides.pdf` · `instruction-worksheet.docx`, resources.ts c15 그룹(courseId course-15, label "15차"). 러닝시트·정답지·소재 리스트·인수인계 배포 금지
 
 ### 12·14차 강의 (중급반 1·2강 — 개발 지도 3층 / 화면 해부 4단) — 랜딩 course-12·자료실 반영 (2026-09-02)
 
