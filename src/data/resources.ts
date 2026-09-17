@@ -385,4 +385,33 @@ export const resourceGroups: ResourceGroup[] = [
       },
     ],
   },
+  {
+    courseId: "course-16",
+    label: "16차",
+    title: "데이터를 그린다 — 창고의 해부",
+    framework: "창고 해부 4단",
+    items: [
+      {
+        file: "/downloads/c16/slides.pdf",
+        downloadName: "16강_데이터그리기_슬라이드.pdf",
+        title: "슬라이드",
+        description: "수업에서 띄운 슬라이드 전체 (부록 「전체 창고 지도 한 장」 포함)",
+        kind: "pdf",
+      },
+      {
+        file: "/downloads/c16/data-worksheet.docx",
+        downloadName: "16강_데이터도_숙제템플릿.docx",
+        title: "데이터도 (숙제 템플릿)",
+        description: "내 앱 데이터를 그리는 양식 — 남길 것·표·열·줄·문지기 표, 작성 순서 5단계 + 완성 예시 포함 (화면도 없이도 시작 가능)",
+        kind: "docx",
+      },
+      {
+        file: "/downloads/c16/data-glossary.docx",
+        downloadName: "16강_데이터용어사전.docx",
+        title: "데이터 용어 사전",
+        description: "블록형 핸드북 — 표·열·관계·열쇠·문지기를 처음부터 짚는 용어집 18항목",
+        kind: "docx",
+      },
+    ],
+  },
 ];
