@@ -27,6 +27,7 @@ Claude Sonnet 4.6 모델을 활용한 실시간 채점과 리더보드를 제공
 - `/practice` - AI 채점 실습 앱
 - `/host` - 세션 만들기 (강사용, 비밀번호 보호)
 - `/play/[code]` - 세션 참가 (수강생용)
+- `/workbook` - 실습서 목록 · `/workbook/{slug}` - 실습서 본문 (단일 HTML, `public/workbooks/{slug}.html` 을 rewrite 로 서빙)
 
 ### 네비게이션 흐름
 1. 사용자가 랜딩 페이지 방문 → 강의 소개 확인
@@ -347,6 +348,32 @@ public/                    # 정적 파일
    (관례: `slides.pdf` · `*-worksheet.docx` · `*-kit.zip`)
 2. `src/data/resources.ts`의 `resourceGroups`에 그룹 한 덩어리 추가 (`courseId`는 `content.ts`의 `courses[].id`와 반드시 일치 — 복습 섹션 역링크가 이걸로 걸린다)
 3. 끝. 페이지·용량·목록은 자동 반영 (파일이 없으면 조용히 빠짐)
+
+### 실습서 (`/workbook`) 추가 (2026-09-17)
+
+1. **목적** — 자료실처럼 내려받는 게 아니라 **링크로 들어가면 브라우저에서 바로 열리는 실습서**. 첫 권은 「AI 활용 퍼포먼스 마케팅 실습서」(`/workbook/performance`). 앞으로 여러 권이 추가될 것을 전제로 목록 구조로 만들었다.
+
+2. **서빙 방식** — 실습서는 **React 페이지가 아니라 완성된 단일 HTML 파일**이다 (자체 CSS·JS·localStorage 포함).
+   - 파일: `public/workbooks/{slug}.html`
+   - 주소: `next.config.ts` 의 `rewrites()` 가 `/workbook/:slug` → `/workbooks/:slug.html` 로 연결
+   - 실습서 HTML 안의 상태 저장 키는 `pmlab_` 접두어 (같은 오리진의 다른 localStorage 와 충돌 없음). 새 실습서를 만들 때는 **실습서마다 다른 접두어**를 쓸 것
+   - 서비스워커(`sw.js`)는 페이지 요청을 Network First 로 처리하므로 실습서를 교체해 배포하면 다음 접속부터 새 버전이 뜬다
+
+3. **비밀번호 잠금** — `performance.html` 은 본문 전체가 AES-256-GCM(PBKDF2 60만 회)으로 암호화된 파일이다. 소스를 열어도 암호문만 보인다. **잠금은 Next 쪽이 아니라 HTML 파일 자체가 담당**하므로, 내용을 고치면 원본 HTML 을 수정한 뒤 **다시 암호화한 파일로 교체**해야 한다. 암호 없는 원본은 저장소에 넣지 않는다 (`Claude outputs/` 에만 보관).
+
+4. **신규 파일**
+   - `src/data/workbooks.ts` — 실습서 메타데이터(`Workbook[]`)
+   - `src/app/workbook/page.tsx` — Server Component. `public/workbooks/{slug}.html` 이 없으면 목록에서 자동 제외
+   - `src/components/WorkbookShelf.tsx` — Client Component (framer-motion). 자료실과 같은 톤의 카드 목록
+   - `public/workbooks/performance.html` — 잠금본
+
+5. **진입 동선** — `Hero.tsx` 보조 CTA 줄에 "실습서" 버튼 (커리큘럼 · 강의 자료실 옆) → `/workbook`
+
+### 새 실습서 추가 절차
+
+1. 완성된 HTML 을 `public/workbooks/{slug}.html` 로 복사 (slug 는 영문 소문자·하이픈)
+2. `src/data/workbooks.ts` 의 `workbooks` 배열에 항목 추가 (`slug` 일치 필수)
+3. 끝. 목록·주소는 자동 반영
 
 ### 13차 강의 (초급반 2강 — 쓴다 / 채점 미사용) — 랜딩 Part·자료실 반영 (2026-08-28)
 
