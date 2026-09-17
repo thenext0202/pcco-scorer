@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AI 채점기 - 프롬프트 & 지침 채점",
+  title: "AI 활용 실전 시리즈 강의 - 정금구",
   description: "프롬프트(R-PCCO)와 지침(I-MRKO)을 AI로 자동 채점합니다.",
   manifest: "/manifest.json",
   themeColor: "#3b82f6",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "AI 채점기 - 프롬프트 & 지침 채점",
+    title: "AI 활용 실전 시리즈 강의 - 정금구",
     description: "프롬프트(R-PCCO)와 지침(I-MRKO)을 AI로 자동 채점받기",
     type: "website",
     locale: "ko_KR",
