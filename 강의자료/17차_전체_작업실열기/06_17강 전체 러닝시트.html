@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>17차 러닝시트 — 작업실을 연다 (전체 강의 · OT)</title>
+<title>17차 러닝시트 — 내 캘린더를 주소로 (전체 강의)</title>
 <style>
   :root{--teal:#0d9488; --teal-bg:#f0fdfa; --ink:#1a2430; --muted:#6b7280;
         --yellow-bg:#fffbeb; --yellow-line:#f59e0b; --gray-bg:#f3f4f6; --blue-bg:#eef4ff; --blue-line:#3b6fd4;
@@ -50,354 +50,287 @@
   <!-- ═══════════ 표지 / 사용법 ═══════════ -->
   <section class="page">
     <div class="doctag">STRUCTURED RUNNING SHEET</div>
-    <div class="doctitle">작업실을 연다 — 지침 한 장, 주소 하나</div>
+    <div class="doctitle">내 캘린더를 주소로</div>
     <div class="docsub">전체 강의(초급·중급 합반) · 새 형식 1회 · OT 겸함 · 160분(휴식 10 포함) · 강사 진행 대본</div>
     <div class="usebox"><h3>📖 사용법</h3><p>
-      한 페이지 = 한 슬라이드. ★ KEY POINT(청록) = 반드시 전달할 한 문장 · 🖥 화면(파랑) = 이 슬라이드에 띄울 것 · 💬 이렇게 말하세요(검정) = 실제 멘트 · 💡 강사 팁(노랑) · ⚠️ 주의(빨강) · 📌 참고(회색) · → 넘어가며. <b>왼쪽 위 검은 번호 = 슬라이드 번호</b>, 하단에 "슬라이드 NN" 병기(러닝시트 쪽번호는 표지 때문에 +1).<br>
-      <b>진행 원칙 5 — ① 합반 용어 규칙: 설계도 용어는 중급 것, 지침 용어는 전원이 들은 것(I-MRKO). 초급 전용 용어는 "한 줄 대응"으로만, "아시죠?" 금지. ② 코드를 읽지 않는다 — 보는 것은 폴더(파일 3개)·화면·주소뿐. ③ 한 줄 복습, 새 것(UX)은 길게. ④ 무자료 내성 — 템플릿(03·04)만, 중급 자기 앱은 오늘 안 쓴다. ⑤ "종료·수료" 금지 — "앞으로 매 강의가 이 작업실에서 시작한다".</b>
+      한 페이지 = 한 슬라이드. ★ KEY POINT(청록) = 반드시 전달할 한 문장 · 🖥 화면(파랑) = 이 슬라이드에 띄울 것 · 💬 이렇게 말하세요(검정) = 실제 멘트 · 💡 강사 팁(노랑) · ⚠️ 주의(빨강) · 📌 참고(회색) · → 넘어가며. <b>왼쪽 위 검은 번호 = 슬라이드 번호</b>(러닝시트 쪽번호는 표지 때문에 +1).<br>
+      <b>진행 원칙 5 — ① 강제하지 않는다: 강사는 묻기만 한다. "이렇게 해야 한다"가 아니라 "이걸 빠뜨리면 이렇게 된다". 참고 카드는 참고, CLAUDE.md는 권장. ② 합반 용어 규칙: 설계 용어는 중급 것, 지침 용어는 1·2차 것. 처음 듣는 말은 한 줄 번역, "아시죠?" 금지. ③ 코드를 읽지 않는다: 폴더 트리·화면·주소만. ④ 한 줄 복습, 새 것은 길게: "왜 github.io"·"UX란"·"설계 질문 5"만 길게. ⑤ "종료·수료" 금지 / OT 프레이밍: "두 반이 가져온 것을 오늘 합친다. 앞으로 매 강의가 이 작업실에서." 무자료 내성 — 설계 카드는 수업 중에 쓴다.</b>
     </p></div>
     <div class="usebox" style="margin-top:12px"><h3>📚 핵심 개념 한 줄 (강사용)</h3><p style="font-size:12px; line-height:1.75">
-      <b>작업실 4요소</b> = 폴더(몸) · 지침(CLAUDE.md) · 기억(GitHub) · 무대(github.io) — 9차 5요소에서 창고를 뺀 것 · 맥박은 오늘 두 번 · <b>변환표</b> = I·M·R·O → 정체성·임무·규칙·출력 / 구조도·화면도·데이터도 → 구조·화면·데이터 절<br>
-      <b>UX 복습</b> = 렌즈(UI 생김새 / UX 겪는 것) · 상태 4칸(빈 달·저장 중/됨·추가됨·잘못 입력) · 이동 2 · 원칙 5 → 캘린더 번역 — "UI는 자유, UX는 지침에" · <b>손님 테스트</b> = "아는 길로 가지 않는다, 화면이 알려주는 길로만" · 과업 3 → 3패턴(멈칫/헤맴/확인 불가) → 규칙 한 줄 · <b>막힘 해결 3단계</b> = 복사 → 세 줄로 묻기 → 한 단계만(3분 규칙)<br>
-      <b>핵심 메시지</b> "AI는 화면을 만들고, 상태는 사람이 시킨다" · <b>후렴</b> "매주 눌렀습니다. 오늘은 남이 누릅니다" · <b>퀴즈 ⑩</b> 화면 몇 번(3) · <b>손들기 ⑭</b> 상태 4칸 다 있는 사람(≈0) · <b>제출 수</b> = 성공 판정<br>
-      <b>준비물</b> = 02 점검표·03 설계도 3장 전원 인쇄 · 04 키트·08 가이드 자료실 QR · 슬랙 제출 채널 · 강사 작업실 실물(CLAUDE.md + 주소, 데모 3회 리허설) · 강사 폰 미러링 · 타이머 · 예비 노트북 1대 · 와이파이(github.io·GitHub·claude.ai·슬랙)
+      <b>핵심 메시지</b> "AI는 화면을 만들고, 사용감은 사람이 시킨다" · <b>후렴</b> "매주 눌렀습니다. 오늘은 남이 누릅니다"<br>
+      <b>왜 github.io</b> = 9차 5요소 중 몸·기억·무대·맥박이 돌아오고 <b>창고만 없다</b>. "주소가 있어야 남이 쓴다 → 남이 써야 UX가 보인다". 사람이 직접 하는 2가지 = gh auth login / Pages<br>
+      <b>UX 렌즈</b>(14차) = UI 생김새 / UX 겪는 것. AI가 빠뜨리는 셋 = 비어 있을 때·안 됐을 때·돌아오는 길 · <b>설계 질문 5</b> = 쓰는 사람·핵심 과업·상태 4칸·이동과 돌아오는 길·폰 먼저 — "빠뜨리면"을 먼저, 답은 각자<br>
+      <b>손님 모드</b> "아는 길로 가지 않는다. 화면이 알려주는 길로만 간다" · 세는 것 3 → 고칠 것 3패턴 · 한 가지만 시키고 push · <b>막힘 3단계</b> 복사→세 줄→한 단계만, 3분→창구 · <b>PWA 5요소</b> 화·정·오·저·배, 설치는 마지막(캐시) · 밀리면 ④를 줄이고 ③·제출은 지킨다<br>
+      <b>준비물</b> = 02 설계 카드·04 참고 카드 <b>전원 인쇄</b> · 08 가이드는 자료실(일주일 전 + 전날 리마인드) · 슬랙 채널 · <b>강사 주소 하나</b>(04에서 3초, 시연 아님) · 강사 폰 미러링 · 타이머 · 예비 노트북(창구 겸) · 강사 공용 저장소 <b>17-class</b>(경로 B)
     </p></div>
     <table class="tbl"><thead><tr><th>구분</th><th>시간</th><th>슬라이드</th></tr></thead><tbody>
-      <tr><td>OT — 표지 · 두 반이 가져온 것 · 앞으로의 형식 + 세 바퀴</td><td>10분 (00–10)</td><td>1~3</td></tr>
-      <tr><td>A — 작업실 4요소 · 지침→CLAUDE.md · 설계도→CLAUDE.md · 강사 데모</td><td>18분 (10–28)</td><td>4~7</td></tr>
-      <tr><td>실습 ① — 작업실 열기 (브리핑 3 + 막힘 해결 3단계 ⭐ + 실습 12)</td><td>15분 (28–43)</td><td>8</td></tr>
-      <tr><td>B — 렌즈 · 상태 4칸 ⭐ · 이동 · 원칙 5 번역</td><td>20분 (43–63)</td><td>9~12</td></tr>
-      <tr><td>실습 ② — 과업 1·로컬 확인 / 과업 2 push·주소 / 자가 진단 · 손들기 ①</td><td>25분 (63–88)</td><td>13~14</td></tr>
-      <tr><td>☕ 휴식 — 첫 배포가 뜨는 시간. 돌아오면 폰으로 자기 주소 열기</td><td>10분 (88–98)</td><td>—</td></tr>
-      <tr><td>C — 정체 공개 · 손님 테스트 하는 법 ⭐ · UI는 한 문장 + 제출 안내</td><td>14분 (98–112)</td><td>15~17</td></tr>
-      <tr><td>실습 ③ — 손님 테스트 ⭐ · 고치기·push·재시도 · 슬랙 제출 (+여유 3)</td><td>33분 (112–145)</td><td>18~20</td></tr>
-      <tr><td>클로징 — 강사 즉석 점검 ⭐ · 선택 과제 · 창고가 비어 있다 · 엔딩</td><td>15분 (145–160)</td><td>21~24</td></tr>
-      <tr><td>예비 — "Claude Code 말고 claude.ai로도 되나요?"</td><td>—</td><td>25</td></tr>
+      <tr><td>OT — 표지 · 두 반이 가져온 것 · 형식 + 네 단계</td><td>10분 (00–10)</td><td>1~3</td></tr>
+      <tr><td>강의 1 — 왜 github.io인가 ⭐ · 주소가 있어야 남이 쓴다 · 폴더 3단계</td><td>15분 (10–25)</td><td>4~6</td></tr>
+      <tr><td>실습 ① — 작업실 열기 (브리핑 + 막힘 해결 3단계 ⭐)</td><td>14분 (25–39)</td><td>7</td></tr>
+      <tr><td>강의 2·3 — 렌즈 · 사용감은 사람이 시킨다 ⭐ · 설계 질문 5 ⭐ · 카드·시키는 법</td><td>27분 (39–66)</td><td>8~11</td></tr>
+      <tr><td>실습 ② — 설계 10 + 만들기·push 10 → 전원 주소 · 손들기 → ☕ 휴식 10</td><td>20+10분 (66–96)</td><td>12</td></tr>
+      <tr><td>실습 ③ — 손님 모드 ⭐ 브리핑 4 + 테스트·고치기 28 (바퀴 자유)</td><td>32분 (96–128)</td><td>13</td></tr>
+      <tr><td>강의 4 + 실습 ④ — PWA 5요소(왜 지금인가) · 설치 9 · 슬랙 제출 3</td><td>20분 (128–148)</td><td>14~16</td></tr>
+      <tr><td>클로징 — 즉석 점검 ⭐ · 선택 과제 + 창고가 비어 있다 · 엔딩 / 예비 FAQ</td><td>12분 (148–160)</td><td>17~19 / 20</td></tr>
     </tbody></table>
-    <div class="pgfoot">— 표지 · 1 / 26 —</div>
+    <div class="pgfoot">— 표지 · 1 / 21 —</div>
   </section>
 
   <!-- 01 -->
   <section class="page">
     <div class="head"><span class="numbox">01</span><span class="sec">OT · 표지</span></div>
-    <div class="ptitle">표지 — "두 반 → 한 작업실"</div><div class="time">⏱ 3분 (00–03)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">오늘은 가져올 것이 없고, 나갈 때 주소 하나를 들고 간다. 두 반이 처음 한 방에 — 첫 1분에 "실습 절반·강의 절반·과제는 선택"을 선언하고, 세 바퀴를 눈에 박는다.</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">dark cover — "두 반"에 취소선, "한 작업실" · "작업실을 연다". 오른쪽에 세 바퀴(① 작업실 열기 · ② 첫 실행·주소 · ③ 손님 테스트·고치기·제출).</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">초급반, 중급반 — 오늘 처음 한 방에 모였습니다. 오늘은 가져올 것이 없어요. 대신 나갈 때 주소 하나를 들고 갑니다. 여러분 이름으로 된, 폰에서 열리는 달력 주소요. 오늘 형식은 이전과 다릅니다. 실습이 절반, 강의가 절반, 과제는 선택이에요. 오른쪽에 세 바퀴가 보이시죠 — 작업실을 열고, 첫 실행으로 주소를 만들고, 손님인 척 테스트해서 고칩니다. 강의 사이사이에 이 세 바퀴가 끼어듭니다.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">02 점검표·03 설계도 3장은 지금 배포(각자 자리에). 04 키트·08 가이드는 자료실 QR을 화면 한쪽에. 슬랙 채널은 17에서 다시 안내하므로 지금은 "제출은 슬랙으로"만 한 마디.</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">"초급 끝·중급 끝"·"수료"·"종료" 단어 금지 — "두 반이 가져온 것을 오늘 합친다"로만. 세 바퀴를 여기서 설명하지 않는다(03에서).</div></div>
-    <div class="next">→ 넘어가며: <b>"두 반이 뭘 가져왔는지부터 — 서로 모르니까요."</b></div>
-    <div class="pgfoot">— 슬라이드 01 · 2 / 26 —</div>
+    <div class="ptitle">표지 — "오늘 나갈 때: 폰 홈 화면에 내 캘린더, 그리고 주소 하나"</div><div class="time">⏱ 3분 (00–03)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">합반 첫 회를 "결과물 하나"로 연다 — 폰 홈 화면의 내 캘린더와 주소. 네 단계는 이름만. 설계 카드·참고 카드를 지금 배포한다(쓰든 안 쓰든 자유라고 미리).</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">dark cover — "내 캘린더를 주소로", 오른쪽 네 단계(①작업실 열기 ②설계·만들기·주소 ③손님 테스트·고치기 ④앱으로·설치·제출).</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">처음으로 두 반이 한 방에 모였습니다. 오늘 나갈 때 손에 있을 건 두 개예요 — 폰 홈 화면에 깔린 내 캘린더, 그리고 그 캘린더의 주소 하나. 종이 두 장 돌립니다. 설계 카드 한 장, 참고 카드 두 장. 설계 카드는 이따 10분 동안 같이 쓸 거고, 참고 카드는 말 그대로 참고예요 — 보고 따라 해도 되고 안 봐도 됩니다. 오늘은 네 단계로 가는데, 어디까지 가느냐는 각자예요. 그 얘기부터 잠깐 하고 시작하겠습니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">"쓰든 안 쓰든 자유"를 배포 순간에 말해 두면 참고 카드가 템플릿으로 읽히지 않는다. 노트북 전원·세팅 상태를 눈으로 훑어 두기 — 못 켠 사람은 07에서 창구로.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">"수료"·"종료"·"마지막" 금지. "초급·중급 과정 끝났으니까"도 금지 — "두 반이 가져온 것을 오늘 합친다"로만.</div></div>
+    <div class="next">→ 넘어가며: <b>"두 반이 뭘 들고 왔는지 한 장으로 맞춰 봅니다."</b></div>
+    <div class="pgfoot">— 슬라이드 01 · 2 / 21 —</div>
   </section>
 
   <!-- 02 -->
   <section class="page">
     <div class="head"><span class="numbox">02</span><span class="sec">OT · 두 반이 가져온 것</span></div>
-    <div class="ptitle">초급은 시키는 법을, 중급은 설계도를 — 오늘 한 장에서 만난다</div><div class="time">⏱ 4분 (03–07)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">두 반은 반쪽씩 가지고 있다. 초급 = 도구(프롬프트·지침), 중급 = 설계도 세 장. 오늘 지침 한 장(CLAUDE.md)에 설계도 세 장이 접힌다. 빈 곳은 템플릿이 메운다 — 읽기만 하면 된다. 용어 규칙 선언.</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">twocol panel — 초급(11·13·15) / 중급(12·14·16): 손에 쥔 것·안 해본 것·UX·약속된 것. 콜아웃 "17차에서". 아래 용어 규칙 한 줄.</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">초급반은 시키는 법을 가져왔습니다. 구조도를 프롬프트로 바꿔 Artifacts에서 실행했고, 반복 업무를 지침 한 장으로 만들었죠. 그런데 무엇을 시킬지, 설계도가 없어요. 중급반은 설계도 세 장을 그렸습니다 — 구조도, 화면도, 데이터도. 그런데 한 번도 시켜 보지 않았어요. 오늘 그 둘이 한 장에서 만납니다. CLAUDE.md라는 지침 한 장인데, 설계도 세 장이 그 안에 접혀 들어가요. 빈 곳은 걱정 마세요 — 오늘 쓸 설계도도 지침도 템플릿으로 드립니다. 읽기만 하면 됩니다. 한 가지 약속 — 오늘 서로 처음 듣는 말이 나옵니다. 그때마다 제가 한 줄로 번역할게요. "아시죠?"는 오늘 안 합니다.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">용어가 나올 때마다 실제로 한 줄 번역을 실행 — 예: "I-MRKO: 초급반에서 지침을 다섯 칸으로 쓴 틀", "화면도: 중급반에서 화면을 부품·상태·이동으로 그린 종이". 중급 "내 앱으로 하고 싶다"는 여기서 미리 차단 — "오늘은 전원이 같은 달력, 내 앱은 선택 과제 6".</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body"><b>"아시죠?" 금지</b> — 어느 반이든 처음 듣는 사람이 있다. 초급 전용 용어(레이어 4겹·변환표 4줄)는 "초급반에서 ○○라 부른 것"으로만 스친다. 4분 초과 금지 — 두 반 소개가 길어지면 OT가 강의가 된다.</div></div>
-    <div class="next">→ 넘어가며: <b>"그럼 오늘 어떻게 가는지 — 앞으로의 형식부터."</b></div>
-    <div class="pgfoot">— 슬라이드 02 · 3 / 26 —</div>
+    <div class="ptitle">두 반이 가져온 것을 오늘 합칩니다 — 종료가 아니라 입구</div><div class="time">⏱ 4분 (03–07)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">두 반을 같은 출발선에 놓는다. 초급은 "쏘고 보고 고친다" 엔진과 지침, 중급은 폴더 3단계·상태·이동. 오늘 둘이 합쳐지는 자리 = "설계 질문 5에 답하고 → Claude Code에 시키고 → 주소에서 남이 누른다". 용어 규칙 한 줄.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">twocol 패널 — 초급반(11·13·15) / 중급반(12·14·16) 각 4줄(손에 쥔 것·오늘 다시 쓰는 것·UX·약속). 콜아웃 "오늘 두 반이 같이 하는 일". 용어 규칙 한 줄.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">초급반은 구조도에서 프롬프트로, 프롬프트에서 실행으로 가는 길을 손에 쥐셨고, 반복 업무를 지침 한 장으로 만드는 것까지 하셨죠. 중급반은 지도 3층, 화면 해부, 상태, 그리고 창고까지 — 설계도 세 장을 그리셨고요. 오늘 둘이 만나는 자리는 하나예요. 설계 질문 다섯에 답하고, Claude Code에 시키고, 주소에서 남이 누른다. 중급반은 "설계도 들고 AI에게 시키는 시즌"을 약속받으셨는데, 오늘이 그 입구입니다. 창고는 오늘 안 붙여요 — 왜 안 붙이는지는 마지막에 보시면 압니다. 용어 하나만 약속할게요. 설계 얘기는 중급반 말을, 지침 얘기는 초급반 말을 쓸 건데, 처음 듣는 말이 나오면 그 자리에서 한 줄로 번역합니다. 어느 반이든 처음 듣는 분이 있으니까요.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body"><b>"아시죠?" 금지.</b> 지도 3층·I-MRKO·상태 같은 말이 나올 때마다 한 줄 번역을 붙인다("지도 3층 — 폴더가 3단계라는 뜻"). 어느 한 반을 "복습"으로 밀어내지 않는다.</div></div>
+    <div class="box ref"><div class="lab">📌 참고</div><div class="body">01 §1 "두 반이 가져온 것" 표 그대로. UX는 초급엔 처음, 중급엔 14차 — 강의 2는 복습 표제지만 바닥부터 간다.</div></div>
+    <div class="next">→ 넘어가며: <b>"앞으로 매 강의가 이런 형식입니다 — 오늘이 첫 회."</b></div>
+    <div class="pgfoot">— 슬라이드 02 · 3 / 21 —</div>
   </section>
 
   <!-- 03 -->
   <section class="page">
-    <div class="head"><span class="numbox">03</span><span class="sec">OT · 앞으로의 형식 + 오늘의 세 바퀴</span></div>
-    <div class="ptitle">실습 절반 · 강의 절반 · 과제는 선택 — 오늘 한 번 겪어 본다</div><div class="time">⏱ 3분 (07–10)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">OT는 설명이 아니라 체험 — 새 형식을 오늘 160분으로 겪게 한다. 선택 과제 = "같은 일의 다음 바퀴", 다음 강의는 과제를 전제하지 않는다. 핵심 메시지 예고. 세팅 안 된 사람 손들기 → 세팅 창구 분기.</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">cards 3(실습 절반 / 강의 절반 / 과제는 선택(hot)) + steps 3(①15분 · ②25분 · ③33분). 콜아웃 핵심 메시지. 아래 손들기 안내.</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">앞으로의 형식입니다. 실습이 절반인데 한 덩어리가 아니에요 — 강의 사이에 세 바퀴로 끼어듭니다. 강의는 절반, 이전 것은 한 줄로만 복습하고 새 것은 길게. 과제는 선택인데, 다른 일이 아니라 오늘 한 일의 다음 바퀴예요. 안 해도 다음 강의는 오늘 만든 작업실에서 다시 시작합니다. 오늘의 문장 하나만 미리 — "AI는 화면을 만들고, 상태는 사람이 시킨다." 지금은 무슨 말인지 몰라도 됩니다. 두 번째 바퀴에서 여러분 달력이 직접 증명할 거예요. 자, 손 한 번 — 세팅 가이드의 확인 세 개를 못 하고 오신 분? 그분들은 세팅 창구로 가서 같이 맞추겠습니다. 나머지는 그대로 갑니다.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body"><b>세팅 안 된 사람 손들기 → 창구</b> — 보조(없으면 강사 예비 노트북에 08 가이드를 띄워 셀프)로 안내하고 수를 센다(수업 후 체크 ④). 창구에서도 "3단계 먼저"가 원칙 — 08에서 전원에게 가르치므로 지금은 "조금 뒤 막힘 푸는 법을 같이 배웁니다"까지만.</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">핵심 메시지를 여기서 풀지 않는다 — 문장만 심는다(증명은 14 손들기 ①). "과제 안 하면 뒤처진다"류의 말 금지 — 다음 강의는 과제를 전제하지 않는다.</div></div>
-    <div class="next">→ 넘어가며: <b>"작업실이 뭔지부터. 9차에 앱은 다섯 가지라고 했었죠 — 한 줄만."</b></div>
-    <div class="pgfoot">— 슬라이드 03 · 4 / 26 —</div>
+    <div class="head"><span class="numbox">03</span><span class="sec">OT · 앞으로의 형식 + 오늘의 네 단계</span></div>
+    <div class="ptitle">실습 절반 · 강의 절반 · 과제는 선택 — ①~④, 속도는 각자</div><div class="time">⏱ 3분 (07–10)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">새 형식을 한 번 겪게 하는 게 OT. 네 단계 이름 + <b>"②까지 가도 결과물, ④까지 가도 결과물"</b>을 심는다. 설치가 마지막인 이유(캐시)는 여기서 한 줄 예고만.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">steps 4(① 작업실 열기 / ② 설계·만들기·주소 / ③ 손님 테스트·고치기 / ④ 앱으로·설치·제출). 큰 콜아웃 "②까지 가도 결과물, ④까지 가도 결과물. 속도는 각자."</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">앞으로 매 강의는 이 모양입니다. 실습이 절반 넘고, 강의는 "왜"를 설명하는 데만 쓰고, 과제는 선택이에요. 오늘 네 단계 — 작업실 열기, 설계하고 만들어서 주소 받기, 손님처럼 눌러 보고 고치기, 앱으로 만들어 설치하고 제출하기. 여기서 중요한 건, 어디까지 가느냐는 각자라는 거예요. ②까지 가서 주소만 받아도 결과물이고, ④까지 가서 폰에 깔아도 결과물입니다. 빨리 가는 게 목표가 아니라 각 단계에서 뭘 겪느냐가 목표라서요. 설치가 왜 맨 마지막이냐 — 설치하고 나면 고친 게 바로 안 보여서 그래요. 이유는 이따 설명드립니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">"②까지도 결과물"은 오늘 세 번 나온다(03·15·16). 여기서 처음 심어 두면 ③에서 뒤처진 사람이 조급해하지 않는다.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">강의 60 / 실습 78을 숫자로 읽어 주지 않는다 — "실습이 절반 넘는다"면 충분. 과제를 "다음 시간에 확인한다"고 말하지 않는다 — 다음 강의는 과제를 전제하지 않는다.</div></div>
+    <div class="next">→ 넘어가며: <b>"첫 번째 '왜' — 왜 하필 github.io인가."</b></div>
+    <div class="pgfoot">— 슬라이드 03 · 4 / 21 —</div>
   </section>
 
   <!-- 04 -->
   <section class="page">
-    <div class="head"><span class="numbox">04</span><span class="sec">Part A · 작업실 4요소</span></div>
-    <div class="ptitle">작업실은 넷으로 된다 — 폴더 · 지침 · 기억 · 무대 (창고는 비움)</div><div class="time">⏱ 4분 (10–14)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">9차 5요소를 한 줄 소환하고 이름을 바꾼다 — 몸→폴더, (6차 "AI한테 한 장")→지침, 기억→GitHub, 무대→github.io. 창고는 오늘 비운다(데이터는 주머니). 맥박은 오늘 두 번.</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">cards c5 — 폴더 / 지침(hot) / 기억 / 무대 / <s>창고</s>(점선). 콜아웃 "맥박 — push → 1~3분 → 주소에서 바뀐다. 오늘 두 번".</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">9차 한 줄 — 앱은 몸, 기억, 무대, 창고, 맥박이라고 했죠. 오늘은 이름을 바꿉니다. 몸은 폴더예요. 작업실은 폴더 하나입니다 — 12차에 "파일에는 자리가 있다"고 한 그 폴더. 두 번째가 지침, CLAUDE.md라는 파일 하나. 6차에 "AI한테 한 장"이라고 했던 게 이겁니다. 매번 다시 말하던 걸 한 번만 적어 두는 거예요. 셋째, 기억 — GitHub 저장소. 노트북을 바꿔도 남습니다. 그래서 앞으로 매 강의가 여기서 시작할 수 있어요. 넷째, 무대 — 아이디.github.io 주소. 따로 붙일 것 없이 push 한 번이면 주소가 생깁니다. 그리고 창고 — 오늘은 비웁니다. 데이터는 브라우저 주머니에만. 왜 비우는지는 마지막에 몸으로 알게 됩니다. 맥박은 오늘 두 번 겪어요. 주소가 처음 생길 때, 고친 게 주소에서 바뀔 때.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">"창고는 비움"에서 멈추지 말 것 — "폰에서 열면 일정이 없다"는 23에서 터뜨리는 떡밥. 여기서는 "왜 비우는지는 마지막에"까지만. 초급에게 9차·12차는 전원이 들은 것(6·7·9차 전원 수강) — 한 줄 소환으로 충분.</div></div>
-    <div class="box ref"><div class="lab">📌 참고</div><div class="body">9차 5요소 = 몸(코드)·기억(저장소)·무대(배포)·창고(DB)·맥박(push=배포). 오늘 GitHub Pages를 쓰는 이유 — 따로 붙일 것 없이 바로 돌아감. PWA는 서비스워커 캐시가 맥박 데모를 가려 제외(선택 과제 4).</div></div>
-    <div class="next">→ 넘어가며: <b>"넷 중 오늘 손으로 쓰는 건 지침 하나입니다. 그 한 장부터."</b></div>
-    <div class="pgfoot">— 슬라이드 04 · 5 / 26 —</div>
+    <div class="head"><span class="numbox">04</span><span class="sec">강의 1 · 왜 github.io인가 ⭐</span></div>
+    <div class="ptitle">서버 없이 주소가 생기는 무대 — 9차 5요소 중 넷이 돌아오고, 하나만 없다</div><div class="time">⏱ 8분 (10–18)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">9차 5요소를 한 줄씩 회수 — 몸(폴더)·기억(저장소)·무대(주소)·맥박(push→바뀜)이 전부 돌아오고 <b>창고만 없다</b>. "서버 없이·돈 없이·따로 붙일 것 없이 주소"가 github.io의 전부. 강사 주소는 3초만.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">cards 5(몸 / 기억 / 무대(hot) / 맥박 / ~~창고~~ 점선). 콜아웃 "강사 주소 3초 — 시연 아님". 그다음 강사 폰 미러링으로 주소 한 번 열고 바로 슬라이드로 복귀.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">9차에 앱의 다섯 요소를 배웠죠 — 몸, 기억, 무대, 맥박, 창고. 오늘 그중 넷이 돌아옵니다. 몸은 내 폴더예요, 12차 말로 "파일에는 자리가 있다". 기억은 GitHub 저장소 — 노트북을 바꿔도 남아요, 그래서 앞으로 매 강의가 여기서 시작합니다. 무대가 오늘의 주인공인데, 아이디 점 github.io 슬래시 내 캘린더 — 서버 없이, 돈 없이, 따로 뭘 붙이지 않고 주소가 생깁니다. 이게 되는 곳이 사실상 여기뿐이에요. 맥박은 push 하면 1~3분 뒤에 주소에서 바뀌는 것 — 오늘 여러 번 겪으실 겁니다. 그리고 창고. 오늘은 없어요. 적은 일정은 내 폰 주머니에만 남습니다. 왜 그게 문제인지는 수업 끝에 직접 보시게 될 거예요. 제 걸로 하나 보여드릴게요 — (폰으로 주소 열고) — 이게 오늘 여러분 손에 생기는 겁니다. 이 정도면 됐어요.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body"><b>강사 주소는 3초만, 시연이 아니다.</b> 열어서 "이거"라고 하고 닫는다. 기능을 보여주거나 눌러 보이기 시작하면 수강생이 그걸 따라 만들려 한다 — 설계는 각자여야 한다.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">Pages·Actions·브랜치 같은 실명 설명 금지. "창고 없음"을 여기서 길게 풀지 않는다 — 18의 "창고가 비어 있다"가 빈다.</div></div>
+    <div class="next">→ 넘어가며: <b>"그런데 주소가 왜 꼭 필요하냐 — 오늘 전체를 꿰는 한 줄입니다."</b></div>
+    <div class="pgfoot">— 슬라이드 04 · 5 / 21 —</div>
   </section>
 
   <!-- 05 -->
   <section class="page">
-    <div class="head"><span class="numbox">05</span><span class="sec">Part A · 지침 → CLAUDE.md</span></div>
-    <div class="ptitle">매번 다시 말하던 것을 한 번만 — I·M·R·O가 절이 된다 + 측정 가능한 규칙</div><div class="time">⏱ 6분 (14–20)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">15차 I-MRKO(초급)와 6차 "AI한테 한 장"(전원)이 CLAUDE.md의 원형. 정체성·임무·규칙·출력이 그대로 절이 된다. 규칙은 측정 가능해야 한다 — "보기 좋게"가 아니라 "44px"(채점기 모바일 규칙 실물).</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">왼쪽 dl 4(I 정체성 / M 임무 / R 규칙 ⭐ / O 출력 — 캘린더 문장). 오른쪽 red 패널 "측정할 수 없는 규칙" / green 패널 "44px · 390px 7열 · 1초". 콜아웃 "K는 다음 장".</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">초급반은 15차에 지침을 다섯 칸으로 썼죠 — 정체성, 임무, 규칙, 지식, 출력. 한 줄 번역하면, AI에게 매번 다시 말하던 걸 한 장에 적어 두는 틀입니다. 6차에 전원이 들은 "AI한테 한 장"이 그거예요. CLAUDE.md는 그 한 장의 Claude Code판입니다. 정체성 — "이 폴더의 개발 담당, 작게, 한 번에 하나씩." 임무 — "월 달력 하나. 주 보기, 알림, 연동은 임무 밖." 이 임무 밖 한 줄이 오늘 범위를 지켜 줍니다. 출력 — "끝나면 두 줄만, 바꾼 파일 이름과 확인하는 법. 코드 설명 금지." 그리고 규칙. 오른쪽 보세요. "보기 좋게", "예쁘게", "알기 쉽게" — AI가 제 기준으로 채웁니다, 매번 다르게. 측정 가능해야 규칙이에요. 채점기를 만들 때 썼던 모바일 규칙 한 장에 이 한 줄이 있습니다 — "누르는 것은 전부 44px 이상." 이 숫자가 지침입니다.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">채점기 모바일 규칙 한 장을 실물로 들어 보이며 "44px" 줄만 읽는다(채점기 화면은 띄우지 않음). 15차를 안 들은 중급에겐 "지침 = AI에게 미리 주는 한 장"으로 끝 — 다섯 칸 이름을 외우게 하지 않는다.</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">K(지식) 절을 여기서 열지 않는다 — 06의 자리. CLAUDE.md 전문을 띄우지 않는다(07 데모에서 헤더만 10초). "측정 가능"을 길게 설명하지 말 것 — 예시 셋이면 충분, 실제 적용은 19에서.</div></div>
-    <div class="next">→ 넘어가며: <b>"다섯 칸 중 비어 있던 지식 칸 — 중급반이 그 세 장을 가져왔습니다."</b></div>
-    <div class="pgfoot">— 슬라이드 05 · 6 / 26 —</div>
+    <div class="head"><span class="numbox">05</span><span class="sec">강의 1 · 결론 한 줄 — 강의 2 예고</span></div>
+    <div class="ptitle">주소가 있어야 남이 쓴다 → 남이 써야 UX가 보인다</div><div class="time">⏱ 4분 (18–22)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">github.io는 배포 기술이 아니라 <b>UX를 배우기 위한 조건</b>. 사람이 직접 해야 하는 2가지(gh auth login 브라우저 로그인 / 저장소 설정→Pages)를 "빠뜨리면 어디서 멈추나"로 설명한다.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">큰 문장 "주소가 있어야 남이 쓴다 → 남이 써야 UX가 보인다". cards 2 — 사람이 직접 하는 2가지. "그래서 ②에서 전원이 주소까지".</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">오늘 전체를 한 줄로 하면 이겁니다. 주소가 있어야 남이 쓰고, 남이 써야 UX가 보인다. 내 노트북에서만 열리는 앱은 남이 못 누르죠. 남이 못 누르면, 그 사람이 어디서 멈칫하는지를 볼 수가 없어요. 그래서 github.io를 쓰는 거지, 배포 기술을 배우려는 게 아닙니다. 두 가지만 사람 손으로 해야 해요. 하나는 gh 로그인 — 브라우저가 열리면 거기서 승인하는 것. 이건 열쇠라서 Claude Code가 대신 못 눌러요. 빠뜨리면 올리라고 시켜도 "권한 없음"에서 멈춥니다. 다른 하나는 저장소 설정에서 Pages를 켜는 것 — Claude Code가 못 켜면 클릭 한 번이에요. 시킬 때 "내가 직접 해야 하는 게 있으면 그것부터"라고 붙이면 이 두 자리를 Claude Code가 짚어 줍니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">"내가 직접 해야 하는 게 있으면 그것부터"는 오늘 여러 번 쓰이는 문장(07·11·12). 여기서 처음 소리 내어 읽어 둔다. 08 가이드와 참고 카드 B 하단에 같은 문장.</div></div>
+    <div class="box ref"><div class="lab">📌 참고</div><div class="body">01 §2-2. 리스크 "Claude Code가 gh로 저장소·Pages 못 만듦"은 예정된 코스 — 이 두 자리가 사람 몫이라는 걸 미리 말해 두면 ②에서 당황하지 않는다.</div></div>
+    <div class="next">→ 넘어가며: <b>"주소를 만들려면 작업실이 있어야죠 — 폴더 3단계."</b></div>
+    <div class="pgfoot">— 슬라이드 05 · 6 / 21 —</div>
   </section>
 
   <!-- 06 -->
   <section class="page">
-    <div class="head"><span class="numbox">06</span><span class="sec">Part A · 설계도 → CLAUDE.md 변환표</span></div>
-    <div class="ptitle">설계도 세 장이 지침 한 장의 세 절로 접힌다 + github.io 규칙 3</div><div class="time">⏱ 5분 (20–25)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">변환표 7줄 — I·M·R·O는 초급이, 구조·화면·데이터 절은 중급의 설계도 세 장이. 이 표 하나가 오늘 모든 자료(03·04)의 뼈대. github.io 규칙 3은 "주소에서 돌아가야 하니까".</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">dl 7줄(정체성 / 임무 / 규칙 / 구조←구조도 / 화면←화면도 / 데이터←데이터도 / 출력). 콜아웃 github.io 규칙 3 + 초급 한 줄.</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">이 표가 오늘의 뼈대입니다. 위 셋과 맨 아래는 초급반 것 — 정체성, 임무, 규칙, 출력. 가운데 셋이 중급반 것이에요. 구조도는 "폴더와 파일에 자리"를 그린 종이죠 — 그게 구조 절. 오늘은 파일 세 개로 고정합니다, 뼈대·옷·움직임. 화면도는 부품·상태·이동 — 화면 절. 부품 셋, 상태 네 칸, 이동 둘. 데이터도는 표와 열과 규칙 — 데이터 절. 표 둘, 줄 하나, 저장은 주머니. 그리고 종류 열은 허용목록인데, 그 목록이 바로 여러분 업무 종류예요. 초급반 한 줄 — 레이어 4겹에서 데이터·동작·화면·연결이라 부른 네 칸이 이 세 절입니다. 규칙 절엔 주소에서 돌아가기 위한 규칙이 셋 들어 있어요. 경로는 상대 경로, 파일은 이 폴더 세 개만, 저장은 브라우저만. 왜냐면 — 주소에서 돌아가야 하니까요. 15차에 지침은 세 번째 재료에서 증명된다고 했죠. 오늘 이 한 장은 세 번째 과업에서 증명됩니다.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">03 설계도 템플릿을 손에 들고 "쪽마다 아래에 '→ CLAUDE.md ## ___ 절'이 적혀 있다"를 보여준다 — 종이에서 변환표를 확인시키는 게 목적. dl 7줄을 다 읽지 말고 가운데 셋만 손가락으로.</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">localStorage·상대 경로·CDN 같은 실명을 설명하지 않는다 — "주소에서 돌아가려면"으로 끝. 중급 "데이터도의 문지기는?" → "오늘은 주머니라 문지기 없음, 03 3쪽에 표시돼 있다".</div></div>
-    <div class="next">→ 넘어가며: <b>"말로만 하면 안 믿기죠. 제 작업실에서 3분."</b></div>
-    <div class="pgfoot">— 슬라이드 06 · 7 / 26 —</div>
+    <div class="head"><span class="numbox">06</span><span class="sec">강의 1 · 작업실 = 폴더 3단계 + 저장소 + 주소</span></div>
+    <div class="ptitle">작업실은 폴더 3단계입니다 — 12차 지도 3층 회수 · CLAUDE.md는 권장</div><div class="time">⏱ 3분 (22–25)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">루트(지형)·폴더(골목)·파일(문패) — "3단계면 충분하고, 3단계는 있어야 한다". 이유는 한 폴더에 다 쏟으면 AI가 다음 과업에서 엉뚱한 파일을 건드리기 때문. CLAUDE.md는 <b>권장</b> — 강요하지 않는다.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">왼쪽 `.tree` 3단계 예시(루트: index.html·manifest.json·sw.js·CLAUDE.md / css·js·icons / 파일). 오른쪽 dl 3(지형·골목·문패). 하단 콜아웃 "CLAUDE.md는 권장 — 참고 카드 A".</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">작업실은 폴더 하나예요. 중급반 말로 지도 3층 — 번역하면 폴더가 3단계라는 뜻입니다. 맨 위 루트는 주소가 가리키는 곳이라 PWA 서류가 여기 있어야 하고, 그 아래 폴더로 옷·움직임·그림을 가르고, 그 안에 파일. 왼쪽은 예시일 뿐이에요 — 이름도 개수도 각자 정하세요. 왜 3단계냐면, 한 폴더에 다 쏟아 놓으면 다음에 "체크 표시만 고쳐"라고 시켰을 때 AI가 엉뚱한 파일을 건드립니다. 3단계면 충분하고, 3단계는 있어야 해요. 하나 더 — CLAUDE.md. 폴더에 이 한 장을 두면 매번 "폰 먼저, 44px, 한 번에 한 가지"를 다시 말하지 않아도 돼요. 초급반이 15차에 쓴 지침의 Claude Code판입니다. 참고 카드 A에 예시가 있고, 안 써도 됩니다.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body"><b>CLAUDE.md 강요 금지</b> — "쓰면 편하다"까지만. 안 쓰는 사람에게 다시 권하지 않는다. 트리의 파일 내용·코드는 열지 않는다(원칙 ③).</div></div>
+    <div class="box ref"><div class="lab">📌 참고</div><div class="body">01 §3-2·§3-8. manifest.json·sw.js는 ④에서 생기는 파일 — 지금은 "루트에 있어야 한다"는 자리만.</div></div>
+    <div class="next">→ 넘어가며: <b>"그럼 열어 봅시다 — 실습 ①, 그리고 막히면 어떻게 하는지부터."</b></div>
+    <div class="pgfoot">— 슬라이드 06 · 7 / 21 —</div>
   </section>
 
   <!-- 07 -->
   <section class="page">
-    <div class="head"><span class="numbox">07</span><span class="sec">Part A · 강사 데모 3분 ⭐</span></div>
-    <div class="ptitle">요청은 한 줄, 차이는 미리 써둔 한 장 — 강사 작업실 실물</div><div class="time">⏱ 3분 (25–28)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">빈 폴더에서 라이브 — CLAUDE.md 복사 → claude → 과업 한 줄 → 파일 3개 → 브라우저 → 폰. 15차 데모와 같은 메시지: 요청은 한 줄이었고 차이는 한 장. 코드는 안 읽는다. 2분 넘으면 완성본으로 전환.</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">슬라이드는 steps 4 + tree(강사-캘린더/ 파일 4개)만 잠깐 → 강사 터미널·브라우저로 전환 → 강사 폰 미러링으로 주소. 다시 슬라이드 콜아웃 "보는 것은 폴더·화면·주소뿐".</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">제 작업실입니다. 빈 폴더에 CLAUDE.md 한 장 넣고 — 헤더만 보세요, 정체성·임무·규칙·구조·화면·데이터·출력, 10초. 폴더에서 claude. 프롬프트가 떴죠. 과업은 한 줄입니다 — "CLAUDE.md대로 이번 달 달력 v1." (기다리는 동안) 지금 코드가 지나가고 있는데 안 읽습니다. 보는 건 셋뿐이에요 — 폴더에 파일이 몇 개 생기나, 화면에 뭐가 뜨나, 주소에서 열리나. 자, 폴더에 세 개 — index.html, style.css, app.js. 브라우저에 떴습니다. 그리고 제 주소를 폰으로 열면 — 같은 달력. 요청은 한 줄이었습니다. 차이는 미리 써둔 한 장이에요.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">수업 전 빈 폴더 데모 3회 리허설. 생성 중 침묵을 "안 읽는 이유"로 채운다. 폰은 미리 완성본 주소를 띄워 두고 보여만 준다(라이브 push는 하지 않는다 — 1~3분 지연).</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body"><b>코드 안 읽기</b> — 터미널에 코드가 흘러도 설명 금지. <b>2분 넘으면 완성본 전환</b> — "결과는 이것, 과정은 여러분이 지금부터". 3분 초과 금지(①이 밀린다). 수강생 "무슨 명령이에요?" → "claude 한 단어, 08 가이드 1쪽".</div></div>
-    <div class="next">→ 넘어가며: <b>"이제 여러분 차례 — 첫 바퀴, 작업실 열기. 그 전에 막혔을 때 뭘 하는지부터."</b></div>
-    <div class="pgfoot">— 슬라이드 07 · 8 / 26 —</div>
+    <div class="head"><span class="numbox">07</span><span class="sec">실습 ① · 작업실 열기 + 막힘 해결 3단계 ⭐</span></div>
+    <div class="ptitle">① 폴더 3단계 → claude · gh auth status → (권장) CLAUDE.md / 막히면 3단계</div><div class="time">⏱ 14분 (25–39) = 브리핑 3 + 실습 11</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body"><b>막힘 해결 3단계를 먼저</b> 가르치고 실습을 연다 — 자유도가 큰 수업일수록 더 필요하다. 복사 → 세 줄로 묻기 → 한 단계만. <b>3분 규칙</b>: 3분 안에 안 풀리면 창구. 39분까지 전원 "폴더 + claude 프롬프트 + gh 로그인", 못 간 사람은 ②에서 계속.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">왼쪽 패널 ① 할 일 / 오른쪽 패널 3단계. 묻는 문장 틀 상자. 3분 규칙. timerbox 11:00 — 브리핑 끝나면 시작.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">실습 들어가기 전에 막혔을 때 하는 법부터요 — 오늘은 각자 다른 걸 만드니까 막히는 것도 각자 달라서, 이게 제일 중요합니다. 첫째, 에러를 그대로 복사하세요. 요약하면 AI가 엉뚱한 걸 고칩니다. 둘째, 세 줄로 물으세요 — 내 OS, 하려던 것, 에러. 그리고 "내가 직접 해야 하는 게 있으면 그것부터, 한 번에 한 단계만"을 붙입니다. 셋째, 한 단계만 하고 확인. 여러 단계를 한 번에 시키면 어디서 깨졌는지 몰라요. 3분 해 보고 안 되면 손 드세요 — 혼자 10분 끌면 다음 단계가 날아갑니다. 할 일은 세 개예요. 폴더 3단계 만들고, 그 폴더에서 claude 실행하고 gh auth status로 로그인 확인. CLAUDE.md는 참고 카드 A 예시를 복사해서 이름만 바꾸면 되는데, 안 써도 됩니다. 11분, 시작.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">순회 질문은 하나 — "폴더 몇 단계예요?". 같은 막힘이 셋 이상이면 강사 화면에 띄워 다같이 3단계 1회(3분). 막힘·해결은 07 §C에 기록. 창구 보조가 없으면 예비 노트북에 08 가이드를 띄워 셀프.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">39분에 끊는다 — 못 간 사람은 ②에서 계속하면 된다고 말하고 넘어간다. 순회에서 수강생 키보드를 잡지 않는다. Claude Code 화면이 떠 있어도 코드는 읽지 않는다.</div></div>
+    <div class="next">→ 넘어가며: <b>"작업실이 열렸으면 — 두 번째 '왜'. UX가 뭔지, 바닥부터."</b></div>
+    <div class="pgfoot">— 슬라이드 07 · 8 / 21 —</div>
   </section>
 
   <!-- 08 -->
   <section class="page">
-    <div class="head"><span class="numbox">08</span><span class="sec">실습 ① · 작업실 열기 + 막힘 해결 3단계 ⭐</span></div>
-    <div class="ptitle">① 브리핑 3분 → 실습 12분 — "손 들기 전에 세 단계"</div><div class="time">⏱ 15분 (28–43)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">할 일 3(종류 표 → CLAUDE.md 빈칸 4 → claude·gh auth status 확인)보다 <b>막힘 해결 3단계를 먼저</b> 가르친다 — 복사 → 세 줄로 묻기 → 한 단계만. 3분 규칙. 막힘을 스스로 푸는 것이 앞으로의 작업실 운영 능력. 43분까지 전원 "폴더 + CLAUDE.md + claude + gh 로그인".</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">twocol — 왼쪽 "① 할 일 3" / 오른쪽 green "막힘 해결 3단계" + 묻는 문장 틀(검정 상자). 콜아웃 3분 규칙. timerbox 12:00. 실습 중엔 이 슬라이드를 그대로 둔다.</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">할 일은 셋입니다. 설계도 3쪽 중 데이터도의 종류 표만 채우세요 — 내 업무 종류 서너 개와 색 이름, 3분. 그다음 CLAUDE.md 템플릿 빈칸 네 개 — 작업실 이름, 내 이름, 종류 목록, 기준 날짜 — 채워서 내-캘린더 폴더에 저장, 6분. 마지막으로 폴더에서 claude, 그리고 gh auth status, 3분. 그런데 먼저 — 막히면 뭘 하나. 오른쪽입니다. 첫째, 빨간 줄을 그대로 복사하세요. 줄이지 말고, "안 돼요"라고 쓰지 말고. 둘째, 세 줄로 묻습니다 — 내 OS, 하려던 것, 에러. 그리고 "내가 직접 해야 하는 게 있으면 그것부터, 한 번에 한 단계만." Claude Code 프롬프트 안에서 바로 물으면 가장 좋고, 안 뜨면 claude.ai에. 셋째, 시키는 첫 단계만 하고 확인 명령을 다시. 3분 안에 안 풀리면 손 드세요 — 포기가 아니라 다음 수단입니다. 앞으로 작업실에서 늘 일어나는 일이에요. 12분, 시작.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body"><b>3단계를 먼저, 할 일은 그다음</b> — 순서가 바뀌면 손이 먼저 올라온다. 순회 질문은 "OS 적었어요?"와 "한 단계만 했어요?" 둘. 같은 막힘이 3명 이상이면 강사 화면에 띄워 다같이 3단계 1회(3분) — 그것도 수업. 중급 "내 앱으로" → "오늘은 전원 같은 달력, 선택 과제 6".</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body"><b>43분까지 전원</b> — 못 간 사람은 ②에서 계속(과업 1은 gh 없이도 됨). 3분 넘긴 사람은 창구로 보내고 강사는 순회를 멈추지 않는다. 종류 표 외의 설계도 쪽은 읽기만 — 구조도·화면도를 다시 그리게 하지 않는다. 창구에서도 3단계 먼저.</div></div>
-    <div class="next">→ 넘어가며: <b>"손에 작업실이 생겼으니, 시키기 전에 무엇을 빠뜨리는지 — UX, 바닥부터."</b></div>
-    <div class="pgfoot">— 슬라이드 08 · 9 / 26 —</div>
+    <div class="head"><span class="numbox">08</span><span class="sec">강의 2 · UX란 무엇이고 왜 중요한가 — 렌즈</span></div>
+    <div class="ptitle">생김새와 겪는 것 — 예쁜데 불편한 앱, 못생겼는데 편한 앱</div><div class="time">⏱ 7분 (39–46)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">14차 렌즈 그대로 — UI = 생김새(뼈대+옷), UX = 겪는 것(움직임+상태+이동). 캘린더로 번역: 색·글꼴 vs 오늘이 1초 안에 보이나·체크가 몇 탭이나·저장됐는지 아나·돌아오는 길이 있나. <b>UI는 자유, UX는 설계.</b></div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">`.lens` 표 — UI/UX × 14차·캘린더에서·누가 만드나·오늘. 콜아웃 "생김새는 한 문장이면 바뀐다, 겪는 것은 먼저 결정해야". 채점기 한 줄.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">초급반은 처음 듣는 말이니 바닥부터 갈게요. UI는 생김새예요 — 뼈대와 옷, 색과 글꼴과 분위기. UX는 겪는 것 — 눌렀을 때 무슨 일이 일어나고, 지금 어떤 상태인지 보이고, 어디로 갔다가 어떻게 돌아오나. 예쁜데 불편한 앱과 못생겼는데 편한 앱이 둘 다 있는 이유가 이 둘이 다른 거라서예요. 캘린더로 하면 — 생김새는 색이랑 둥근 모서리, 겪는 것은 오늘이 1초 안에 보이나, 체크가 몇 탭이나, 저장됐는지 아나, 다음 달 갔다가 돌아오는 길이 있나. 오늘 생김새는 자유예요 — "분위기 차분하게, 주색 남색" 한 문장이면 바뀝니다. 겪는 것은 문장 하나로 안 바뀌어요. 뭘 겪게 할지 먼저 정해야 하거든요. 그게 설계고, 세 번째 강의에서 합니다. 채점기 생각해 보세요 — 점수 카드가 예뻐서 쓴 게 아니라, 등록 누르면 리더보드에 내 이름이 바로 떠서 썼죠. 그게 겪는 것입니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">중급반에겐 "14차 그 표" 한 마디로 복습임을 알리고, 설명은 초급반 눈높이로. 표의 "누가 만드나" 행을 손으로 짚어 두면 09가 바로 이어진다.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">UI를 깎아내리지 않는다 — "색은 취향"이지 "색은 중요하지 않다"가 아니다. 상태 4칸을 여기서 설명하지 않는다(09·10의 자리).</div></div>
+    <div class="next">→ 넘어가며: <b>"그래서 AI 시대에 왜 이게 중요하냐 — 오늘의 문장입니다."</b></div>
+    <div class="pgfoot">— 슬라이드 08 · 9 / 21 —</div>
   </section>
 
   <!-- 09 -->
   <section class="page">
-    <div class="head"><span class="numbox">09</span><span class="sec">Part B · 렌즈 — UI와 UX</span></div>
-    <div class="ptitle">UI는 생김새, UX는 겪는 것 — 14차 문구 그대로</div><div class="time">⏱ 4분 (43–47)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">14차 렌즈를 바닥부터 — UI = 생김새(뼈대+옷), UX = 겪는 것(움직임+상태+이동). 채점기 사례 한 줄. 오늘의 선: UI는 자유(한 문장), UX는 지침에(측정 가능한 규칙). 오늘 남는 것은 색이 아니라 규칙 한 줄.</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">twocol — UI 패널(색·글꼴 / 채점기 파랑·초록 / 오늘 자유) · UX 패널 green(오늘이 보이나 / 등록 카드 하단 고정 / 오늘 지침에). 콜아웃 "UI는 자유, UX는 지침에".</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">14차 문구 그대로 갑니다 — UI는 생김새, UX는 겪는 것. 중급반은 들었고, 초급반은 처음이니 바닥부터요. UI는 뼈대와 옷이에요. 색, 글꼴, 간격, 분위기. 채점기에서 파랑 버튼, 초록 배지 — 그게 UI. UX는 움직임과 상태와 이동 — 겪는 것. 채점기 결과 화면에서 등록 카드가 화면 아래 고정돼 있어서, 결과를 보면서 누를 수 있었죠. 그게 UX예요. 색이 뭐였는지는 기억 안 나도 "보면서 눌렀다"는 겪었습니다. 오늘의 선은 이겁니다 — UI는 자유, UX는 지침에. 색은 취향이라 규칙이 안 되고, 상태와 이동은 규칙이 됩니다. 그래서 오늘 남는 건 색이 아니라 CLAUDE.md의 규칙 한 줄이에요.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body"><b>UI 자유 · UX 지침</b>을 이 장에서 못 박아야 17(UI 한 문장)과 19(규칙 한 줄)가 산다. 채점기 화면은 띄우지 않는다 — 전원이 매주 눌렀으니 말로 충분. 초급에게 "뼈대·옷·움직임"은 15에서 파일 이름으로 다시 만나므로 여기선 단어만.</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">"UX = 사용자 경험" 같은 영어 풀이로 가지 않는다 — "겪는 것"으로. 중급에게 "복습이니 넘어가자"는 금지 — 복습 표제지만 바닥부터(초급이 처음). 4분 초과 금지.</div></div>
-    <div class="next">→ 넘어가며: <b>"겪는 것 중에 AI가 제일 많이 빠뜨리는 게 상태입니다 — 화면 하나는 그림 여러 장."</b></div>
-    <div class="pgfoot">— 슬라이드 09 · 10 / 26 —</div>
+    <div class="head"><span class="numbox">09</span><span class="sec">강의 2 · 오늘의 핵심 메시지 ⭐</span></div>
+    <div class="ptitle">AI는 화면을 만들고, 사용감은 사람이 시킨다 — 같은 캘린더, 그림 네 장</div><div class="time">⏱ 8분 (46–54)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">핵심 메시지. 캘린더 목업 4장(빈 달·체크 중·체크됨·잘못 입력)으로 "AI 기본값"과 "시킨 것"의 차이를 보인다. <b>AI가 가장 많이 빠뜨리는 셋 = 비어 있을 때·안 됐을 때·돌아오는 길.</b> "만든 사람은 자기 앱을 못 본다" → 손님·강사 예고. ② 끝 손들기를 예고한다.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">`.states` 4칸 + `.cal` 미니 달력 — 각 칸에 "시킨 것"(안내문·저장됨·거절 메시지)과 빨간 점선 "AI 기본값". 콜아웃 "빠뜨리는 셋 + 손들기 예고". "만든 사람은 자기 앱을 못 본다".</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">Claude Code에 캘린더를 시키면 1분 만에 그럴듯한 화면이 뜹니다. 정말 잘 만들어요. 그런데 네 장을 보세요. 빈 달 — 그냥 빈 칸이에요. 처음 연 사람은 고장인 줄 압니다. 체크했을 때 — 아무 말이 없어요. 됐나? 두 번 누릅니다. 제목 없이 저장하면 — 조용히 저장이 안 돼요. 적은 줄 알고 나갑니다. 이게 AI가 가장 많이 빠뜨리는 셋이에요 — 비어 있을 때, 안 됐을 때, 그리고 다음 달 갔다가 돌아오는 길. 시키면 1분이면 넣습니다. 안 시키면 안 생겨요. 그러니까 AI는 화면을 만들고, 사용감은 사람이 시킵니다. 이따 만들기 끝나고 손들기 하나 할 거예요 — "상태 네 칸 다 있는 사람?" 아마 거의 없을 겁니다. 그게 오늘의 증명이에요. 하나 더 — 만든 사람은 자기 앱을 못 봅니다. 어디를 눌러야 하는지 이미 아니까요. 그래서 손님처럼 누르고, 마지막엔 제가 누릅니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">네 장을 손가락으로 하나씩, 각 "AI 기본값" 줄을 읽는다. "빠뜨리는 셋"은 14차 문구 그대로 — 중급반이 고개를 끄덕이는 지점. 손들기 예고는 꼭 — 12에서 ≈0이 나와야 증명이 된다.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">"AI가 못 만든다"가 아니라 "안 시키면 안 만든다". 목업의 문구("오늘 일정 없음" 등)를 정답처럼 읽지 않는다 — 답은 각자.</div></div>
+    <div class="next">→ 넘어가며: <b>"그럼 뭘 시켜야 하나 — 세 번째 '왜', 다섯 질문."</b></div>
+    <div class="pgfoot">— 슬라이드 09 · 10 / 21 —</div>
   </section>
 
   <!-- 10 -->
   <section class="page">
-    <div class="head"><span class="numbox">10</span><span class="sec">Part B · 상태 4칸 ⭐ 오늘의 핵심 개념</span></div>
-    <div class="ptitle">"화면 하나는 그림 여러 장이다" — 캘린더로 네 장 + 퀴즈 ①</div><div class="time">⏱ 8분 (47–55)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">상태 4칸을 캘린더 목업 네 장으로 — 빈 달 · 저장 중/됨 · 추가됨 · 잘못 입력. 퀴즈 ① "일정 하나 넣으면 화면이 몇 번 바뀌나?"(→3). "AI가 가장 많이 빠뜨리는 게 이 중 셋" — 조금 뒤 자기 달력에서 센다(예고만).</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">states 4 — 각 칸에 미니 달력(.cal) 목업: ① 빈 달 + 안내 한 줄 / ② "저장됨 ✓ 1초" 배지 / ③ 7일·9일 칸에 색 띠(hot) / ④ 빨간 경고 "제목이 없어 저장하지 않았습니다". 콜아웃 퀴즈 ①. 아래 "빠뜨리는 셋".</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">14차 문장 — "화면 하나는 그림 여러 장이다." 달력으로 보면 네 장이에요. 첫째, 빈 달. 일정이 하나도 없을 때 — 그냥 빈 칸만 있으면 고장인지 비어 있는 건지 몰라요. 안내 한 줄이 필요하죠. 둘째, 저장 중, 저장됨. 눌렀는데 아무 반응이 없으면 한 번 더 누릅니다. "저장됨"이 1초만 떠도 됩니다. 셋째, 추가됨 — 칸에 색 띠가 생기는 것. 넷째, 잘못 입력 — 제목 없이 저장을 누르면? 말없이 넘어가거나, 말없이 안 되거나. 둘 다 안 됩니다. 자, 퀴즈. 일정 하나 넣으면 화면이 몇 번 바뀔까요? … 세 번입니다. 입력 중, 저장 중에서 저장됨, 그리고 칸에 추가됨. 세 번이 안 바뀌면 사람은 "들어갔나?"를 모릅니다. 그리고 — AI에게 달력을 시키면 이 네 장 중 셋을 빠뜨립니다. 보통 셋째 추가됨만 있어요. 조금 뒤 여러분 달력에서 세어 봅니다.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">퀴즈는 답을 받고 공개 — 손들기 숫자(1·2·3)를 셈. <b>"AI가 가장 많이 빠뜨리는 게 이 중 셋"을 반드시 말한다</b> — 14의 손들기 ①(증명)이 여기서 예고돼야 터진다. 목업은 "코드 대신 그림"임을 한 마디(14차 방식).</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">여기서 규칙 문장("일정이 없는 달엔 안내 한 줄")을 쓰게 하지 않는다 — 12 "규칙은 본 것에서 나온다"와 충돌. 상태를 네 칸 이상으로 늘리지 말 것(기다림·오류 세분화 X). 8분 초과 금지.</div></div>
-    <div class="next">→ 넘어가며: <b>"상태 다음은 이동 — 달을 넘기면 오늘로 어떻게 돌아오나."</b></div>
-    <div class="pgfoot">— 슬라이드 10 · 11 / 26 —</div>
+    <div class="head"><span class="numbox">10</span><span class="sec">강의 3 · 무엇을 설계해야 하나 ⭐ — 설계 질문 5</span></div>
+    <div class="ptitle">빠뜨리면 반드시 티가 나는 다섯 질문 — 답은 각자</div><div class="time">⏱ 8분 (54–62)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">양식이 아니라 질문 다섯만 — 쓰는 사람 한 명 · 핵심 과업 하나 · 상태 4칸 · 이동과 돌아오는 길 · 폰 먼저. 하나씩 <b>"빠뜨리면"을 먼저</b> 말하고 "답의 예"는 참고라고 못 박는다. "다섯 답이 있으면 시킬 수 있고, 없으면 AI가 멋대로 정한다."</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">`.q5` 5행 — 질문 / 빠뜨리면(빨강) / 답의 예(참고일 뿐). 콜아웃 "답은 각자 — 월 보기든 주 보기든".</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">설계를 양식으로 드리면 그게 템플릿이 돼요. 대신 빠뜨리면 반드시 티가 나는 질문 다섯만 드립니다. 첫째, 쓰는 사람 한 명 — 빠뜨리면 AI가 "모두를 위한 앱"을 만드는데, 그건 누구에게도 안 맞는 앱이에요. 둘째, 핵심 과업 하나 — 빠뜨리면 모든 기능이 같은 크기가 돼서 가장 자주 하는 일이 3탭이 됩니다. 셋째, 상태 네 칸 — 비어 있을 때, 기다릴 때, 됐을 때, 안 됐을 때. 빠뜨리면 아까 그 네 장이에요. 넷째, 이동과 돌아오는 길 — 빠뜨리면 다음 달 갔다가 못 돌아옵니다. 다섯째, 폰 먼저 — 빠뜨리면 PC에선 되는데 폰에서 깨져요. 오른쪽 답의 예는 참고일 뿐입니다. 월 보기로 하셔도 되고 주 보기로 하셔도 돼요. 체크를 어떻게 하든 각자예요. 다섯 답이 있으면 AI에게 시킬 수 있고, 없으면 AI가 멋대로 정합니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">행마다 "빠뜨리면" 칸을 먼저 읽고 질문으로 돌아온다 — 순서가 바뀌면 질문이 양식처럼 들린다. 중급반 "내 앱으로 하면 안 되나요?" → "질문 5는 소재를 안 가립니다. 내 앱은 선택 과제 ⑥".</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">답의 예를 읽어 주되 "이렇게 쓰세요"로 바꾸지 않는다. 범위 폭발("팀 공유", "알림", "구글 연동")은 질문 ①②로 되돌린다 — "쓰는 사람이 나 한 명이면 팀 공유는 오늘 아님".</div></div>
+    <div class="next">→ 넘어가며: <b>"이 다섯을 카드에 어떻게 쓰고, 어떻게 시키나 — 짧게."</b></div>
+    <div class="pgfoot">— 슬라이드 10 · 11 / 21 —</div>
   </section>
 
   <!-- 11 -->
   <section class="page">
-    <div class="head"><span class="numbox">11</span><span class="sec">Part B · 이동 — 오늘로 돌아오기</span></div>
-    <div class="ptitle">달을 넘기면, 오늘로 어떻게 돌아오나 — 버튼마다 '어디로'</div><div class="time">⏱ 4분 (55–59)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">이동 2 — 달 넘기기(◀ ▶)와 오늘로 돌아오기(「오늘」 1탭). 14차 한 줄 "버튼마다 '어디로'가 정해져 있다". 정해두지 않으면 AI는 ◀ ▶만 만들고 「오늘」을 빠뜨린다 — 손님 테스트 과업 ③이 이것.</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">twocol — 왼쪽 12월 목업(「오늘」 버튼 흐림·취소선) / 오른쪽 green 10월 목업(「오늘」 버튼 켜짐). 콜아웃 14차 한 줄 + 중급 한 줄(12차 "폴더가 곧 주소").</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">이동입니다. 왼쪽 — 다음 달, 다음 달, 다음 달 눌렀더니 12월이에요. 여기서 10월 1일로 가는 길이 화면에 있나요? 왼쪽엔 없어요. 뒤로 세 번 눌러야 하는데, 손님은 "몇 번 눌렀더라"를 세야 합니다. 오른쪽 — 「오늘」 버튼 하나. 어느 달에 있든 한 번. 규칙으로 쓰면 "어느 달에 있든 '오늘' 버튼 1탭"이에요. 14차 한 줄 — 버튼마다 '어디로'가 정해져 있다. 정해두지 않으면 AI는 앞뒤 화살표만 만들고 「오늘」을 빠뜨립니다. 이따 손님 테스트 세 번째 과업이 바로 이거예요 — 다음 달 갔다가 오늘로 돌아오기. 중급반 한 줄 — 12차에 "폴더가 곧 주소"라고 했죠. 버튼은 곧 행선지입니다.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">왼쪽 목업에서 "뒤로 세 번"을 실제 손가락으로 세 번 두드리며 — 탭 수를 세는 눈을 여기서 심어 두면 16·18이 쉽다. 「오늘」은 04 템플릿 화면 절에 "이동 2"로 이미 적혀 있다 — 12에서 확인.</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">주 보기·날짜 점프·검색 같은 다른 이동을 열지 않는다 — 임무 밖. 초급에게 "폴더가 곧 주소"는 중급 한 줄이므로 설명 없이 스친다.</div></div>
-    <div class="next">→ 넘어가며: <b>"렌즈·상태·이동 — 14차 원칙 다섯을 달력 규칙으로 번역하면."</b></div>
-    <div class="pgfoot">— 슬라이드 11 · 12 / 26 —</div>
+    <div class="head"><span class="numbox">11</span><span class="sec">강의 3 · 설계 카드 쓰는 법 + 시키는 법</span></div>
+    <div class="ptitle">카드에 다섯 줄, 그대로 읽어 주면 됩니다 — 길게 쓰지 마세요</div><div class="time">⏱ 4분 (62–66)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">카드 질문 5에 한 줄씩(10분) → Claude Code에 "이 다섯 답대로 캘린더 v1"(카드를 그대로 읽어 줘도 됨, CLAUDE.md에 옮겨도 됨) → push → 주소. <b>"길게 쓰지 마세요, 다섯 답이면 됩니다."</b></div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">steps 3(카드 → "다섯 답대로 v1" → push·주소). 시키는 문장 상자(쓰는 사람은 ___, 핵심 과업은 ___ …). 콜아웃 "길게 쓰지 마세요".</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">카드는 질문마다 한 줄이에요. 두 줄 넘기지 마세요 — 넘어가면 답이 아니라 희망사항이 됩니다. 시키는 건 더 간단해요. 카드를 그대로 읽어 주면 됩니다. "쓰는 사람은 나, 핵심 과업은 오늘 일정 체크, 상태는 이렇게 넷, 이동은 상단 오늘 버튼, 폰 먼저. 이대로 업무 일정체크 캘린더 v1 만들어. 파일은 폴더 3단계로." CLAUDE.md에 옮긴 분은 "CLAUDE.md대로 v1"로 끝이에요. 그다음 "공개 저장소로 올리고 Pages 켜서 주소 알려줘, 내가 직접 해야 하는 게 있으면 그것부터" — 주소가 뜨면 카드에 적으세요. 길게 쓰지 마세요. 길게 쓰면 AI가 중요한 것과 아닌 것을 못 가립니다. 다섯 답은 전부 중요한 것만이에요.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">시키는 문장 상자를 소리 내어 한 번 읽는다 — "읽어 주는 게 시키는 거다"가 몸에 붙는다. 참고 카드 A 하단에 같은 문장 3개.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">프롬프트 작법으로 빠지지 않는다(I-MRKO 재강의 금지 — "지침 한 장"은 한 줄 소환). 4분 초과 금지 — ②가 20분 꽉 찬다.</div></div>
+    <div class="next">→ 넘어가며: <b>"설계 카드 10분, 시작합니다."</b></div>
+    <div class="pgfoot">— 슬라이드 11 · 12 / 21 —</div>
   </section>
 
   <!-- 12 -->
   <section class="page">
-    <div class="head"><span class="numbox">12</span><span class="sec">Part B · 원칙 5 → 캘린더 번역</span></div>
-    <div class="ptitle">14차 원칙 다섯이 캘린더 규칙이 된다 — 둘은 이미 CLAUDE.md에</div><div class="time">⏱ 4분 (59–63)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">원칙 ①~⑤를 캘린더로 번역. ④폰 먼저·⑤분리는 04 템플릿 규칙 2·4·5로 <b>이미 들어가 있음</b>을 종이에서 확인. ③상태 규칙(규칙 6)은 비워 두었다 — <b>관찰한 뒤에</b> 넣는다. "규칙은 본 것에서 나온다."</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">cards c5 — ① 한 화면 한 목적 / ② 반복되면 부품 / ③ 상태 ⭐(hot) / ④ 폰 먼저(hot, 규칙 4·5) / ⑤ 분리(규칙 2). 콜아웃 "04 템플릿을 펴 보세요". 아래 "규칙은 본 것에서 나온다".</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">14차 원칙 다섯을 달력으로 번역합니다. 하나, 한 화면 한 목적 — 월 보기 하나. 주 보기나 설정 화면은 안 만들어요. 이건 임무 절이 막아 줍니다. 둘, 반복되면 부품 — 날짜 칸 하나가 부품이고 31번 반복. 셋, 상태를 빠뜨리지 않는다 — 아까 네 칸. 넷, 폰 먼저 — 폰 세로에서 7열이 다 보이나, 누르는 건 44px. 다섯, 보이는 것과 하는 것 분리 — 옷과 움직임이 다른 파일. 자, 손에 든 CLAUDE.md 템플릿을 펴 보세요. 규칙 4번, 5번 — 폰 먼저가 이미 들어 있죠. 규칙 2번 — 파일 세 개, 분리도 들어 있어요. 그런데 규칙 6번은 비어 있습니다. 상태 규칙 자리예요. 왜 비워 뒀냐면 — 규칙은 본 것에서 나오거든요. 안 본 상태를 미리 쓰면 "알기 쉽게" 같은 형용사가 됩니다. 두 번째 바퀴에서 내 달력을 보고, 세 번째에서 손님으로 겪고, 그다음에 한 줄 넣습니다.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">전원이 실제로 템플릿 규칙 4·5·6을 손가락으로 짚게 한다 — "이미 들어 있다"는 안도감 + "6번은 비어 있다"는 기대. 중급 "14차와 같네요" → "같습니다, 오늘은 달력에 대보는 것".</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body"><b>상태 규칙은 관찰 뒤에</b> — 여기서 규칙 6을 미리 채우게 하지 않는다(채우면 ③의 "본 것에서 나온 한 줄"이 사라진다). 20분 블록 끝 — 63분에 반드시 ②로.</div></div>
-    <div class="next">→ 넘어가며: <b>"두 번째 바퀴 — 첫 실행. 요청은 한 줄입니다."</b></div>
-    <div class="pgfoot">— 슬라이드 12 · 13 / 26 —</div>
+    <div class="head"><span class="numbox">12</span><span class="sec">실습 ② · 설계 · 만들기 · 주소</span></div>
+    <div class="ptitle">설계 카드 10분 → 만들기·push 10분 → 86분까지 전원 주소 · 손들기</div><div class="time">⏱ 20분 (66–86) → ☕ 휴식 10분 (86–96)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">순회 질문 3 — "핵심 과업이 뭐예요?" "빈 달엔 뭐가 보여요?" "주소 떴어요?". <b>86분까지 전원 주소</b>(배포 1~3분은 휴식과 겹침). 끝에 손들기 "상태 4칸 다 있는 사람?" — ≈0이 증명. 휴식에 폰으로 자기 주소 열기.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">twocol — 설계 카드(timerbox 10:00) / 만들기+push(timerbox 10:00). 콜아웃 "86분까지 전원 주소". 손들기.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">(0분) 카드 10분. 질문 다섯에 한 줄씩이에요. 월 보기든 주 보기든 각자. (순회하며) 핵심 과업이 뭐예요? 빈 달엔 뭐가 보여요? (10분) 자, 이제 만들기 10분. 카드를 그대로 읽어 주세요. 로컬에서 화면 떴으면 바로 올리기 — "공개 저장소로 올리고 Pages 켜서 주소 알려줘, 내가 직접 해야 하는 게 있으면 그것부터". 주소는 카드에 적으세요. (순회하며) 주소 떴어요? (20분) 멈추세요. 손 한 번 들어 볼게요 — 상태 네 칸, 비어 있을 때·기다릴 때·됐을 때·안 됐을 때가 다 있는 사람? ... 거의 없죠. 이게 아까 그 문장이에요. 시키지 않은 사용감은 생기지 않는다. 쉬고 와서 시킵니다. 10분 쉬는 동안 배포가 뜹니다 — 돌아오실 때 폰으로 자기 주소 열어 두세요.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">카드가 비어 있는데 바로 만들기 시작하는 사람 — 순회 질문에 답 못 하면 카드로 보내되 <b>막지는 않는다</b>. 카드 없이 만든 결과가 곧 강의 2의 증명. 손들기 수를 적어 둔다(§10 체크).</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">86분에 주소 못 받은 사람은 긴급 경로(3단계 3분 → 창구 → A/B/C). 휴식 중 창구 운영. "상태 4칸 없음"을 지적하지 않는다 — ≈0이 정상이라고 말한다.</div></div>
+    <div class="next">→ 넘어가며: <b>"☕ 10분. 돌아오면 폰으로 자기 주소 — 손님이 될 시간입니다."</b></div>
+    <div class="pgfoot">— 슬라이드 12 · 13 / 21 —</div>
   </section>
 
   <!-- 13 -->
   <section class="page">
-    <div class="head"><span class="numbox">13</span><span class="sec">실습 ② · 브리핑 + 과업 1 · 로컬 확인</span></div>
-    <div class="ptitle">② 과업 1 — 요청은 한 줄, 확인은 합격 기준 3</div><div class="time">⏱ 12분 (63–75 · 브리핑 2 + 실습 10)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">과업 1은 04 txt 그대로 붙여넣기 — 짧은 것이 설계. index.html을 열어 합격 기준 3 체크. 안 되면 "합격 기준 ○번이 안 돼. 다시" 한 줄만. ②에서는 CLAUDE.md를 고치지 않는다(범위 보호). 88분까지 전원 주소.</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">콜아웃 과업 1 전문. cards 3 합격 기준(① 그리드+오늘 ② 넣고 지우고 새로고침 ③ 종류별 색). 콜아웃 "한 줄만 · CLAUDE.md 수정 금지". timerbox 10:00. 실습 중 그대로.</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">두 번째 바퀴입니다. 과업 1은 키트의 문장을 그대로 붙여넣으세요 — "CLAUDE.md를 읽고, 화면·데이터 절대로 이번 달 달력 v1을 만들어. 규칙의 합격 기준 3을 만족하면 멈춰. 끝나면 출력 형식대로." 짧죠. 짧은 게 설계예요. 길게 쓰고 싶은 말은 CLAUDE.md에 들어갈 말입니다. 끝나면 index.html을 더블클릭해서 셋만 확인하세요. 이번 달 그리드에 오늘이 표시되나 — 1일이 무슨 요일인지 직접 확인하세요, AI가 자주 틀립니다. 일정 하나 넣고 새로고침해도 남나, 지워지나. 내 업무 종류별로 색이 다른가. 하나라도 안 되면 "합격 기준 2번이 안 돼. 다시" — 한 줄만. 지금 바퀴에서는 CLAUDE.md를 고치지 않습니다. 파일을 더 만들면 "규칙 2를 어겼어, 파일 세 개로." 10분, 시작.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">순회 포인트 — <b>길게 쓰는 사람 되돌리기</b>("그건 CLAUDE.md에 들어갈 말, ③에서"). 날짜 계산 오류는 예정된 코스 — "합격 기준 ①이 안 돼. 1일 요일을 확인해" 한 줄. gh 미완성인 사람도 과업 1은 됨 — 창구는 병행.</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body"><b>②에서 CLAUDE.md 수정 금지</b> — 15차 규칙 둘("대화 말고 지침을 고친다")은 ③에서만 적용. 범위 폭발("주 보기도") → 임무 절이 막는다, 강사가 막지 않는다. 터미널 코드를 같이 읽어 주지 않는다 — 보는 것은 index.html 화면뿐.</div></div>
-    <div class="next">→ 넘어가며: <b>"로컬에서 되면 — 주소. push 한 번입니다."</b></div>
-    <div class="pgfoot">— 슬라이드 13 · 14 / 26 —</div>
+    <div class="head"><span class="numbox">13</span><span class="sec">실습 ③ · 손님 테스트 · 고치기 ⭐</span></div>
+    <div class="ptitle">손님 모드 — "아는 길로 가지 않는다. 화면이 알려주는 길로만 간다"</div><div class="time">⏱ 32분 (96–128) = 브리핑 4 + 테스트·고치기 28</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">내 폰에서 내 주소, ②의 핵심 과업을 처음 쓰는 사람처럼. 세는 것 3(탭 수·멈칫·됐는지 화면이 말했나) → 고칠 것 하나 → Claude Code에 <b>한 가지만</b> → push → 다시 손님. <b>바퀴 수 자유.</b> 순회 질문 4. "색은 취향, 멈칫은 설계."</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">cards 3(탭 수→헤맴·이동 / 멈칫→상태·안내 / 확인 불가→피드백). 콜아웃 "한 가지만 시키고 push, 바퀴 자유". UI 한 문장. timerbox 28:00.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">규칙 하나예요. 아는 길로 가지 않는다, 화면이 알려주는 길로만 간다. 내 폰에서 내 주소를 열고, 카드 ②에 적은 핵심 과업을 처음 보는 사람처럼 해 보세요. 세 가지를 셉니다 — 몇 탭이었나, 어디서 손이 멈췄나, 됐는지 화면이 말했나. 센 게 곧 고칠 거예요. 탭이 많으면 이름이나 위치, 멈칫했으면 안 보이는 안내나 상태, 됐는지 몰랐으면 피드백. 하나만 골라서 "이것만 고쳐, 다른 건 건드리지 마" — 왜 하나만이냐면 둘을 한 번에 고치면 뭐가 멈칫을 잡았는지 모르거든요. push 하고 폰 새로고침하고 다시 손님. 몇 바퀴 돌지는 자유예요. 생김새 바꾸고 싶으면 한 문장 — "분위기 ○○, 주색 ○○, 구조는 그대로". 색은 취향이고 멈칫은 설계입니다. 28분.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">순회 질문 4 — "몇 탭이었어요?" "어디서 멈칫?" "됐는지 화면이 말했어요?" "고친 거 push했어요?". 기록이 전부 "없음"이면 → <b>"화면이 알려줬나요, 아셨나요?"</b>(손님이 주인으로 돌아간 신호). 형용사로 시키는 사람("알기 쉽게") → <b>"'알기 쉽게'를 숫자로 하면요?"</b>(탭 수·초·px). UI만 계속 바꾸는 사람 → 손님 테스트 기록을 보여 달라고.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">③은 밀려도 줄이지 않는다(④를 줄인다). 날짜 계산 오류(1일 요일·31일)는 손님 테스트에서 걸린다 — "오늘이 목요일 맞아요?" 한 마디. 설치는 아직 — "설치하면 고친 게 느리게 보여요"를 여기서 두 번째로 말한다.</div></div>
+    <div class="next">→ 넘어가며: <b>"고치기가 끝났으면 — 이제 앱으로 만듭니다. 왜 지금인지부터."</b></div>
+    <div class="pgfoot">— 슬라이드 13 · 14 / 21 —</div>
   </section>
 
   <!-- 14 -->
   <section class="page">
-    <div class="head"><span class="numbox">14</span><span class="sec">실습 ② · 과업 2 push·주소 → 자가 진단 → 손들기 ① → 휴식</span></div>
-    <div class="ptitle">push 한 번이면 주소 — 그리고 내 달력에 상태가 몇 칸 있나 센다</div><div class="time">⏱ 13분 (75–88 · 과업 2 7 + 자가 진단 6) → ☕ 휴식 10 (88–98)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">과업 2(공개 저장소 + Pages)에서 사람이 직접 하는 2가지만 미리 — 브라우저 로그인 · 설정→Pages 클릭. 막히면 그 대화 안에서 3단계. 자가 진단: 02 점검표 상단에서 상태 4칸·이동 2·폰 7열. <b>손들기 ① "상태 4칸 다 있는 사람?" ≈ 0 — 이것이 오늘의 증명.</b> 88분까지 전원 주소.</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">twocol — 과업 2 패널(문장 + 사람이 직접 하는 2가지 + 3단계) / 자가 진단 green 패널(상태 4칸·이동 2·7열·빈칸이 고칠 것). 콜아웃 손들기 ① + 휴식 안내. timerbox 7:00 · 6:00.</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">과업 2 — 키트 문장 그대로. "이 폴더를 GitHub 공개 저장소 내-캘린더로 올리고, Pages를 켜서 주소를 알려줘. 내가 직접 해야 하는 게 있으면 그것부터 한 단계씩." 이 마지막 한 줄이 길을 열어 줍니다. AI가 대신 못 하는 게 딱 둘 있어요 — 브라우저 로그인, 그리고 저장소 설정에서 Pages를 켜는 클릭. 그 둘은 여러분 손입니다. 막히면 그 대화 안에서 아까 세 단계. 주소가 나오면 점검표 위에 손으로 적으세요. 7분. … 자, 배포가 뜨는 1~3분 동안 자가 진단. 점검표 상단 — 상태 네 칸 중 내 달력에 있는 칸에 체크, 이동 둘 체크, 폰에서 열어 7열이 다 보이나. 체크가 적을수록 좋습니다, 빈칸이 오늘 고칠 거니까요. 6분. … 손들기 — 상태 네 칸이 다 있는 분? (거의 없음) 그게 오늘의 문장입니다. AI는 화면을 만들었고, 상태는 사람이 시켜야 합니다. 주소 생긴 분? 좋습니다. 10분 쉬고, 돌아오면 전원 폰으로 자기 주소를 열어 두세요.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body"><b>사람이 직접 하는 2가지</b>는 08 §2에 그림 없이 두 줄 — 수강생이 그 쪽을 펴게 한다. push를 휴식 직전에 두는 이유 = 배포 지연을 휴식이 흡수. 폰에서 안 바뀌면 시크릿 창. 손들기 ① 수를 적어 둔다(수업 후 체크 ③).</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body"><b>88분까지 전원 주소</b> — 못 간 사람은 3분 → 창구 → 긴급 경로 B(강사 공용 저장소). 저장소가 private이면 무료 Pages 불가 — "공개" 빠뜨린 사람 확인. ≈0이 안 나오면(4칸 다 있는 사람이 여럿) "그래도 ③에서 손님이 센다"로 넘어가되 증명 문장은 강하게 밀지 않는다. <b>휴식 안내 — "폰으로 자기 주소 열기"를 반드시.</b></div></div>
-    <div class="next">→ 넘어가며(휴식 후): <b>"돌아오셨죠. 폴더에 생긴 세 개, 이름만 봅니다."</b></div>
-    <div class="pgfoot">— 슬라이드 14 · 15 / 26 —</div>
+    <div class="head"><span class="numbox">14</span><span class="sec">강의 4 · 앱으로 만들기 — PWA 5요소</span></div>
+    <div class="ptitle">주소를 홈 화면의 앱으로 — 7차 다섯 글자, 그리고 왜 지금인가</div><div class="time">⏱ 8분 (128–136)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">7차 복습 한 장 — 화(화면)·정(정보 manifest)·오(오프라인 sw.js)·저(저장 localStorage)·배(배포 HTTPS=github.io). 시키는 문장 한 줄이면 Claude Code가 한다. <b>왜 지금인가 = 설치 후엔 캐시 때문에 고친 게 느리게 보인다.</b> 참고 카드 B.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">cards 5(화·정·오·저·배(hot)). 콜아웃 시키는 문장. 빨간 "왜 지금인가 — 캐시".</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">7차에 배운 다섯 글자 — 화, 정, 오, 저, 배. 화면은 폰 세로 먼저, 아까 질문 ⑤랑 같은 거예요. 정보는 manifest — 홈 화면에 뜰 이름과 아이콘과 색. 오프라인은 서비스워커, 지하철에서도 열리는 것. 저장은 localStorage — 오늘의 주머니죠, 창고는 아닙니다. 배포는 HTTPS인데, github.io가 이미 그래요. 그래서 한 줄이면 됩니다 — "이 주소를 앱으로 만들어 홈 화면에 설치할 수 있게, manifest와 서비스워커 추가해, 아이콘은 icons에". push 하고 폰에서 홈 화면에 추가. 왜 이걸 맨 마지막에 하냐면 — 서비스워커가 페이지를 저장해 두거든요. 그래서 설치하고 나면 고치고 push해도 바로 안 바뀝니다. 아까 여러 번 겪으신 "고치면 바뀐다"가 가려져요. 그러니까 고치기가 끝난 다음에 설치. 설치 후에 또 고치고 싶으면 참고 카드 B 하단을 보세요.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">"설치는 마지막"이 오늘 세 번째(03·13·14). 7차를 들은 사람이 적을 수 있다 — 다섯 글자는 "이름만 다시" 수준으로, 설명은 캐시 한 가지에 집중.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">manifest·sw.js 내용·캐시 전략 설명 금지(코드 안 읽기). 8분 초과 금지 — 밀리면 ④를 줄인다.</div></div>
+    <div class="next">→ 넘어가며: <b>"9분 드립니다. ③에 더 있고 싶은 분은 그대로 계셔도 됩니다."</b></div>
+    <div class="pgfoot">— 슬라이드 14 · 15 / 21 —</div>
   </section>
 
   <!-- 15 -->
   <section class="page">
-    <div class="head"><span class="numbox">15</span><span class="sec">Part C · 정체 공개 — 오늘 유일한 '코드'</span></div>
-    <div class="ptitle">폴더에 생긴 세 개 — 열어 보지 않습니다, 이름만 압니다</div><div class="time">⏱ 2분 (98–100)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">index.html 뼈대 · style.css 옷 · app.js 움직임 = 14차 삼형제의 실물. 구조 절에 "파일 3개"라고 썼고 그대로 생겼다. 열어 보지 않는다 — 오늘 코드 노출은 파일 이름 세 개가 전부.</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">tree — 내-캘린더/ CLAUDE.md · index.html(뼈대) · style.css(옷) · app.js(움직임). 콜아웃 "14차 삼형제의 실물" + 초급 한 줄. 아래 "③에서 UI를 바꾸면 style.css가, 규칙을 넣으면 app.js가".</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">돌아오셨죠. 폰에 자기 주소 떠 있나요? 좋습니다. 휴식 전에 폴더에 파일 세 개가 생겼죠 — index.html, style.css, app.js. 열어 보지 않습니다. 이름만 알면 돼요. index.html이 뼈대, style.css가 옷, app.js가 움직임. 14차에 뼈대·옷·움직임 삼형제라고 했던 그 실물이에요. 초급반 한 줄 — 레이어 4겹에서 화면과 동작이라 부른 게 이 파일들입니다. CLAUDE.md 구조 절에 "파일 세 개"라고 썼고, 그대로 세 개가 생겼어요. 조금 뒤 UI를 바꾸면 옷이 바뀌고, 규칙을 넣으면 움직임이 바뀝니다. 출력 절이 "바꾼 파일 이름"을 알려 주니 그걸로 압니다.</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">2분 — 파일을 열지 않는다, 한 줄도 읽지 않는다. "안에 뭐가 있어요?" → "다음 시즌에. 오늘은 이름만". 초급 "HTML이 뭐예요?" → "뼈대. 상자 속 상자" 한 줄로 끝.</div></div>
-    <div class="box ref"><div class="lab">📌 참고</div><div class="body">14차 화면 해부 4단 = 뼈대(HTML)·옷(CSS)·움직임(JS)·부품. 16차 러닝시트 02 복습 카드와 같은 문구. 오늘 "코드 최소 노출"은 14·16차의 Claude Code판 — 보는 것은 폴더·화면·주소.</div></div>
-    <div class="next">→ 넘어가며: <b>"이제 오늘의 승부처 — 만든 사람은 자기 앱을 못 봅니다."</b></div>
-    <div class="pgfoot">— 슬라이드 15 · 16 / 26 —</div>
+    <div class="head"><span class="numbox">15</span><span class="sec">실습 ④ · PWA화 → push → 설치</span></div>
+    <div class="ptitle">④ 앱으로 만들기 → 설치 — ③에 머물러도 됩니다</div><div class="time">⏱ 9분 (136–145)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">14의 문장 한 줄 → push → 폰에서 '홈 화면에 추가'(사람이 누른다). <b>③에 머물고 싶은 사람은 머물러도 된다</b> — 설치는 선택 과제 ④로 남는다. ②·③·④ 어디까지든 전부 결과물.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">steps 3(시키기 → push 1~3분 → 홈 화면에 추가). 콜아웃 "③에 머물러도 됩니다". timerbox 9:00.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">9분이에요. 아까 그 한 줄을 시키고, push 하고, 1~3분 기다리는 동안 카드에 고친 것 한 줄 적어 두세요. 주소가 바뀌면 폰 브라우저에서 홈 화면에 추가 — 아이폰은 공유 버튼, 안드로이드는 메뉴에서 설치. 이건 사람이 누르는 자리라 Claude Code가 못 해요. 그리고 — 한 바퀴 더 돌고 싶은 분은 그냥 ③에 계세요. 그게 맞는 선택이면 그게 맞아요. 설치는 집에서 해도 됩니다, 과제 넷째가 그거예요. 어디까지 가셨든 다 결과물입니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">순회 질문 — "홈 화면에 떴어요?" "아이콘이 내 거예요?". 설치 후 고치고 "안 바뀐다"는 사람 → 참고 카드 B 하단(캐시). 설치까지 간 사람 수를 센다(§10).</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div name="x" class="body">③에 남은 사람을 ④로 끌어오지 않는다. 밀렸으면 이 9분을 먼저 줄인다 — 제출 3분은 지킨다.</div></div>
+    <div class="next">→ 넘어가며: <b>"3분, 슬랙에 올립니다 — 주소만 필수."</b></div>
+    <div class="pgfoot">— 슬라이드 15 · 16 / 21 —</div>
   </section>
 
   <!-- 16 -->
   <section class="page">
-    <div class="head"><span class="numbox">16</span><span class="sec">Part C · 손님 테스트 하는 법 ⭐</span></div>
-    <div class="ptitle">만든 사람은 자기 앱을 못 본다 — 손님 모드 · 과업 3 · 관찰 → 규칙 3패턴</div><div class="time">⏱ 7분 (100–107)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">UX는 남이 겪는 것. 손님 모드 규칙 하나 — "아는 길로 가지 않는다, 화면이 알려주는 길로만." 과업 3 × 세는 것 3(탭 수·멈칫·확인). 관찰 → 규칙 3패턴(멈칫→상태·안내 / 헤맴→이름·위치 / 확인 불가→피드백). "그래도 주인은 주인 — 마지막엔 강사가 누릅니다."</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">큰 콜아웃 손님 모드 규칙. twocol — 과업 3 패널 / 3패턴 green 패널. cards 3 세는 것(탭 수·멈칫·확인). 아래 "주인은 주인".</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">만든 사람은 자기 앱을 못 봅니다. 어디를 눌러야 하는지 이미 아니까요. 그래서 손님인 척합니다. 규칙은 하나예요 — 아는 길로 가지 않는다, 화면이 알려주는 길로만 간다. 화면이 안 알려주면 그 자리가 멈칫이에요. 과업은 셋, 점검표 아래에 인쇄돼 있습니다. 다음 주 화요일에 내 업무 종류 하나로 일정을 넣는다. 방금 넣은 걸 지운다. 다음 달로 넘어갔다가 오늘로 돌아온다. 과업마다 셋을 셉니다 — 몇 번 눌렀나, 어디서 멈칫했나, 그리고 "됐다"를 화면이 말했나 아니면 내가 그냥 알았나. 관찰은 세 가지로 규칙이 됩니다. 멈칫했으면 보이지 않는 게 있는 거예요 — 상태나 안내. 헤맸으면 이름이나 위치. 확인이 안 됐으면 피드백이 없는 것. 기록은 한 줄 — "어디에서 멈칫, 그래서 규칙은 이것." 그래도 주인은 주인입니다. 손님인 척해도 아는 길이 손에 남아요. 그래서 마지막엔 제가 누릅니다.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body"><b>"주인은 주인 — 마지막엔 강사가 누릅니다"</b>를 반드시 — 21 즉석 점검의 예고이자 제출 동기. "확인"은 세는 것 중 가장 중요 — "들어갔다를 어떻게 알았나"가 상태 규칙의 씨앗. 진짜 남의 손은 선택 과제 2로 미룬다.</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">"사용성 테스트"·"UT" 같은 실명 금지 — "손님 테스트"로. 과업 3을 바꾸지 않는다(21에서 강사가 같은 과업 ①을 수행해야 하므로). 7분 초과 금지 — 17(UI·제출 안내)이 밀리면 ③에서 제출 방법을 다시 설명해야 한다.</div></div>
-    <div class="next">→ 넘어가며: <b>"고치는 건 둘 — 규칙 한 줄, 그리고 UI 한 문장. UI부터 함정이 있습니다."</b></div>
-    <div class="pgfoot">— 슬라이드 16 · 17 / 26 —</div>
+    <div class="head"><span class="numbox">16</span><span class="sec">실습 ④ · 슬랙 제출</span></div>
+    <div class="ptitle">슬랙에 세 가지 — 주소만 필수</div><div class="time">⏱ 3분 (145–148)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">주소(필수) · 고친 것 한 줄 · (설치했으면) 홈 화면 캡처. <b>주소만 필수</b> — 제출 = 출석·성공 판정. ②까지 간 사람도 주소는 올린다.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">cards 3(주소(hot) / 고친 것 한 줄 / 캡처). 콜아웃 "주소만 필수". timerbox 3:00.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">3분, 슬랙 채널에 올립니다. 주소 하나, 고친 것 한 줄, 설치하셨으면 홈 화면 캡처. 주소만 필수예요 — 이게 출석이고 성공 판정입니다. ②까지 가신 분도 주소는 올려 주세요, 그게 결과물이니까요. 고친 게 없으면 "없음"도 답이에요 — 이따 제가 눌러 보면서 같이 찾습니다. 전부 열어 보고 3일 안에 슬랙으로 한 줄씩 회신드릴게요.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">올라오는 링크 중 즉석 점검 3개를 고른다 — 지원자 우선, 없으면 "고친 것 한 줄"이 구체적인 사람. 강사 폰 미러링을 이 3분 안에 켜 둔다.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">제출 양식을 더 늘리지 않는다. 미제출자를 호명하지 않는다 — 수업 후 슬랙 DM.</div></div>
+    <div class="next">→ 넘어가며: <b>"이제 남이 누릅니다 — 제가요."</b></div>
+    <div class="pgfoot">— 슬라이드 16 · 17 / 21 —</div>
   </section>
 
   <!-- 17 -->
   <section class="page">
-    <div class="head"><span class="numbox">17</span><span class="sec">Part C · UI는 한 문장 — 예시의 함정 · 바꾸기 2종 · 제출 안내</span></div>
-    <div class="ptitle">"구글 캘린더처럼 예쁘게"가 망하는 이유 — 분위기 한 단어 + 색 하나 + 안 바꿀 것</div><div class="time">⏱ 5분 (107–112)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">15차 예시의 함정 UI판 — "구글 캘린더처럼"은 무엇을 베낄지 AI가 고르고 뼈대까지 바뀐다. UI 한 문장 = 분위기 한 단어 + 색 하나 + 안 바꿀 것 한 줄, 한 번만. 바꾸기 2종(기능 1·UI 1) + 규칙 둘(CLAUDE.md를 고친다 / 한 번에 한 줄) + 슬랙 제출 4칸.</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">twocol — red "구글 캘린더처럼 예쁘게 ✗" / green "차분하게, 주색은 짙은 초록, 그리드 구조는 그대로 ✓". cards 2 바꾸기(기능 1 과업 3 / UI 과업 4). 콜아웃 규칙 둘 + 슬랙 제출(이름·주소·규칙 한 줄·탭 수 변화).</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">UI는 자유라고 했죠. 그런데 함정이 하나 있어요. "구글 캘린더처럼 예쁘게" — 15차에 예시의 함정이라고 했던 것의 UI판입니다. 무엇을 베낄지 AI가 고릅니다. 주 보기, 드래그, 사이드바까지 따라오고, 뼈대가 바뀌면 합격 기준이 깨져요. 측정도 안 되니 "더 예쁘게"가 끝이 없고요. 대신 한 문장 — 분위기 한 단어, 색 하나, 안 바꿀 것 한 줄. "차분하게, 주색은 짙은 초록, 그리드 구조는 그대로." 한 번만입니다. 세 번째 바퀴에서 바꾸는 건 둘이에요. 손님 테스트에서 나온 규칙 한 줄을 CLAUDE.md 규칙 6번에 넣고 "그것만 반영해" — 그리고 UI 한 문장. 각 한 번. 15차 규칙 둘 그대로 — 대화 말고 CLAUDE.md를 고친다, 한 번에 한 줄. 제출은 슬랙입니다. 저에게 메시지로 네 칸 — 이름, 주소, 고친 규칙 한 줄, 탭 수 변화. 점검표 아래에 복사 양식이 있어요.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">슬랙 채널(또는 DM) 이름을 화면 한쪽에 써 두고 20에서 다시 띄운다. "한 번 더 바꾸고 싶다"는 ③ 여유 3분 또는 선택 과제. UI 문장 예시를 한 개 더 만들어 두면 좋다("또렷하게, 주색은 남색, 글꼴은 그대로").</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body"><b>"구글 캘린더처럼" 금지</b>를 수강생 과업 문장에서 실제로 걸러낸다(순회). UI 문장은 CLAUDE.md에 쓰지 않는다 — 취향은 규칙이 아니다. 제출 방법 설명을 빠뜨리면 ③ 끝에서 혼란 — 여기서 반드시.</div></div>
-    <div class="next">→ 넘어가며: <b>"세 번째 바퀴. 폰 드세요 — 7분, 손님입니다."</b></div>
-    <div class="pgfoot">— 슬라이드 17 · 18 / 26 —</div>
+    <div class="head"><span class="numbox">17</span><span class="sec">클로징 · 강사 즉석 점검 ⭐</span></div>
+    <div class="ptitle">이제 남이 누릅니다 — 제출 링크 3개, 그 사람의 핵심 과업을 손님 모드로</div><div class="time">⏱ 7분 (148–155)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">강사 폰(미러링)으로 제출 링크 3개를 열어 <b>그 사람의 핵심 과업(카드 ②)</b>을 손님 모드로. 탭·멈칫을 소리 내어. 형식 "___에서 멈칫 → 어떻게 고쳤나 → 잡혔나?" <b>칭찬 1·보완 1.</b> UI는 한 마디 "색은 취향, 멈칫은 설계".</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">steps 3(멈칫 → 어떻게 고쳤나 → 잡혔나?) + cards 2(칭찬 1 / 보완 1). 실제로는 강사 폰 미러링 화면이 주가 되고 이 슬라이드는 형식 안내용.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">세 분 것을 제 폰으로 열어 볼게요. 저는 이 앱을 처음 보는 사람이고, 화면이 알려주는 길로만 갑니다. (링크 열고) 핵심 과업이 "오늘 일정 체크"라고 하셨죠 — 자, 열었고, 오늘이… 여기 있네요, 1탭. 체크… 어, 여기서 잠깐 멈칫했어요, 체크가 어디인지. 아 이거군요. 눌렀는데 — 초록 떴어요, 저장됐다는 걸 알겠네요. 고친 것 한 줄에 "저장됨 표시 넣음"이라고 쓰셨죠, 그게 잡혔어요. 칭찬 하나 — 저장됐다는 게 바로 보입니다. 보완 하나 — 빈 날엔 안내가 없어요, 그건 다음 바퀴 재료. 색은 취향이고 멈칫은 설계니까 색 얘긴 안 할게요.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">한 사람 2분. 반드시 <b>그 사람의 카드 ②</b>로 — 강사가 정한 과업으로 하면 "손님"이 아니다. 멈칫은 연기하지 말고 진짜로 — 강사도 처음 보는 앱이다. 나머지 제출은 수업 후 07 §C로 전수 확인·회신.</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">보완은 하나만 — 둘 이상은 회신으로. 코드·폴더를 열지 않는다. 비교·순위 금지("누가 제일 잘했다" X). 7분 초과 시 3번째는 "주소만 열어 보고" 끝.</div></div>
+    <div class="next">→ 넘어가며: <b>"방금 제 폰에서 연 달력에 뭐가 없었는지 보셨죠 — 그게 다음 강의입니다."</b></div>
+    <div class="pgfoot">— 슬라이드 17 · 18 / 21 —</div>
   </section>
 
   <!-- 18 -->
   <section class="page">
-    <div class="head"><span class="numbox">18</span><span class="sec">실습 ③ · 손님 테스트 ⭐</span></div>
-    <div class="ptitle">③ 손님 테스트 7분 — 내 폰에서 내 주소, 과업 3을 세며</div><div class="time">⏱ 7분 (112–119)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">내 폰, 내 주소, 손님 모드로 과업 3. 02 점검표 하단에 기록 3줄(탭 수·멈칫·확인) → "___에서 멈칫 → 규칙: ___" 한 줄, 고칠 것은 하나. 기록이 전부 "없음"이면 주인 모드로 한 것. 7분은 줄이지 않는다.</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">steps 3(과업 ①②③ + 빈칸) · 콜아웃 기록 3줄 · "없음·없음·없음이면" · timerbox 7:00. 실습 중 그대로.</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">폰에 내 주소. 지금부터 7분, 여러분은 이 앱을 처음 보는 사람입니다. 과업 하나 — 다음 주 화요일에 내 업무 종류 하나로 일정을 넣으세요. 몇 번 눌렀는지, 어디서 멈칫했는지, 그리고 넣고 나서 "들어갔다"를 어떻게 알았는지. 과업 둘 — 방금 넣은 걸 지우세요. 지워졌는지 화면이 말했나요? 과업 셋 — 다음 달로 갔다가 오늘로 돌아오세요. 오늘로 가는 길이 보였나요? 점검표 아래에 세 줄 적고, 마지막에 한 줄 — "어디에서 멈칫, 규칙은 이것." 고칠 건 하나만 고릅니다. 아는 길로 가지 마세요. 화면이 알려주는 길로만. 시작.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">순회 포인트 — <b>기록이 전부 "없음"이면 "화면이 알려줬나요, 아니면 아셨나요?"</b> 주인 모드로 흐른 것 — 과업 ①을 강사가 옆에서 지켜보며 한 번 더 시킨다. 폰이 없거나 주소가 없는 사람은 로컬 index.html에서 같은 과업(브라우저 창을 폰 폭으로 좁혀서).</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body"><b>7분은 줄이지 않는다</b>(실습이 밀리면 ③ 여유 3과 즉석 점검 개수를 줄인다). 이 시간에 CLAUDE.md를 열지 않게 — 관찰만. "고칠 것 둘 이상"은 하나로 되돌린다("나머지는 선택 과제 3").</div></div>
-    <div class="next">→ 넘어가며: <b>"기록 세 줄에서 하나 — 그걸 규칙 한 줄로."</b></div>
-    <div class="pgfoot">— 슬라이드 18 · 19 / 26 —</div>
+    <div class="head"><span class="numbox">18</span><span class="sec">클로징 · 선택 과제 + 창고가 비어 있다</span></div>
+    <div class="ptitle">선택 과제 7 — 같은 일의 다음 바퀴 / "주소는 공유됐는데 데이터는 공유되지 않았다"</div><div class="time">⏱ 2분 (155–157)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">과제 7은 한 줄씩 읽기만 — 하나든 전부든 안 하든. <b>"안 해도 곤란하지 않습니다"</b>를 분명히. 다음 강의 예고는 한 장 — 즉석 점검에서 강사 폰에 일정이 없었던 것이 입구. 일정 없이 "창고 연결"만.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">왼쪽 과제 7(①집에서 열기 ②진짜 남의 손 ③상태 4칸 ④설치 ⑤질문 ② 바꾸기 ⑥(중급) 내 앱 ⑦(경로 B) 옮기기). 오른쪽 빨간 패널 "창고가 비어 있다 — 다음 강의".</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">과제는 선택이고, 전부 오늘 한 것의 다음 바퀴예요. 집에서 폰으로 내 주소 열어 보기, 가족이나 동료한테 진짜로 눌러 보게 하기, 상태 네 칸 채우기, 설치 못 했으면 설치, 핵심 과업 바꿔 보기, 중급반은 내 앱으로 한 번 더, 강사 저장소 쓰신 분은 내 계정으로 옮기기. 하나 하셔도 되고 전부 하셔도 되고 안 하셔도 돼요 — 안 해도 곤란하지 않습니다, 다음 강의는 과제를 전제하지 않아요. 그런데 하나만 짚을게요. 방금 제 폰에서 연 여러분 달력엔 일정이 없었죠. 여러분 폰 주머니에 남은 거라서요. 주소는 공유됐는데 데이터는 공유되지 않았습니다. 9차 다섯 요소 중 오늘 없던 하나 — 창고. 팀 공유도, 알림도, 그게 있어야 돼요. 다음 강의입니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">과제 ②(진짜 남의 손)만 한 마디 더 — "오늘 제 손의 다음 바퀴". "공유·알림" 요청이 많았으면 여기서 "그게 창고"라고 회수(§10 ⑥).</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body"><b>"종료·수료" 금지.</b> 과제를 "확인한다·검사한다"고 말하지 않는다. 다음 강의 일정을 지어내지 않는다 — "따로 안내".</div></div>
+    <div class="next">→ 넘어가며: <b>"오늘의 문장으로 마칩니다."</b></div>
+    <div class="pgfoot">— 슬라이드 18 · 19 / 21 —</div>
   </section>
 
   <!-- 19 -->
   <section class="page">
-    <div class="head"><span class="numbox">19</span><span class="sec">실습 ③ · 고치기 → push → 재시도 (두 번째 맥박)</span></div>
-    <div class="ptitle">규칙 한 줄 → 그것만 → UI 한 문장 → push → 다시 손님</div><div class="time">⏱ 19분 (119–138 · 고치기 13 + push·재시도 6)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">기록 3줄 → 고칠 것 1 → CLAUDE.md 규칙 6번에 한 줄(측정 가능하게) → 과업 3 "그것만" → 과업 4 UI 한 문장 → 로컬 확인 → 과업 5 push → 폰 새로고침 → 같은 과업 손님 모드 재시도 "탭 수 __ → __". 규칙이 형용사면 숫자로. 한 번에 한 줄.</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">steps 5(규칙 한 줄 / 과업 3 / 과업 4 UI / 과업 5 push / 재시도). 콜아웃 형용사→숫자 예 2개. timerbox 13:00 · 6:00. 실습 중 그대로.</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">기록 세 줄 중 하나를 고르세요. 그걸 CLAUDE.md 규칙 6번에 한 줄로 넣습니다 — 측정 가능하게. "알기 쉽게"는 규칙이 아니에요. "저장 뒤 1초간 초록 띠" — 이게 규칙입니다. "빈 달엔 안내"가 아니라 "일정이 없는 달엔 그리드 아래 안내 한 줄." 넣었으면 과업 3 — "규칙에 한 줄 추가했어. 그것만 반영해. 다른 건 바꾸지 마." 로컬에서 확인. 그다음 과업 4, UI 한 문장 — 분위기, 주색, 구조는 그대로. 한 번만. 13분. … 됐으면 과업 5 — "push해." 1~3분 뒤 폰에서 새로고침. 두 번째 맥박이에요. 그리고 아까 그 과업을 손님으로 다시 — 탭 수가 몇에서 몇으로, 멈칫이 없어졌나, 한 줄. 6분.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">순회 포인트 — <b>규칙이 형용사면 숫자로</b>("'알기 쉽게' → '1초간 초록 띠'"), <b>한 번에 한 줄</b>(둘 넣은 사람은 하나 지우기). 과업 3이 다른 걸 건드리면 "규칙 7을 어겼어. 그것만" 한 줄 — CLAUDE.md는 안 고친다. 폰에서 안 바뀌면 시크릿 창.</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body"><b>두 번째 push와 재시도는 줄이지 않는다</b> — 맥박 두 번이 오늘의 몸 기억. "더 예쁘게" 두 번째 요청 → "그건 선택 과제". push 실패자는 3단계 → 창구 → 로컬까지만으로 제출(20). 138분에 제출로 넘어간다.</div></div>
-    <div class="next">→ 넘어가며: <b>"제출. 슬랙에 네 칸, 4분."</b></div>
-    <div class="pgfoot">— 슬라이드 19 · 20 / 26 —</div>
+    <div class="head"><span class="numbox">19</span><span class="sec">클로징 · 엔딩</span></div>
+    <div class="ptitle">엔딩 — 핵심 메시지 + 후렴 + "앞으로 매 강의가 이 작업실에서"</div><div class="time">⏱ 3분 (157–160)</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">핵심 메시지 한 번, 후렴 한 번, "앞으로 매 강의가 이 작업실에서 시작합니다" 한 번. 다음 안내는 공란 — 지어내지 않는다.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">dark closing — "AI는 화면을 만들고, 사용감은 사람이 시킨다." + "매주 눌렀습니다. 오늘은 남이 누릅니다." + 작업실 한 줄 + 다음 안내 공란.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">AI는 화면을 만들고, 사용감은 사람이 시킵니다. 매주 눌렀습니다 — 오늘은 남이 눌렀어요. 오늘 만든 폴더 하나, 저장소 하나, 주소 하나 — 앞으로 매 강의가 이 작업실에서 시작합니다. 다음 강의는 따로 안내드릴게요. 수고하셨습니다.</div></div>
+    <div class="box ref"><div class="lab">📌 수업 후 체크 (01 §10)</div><div class="body">① 주소 도달 / 설치 / 제출 수 / 전체 ← 성공 판정 ② 제출 링크 전수 — 07 §C(열림 · 핵심 과업 탭 수 · 상태 몇 칸 · 폰 7열 · 설치 여부) → 슬랙 한 줄 회신(3일 내) ③ 손들기 "상태 4칸" 수 ④ 막힘·해결 기록(07 §C-1) → 08 §4 보강 ⑤ 설계 카드에서 가장 많이 비어 있던 질문 번호 → 다음 회차 강의 3 재료 ⑥ "공유·알림" 요청 수 → 창고 연결 수요 ⑦ 밀린 구간</div></div>
+    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">"종료·수료" 금지. 핵심 메시지와 후렴 외에 새 말을 보태지 않는다 — 3분 안에.</div></div>
+    <div class="pgfoot">— 슬라이드 19 · 20 / 21 —</div>
   </section>
 
-  <!-- 20 -->
+  <!-- 20 예비 -->
   <section class="page">
-    <div class="head"><span class="numbox">20</span><span class="sec">실습 ③ · 슬랙 제출</span></div>
-    <div class="ptitle">슬랙으로 네 칸 — 이름 · 주소 · 규칙 한 줄 · 탭 수 변화 (+여유 3분)</div><div class="time">⏱ 4분 (138–142) + 여유 3분 (142–145)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">제출 = 출석 = 성공 판정 = 수업 후 강사 확인 대상. 네 칸 중 <b>주소만 필수</b> — 로컬까지만 된 사람은 "주소 없음 + 규칙 한 줄"로 제출. 여유 3분은 밀린 push·제출 사수.</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">cards 4(이름 / 주소(hot·필수) / 고친 규칙 한 줄 / 탭 수 변화). 콜아웃 복사 양식 + 회신 안내. 아래 "주소 없음도 제출". timerbox 4:00. 슬랙 채널 이름을 화면 한쪽에.</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">제출입니다. 점검표 아래 양식을 그대로 슬랙 메시지로 저에게 — 이름, 주소, 고친 규칙 한 줄, 탭 수 변화. 네 칸 중 필수는 주소 하나예요. push가 안 돼서 주소가 없는 분은 "주소 없음"이라고 쓰고 규칙 한 줄만 보내 주세요. 수업 끝나고 push 도움을 안내드립니다. 제출이 오늘 출석이고, 제가 3일 안에 한 줄씩 회신합니다. 4분. 그리고 3분 더 — 밀린 분은 push와 제출을 마무리하세요.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">제출이 들어오는 동안 슬랙 창을 강사 노트북에 띄워 21에서 바로 클릭할 수 있게. 즉석 점검 지원자를 이 시간에 묻는다("제 폰으로 열어도 되는 분?") — 없으면 제출 순. 제출 수를 센다(성공 판정).</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body"><b>주소만 필수</b> — 네 칸 다 못 채웠다고 제출을 미루게 하지 않는다. 145분을 넘기지 않는다 — 클로징 15분(즉석 점검 8)이 줄어들면 "남의 손"이 사라진다.</div></div>
-    <div class="next">→ 넘어가며: <b>"매주 눌렀습니다. 오늘은 제가 누릅니다."</b></div>
-    <div class="pgfoot">— 슬라이드 20 · 21 / 26 —</div>
-  </section>
-
-  <!-- 21 -->
-  <section class="page">
-    <div class="head"><span class="numbox">21</span><span class="sec">클로징 · 강사 즉석 점검 ⭐ 진짜 남의 손</span></div>
-    <div class="ptitle">"___에서 멈칫 → 규칙 읽기 → 이 줄이 그걸 잡았나?"</div><div class="time">⏱ 8분 (145–153)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">제출된 링크 3~4개(지원자 우선)를 강사 폰 미러링으로 열어 과업 ①만 손님 모드로 수행 — 탭 수·멈칫을 소리 내어 센다. 형식 고정: "___에서 멈칫 → (규칙 한 줄 읽기) → 이 줄이 그걸 잡았나?" 칭찬 1·보완 1. 사람이 아니라 규칙을 본다.</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">슬라이드 steps 4 + 형식 콜아웃을 띄운 뒤 → 슬랙 창 → 강사 폰 미러링(제출 주소) → 다시 슬라이드. 링크당 2분.</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">매주 눌렀습니다. 오늘은 제가 누릅니다. (링크 열고) ○○님 달력. 처음 보는 사람으로 — 다음 주 화요일에 미팅 하나. 하나, 둘 — 여기서 멈칫. 날짜를 눌렀는데 폼이 어디 있는지 안 보여요. 셋, 넷, 저장. 들어갔나? … 칸에 띠가 생겼네요, 알겠습니다. 4탭, 멈칫 하나. 제출된 규칙 — "저장 뒤 1초간 초록 띠." 이 줄이 멈칫을 잡았나요? 저장은 잡았고, 폼 위치는 아직이에요. 좋은 건 — 확인이 됩니다, 눌렀는지 알 수 있어요. 보완 하나 — 날짜를 누르면 폼이 어디 뜨는지, 다음 바퀴 규칙으로. 다음 분.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body"><b>칭찬 1 · 보완 1</b>, 그리고 형식이 "멈칫 → 규칙 → 잡았나?"라서 <b>사람이 아니라 규칙을 본다</b> — 이 말을 첫 링크 전에 한 번. UI 언급은 한 마디만("색은 취향, 멈칫은 규칙"). 실습이 밀렸으면 3~4개 → 2개. 나머지 링크는 수업 후 07 §C 체크리스트로 전수 확인 → 슬랙 회신(3일 내).</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">과업 ①만 — ②③까지 하면 링크당 4분이 된다. 멈칫을 "실수"·"틀렸다"로 말하지 않는다. 안 열리는 링크는 넘어가고 수업 후 확인. 민망해하는 사람은 지원자로 대체 — 지원자가 없으면 강사 자신의 달력을 첫 번째로.</div></div>
-    <div class="next">→ 넘어가며: <b>"다음 바퀴를 돌고 싶은 분을 위해 — 선택 과제."</b></div>
-    <div class="pgfoot">— 슬라이드 21 · 22 / 26 —</div>
-  </section>
-
-  <!-- 22 -->
-  <section class="page">
-    <div class="head"><span class="numbox">22</span><span class="sec">클로징 · 선택 과제 — 같은 일의 다음 바퀴</span></div>
-    <div class="ptitle">하나든 전부든 안 하든 — 다음 강의는 이 작업실에서 다시 시작한다</div><div class="time">⏱ 2분 (153–155)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">과제 7개 전부 오늘 한 일의 다음 바퀴 — 폰에서 열어 보기 · 진짜 남의 손 ⭐ · 상태 4칸 채우기 · 홈 화면 설치 · 주 보기/반복 · (중급) 내 앱으로 두 번째 작업실 · (경로 B) 내 계정으로 옮기기. "안 해도 곤란하지 않습니다."</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">cards 4 + 3(과제 1~7, 과제 2 hot). 콜아웃 "다음 강의에 가져올 것은 주소 하나뿐". 아래 "안 해도 곤란하지 않습니다".</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">선택 과제입니다. 전부 오늘 한 일의 다음 바퀴예요. 집에서 폰으로 내 주소 열어 보기 — 일정이 비어 있을 겁니다, 왜인지 한 줄 적어 두세요. 가족이나 동료 한 명에게 과업 셋을 읽어 주고 말 없이 세기 — 오늘 못 한 진짜 남의 손이에요. 자가 진단의 빈 칸을 규칙으로 하나씩. 홈 화면 설치, 주 보기나 반복 일정 — 임무 절을 고쳐서 하나만. 중급반은 내 앱으로 두 번째 작업실, 오늘 순서 그대로. 하나든 전부든 안 하든 — 안 해도 곤란하지 않습니다. 다음 강의는 이 작업실에서 다시 시작하고, 가져올 건 주소 하나뿐이에요.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">과제 2(진짜 남의 손)만 한 문장 더 — "손님인 척해도 주인은 주인, 오늘 제가 눌러서 아셨죠". 과제 4(PWA)는 "설치 뒤엔 새로고침이 느리게 반영된다"를 알려 둔다(7차 치트시트). 과제 7은 경로 B로 간 사람에게만.</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body"><b>"안 해도 곤란하지 않습니다"</b>를 반드시 — 다음 강의는 과제를 전제하지 않는다. 과제를 "숙제"라고 부르지 않는다(이전 반의 숙제 제출률 부담과 분리). 2분 — 7개를 다 읽지 않는다.</div></div>
-    <div class="next">→ 넘어가며: <b>"마지막으로 — 아까 제 폰에서 여러분 달력을 열었을 때."</b></div>
-    <div class="pgfoot">— 슬라이드 22 · 23 / 26 —</div>
-  </section>
-
-  <!-- 23 -->
-  <section class="page">
-    <div class="head"><span class="numbox">23</span><span class="sec">클로징 · 창고가 비어 있다 — 다음 강의 예고</span></div>
-    <div class="ptitle">주소는 공유됐는데, 데이터는 공유되지 않았습니다</div><div class="time">⏱ 3분 (155–158)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">즉석 점검에서 강사 폰에 열린 달력에 수강생의 일정이 없었다 — 주머니(16차)에 남은 것. 작업실 4요소에서 비워 둔 창고가 다음 강의. 일정 없이 한 장. "주소를 잃어버리지 마세요"까지.</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">center-quote "주소는 공유됐는데, 데이터는 공유되지 않았습니다" + 부제(주머니 · 창고 · 일정은 따로 안내).</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">방금 제 폰에서 여러분 달력을 열었을 때 — 일정이 없었죠. 여러분 폰에는 있는데요. 16차에 들은 분은 아실 거예요, 주머니에 남은 겁니다. 브라우저 저장. 초급반 한 줄 — 내 기기 안에만 남는 저장이에요. 주소는 공유됐는데, 데이터는 공유되지 않았습니다. 작업실 넷 중에 오늘 비워 둔 칸, 창고 — 그게 다음 강의입니다. 일정과 방식은 따로 안내드릴게요. 오늘은 주소를 잃어버리지 마세요, 까지.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">21에서 실제로 "일정이 없다"를 한 번 소리 내어 짚어 두면 이 장이 산다("어, 비어 있네요 — 이따 얘기합니다"). 중급은 "창고 연결 = 데이터도의 표가 진짜 창고로", 초급은 "폰 바꿔도 남게" — 각 한 줄 이상 가지 않는다.</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body"><b>"종료·수료" 금지.</b> 날짜·형식·비용 등 확정 안 된 것은 말하지 않는다. DB·Supabase·동기화 같은 실명으로 들어가지 않는다 — "창고"로만.</div></div>
-    <div class="next">→ 넘어가며: <b>엔딩.</b></div>
-    <div class="pgfoot">— 슬라이드 23 · 24 / 26 —</div>
-  </section>
-
-  <!-- 24 -->
-  <section class="page">
-    <div class="head"><span class="numbox">24</span><span class="sec">클로징 · 엔딩</span></div>
-    <div class="ptitle">엔딩 — 핵심 메시지 + 후렴 + "앞으로 매 강의가 이 폴더에서"</div><div class="time">⏱ 2분 (158–160)</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">핵심 메시지 한 번, 후렴 한 번, OT 마무리 한 번 — 끝. 다음 안내는 공란(날짜·주제 미정).</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">dark closing — "AI는 화면을 만들고, 상태는 사람이 시킨다." + 후렴 + OT 문장 + 다음 안내 공란.</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">AI는 화면을 만들고, 상태는 사람이 시킨다. 매주 눌렀습니다. 오늘은 남이 누릅니다. 초급반은 시키는 법을, 중급반은 설계도를 가져왔고, 오늘 한 장에서 만났습니다. 그 한 장이 있는 폴더가 작업실이고, 작업실은 GitHub에 있어서 노트북을 바꿔도 남습니다. 앞으로 매 강의가 이 작업실에서 시작합니다 — 실습 절반, 강의 절반, 과제는 선택. 다음 안내는 따로 드리겠습니다. 수고하셨습니다.</div></div>
-    <div class="box ref"><div class="lab">📌 수업 후 체크 (01 §12)</div><div class="body">① 주소 도달 인원 / 제출 링크 수 / 전체 ← 성공 판정 ② 제출 링크 전수 확인 — 07 §C 체크리스트(합격 기준 3 · 과업 ① 탭 수 · 규칙 한 줄이 측정 가능한가 · 폰 7열)로 3일 내 슬랙 한 줄 회신 ③ 손들기 ① "상태 4칸 다 있던 사람" 수 — 증명이 성립했는지 ④ 창구·긴급 경로 A·B·C 인원 + 3단계로 스스로 푼 사람 수 + 실제 막힘·해결 목록 → 07 §C → 다음 회차 08 §4 보강 ⑤ 제출된 규칙에서 가장 많이 나온 멈칫 지점 — 다음 회차 UX 복습 재료 ⑥ "내 앱으로" 요청 수 · "창고/공유" 질문 수 — 다음 강의 수요 신호 · 밀린 구간(특히 ①·②) 기록</div></div>
-    <div class="box warn"><div class="lab">⚠️ 주의</div><div class="body">"종료·수료·마지막" 금지. 다음 날짜를 즉석에서 말하지 않는다. 엔딩 뒤에 질문이 나오면 25(예비)로.</div></div>
-    <div class="pgfoot">— 슬라이드 24 · 25 / 26 —</div>
-  </section>
-
-  <!-- 25 예비 -->
-  <section class="page">
-    <div class="head"><span class="numbox">25</span><span class="sec">예비 · "Claude Code 말고 claude.ai로도 되나요?"</span></div>
+    <div class="head"><span class="numbox">20</span><span class="sec">예비 · "claude.ai로도 되나요?" "주 보기로 해도 되나요?"</span></div>
     <div class="ptitle">예비 슬라이드 — 질문이 나올 때만</div><div class="time">⏱ 시간 배정 없음</div>
-    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">"①②는 됩니다(13차 방식, Artifacts). 주소는 GitHub가 있어야 합니다 — 그래서 오늘 세팅 가이드가 먼저였습니다." 작업실의 기억·무대는 GitHub에 있다. 안 나오면 건너뜀.</div></div>
-    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">center-quote "①②는 됩니다 — 13차 방식 / 주소는 GitHub가 있어야 합니다" + 부제(긴급 경로 A · push가 곧 배포 · 기억과 무대는 GitHub에).</div></div>
-    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">됩니다, 절반은요. claude.ai 새 대화에 CLAUDE.md 전문과 과업 1을 붙이면 같은 달력이 나옵니다 — 13차에 초급반이 한 방식이고, 오늘 긴급 경로 A가 그거예요. 로컬 확인과 고치기까지 됩니다. 그런데 주소는 안 생겨요. push가 곧 배포이고, push는 저장소가 있어야 하니까요. 작업실 넷 중 기억과 무대가 GitHub에 있습니다. 그래서 오늘 세팅 가이드가 먼저였어요.</div></div>
-    <div class="box tip"><div class="lab">💡 강사 팁</div><div class="body">그 외 FAQ는 <b>07 강사원본 §E</b> — "내 앱으로 하면 안 되나요"(선택 과제 6), "주 보기도 넣고 싶어요"(임무 절·과제 5), "일정이 폰에만 있는데요"(23 창고), "코드 보여 주세요"(다음 시즌), "다른 AI 도구로도 되나요"(지침 한 장은 어디서나 같다, 주소는 GitHub). 터미널·코드는 어떤 질문에도 띄우지 않는다.</div></div>
-    <div class="box ref"><div class="lab">📌 참고</div><div class="body">긴급 경로 A(Claude Code 안 뜸) = claude.ai Artifacts로 ①②③ 로컬까지 → push는 경로 B(강사 공용 저장소 17-class/내이름/). 경로 C(노트북 없음) = 강사 예비 노트북. 순서는 항상 3단계 3분 → 창구 3분 → 경로.</div></div>
-    <div class="pgfoot">— 슬라이드 25 · 26 / 26 —</div>
+    <div class="box key"><div class="lab">★ KEY POINT</div><div class="body">답은 하나 — <b>"됩니다. 질문 5에 답만 있으면 뭐든."</b> claude.ai = 긴급 경로 A(카드 다섯 답 + "단일 HTML 캘린더" → 다운로드 → 폴더 → 올리기). 주 보기 = 질문 ④ "돌아오는 길"만 있으면. 팀 공유·알림 = 창고 → 다음 강의.</div></div>
+    <div class="box screen"><div class="lab">🖥 화면</div><div class="body">center-quote "됩니다. 질문 5에 답만 있으면 뭐든" + 세 가지 답.</div></div>
+    <div class="box say"><div class="lab">💬 이렇게 말하세요</div><div class="body">됩니다. claude.ai로 하실 분은 카드 다섯 답을 그대로 넣고 "단일 HTML 캘린더"라고 하면 파일 하나가 나와요 — 다운로드해서 폴더에 넣고 올리면 똑같이 주소가 생기고, 손님 모드도 똑같이 합니다. 주 보기요? 월이든 주든 일이든 상관없어요. 질문 ④ — 다음 주 갔다가 오늘로 돌아오는 길만 있으면 됩니다. 팀 공유나 알림은 — 쓰는 사람이 나 한 명이면 오늘은 아니에요. 둘 다 창고가 있어야 해서 다음 강의입니다.</div></div>
+    <div class="box tip"><div class="lab">💡 강사 팁</div><div name="x" class="body">그 외 FAQ는 <b>07 강사원본</b> — "CLAUDE.md 꼭 써야 하나요"(아니오, 권장), "설치했는데 고친 게 안 보여요"(캐시, 참고 카드 B), "Pages가 안 켜져요"(사람이 직접 하는 2가지 중 ②), "내 앱으로 하면 안 되나요"(선택 과제 ⑥), "날짜가 틀려요"(손님 테스트가 잡은 것 — "오늘이 목요일 맞아요?"). 어떤 질문에도 코드·대시보드는 띄우지 않는다.</div></div>
+    <div class="pgfoot">— 슬라이드 20 · 21 / 21 —</div>
   </section>
 
 </div>

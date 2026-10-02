@@ -1,6 +1,6 @@
-// 17차 「작업실을 연다 — 지침 한 장, 주소 하나」 — 02 UX점검표 · 03 캘린더 설계도 3장 · 08 세팅 가이드 docx 생성 (docx-js)
-// 사용: cd /mnt/user-data/outputs/17차 && NODE_PATH=$(npm root -g) node make_docx_17.js [출력폴더]
-// 헬퍼·폰트(Malgun Gothic)·여백(907)·색(TEAL 0D9488)은 16차 make_docx.js 그대로.
+// 17차 「내 캘린더를 주소로」 — 02 UX 설계 카드(1쪽) · 04 참고 카드 합본(2쪽) docx 생성 (docx-js)
+// 사용: cd 17차 && NODE_PATH=$(npm root -g) node make_docx_17.js
+// 헬퍼는 16차 make_docx.js 그대로. CLAUDE.md 예시는 04_참고카드/CLAUDE.md_예시.txt가 원본(그대로 읽어 그린다).
 const fs = require("fs");
 const path = require("path");
 const {
@@ -63,245 +63,159 @@ const table = (widths, rows, o = {}) => new Table({
 });
 const T = (widths, header, rows, o = {}) => table(widths, [header, ...rows], { headerRows: 1, ...o });
 
-// 표 그림(데이터도용): 제목 + 열 n칸 — 16차 TBLPIC를 열 이름 가변으로 (cols = 소제목 배열)
-const TBLPIC = (title, cols, rows, width, o = {}) => {
-  const n = cols.length;
-  const ws = o.colWidths || cols.map((_, i) => (i === n - 1 ? width - Math.floor(width / n) * (n - 1) : Math.floor(width / n)));
-  const sub = cols.map((h, i) => cell([P([run(h, { size: 14, bold: true, color: TEAL })], { before: 6, after: 6 })], ws[i], { fill: "F0FDFA" }));
-  const body = rows.map((r) => r.map((x, i) => {
-    const grey = o.greyRows && o.greyRows.includes(rows.indexOf(r));
-    return cell([P([run(x, { size: 16, bold: i === 0 && x !== "" && !grey, color: grey ? "9CA3AF" : INK, italics: grey })], { before: o.rowPad ?? 14, after: o.rowPad ?? 14, line: 250 })], ws[i], { borders: cellBorders("374151") });
-  }));
-  return new Table({
-    width: { size: width, type: WidthType.DXA }, columnWidths: ws,
-    rows: [new TableRow({ children: [new TableCell({ columnSpan: n, width: { size: width, type: WidthType.DXA }, borders: cellBorders("0F172A"), shading: { type: ShadingType.CLEAR, fill: o.fill || "0F172A", color: "auto" }, margins: { top: 40, bottom: 40, left: 100, right: 100 }, children: [P([run(title, { size: 17, bold: true, color: "FFFFFF" })], { before: 0, after: 0 })] })] }),
-      new TableRow({ children: sub }), ...body.map((r) => new TableRow({ children: r }))],
-  });
-};
-// 코드/트리 블록 — 고정폭 느낌(회색 상자, 줄 간격 좁게)
-const CODE = (lines, o = {}) => new Table({
-  width: { size: o.width || W, type: WidthType.DXA }, columnWidths: [o.width || W],
-  rows: [new TableRow({ children: [new TableCell({
-    width: { size: o.width || W, type: WidthType.DXA }, borders: cellBorders("CBD5E1"),
-    shading: { type: ShadingType.CLEAR, fill: o.fill || "F8FAFC", color: "auto" }, margins: { top: 80, bottom: 80, left: 140, right: 140 },
-    children: lines.map((l) => new Paragraph({ children: [new TextRun({ text: l, font: o.font || "Consolas", size: o.size || 17, color: INK, bold: o.bold })], spacing: { before: 0, after: 0, line: o.line || 250 } })),
-  })] })],
+const H2c = (t, extra) => new Paragraph({
+  children: [run(t, { size: 22, bold: true, color: TEAL })].concat(extra ? [run("  " + extra, { size: 16, color: MUTED })] : []),
+  spacing: { before: 130, after: 50 }, keepNext: true,
+  border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: "B9E8E2", space: 2 } },
 });
-const CHK = (t, o = {}) => P([run("☐ " + t, { size: o.size || 18 })], { before: o.before ?? 20, after: o.after ?? 20, line: 280 });
-const RL = (parts, o = {}) => P(parts.map((p) => typeof p === "string" ? run(p, { size: o.size || 18 }) : run(p.t, { size: p.size || o.size || 18, bold: p.b, color: p.c, italics: p.i })), o);
-const HEAD = (title, sub) => [
-  new Paragraph({ children: [run(title, { size: 26, bold: true, color: INK }), run(sub ? "   " + sub : "", { size: 17, color: MUTED })], spacing: { before: 0, after: 60 },
-    border: { bottom: { style: BorderStyle.SINGLE, size: 8, color: TEAL, space: 3 } } }),
-];
+// 17차 추가 헬퍼 — 셀 안 기입 밑줄 / 작은 회색 줄 / 복사 상자
+const ULINE = (label, o = {}) => new Paragraph({
+  children: [run(label || "", { size: o.size || 17, color: o.color || MUTED })],
+  spacing: { before: o.before ?? 60, after: o.after ?? 60, line: o.line ?? 380 },
+  border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: "9CA3AF", space: 1 } },
+});
+const G = (t, o = {}) => P([run(t, { size: o.size || 16, color: o.color || MUTED, bold: o.bold })], { before: o.before ?? 10, after: o.after ?? 10, line: o.line ?? 250 });
+const BOX = (lines, o = {}) => table([W], [[cell(lines.map((l) => P([run(l, { size: o.size || 17, color: o.color || INK, bold: o.bold })], { before: 2, after: 2, line: o.line ?? 240 })), W, { fill: o.fill || "F9FAFB", borders: cellBorders(o.border || "9CA3AF") })]]);
 
-// ───────────────────────── 02 UX 점검표 (A4 1쪽) ─────────────────────────
-function makeChecklist() {
+// ───────────────────────── 02 UX 설계 카드 (A4 1쪽) ─────────────────────────
+function makeCard() {
   const ch = [];
-  const s = 17;
-  ch.push(new Paragraph({ children: [run("UX 점검표", { size: 30, bold: true, color: INK }), run("   17차 「작업실을 연다」 · A4 1쪽 · 상단은 실습 ②, 하단은 실습 ③", { size: 16, color: MUTED })], spacing: { before: 0, after: 40 } }));
-  ch.push(RL([{ t: "이름: ______________　　날짜: ______________　　", size: 18 }, { t: "🧭 손님 모드 규칙 — ", b: true, c: "0F4A44", size: 18 }, { t: "\"아는 길로 가지 않는다. 화면이 알려주는 길로만 간다.\"", b: true, c: "0F4A44", size: 18 }], { before: 40, after: 40, shade: "F0FDFA" }));
+  ch.push(new Paragraph({ children: [run("UX 설계 카드 — 질문 다섯 개", { size: 30, bold: true, color: INK }), run("   17차 「내 캘린더를 주소로」", { size: 17, color: MUTED })], spacing: { before: 0, after: 40 } }));
+  ch.push(P([run("양식이 아니라 질문입니다. 답은 각자 — 월 보기든 주 보기든, 체크를 어떻게 하든. ", { size: 17, color: MUTED }), run("다섯 답이 있으면 AI에게 시킬 수 있고, 없으면 AI가 멋대로 정합니다.", { size: 17, bold: true, color: TEAL }), run(" 한 줄씩이면 충분합니다(10분).", { size: 17, color: MUTED })], { before: 0, after: 60, line: 260 }));
+  ch.push(P([run("이름: ______________　　내 캘린더 이름: ______________________　　날짜: ____________", { size: 18 })], { before: 40, after: 80 }));
 
-  ch.push(H2("상단 — 자가 진단", "실습 ② 첫 실행 뒤 · 체크가 적을수록 좋다 — 빈칸이 오늘 고칠 것"));
-  ch.push(RL([{ t: "상태 4칸 ", b: true, size: s }, { t: "— 내 달력에 지금 있는 것만 ✔ (보통 1~2칸 — 그게 오늘의 증명)", c: MUTED, size: 16 }], { before: 40, after: 20 }));
-  ch.push(T([2523, 2523, 2523, 2523], ["비어 있음", "기다림", "성공", "실패"], [
-    ["☐ 일정 없는 달에\n안내 한 줄", "☐ 저장 중 / 저장됨\n표시", "☐ 추가됨\n(넣은 게 보임)", "☐ 잘못 입력 거절\n(제목·날짜 없음 → 이유)"],
-  ].map((r) => r.map((x) => cell(x.split("\n").map((l) => P([run(l, { size: 16 })], { before: 6, after: 6, line: 240 })), 2523)))));
-  ch.push(RL([{ t: "이동 2  ", b: true, size: s }, "☐ ◀ ▶ 달 넘기기　☐ 어느 달에서든 「오늘」로 1탭　　", { t: "폰  ", b: true, size: s }, "☐ 폰 세로에서 7열이 가로 스크롤 없이 다 보인다"], { before: 60, after: 20, size: s }));
-  ch.push(RL([{ t: "좋은 화면의 원칙 5 (14차)  ", b: true, size: s }, "☐ ① 한 화면 한 목적　☐ ② 반복되면 부품　☐ ③ 상태를 빠뜨리지 않는다　☐ ④ 폰 먼저　☐ ⑤ 보이는 것과 하는 것 분리"], { before: 20, after: 20, size: s }));
-  ch.push(...BLANK("내 주소:  https://", 1));
+  const L = 3700, R = W - L;
+  const q = (num, title, sub, miss, right) => [
+    cell([
+      P([run(num + " " + title, { size: 19, bold: true, color: INK })], { before: 20, after: 10, line: 260 }),
+      G(sub, { size: 16, color: INK }),
+      G("빠뜨리면 → " + miss, { size: 15 }),
+    ], L, { fill: "F9FAFB" }),
+    cell(right, R),
+  ];
+  ch.push(table([L, R], [
+    q("①", "쓰는 사람 한 명", "누가, 하루 몇 번, 어디서(폰/PC) 여나", "AI가 \"모두를 위한 앱\"을 만든다 = 누구에게도 안 맞는 앱", [ULINE(), ULINE()]),
+    q("②", "핵심 과업 하나", "이 앱으로 가장 자주 하는 일", "모든 기능이 같은 크기 → 가장 자주 하는 일이 3탭", [ULINE(), ULINE()]),
+    q("③", "상태 4칸", "비어 있을 때 · 기다릴 때 · 됐을 때 · 안 됐을 때 — 화면에 뭐가 보이나", "빈 화면이 고장처럼 보이고, 저장됐는지 몰라 두 번 누른다",
+      [ULINE("비어 있을 때:"), ULINE("기다릴 때:"), ULINE("됐을 때:"), ULINE("안 됐을 때:")]),
+    q("④", "이동과 돌아오는 길", "어디서 어디로, 오늘로 어떻게 돌아오나", "다음 달 갔다가 못 돌아온다", [ULINE(), ULINE()]),
+    q("⑤", "폰 먼저", "엄지로 되나, 누르는 건 44px", "PC에선 되는데 폰에서 깨진다",
+      [P([run("☐ 엄지 하나로 핵심 과업이 되나", { size: 18 })], { before: 60, after: 40 }), P([run("☐ 누르는 건 전부 44px 이상 (7열이 가로 스크롤 없이)", { size: 18 })], { before: 40, after: 60 })]),
+  ]));
+  ch.push(P([run("→ 이 다섯 답을 그대로 Claude Code에 읽어 주세요 ", { size: 18, bold: true, color: "0F4A44" }), run("(또는 CLAUDE.md ## 화면 에 옮기세요 — 참고 카드 A).  \"쓰는 사람은 ___, 핵심 과업은 ___, 상태는 ___, 이동은 ___, 폰 먼저. 이대로 업무 일정체크 캘린더 v1을 만들어. 파일은 폴더 3단계로.\"", { size: 16, color: "0F4A44" })], { shade: "F0FDFA", before: 80, after: 40, line: 250 }));
+  ch.push(P([run("내 주소:  https:// ________________ .github.io/ ________________ /", { size: 18 })], { before: 40, after: 40 }));
 
-  ch.push(H2("하단 — 손님 테스트 기록표", "실습 ③ · 내 폰에서 내 주소 · 처음 보는 앱인 것처럼 · 과업은 그대로 수행"));
-  ch.push(T([4292, 900, 3400, 1500], ["과업", "탭 수", "멈칫한 곳 (화면이 안 알려준 자리)", "화면이 알려줬나"], [
-    ["① 다음 주 화요일에 '○○'(내 업무 종류 하나) 일정을 넣는다", "", "", "O  /  X"],
-    ["② 방금 넣은 걸 지운다", "", "", "O  /  X"],
-    ["③ 다음 달로 넘어갔다가 오늘로 돌아온다", "", "", "O  /  X"],
-  ], { rowHeight: 620 }));
-  ch.push(RL([{ t: "관찰 → 규칙 3패턴  ", b: true, c: TEAL, size: 16 }, { t: "멈칫", b: true, size: 16 }, { t: " → 보이지 않는 것(상태·안내)　", size: 16 }, { t: "헤맴", b: true, size: 16 }, { t: " → 이름·위치(이동·부품)　", size: 16 }, { t: "확인 불가", b: true, size: 16 }, { t: " → 피드백 없음(상태)　", size: 16 }, { t: "· 기록이 전부 \"없음\"이면 — 화면이 알려줬나요, 아셨나요?", c: MUTED, size: 15 }], { before: 40, after: 20 }));
-  ch.push(...BLANK("고칠 것 1 (___에서 멈칫):", 1));
-  ch.push(...BLANK("→ 규칙 한 줄 (측정 가능하게 — \"알기 쉽게\" ✗ → \"1초간 초록 띠\" ○ · CLAUDE.md 「규칙」 6번에):", 1));
-  ch.push(RL([{ t: "재시도 결과 ", b: true, size: s }, "(push → 폰 새로고침 → 같은 과업 손님 모드):  탭 수  ______  →  ______　　멈칫이 없어졌나  ☐ 예  ☐ 아니오"], { before: 60, after: 40, size: s }));
-
-  ch.push(RL([{ t: "슬랙 제출 양식 ", b: true, c: TEAL, size: 18 }, { t: "— 복사해서 4칸 채우기 · 주소만 필수 (로컬까지만 됐으면 \"주소 없음\" + 규칙 한 줄)", c: MUTED, size: 15 }], { before: 80, after: 20 }));
-  ch.push(T([2300, 7792], ["칸", "적을 것"], [["이름", ""], ["주소", "https://"], ["고친 규칙 한 줄", ""], ["탭 수 변화", "______  →  ______"]], { rowHeight: 440 }));
-  ch.push(PIN("매주 눌렀습니다. 오늘은 남이 누릅니다. — 제출된 주소를 강사가 폰에서 열어 같은 과업 ①을 수행하며 탭 수를 셉니다."));
+  ch.push(H2("손님 테스트 기록 — 실습 ③", "내 폰에서 내 주소 → ②의 핵심 과업을 처음 쓰는 사람처럼 · 바퀴 수는 자유"));
+  ch.push(P([run("규칙 하나: \"아는 길로 가지 않는다. 화면이 알려주는 길로만 간다.\"", { size: 19, bold: true, color: INK }), run("   센다 → 하나 고친다 → push → 폰 새로고침 → 다시 손님", { size: 16, color: MUTED })], { before: 20, after: 40 }));
+  ch.push(T([800, 1200, 2700, 1900, W - 800 - 1200 - 2700 - 1900], ["바퀴", "탭 수", "멈칫한 곳", "됐는지 화면이 말했나", "고친 것 한 가지 (\"___만 고쳐\")"], [
+    ["1", "___탭", "", "O  /  X", ""], ["2", "___탭", "", "O  /  X", ""], ["3", "___탭", "", "O  /  X", ""],
+  ], { rowHeight: 680 }));
+  ch.push(G("관찰 → 고칠 것:  멈칫 → 보이지 않는 것(상태·안내)  ｜  헤맴 → 이름·위치(이동)  ｜  확인 불가 → 피드백 없음(상태)", { size: 15, before: 40, after: 40 }));
+  ch.push(P([run("슬랙 제출 — ", { size: 18, bold: true }), run("주소: ______________________________　고친 것 한 줄: ______________________________　(설치했으면 홈 화면 캡처)", { size: 17 })], { before: 40, after: 40 }));
+  ch.push(G("손님인 척해도 주인은 주인 — 마지막엔 강사가 누릅니다. \"화면이 알려줬나요, 아셨나요?\"", { size: 15, before: 20, after: 0 }));
   return ch;
 }
 
-// ───────────────────────── 03 캘린더 설계도 3장 (A4 3쪽) ─────────────────────────
-function makeBlueprints() {
+// ───────────────────────── 04 참고 카드 합본 (A4 2쪽) ─────────────────────────
+function readClaudeExample() {
+  const txt = fs.readFileSync(path.join(OUT, "04_참고카드", "CLAUDE.md_예시.txt"), "utf8");
+  return txt.split("\n").slice(3).join("\n").trimEnd().split("\n"); // 맨 위 주석 2줄 + 빈 줄 제외
+}
+function claudeLines(lines) {
+  return lines.map((l) => {
+    if (l.startsWith("# ")) return P([run(l, { size: 17, bold: true, color: INK })], { before: 0, after: 20, line: 240 });
+    if (l.startsWith("## ")) return P([run(l, { size: 16, bold: true, color: TEAL })], { before: 60, after: 10, line: 240 });
+    if (l === "") return P([run("", { size: 8 })], { before: 0, after: 0, line: 120 });
+    return P([run(l, { size: 15, color: INK })], { before: 0, after: 0, line: 235 });
+  });
+}
+function makeCardA() {
   const ch = [];
-  // ── 1쪽 구조도
-  ch.push(...HEAD("17차 · 캘린더 설계도 ① 구조도", "12차 양식 · 완성 견본(읽기용) · 작성 순서: 한 문장 → 트리 → 루트 파일 체크 — 쓰지 않습니다"));
-  ch.push(RL([{ t: "이름: ____________　날짜: ____________　작업실 이름: ____________　", size: 17 }, { t: "설계도 세 장 = CLAUDE.md의 세 절(구조·화면·데이터). 오늘 각자 채우는 칸은 ③의 「종류」 표 하나뿐.", c: MUTED, size: 15 }], { before: 20, after: 60 }));
-  ch.push(RL([{ t: "① 이 앱 — 한 문장 ", b: true, size: 18 }, { t: "(누가 · 무엇을 하면 · 무엇이 남는가)", c: MUTED, size: 15 }], { before: 40, after: 10 }));
-  ch.push(P([run("내가 날짜를 고르고 일정을 넣으면 내 업무 종류 색으로 달력에 표시되고, 새로고침해도 남는다.", { size: 18, bold: true, color: "0F4A44" })], { shade: "F0FDFA", before: 20, after: 40 }));
-  ch.push(RL([{ t: "② 쏟아내기 → ③ 묶기  ", b: true, size: 18 }, { t: "이번 달 그리드 · 오늘 표시 · 달 넘기기 · 오늘로 돌아오기 · 일정 넣기 · 일정 지우기 · 종류별 색 · 껐다 켜도 남기 → ", size: 16 }, { t: "보이는 것", b: true, size: 16 }, { t: " = 뼈대 + 옷 / ", size: 16 }, { t: "계산·저장·그리기", b: true, size: 16 }, { t: " = 움직임 / ", size: 16 }, { t: "남는 것", b: true, size: 16 }, { t: " = 브라우저 저장(주머니)", size: 16 }], { before: 40, after: 40 }));
-  ch.push(RL([{ t: "④ 트리 ", b: true, size: 18 }, { t: "— 파일마다 \"왜\" 한 줄 + 태그 ([화] 화면 · [동] 동작 · [데] 데이터)", c: MUTED, size: 15 }], { before: 40, after: 20 }));
-  const treeRow = (name, why, tag, o = {}) => [
-    cell([P([run(name, { size: 17, bold: !o.dim, color: o.dim ? MUTED : INK })], { before: 10, after: 10, line: 250 })], 2400, { fill: "F8FAFC", borders: cellBorders("F8FAFC") }),
-    cell([P([run("왜: " + why, { size: 16, color: o.dim ? MUTED : INK })], { before: 10, after: 10, line: 250 })], 6392, { fill: "F8FAFC", borders: cellBorders("F8FAFC") }),
-    cell([P([run(tag, { size: 16, bold: true, color: TEAL })], { before: 10, after: 10, line: 250 })], 1300, { fill: "F8FAFC", borders: cellBorders("F8FAFC") }),
-  ];
-  ch.push(new Table({ width: { size: W, type: WidthType.DXA }, columnWidths: [2400, 6392, 1300], rows: [
-    new TableRow({ children: [new TableCell({ columnSpan: 3, width: { size: W, type: WidthType.DXA }, borders: cellBorders("F8FAFC"), shading: { type: ShadingType.CLEAR, fill: "F8FAFC", color: "auto" }, margins: { top: 60, bottom: 20, left: 100, right: 100 }, children: [P([run("내-캘린더/", { size: 18, bold: true })], { before: 0, after: 0 })] })] }),
-    new TableRow({ children: treeRow("├─ CLAUDE.md", "AI용 문패 — 지침 한 장 (설계도 세 장이 세 절로 접힘)", "[문패]") }),
-    new TableRow({ children: treeRow("├─ index.html", "뼈대 — 상단(월 이름·◀ ▶·오늘 버튼) / 달력 그리드 / 일정 입력 폼 / 선택한 날의 일정 목록", "[화]") }),
-    new TableRow({ children: treeRow("├─ style.css", "옷 — 색·크기·간격만 (분위기·주색은 여기서 바뀜)", "[화]") }),
-    new TableRow({ children: treeRow("└─ app.js", "움직임 — 달 계산 · 저장(브라우저) · 그리기", "[동][데]") }),
-    new TableRow({ children: treeRow("     (창고 자리)", "비워 둠 — 오늘 데이터는 주머니(브라우저 저장). 창고는 다음 강의", "★ 보너스", { dim: true }) }),
-  ] }));
-  ch.push(RL([{ t: "파일 3개 = 14차 삼형제 ", b: true, size: 18 }, { t: "— 오늘 유일한 '정체 공개'. 열어 보지 않습니다, 이름만 압니다.", c: MUTED, size: 15 }], { before: 100, after: 20 }));
-  ch.push(T([1500, 1900, 3692, 3000], ["파일", "실명", "한 줄 역할", "오늘 누가 건드리나"], [
-    ["index.html", "뼈대 (HTML)", "무슨 상자들이 있나 — 상단 · 그리드 · 폼 · 목록", "과업 1에서 Claude Code가 만든다"],
-    ["style.css", "옷 (CSS)", "그 상자의 색 · 크기 · 자리", "과업 4(UI 한 문장)에서만 바뀐다"],
-    ["app.js", "움직임 (JavaScript)", "누르면 무엇이 일어나나 — 달 계산 · 저장 · 그리기", "과업 3(규칙 한 줄)에서 바뀐다"],
-  ]));
-  ch.push(RL([{ t: "⑤ 루트에 둘 파일  ", b: true, size: 18 }, { t: "☑ CLAUDE.md (AI용 문패 — 04 배포키트 템플릿)  ·  ☐ README — 생략(강사가 주소로 본다)  ·  ☐ 재료 목록 — 생략(규칙 1 \"빌드 도구·패키지 금지\")  ·  ☐ .env — 생략(비밀 열쇠 없음)  ·  ☐ .gitignore — 생략(숨길 것 없음).  ", size: 16 }, { t: "비워도 되는 칸이 있다는 것도 설계.", b: true, size: 16 }], { before: 80, after: 40 }));
-  ch.push(P([run("✅ 합격 기준과 대조: 최상위 3~6개? → 파일 3 + 문패 1 ✓ / 모든 파일에 \"왜\"? ✓ / 태그? ✓ / 보너스(안 만들 자리 = 창고)? ✓", { size: 16, color: "0F4A44" })], { shade: "F0FDFA", before: 40, after: 40 }));
-  ch.push(NOTE("초급반에서 '데이터·동작·화면·연결'이라 부른 네 칸이 이 세 장입니다 — 연결은 오늘 없음(혼자 쓰는 달력)."));
-  ch.push(PIN("→ CLAUDE.md `## 구조 (구조도)` 절 — 이 쪽이 그 세 줄입니다."));
+  ch.push(new Paragraph({ children: [run("참고 카드 A — 작업실", { size: 28, bold: true, color: INK }), run("   참고용 · 이름·개수는 자유", { size: 17, color: MUTED })], spacing: { before: 0, after: 40 } }));
+  ch.push(G("17차 「내 캘린더를 주소로」 · 이 카드는 예시입니다. 폴더 이름도 파일 개수도 CLAUDE.md도 — 쓰든 안 쓰든 자유. \"이렇게 하세요\"가 아니라 \"빠뜨리면 이렇게 됩니다\"만 적었습니다.", { size: 16, after: 40 }));
 
-  // ── 2쪽 화면도
-  ch.push(PB());
-  ch.push(...HEAD("17차 · 캘린더 설계도 ② 화면도", "14차 양식 5단계 · 완성 견본 · 작성 순서: ①~④ 읽기 → ⑤ 상태 4칸만 실습 ②에서 채우기"));
-  ch.push(RL([{ t: "① 화면 목록 ", b: true, size: 18 }, { t: "(한 화면 = 한 목적):  ", c: MUTED, size: 15 }, { t: "1 월 보기", b: true, size: 17 }, { t: " — 이번 달을 보고, 날짜를 골라 일정을 넣고 지운다. (주 보기·설정 화면 없음 — 임무 밖)", size: 17 }], { before: 40, after: 20 }));
-  ch.push(RL([{ t: "② 이동 화살표 ", b: true, size: 18 }, { t: "— 화면이 하나라 화살표는 자기 자신으로 돌아옵니다:", c: MUTED, size: 15 }], { before: 40, after: 20 }));
-  ch.push(CODE(["[월 보기] ──\"◀ ▶\" 버튼──▶ [월 보기 · 다른 달] ──\"오늘\" 버튼──▶ [월 보기 · 이번 달]"], { font: FONT, size: 16 }));
-  ch.push(RL([{ t: "③ 상자 그리기 + ④ 부품 표시 ", b: true, size: 18 }, { t: "— 대표 화면 = 월 보기 (폰 세로 390px 기준 · ⓟ = 부품)", c: MUTED, size: 15 }], { before: 80, after: 20 }));
-  // 폰 목업 (표로)
-  const PW = 5200, NW = W - PW - 200;
-  const mk = (txt, o = {}) => P([run(txt, { size: o.size || 15, bold: o.bold, color: o.color || INK })], { before: 4, after: 4, line: 220, align: o.align || AlignmentType.CENTER });
-  const boxCell = (children, width, fill, border = "94A3B8") => cell(children, width, { fill, borders: cellBorders(border) });
-  const cw = Math.floor((PW - 160) / 7);
-  const gridRow = (vals, o = {}) => new TableRow({ children: vals.map((v) => boxCell([mk(v, { size: 14, bold: o.bold, color: o.color })], cw, o.fill || "FFFFFF", "CBD5E1")) });
-  const grid = new Table({ width: { size: cw * 7, type: WidthType.DXA }, columnWidths: Array(7).fill(cw), rows: [
-    gridRow(["일", "월", "화", "수", "목", "금", "토"], { bold: true, fill: "F1F5F9", color: MUTED }),
-    gridRow(["", "", "", "1", "2", "3", "4"]), gridRow(["5", "6", "7 ●", "8", "9", "10", "11"]),
-    new TableRow({ children: ["12", "13", "14", "15", "16", "17", "18"].map((v, i) => boxCell([mk(v, { size: 14, bold: i === 2, color: i === 2 ? TEAL : INK })], cw, i === 2 ? "E6F7F5" : "FFFFFF", i === 2 ? TEAL : "CBD5E1")) }),
-    gridRow(["19", "20", "21", "22", "23 ●", "24", "25"]), gridRow(["26", "27", "28", "29", "30", "31", ""]),
-  ] });
-  const phone = new Table({ width: { size: PW, type: WidthType.DXA }, columnWidths: [PW], rows: [
-    new TableRow({ children: [new TableCell({ width: { size: PW, type: WidthType.DXA }, borders: cellBorders("0F172A"), margins: { top: 80, bottom: 80, left: 80, right: 80 }, children: [
-      mk("월 보기", { size: 13, color: MUTED, align: AlignmentType.LEFT }),
-      new Table({ width: { size: PW - 160, type: WidthType.DXA }, columnWidths: [PW - 160], rows: [new TableRow({ children: [boxCell([mk("◀      2026년 10월      ▶        [ 오늘 ]", { size: 16, bold: true })], PW - 160, "F8FAFC")] })] }),
-      mk("상단 — 이동 2 (◀ ▶ · 오늘)", { size: 12, color: MUTED, align: AlignmentType.LEFT }),
-      grid,
-      mk("그리드 (7열) — ⓟ 날짜 칸 ×31 · 오늘 칸 테두리 · 일정은 종류 색 점 ●", { size: 12, color: MUTED, align: AlignmentType.LEFT }),
-      new Table({ width: { size: PW - 160, type: WidthType.DXA }, columnWidths: [PW - 160], rows: [new TableRow({ children: [boxCell([mk("ⓟ 일정 입력 폼 ─ 날짜 [10/14]  제목 [            ]", { size: 14, align: AlignmentType.LEFT }), mk("종류 [미팅 ▾]  메모 [        ]            [ 추가 ]", { size: 14, align: AlignmentType.LEFT })], PW - 160, "F8FAFC")] })] }),
-      mk("폼 — 날짜·제목·종류·메모 + 추가 (누르는 것 44px 이상)", { size: 12, color: MUTED, align: AlignmentType.LEFT }),
-      new Table({ width: { size: PW - 160, type: WidthType.DXA }, columnWidths: [PW - 160], rows: [new TableRow({ children: [boxCell([mk("ⓟ 선택한 날(14일)의 일정 목록", { size: 14, align: AlignmentType.LEFT, bold: true }), mk("●  10:00 ○○ 미팅                        [ 삭제 ]", { size: 14, align: AlignmentType.LEFT }), mk("●  마감 — 보고서                          [ 삭제 ]", { size: 14, align: AlignmentType.LEFT })], PW - 160, "F8FAFC")] })] }),
-      mk("목록 — 한 줄 = 일정 하나 · 종류 색 ● · 삭제 버튼", { size: 12, color: MUTED, align: AlignmentType.LEFT }),
-    ] })] }),
-  ] });
-  const notes = [
-    P([run("부품 3과 \"왜 부품인가\"", { size: 17, bold: true, color: TEAL })], { before: 0, after: 20 }),
-    RL([{ t: "날짜 칸 ⓟ", b: true, size: 16 }, { t: " — 왜: 한 달에 28~31번 같은 모양. 숫자·오늘 테두리·색 점만 다르다", size: 15 }], { before: 10, after: 10, line: 250 }),
-    RL([{ t: "일정 입력 폼 ⓟ", b: true, size: 16 }, { t: " — 왜: 날짜마다 같은 폼. 날짜만 바뀐다", size: 15 }], { before: 10, after: 10, line: 250 }),
-    RL([{ t: "일정 목록 ⓟ", b: true, size: 16 }, { t: " — 왜: 한 줄이 여러 번 반복. 제목·색·삭제 버튼", size: 15 }], { before: 10, after: 10, line: 250 }),
-    P([run("이동 2 (완성)", { size: 17, bold: true, color: TEAL })], { before: 80, after: 20 }),
-    P([run("◀ ▶ 달 넘기기 · 「오늘」 버튼으로 어느 달에서든 1탭에 돌아오기", { size: 15 })], { before: 10, after: 10, line: 250 }),
-    P([run("이 화면에 보이는 데이터 (③ 재료)", { size: 17, bold: true, color: TEAL })], { before: 80, after: 20 }),
-    P([run("날짜 · 제목 · 종류(색) · 메모 · 오늘", { size: 15 })], { before: 10, after: 10, line: 250 }),
-    NOTE("폰 세로에서 7열이 가로 스크롤 없이 다 보여야 한다 — CLAUDE.md 규칙 4. 그 아래 폼과 목록은 세로로 쌓인다."),
+  ch.push(H2c("① 폴더 3단계 — 예시 트리", "12차 지도 3층 그대로: 지형(루트) · 골목(폴더) · 문패(파일)"));
+  const tw = [1700, 3500, W - 5200];
+  const tree = [
+    ["1 루트 · 지형", "내-캘린더/", "주소가 가리키는 곳 — PWA 서류(manifest·sw)는 여기"],
+    ["", "  index.html", "화면 한 장"],
+    ["", "  manifest.json", "앱 정보 — 이름·아이콘·색 (실습 ④에서 생김)"],
+    ["", "  sw.js", "오프라인·캐시 (실습 ④에서 생김)"],
+    ["", "  CLAUDE.md", "지침 한 장 (권장 — 아래 ②)"],
+    ["2 폴더 · 골목", "  css/  ·  js/  ·  icons/", "옷 · 움직임 · 그림을 가른다 — \"옷 바꾸다 뼈 부러지지 않게\". data/ 등 추가 자유"],
+    ["3 파일 · 문패", "    style.css · app.js · icon-192.png …", "이름·개수 자유. 한 파일에 한 역할"],
   ];
-  ch.push(table([PW, 200, NW], [[cell([phone], PW, { borders: cellBorders("FFFFFF") }), cell([P("")], 200, { borders: cellBorders("FFFFFF") }), cell(notes, NW, { borders: cellBorders("FFFFFF") })]]));
-  ch.push(RL([{ t: "⑤ 상태 4칸 — 내 달력엔 뭐가 보이나 ", b: true, size: 18 }, { t: "(실습 ② 자가 진단에서 채우기 · 없으면 \"없음\" — 그게 오늘 고칠 것)", c: MUTED, size: 15 }], { before: 100, after: 20 }));
-  ch.push(T([2300, 4200, 3592], ["상태", "유도 질문", "내 달력에 보이는 것 (첫 실행)"], [
-    ["비어 있음 — 일정 없는 달", "일정이 0개인 달을 열면 뭐가 보이나? 안내 한 줄이 있나?", ""],
-    ["기다림 — 저장 중 / 저장됨", "추가·삭제를 누른 뒤 \"됐다\"가 보이나? 몇 초?", ""],
-    ["성공 — 추가됨", "넣은 일정이 어디에 어떻게 나타나나? 색은?", ""],
-    ["실패 — 잘못 입력", "제목 없이·날짜 없이 추가를 누르면? 이유가 보이나?", ""],
-  ], { rowHeight: 600 }));
-  ch.push(PIN("→ CLAUDE.md `## 화면 (화면도)` 절 — 부품 3 · 상태 4 · 이동 2가 그 세 줄입니다."));
+  ch.push(T(tw, ["단계", "이름 (예시)", "역할"], tree.map((r) => r.map((x, i) => cell([P([run(x, { size: 16, bold: i === 0 && x !== "", color: i === 1 ? "0F4A44" : INK })], { before: 10, after: 10, line: 240 })], tw[i], { fill: i === 0 && x !== "" ? "F0FDFA" : undefined }))), {}));
+  ch.push(P([run("왜 3단계 — ", { size: 17, bold: true, color: INK }), run("한 폴더에 다 쏟으면 AI가 다음 과업에서 엉뚱한 파일을 건드린다. 3단계면 충분하고, 3단계는 있어야 한다.", { size: 17 })], { before: 60, after: 20, line: 260 }));
 
-  // ── 3쪽 데이터도
-  ch.push(PB());
-  ch.push(...HEAD("17차 · 캘린더 설계도 ③ 데이터도", "16차 양식 · 반완성 · 작성 순서: ①② 읽기 → ③ 「종류」 표 채우기(실습 ①) → ④⑤ 읽기 → CLAUDE.md에 옮겨 적기"));
-  ch.push(NOTE("「종류」 표가 오늘 유일하게 각자 채우는 칸입니다. 내 업무 종류 3~6개 + 색 이름(한글 — \"짙은 초록\"). 이것이 16차 허용목록의 실물 — 목록에 없는 종류는 저장이 거부됩니다."));
-  ch.push(RL([{ t: "① 남길 것 고르기 ", b: true, size: 18 }, { t: "— 화면도의 「보이는 데이터」에서: 날짜 · 제목 · 종류(색) · 메모 · 오늘", size: 16 }], { before: 60, after: 10 }));
-  ch.push(RL([{ t: "남는 것: ", b: true, c: TEAL, size: 16 }, { t: "일정(날짜·제목·종류·메모·만든 시각) · 종류(이름·색)　　", size: 16 }, { t: "흐르는 것: ", b: true, c: "B45309", size: 16 }, { t: "\"저장됨\" 1초 띠 · 지금 보는 달 · 선택한 날 · 오늘(기기 날짜에서 매번 계산)", size: 16 }], { before: 10, after: 40 }));
-  ch.push(RL([{ t: "② 표 이름 짓기 ", b: true, size: 18 }, { t: "— 사실이 두 종류: \"이런 일정이 있다\" / \"이런 종류는 이 색이다\"", size: 16 }], { before: 40, after: 20 }));
-  ch.push(T([1800, 3200, 5092], ["표", "한 종류의 사실", "한 줄 ="], [
-    ["일정 표", "넣어 둔 일정", "\"10월 7일에 '○○ 미팅'(미팅)을 넣었다\""],
-    ["종류 표", "내 업무 종류와 색", "\"미팅은 파랑이다\""],
-  ]));
-  ch.push(RL([{ t: "③ 열 적기 + ④ 줄 긋기 ", b: true, size: 18 }, { t: "— 왼쪽은 완성, 오른쪽 「종류」 표를 채우세요 (예시 줄은 지워도 됩니다)", c: MUTED, size: 15 }], { before: 120, after: 40 }));
-  const half = 4550, mid = W - half * 2;
-  const left = TBLPIC("일정 표 (완성)", ["열 이름", "종류", "필수?"], [
-    ["번호", "덩어리 번호", "필수 · 자동"], ["날짜", "날짜", "필수"], ["제목", "글자 30자", "필수"], ["종류 →", "글자", "허용목록 · 종류.이름"], ["메모", "글자", "선택"], ["만든 시각", "시각", "안 적으면 지금"],
-  ], half, { rowPad: 10 });
-  const right = TBLPIC("종류 표 — 내가 채운다 (3~6줄)", ["이름 (내 업무 종류)", "색 (한글 색 이름)"], [
-    ["(예) 미팅", "파랑"], ["", ""], ["", ""], ["", ""], ["", ""], ["", ""],
-  ], half, { rowPad: 36, fill: "0D9488", greyRows: [0], colWidths: [2400, 2150] });
-  ch.push(table([half, mid, half], [[
-    cell([left], half, { borders: cellBorders("FFFFFF") }),
-    cell([P([run("줄 ▶", { size: 16, bold: true, color: TEAL })], { align: AlignmentType.CENTER, before: 900, after: 0 })], mid, { borders: cellBorders("FFFFFF") }),
-    cell([right], half, { borders: cellBorders("FFFFFF") }),
+  ch.push(H2c("② CLAUDE.md 예시 — 권장", "써두면 매 과업마다 다시 말하지 않아도 됩니다 · 안 써도 됩니다"));
+  ch.push(G("15차 지침의 Claude Code판. 쓰는 사람은 ___ 와 ## 화면 절만 내 것으로 — 설계 카드 질문 5의 답을 거기에 옮기면 그게 곧 지침. 복사용 전문은 CLAUDE.md_예시.txt (zip 안).", { size: 15, after: 40 }));
+  const lines = readClaudeExample();
+  const cut = lines.findIndex((l) => l.startsWith("## 화면"));
+  const half = Math.floor((W - 200) / 2);
+  ch.push(table([half, 200, half], [[
+    cell(claudeLines(lines.slice(0, cut)), half, { fill: "F9FAFB", borders: cellBorders("9CA3AF") }),
+    cell([P("")], 200, { borders: cellBorders("FFFFFF") }),
+    cell(claudeLines(lines.slice(cut)), half, { fill: "F9FAFB", borders: cellBorders("9CA3AF") }),
   ]]));
-  ch.push(RL([{ t: "줄 1: ", b: true, c: TEAL, size: 16 }, { t: "일정.종류 → 종류.이름 — ", size: 16 }, { t: "목록에 없는 종류는 저장 거부", b: true, size: 16 }, { t: " (허용목록)", size: 16 }], { before: 60, after: 10 }));
-  ch.push(RL([{ t: "왜 갈랐나: ", b: true, c: TEAL, size: 16 }, { t: "\"미팅=파랑\"을 일정마다 적으면 색을 바꿀 때 일정 수만큼 고쳐야 한다 → 종류는 종류 표에 한 번만, 일정은 이름으로 가리킨다.", size: 16 }], { before: 10, after: 40 }));
-  ch.push(RL([{ t: "⑤ 문지기 표", b: true, size: 18 }], { before: 60, after: 20 }));
-  ch.push(table([2100, 7992], [
-    [cell("표", 2100, { fill: "E6F7F5", bold: true, color: TEAL, size: 17 }), cell("읽기 · 쓰기 · 고치기 · 지우기 — 누가?", 7992, { fill: "E6F7F5", bold: true, color: TEAL, size: 17 })],
-    [cell("일정 표 · 종류 표", 2100), cell([P([run("오늘은 주머니(브라우저 저장)라 문지기 없음", { size: 17, bold: true, color: "0F4A44" }), run(" — 내 브라우저에만 남고, 남의 폰에서 열면 비어 있다. 창고(DB)는 다음 강의.", { size: 16 })], { before: 20, after: 20, line: 260 })], 7992, { fill: "F0FDFA" })],
-  ]));
-  ch.push(RL([{ t: "비밀 열쇠: ", b: true, c: TEAL, size: 16 }, { t: "없음 (외부 AI·결제 안 씀 · 서버 없음)　　", size: 16 }, { t: "★ 흐르는 것 1개: ", b: true, size: 16 }, { t: "\"저장됨\" 1초 띠 — 창고에 안 남긴다 (그래서 상태 규칙은 CLAUDE.md 「규칙」에 쓴다)", size: 16 }], { before: 60, after: 40 }));
-  ch.push(P([run("✅ 합격 기준과 대조: 표 2개 + 열 3개 이상? ✓ (일정 6열 · 종류 2열) / 줄 1개 + 왜 갈랐나? ✓ / 문지기? 오늘은 \"없음\"이 답 ✓", { size: 16, color: "0F4A44" })], { shade: "F0FDFA", before: 40, after: 40 }));
-  ch.push(RL([{ t: "→ CLAUDE.md `## 데이터 (데이터도)` 절 ", b: true, c: "0F4A44", size: 18 }, { t: "— 표 2 · 줄 1 · 허용목록이 그 네 줄. 종류 표를 [종류 목록] 칸에 \"미팅=파랑 · 마감=빨강 …\" 꼴로 옮겨 적으세요.", size: 16, c: "0F4A44" }], { shade: "F0FDFA", before: 60, after: 40 }));
-  ch.push(PIN("구조도 → `## 구조` · 화면도 → `## 화면` · 데이터도 → `## 데이터`. 설계도 세 장이 지침 한 장의 세 절로 접힙니다."));
+
+  ch.push(H2c("③ 시키는 문장 예 3", "길게 쓰지 마세요 — 다섯 답이면 됩니다 · 형용사는 숫자(탭 수·px·초)로"));
+  ch.push(T([1700, W - 1700], ["언제", "문장"], [
+    ["실습 ② 만들기", "\"설계 카드 다섯 답대로 업무 일정체크 캘린더 v1을 만들어. 파일은 폴더 3단계로.\"  (CLAUDE.md에 옮긴 사람은 \"CLAUDE.md대로 v1\"로 끝)"],
+    ["실습 ② 주소", "\"이 폴더를 GitHub 공개 저장소로 올리고 Pages를 켜서 주소를 알려줘. 내가 직접 해야 하는 게 있으면 그것부터 한 단계씩.\""],
+    ["실습 ③ 고치기", "\"___만 고쳐. 다른 건 건드리지 마.\"  (UI를 바꾸고 싶으면 한 문장 — \"분위기 ○○, 주색 ○○, 구조는 그대로\")"],
+  ].map((r) => r.map((x, i) => cell([P([run(x, { size: 16, bold: i === 0 })], { before: 10, after: 10, line: 250 })], [1700, W - 1700][i]))), {}));
   return ch;
 }
-
-// ───────────────────────── 08 세팅 가이드 (A4 2쪽) ─────────────────────────
-function makeSetup() {
+function makeCardB() {
   const ch = [];
-  ch.push(new Paragraph({ children: [run("세팅 가이드 — 확인 3개, 막히면 묻는다", { size: 30, bold: true, color: INK })], spacing: { before: 0, after: 40 } }));
-  ch.push(P([run("17차 「작업실을 연다」 · 수업 전 집에서 · A4 2쪽. ", { size: 17, color: MUTED }), run("수업에서는 Claude Code가 여러분 폴더를 GitHub에 올리고 주소(github.io)를 만듭니다. 그러려면 세 가지가 미리 OK여야 합니다. ", { size: 17 }), run("이 가이드는 \"정답 절차\"가 아닙니다 — 확인 명령 3개 + 막혔을 때 묻는 틀 + 사람이 직접 해야 하는 2가지. 막힘을 스스로 푸는 것이 앞으로 작업실을 운영하는 능력입니다.", { size: 17, bold: true, color: "0F4A44" })], { before: 0, after: 80 }));
+  ch.push(new Paragraph({ children: [run("참고 카드 B — 앱으로, 그리고 막혔을 때", { size: 28, bold: true, color: INK }), run("   참고용", { size: 17, color: MUTED })], spacing: { before: 0, after: 40 } }));
+  ch.push(G("실습 ④(앱으로 만들기·설치)와 막혔을 때 보는 카드. 여기까지 못 가도 결과물입니다 — 주소만 있어도 제출.", { size: 16, after: 40 }));
 
-  ch.push(H2("§1 확인 3개", "터미널(Windows: PowerShell / Mac: 터미널)에서 한 줄씩"));
-  ch.push(T([600, 2300, 3700, 3492], ["#", "명령", "이렇게 나오면 OK", "Windows / Mac 비고"], [
-    ["1", "claude", "Claude Code 프롬프트(입력창)가 뜬다 → /exit 또는 Ctrl+C 로 나오기", "둘 다 같음. 계정(API 또는 구독)은 전원 준비돼 있음 — 뜨지 않으면 설치·로그인 문제"],
-    ["2", "gh auth status", "Logged in to github.com as 아이디  가 보인다", "둘 다 같음. 안 보이면 §2 (a)"],
-    ["3", "git config user.name", "내 이름(값)이 한 줄 출력된다", "빈 줄이면 Claude Code에게 \"git 이름·이메일 설정해 줘\" — 한 단계만"],
-  ].map((r) => r.map((x, i) => i === 1 ? cell([new Paragraph({ children: [new TextRun({ text: x, font: "Consolas", size: 18, bold: true, color: INK })], spacing: { before: 20, after: 20 } })], 2300) : x)), { rowHeight: 560 }));
-  ch.push(PIN("✅ 셋 다 OK면 2쪽은 안 봐도 됩니다. 하나라도 안 되면 → 2쪽 §3(막힘 해결 3단계)로."));
+  ch.push(H2c("① PWA 5요소 — 7차 복습 한 줄씩"));
+  const w5 = [1500, 3000, W - 4500];
+  ch.push(T(w5, ["요소", "뜻", "오늘 내 캘린더에서"], [
+    ["화 · 화면", "폰 세로 먼저", "7열이 가로 스크롤 없이 · 누르는 건 44px (설계 질문 ⑤)"],
+    ["정 · 정보", "manifest.json — 이름·아이콘·색", "홈 화면에 뜰 이름과 아이콘(icons/)"],
+    ["오 · 오프라인", "sw.js — 서비스워커", "지하철에서도 열린다 (대신 캐시 — 아래 ③)"],
+    ["저 · 저장", "localStorage — 오늘의 주머니", "일정은 이 브라우저에만 남는다. 창고는 다음 강의"],
+    ["배 · 배포", "HTTPS 주소", "= github.io. 그래서 설치가 된다"],
+  ].map((r) => r.map((x, i) => cell([P([run(x, { size: 16, bold: i === 0, color: i === 0 ? "0F4A44" : INK })], { before: 8, after: 8, line: 240 })], w5[i]))), {}));
 
-  ch.push(H2("§2 사람이 직접 해야 하는 2가지", "LLM이 대신 못 하는 것 — 미리 알아 두기"));
-  ch.push(T([2000, 3600, 4492], ["", "어디서", "두 줄"], [
-    ["(a) GitHub 로그인", "터미널 gh auth login → GitHub.com → HTTPS → \"Login with a web browser\"", "브라우저가 열리면 GitHub에 로그인하고, 터미널에 뜬 코드를 입력. 끝나면 터미널로 돌아와 §1-2 다시 확인"],
-    ["(b) Pages 켜기", "GitHub 저장소 페이지 → Settings → Pages", "Branch를 main / (root) 로 고르고 Save. 수업 중 Claude Code가 못 켜면 이 두 번 클릭 — 1~3분 뒤 주소가 열림"],
-  ], { rowHeight: 700 }));
-  ch.push(NOTE("(a)는 수업 전에 해 두세요. (b)는 수업 중 저장소가 생긴 뒤에 — 지금은 \"그런 게 있다\"만."));
+  ch.push(H2c("② 시키는 문장 — 한 줄이면 Claude Code가 합니다"));
+  ch.push(BOX(["\"이 주소를 앱으로 만들어 홈 화면에 설치할 수 있게 — manifest.json과 sw.js를 추가해. 아이콘은 icons/에.\""], { bold: true, fill: "F0FDFA", border: "B9E8E2", size: 17 }));
+  ch.push(G("→ push → 1~3분 → 폰 브라우저에서 내 주소 열기 → '홈 화면에 추가' (iPhone: 공유 버튼 / Android: 메뉴 ⋮)", { size: 16, color: INK, before: 30, after: 0 }));
 
-  // ── 2쪽
-  ch.push(PB());
-  ch.push(H2("§3 막힘 해결 3단계", "안 될 때 하는 순서 — 2쪽"));
-  ch.push(T([1700, 4700, 3692], ["단계", "하는 것", "하지 않는 것"], [
-    ["① 복사", "터미널의 빨간 줄(에러)을 그대로 복사 — 줄이면 안 됨", "\"안 돼요\"라고만 쓰기 · 에러를 요약하기"],
-    ["② 세 줄로 묻기", "아래 틀대로 OS · 하려던 것 · 에러 세 줄 + 마지막 한 줄", "처음부터 다 설명하기 · 여러 질문 한 번에"],
-    ["③ 한 단계만", "시키는 첫 단계만 하고 → §1 확인 명령 다시 → 안 되면 ①로", "시키는 걸 다 한 번에 하기 · 안 됐는데 다음 단계"],
-  ]));
-  ch.push(P([run("묻는 문장 틀 — 복사해서 빈칸만 채우기", { size: 18, bold: true, color: TEAL })], { before: 120, after: 30 }));
-  ch.push(CODE(["내 OS: ___", "하려던 것: ___", "에러: ___", "내가 직접 해야 하는 게 있으면 그것부터, 한 번에 한 단계만."], { font: FONT, size: 19, line: 300, bold: true }));
-  ch.push(RL([{ t: "어디에 묻나: ", b: true, size: 17 }, { t: "Claude Code 프롬프트 안에서 바로(가장 좋음). Claude Code가 안 뜨면 claude.ai 새 대화에.", size: 17 }], { before: 80, after: 40 }));
+  ch.push(H2c("③ 설치는 마지막 — 고치기가 끝난 뒤에"));
+  ch.push(NOTE("설치하면 서비스워커가 화면을 캐시합니다 → 설치 후엔 고쳐서 push해도 느리게(또는 안) 바뀌어 보입니다. 고치기를 반복하는 실습 ③은 설치 전에. 설치 후 꼭 고쳐야 하면 앱을 완전히 닫았다 열거나, 브라우저로 주소를 열어 확인."));
 
-  ch.push(H2("§4 자주 막히는 곳 3", "답이 아니라 \"뭘 물어야 하나\""));
-  ch.push(T([5200, 4892], ["증상", "묻는 키워드 (하려던 것 칸에)"], [
-    ["claude 를 쳤는데 \"명령을 찾을 수 없음\"", "\"Claude Code 설치\" (내 OS)"],
-    ["gh 를 쳤는데 \"명령을 찾을 수 없음\"", "\"GitHub CLI 설치 (내 OS)\""],
-    ["push가 거절됨 (permission / 403)", "\"gh 권한(scope)에 repo가 있나\""],
-  ].map((r) => [r[0], cell([P([run(r[1], { size: 18, bold: true })], { before: 20, after: 20 })], 4892)])));
-  ch.push(NOTE("해법은 일부러 적지 않았습니다 — OS·버전마다 다르고, 적어 두면 틀립니다. 키워드와 에러를 들고 3단계로."));
+  ch.push(H2c("④ 사람이 직접 해야 하는 2가지 — LLM이 대신 못 하는 것"));
+  const w4 = [1800, 3600, W - 5400];
+  ch.push(T(w4, ["", "어디서", "두 줄"], [
+    ["(a) GitHub 로그인", "터미널 gh auth login → GitHub.com → HTTPS → \"Login with a web browser\"", "브라우저가 열리면 로그인하고 터미널의 코드를 입력. gh auth status 로 확인"],
+    ["(b) Pages 켜기", "GitHub 저장소 → Settings → Pages", "Branch main / (root) → Save. Claude Code가 못 켜면 이 두 번 클릭 — 1~3분 뒤 주소가 열림"],
+  ].map((r) => r.map((x, i) => cell([P([run(x, { size: 16, bold: i === 0 })], { before: 8, after: 8, line: 240 })], w4[i]))), {}));
+  ch.push(G("\"내가 직접 해야 하는 게 있으면 그것부터 한 단계씩\" 한 줄을 붙이면 Claude Code가 이 두 곳을 짚어 줍니다.", { size: 15, before: 20, after: 0 }));
 
-  ch.push(H2("§5 리허설", "권장 — 그게 수업 전 예습"));
-  ch.push(RL(["1.  빈 폴더 ", { t: "test/", b: true }, " 를 만들고 그 안에 ", { t: "index.html", b: true }, " 한 줄(아무 글자나) 저장"], { before: 20, after: 20, size: 17 }));
-  ch.push(RL(["2.  그 폴더에서 ", { t: "claude", b: true }, " → 과업 2 문장 붙여넣기: ", { t: "\"이 폴더를 GitHub 공개 저장소 test로 올리고, Pages를 켜서 주소를 알려줘. 내가 직접 해야 하는 게 있으면 그것부터 한 단계씩 알려줘. 끝나면 저장소 이름과 주소만 출력해.\"", i: true, c: "0F4A44" }], { before: 20, after: 20, size: 17 }));
-  ch.push(RL(["3.  1~3분 뒤 주소가 브라우저에서 열리면 ", { t: "준비 완료", b: true }, ". 막히면 §3으로 풀어 보기. test 저장소는 지워도 됩니다."], { before: 20, after: 20, size: 17 }));
+  ch.push(H2c("⑤ 막힘 해결 3단계 — 안 될 때 하는 순서", "자유도가 큰 수업일수록 더 필요"));
+  const w3 = [1700, 4300, W - 6000];
+  ch.push(T(w3, ["단계", "하는 것", "하지 않는 것"], [
+    ["① 복사", "에러를 그대로 복사 — 줄이지 않는다", "\"안 돼요\"라고만 쓰기 · 요약하기"],
+    ["② 세 줄로 묻기", "아래 틀대로 OS · 하려던 것 · 에러 + 마지막 한 줄", "처음부터 다 설명하기 · 여러 질문 한 번에"],
+    ["③ 한 단계만", "시키는 첫 단계만 → 확인 → 안 되면 ①로", "다 한 번에 하기 · 안 됐는데 다음 단계"],
+  ].map((r) => r.map((x, i) => cell([P([run(x, { size: 16, bold: i === 0 })], { before: 8, after: 8, line: 240 })], w3[i]))), {}));
+  ch.push(G("묻는 문장 틀 — 복사해서 빈칸만", { size: 16, bold: true, color: INK, before: 40, after: 10 }));
+  ch.push(BOX(["내 OS: ___", "하려던 것: ___", "에러: ___", "내가 직접 해야 하는 게 있으면 그것부터, 한 번에 한 단계만."], { size: 16 }));
+  ch.push(G("어디에: Claude Code 프롬프트 안에서 바로. 안 뜨면 claude.ai 새 대화에.  3분 규칙 — 3분 안에 안 풀리면 세팅 창구(3분) → 아래 긴급 경로.", { size: 15, color: INK, before: 30, after: 0 }));
 
-  ch.push(H2("§6 수업 당일 체크 3"));
-  ch.push(CHK("§1 확인 3개가 OK (claude 뜸 · gh auth status OK · git config user.name 값)"));
-  ch.push(CHK("폰에서 github.io 주소(리허설 주소 또는 아무 github.io)가 열린다 (와이파이)"));
-  ch.push(CHK("안 된 것이 있으면 시작 전 10분 세팅 창구 — 단, 창구에서도 3단계 먼저, 에러는 복사해 오기"));
+  ch.push(H2c("⑥ 긴급 경로 — 창구에서도 안 될 때"));
+  const w6 = [900, 2600, W - 3500];
+  ch.push(T(w6, ["경로", "언제", "하는 것"], [
+    ["A", "Claude Code가 안 뜸", "claude.ai에 설계 카드 다섯 답 + \"단일 HTML 캘린더\" → 다운로드 → 내 폴더에 넣기"],
+    ["B", "gh(저장소·push)가 안 됨", "강사 공용 저장소 17-class — 파일을 슬랙으로 보내면 강사가 push → 강사주소/17-class/내이름/ 이 내 주소"],
+    ["C", "노트북이 없음", "강사 예비 노트북"],
+  ].map((r) => r.map((x, i) => cell([P([run(x, { size: 16, bold: i === 0 })], { before: 8, after: 8, line: 240 })], w6[i]))), {}));
+  ch.push(G("어느 경로든 손님 테스트(실습 ③)는 그대로 — 주소만 있으면 됩니다. 경로 B였던 사람은 선택 과제 ⑦(내 계정으로 옮기기).", { size: 15, before: 20, after: 0 }));
   return ch;
 }
 
@@ -314,7 +228,6 @@ async function build(children, out) {
   console.log("wrote", out);
 }
 (async () => {
-  await build(makeChecklist(), path.join(OUT, "02_UX점검표.docx"));
-  await build(makeBlueprints(), path.join(OUT, "03_캘린더_설계도3장.docx"));
-  await build(makeSetup(), path.join(OUT, "08_세팅가이드.docx"));
+  await build(makeCard(), path.join(OUT, "02_UX설계카드.docx"));
+  await build([...makeCardA(), PB(), ...makeCardB()], path.join(OUT, "04_참고카드", "04_참고카드.docx"));
 })();

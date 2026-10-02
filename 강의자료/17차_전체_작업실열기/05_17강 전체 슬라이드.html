@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>17차 · 작업실을 연다 — 지침 한 장, 주소 하나 (전체 강의 · OT)</title>
+<title>17차 · 내 캘린더를 주소로 — github.io 위의 PWA, 그리고 UX (전체 강의)</title>
 <style>
   :root{--bg:#0c1f1d; --ink:#152321; --muted:#66807c; --line:#e2ecea;
         --teal:#0d9488; --teal-l:#5eead4; --teal-bg:#f0fdfa; --amber:#d97706; --red:#dc2626;}
@@ -137,22 +137,30 @@
   .keycard ul{margin-left:18px;} .keycard li{font-size:15px; color:#2f4744; margin:6px 0; line-height:1.45;}
   .chip{display:inline-block; border-radius:6px; padding:1px 8px; font-size:12px; font-weight:800; background:#fef3c7; color:#b45309; vertical-align:middle;}
   .chip.t{background:#ccfbf1; color:#0f5f57;} .chip.r{background:#fee2e2; color:#b91c1c;} .chip.g{background:#e5e7eb; color:#374151;}
-  /* 17차 신설 ① — 캘린더 미니 목업 (7열 그리드 · 코드 대신 달력 그림) */
-  .cal{display:grid; grid-template-columns:repeat(7,1fr); gap:3px; margin-top:6px;}
-  .cal span{display:block; font-size:10.5px; text-align:center; padding:4px 0; border-radius:4px; background:#f1f5f9; color:#334155; font-weight:600; line-height:1.2;}
-  .cal .h{background:none; color:#94a3b8; font-weight:800; font-size:9.5px; padding:1px 0;}
-  .cal .td{background:var(--teal); color:#fff; font-weight:800;}
-  .cal .ev{box-shadow:inset 0 -3px 0 #3b82f6;} .cal .ev.r{box-shadow:inset 0 -3px 0 #ef4444;} .cal .ev.g{box-shadow:inset 0 -3px 0 #16a34a;}
-  .cal .x{background:none; color:#cbd5e1;}
-  .cal.lg span{font-size:13px; padding:8px 0;} .cal.lg .h{font-size:11px;}
-  /* 17차 신설 ② — 달력 상단 바 (월 이름 · ◀ ▶ · 오늘) */
-  .calbar{display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:13px; font-weight:800; color:#0f172a;}
-  .calbar .nav{width:28px; height:28px; border-radius:6px; background:#e2e8f0; display:flex; align-items:center; justify-content:center; color:#334155;}
-  .calbar .today{border-radius:6px; background:var(--teal); color:#fff; padding:5px 10px; font-size:12px;}
-  .calbar .today.off{background:#e2e8f0; color:#94a3b8; text-decoration:line-through;}
-  /* 17차 신설 ③ — 묻는 문장 틀 (세 줄) */
-  .ask{margin-top:10px; background:#16161d; color:#e8e8ef; border-radius:10px; padding:12px 16px; font-size:14px; line-height:1.7;}
-  .ask b{color:#8ee8dd; font-weight:800;}
+  /* 17차 신설 ① — 캘린더 미니 그리드 (7열, 목업 안 그림) */
+  .cal{display:grid; grid-template-columns:repeat(7,1fr); gap:2px; margin:4px 0 6px;}
+  .cal span{height:17px; font-size:9.5px; display:flex; align-items:center; justify-content:center; border-radius:4px; background:#f1f5f9; color:#64748b; font-weight:600;}
+  .cal .h{background:none; height:12px; font-weight:800; color:#94a3b8;}
+  .cal .mt{background:none;}
+  .cal .td{background:#0d9488; color:#fff; font-weight:800;}
+  .cal .ok{background:#d1fae5; color:#047857; font-weight:800;}
+  .cal .ev{box-shadow:inset 0 -2px 0 #f59e0b;}
+  /* 17차 신설 ② — 렌즈 표 (UI/UX × 4행) */
+  .lens{display:grid; grid-template-columns:150px 1fr 1.5fr; gap:8px; margin-top:18px;}
+  .lens > div{border:1px solid var(--line); border-radius:12px; padding:11px 14px; font-size:15.5px; color:#2f4744; line-height:1.45;}
+  .lens .lh{background:#f4faf9; color:var(--teal); font-weight:800; font-size:14.5px; text-align:center;}
+  .lens .lh.hot{background:var(--teal); color:#fff; border-color:var(--teal);}
+  .lens .lr{background:#f8fafc; font-weight:800; color:var(--ink); font-size:15px;}
+  .lens .hot{border-color:#7fd4c9; background:var(--teal-bg);}
+  /* 17차 신설 ③ — 설계 질문 5 (질문 / 빠뜨리면 / 답의 예) */
+  .q5{display:grid; grid-template-columns:300px 1fr 1fr; gap:0; margin-top:16px; border-top:1px solid #eef4f3;}
+  .q5 > div{padding:9px 12px; border-bottom:1px solid #eef4f3; font-size:14.5px; color:#40534f; line-height:1.45;}
+  .q5 .qh{background:#f4faf9; color:var(--teal); font-weight:800; font-size:13px; letter-spacing:.04em; padding:6px 12px;}
+  .q5 .qq{color:var(--ink);}
+  .q5 .qq b{font-size:16.5px; font-weight:800;} .q5 .qq small{display:block; font-size:12.5px; color:#748c88; margin-top:2px;}
+  .q5 .qq .b{display:inline-block; background:var(--teal); color:#fff; font-weight:800; font-size:12px; border-radius:6px; padding:1px 8px; margin-right:7px; vertical-align:2px;}
+  .q5 .qm{color:#b91c1c; background:#fff7f7;}
+  .q5 .qa{color:#0f5f57;}
   @media print{@page{size:1280px 720px; margin:0;} body{background:#fff;} .deck{display:block!important; gap:0; padding:0;} .slide{break-after:page; break-inside:avoid;}}
 </style>
 </head>
@@ -162,439 +170,354 @@
   <!-- 01 표지 -->
   <section class="slide dark cover">
     <div class="blob b1"></div><div class="blob b2"></div>
-    <div class="eyebrow top">17TH · OPEN THE STUDIO — 전체 강의 · 새 형식 1회 · OT</div>
+    <div class="eyebrow top">17TH · 전체 강의(초급·중급 합반) — 새 형식 첫 회 · OT</div>
     <div class="three-cover">
-      <div class="pcv"><div class="l">①</div><div class="w">작업실 열기 — 종류 표 · CLAUDE.md · 확인 3개</div></div>
-      <div class="pcv"><div class="l">②</div><div class="w">첫 실행 · 주소 — 과업 1·2 · 자가 진단</div></div>
-      <div class="pcv"><div class="l">③</div><div class="w">손님 테스트 · 고치기 · 제출 — 규칙 한 줄 · push</div></div>
+      <div class="pcv"><div class="l">①</div><div class="w">작업실 열기 — 폴더 3단계 · claude · gh 로그인</div></div>
+      <div class="pcv"><div class="l">②</div><div class="w">설계 · 만들기 · 주소 — 질문 5에 답하고 시킨다</div></div>
+      <div class="pcv"><div class="l">③</div><div class="w">손님 테스트 · 고치기 — 바퀴 수는 자유</div></div>
+      <div class="pcv"><div class="l">④</div><div class="w">앱으로 · 설치 · 제출 — 폰 홈 화면에</div></div>
     </div>
-    <div class="big" style="font-size:60px"><span class="strike">두 반</span> <span class="pp">한 작업실</span><br/>작업실을 연다</div>
-    <div class="csub">지침 한 장, 주소 하나 · 오늘은 가져올 것이 없고, 나갈 때 주소 하나를 들고 갑니다. 실습 절반 · 강의 절반 · 과제는 선택</div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>01 / 25</span></div>
+    <div class="big" style="font-size:60px">내 캘린더를 <span class="pp">주소로</span></div>
+    <div class="csub">github.io 위의 PWA, 그리고 UX &nbsp;·&nbsp; 오늘 나갈 때 — <b style="color:#cfe4e1">폰 홈 화면에 내 캘린더, 그리고 주소 하나</b></div>
+    <div class="foot"><span>17차 · 내 캘린더를 주소로</span><span>01 / 20</span></div>
   </section>
 
   <!-- 02 두 반이 가져온 것 -->
   <section class="slide"><div class="pad">
-    <div class="eyebrow red">OT · 두 반이 가져온 것 — 오늘 합쳐지는 지점</div>
-    <div class="title sm">초급은 <span class="pp">시키는 법</span>을, 중급은 <span class="pp">설계도</span>를 <span class="dim">— 오늘 한 장에서 만납니다</span></div>
-    <div class="twocol" style="margin-top:18px">
-      <div class="panel"><h4>초급반 (11 · 13 · 15)</h4><ul>
-        <li><b>손에 쥔 것 — 도구.</b> 구조도 → 프롬프트 → Artifacts 실행(13) · 반복 업무 → I-MRKO 지침(15)</li>
-        <li><b>안 해본 것</b> — 코드·DB 개념 · 설계도 세 장</li>
-        <li><b>UX</b> — 처음</li>
-        <li><b>약속된 것</b> — 다음 회차 공란</li>
+    <div class="eyebrow">OT · 두 반이 가져온 것</div>
+    <div class="title sm">두 반이 가져온 것을 <span class="pp">오늘 합칩니다</span> <span class="dim">— 종료가 아니라 입구</span></div>
+    <div class="twocol" style="margin-top:16px">
+      <div class="panel"><h4>초급반 (11·13·15)</h4><ul>
+        <li><b>손에 쥔 것</b> — 구조도→프롬프트→실행(13) · 반복 업무→지침(15)</li>
+        <li><b>오늘 다시 쓰는 것</b> — "쏘고 보고 고친다" 엔진 · 지침 한 장(권장)</li>
+        <li><b>UX</b> — 처음. 복습 표제지만 바닥부터 → 내 앱에서 바로 확인</li>
+        <li><b>약속</b> — "다음 회차" 공란이었죠 → 오늘이 그 다음</li>
       </ul></div>
-      <div class="panel green"><h4>중급반 (12 · 14 · 16)</h4><ul>
-        <li><b>손에 쥔 것 — 설계도 세 장.</b> 구조도(12) · 화면도(14) · 데이터도(16)</li>
-        <li><b>안 해본 것</b> — 실습 한 번도 없음 · 프롬프트 번역</li>
-        <li><b>UX</b> — 14차에 들음</li>
-        <li><b>약속된 것</b> — "설계도 세 장을 들고 AI에게 시키는 시즌"</li>
+      <div class="panel green"><h4>중급반 (12·14·16)</h4><ul>
+        <li><b>손에 쥔 것</b> — 지도 3층(12) · 화면 해부·상태(14) · 창고(16)</li>
+        <li><b>오늘 다시 쓰는 것</b> — 폴더 3단계(지도 3층) · 상태 4칸 · 이동</li>
+        <li><b>UX</b> — 14차에 들음. 오늘은 내 앱에서 확인</li>
+        <li><b>약속</b> — "설계도를 들고 AI에게 시키는 시즌" → 오늘이 그 시즌의 입구. 창고는 다음에</li>
       </ul></div>
     </div>
-    <div class="callout" style="margin-top:16px">17차에서 — <span class="pp">지침 한 장(CLAUDE.md)에 설계도 세 장이 접힙니다.</span> 빈 곳은 템플릿이 메웁니다(읽기만 하면 됨). UX는 복습이지만 바닥부터. 오늘이 그 시즌의 <b>입구</b> — 창고는 다음에.</div>
-    <div class="callout sm">용어 규칙 — 서로 처음 듣는 말이 있습니다. 그때마다 <span class="pp">한 줄로 번역</span>합니다. "아시죠?"는 오늘 없습니다.</div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>02 / 25</span></div>
+    <div class="callout">오늘 두 반이 같이 하는 일 — <span class="pp">설계 질문 5에 답하고 → Claude Code에 시키고 → 주소에서 남이 누른다.</span></div>
+    <div class="callout sm">용어 규칙 한 줄 — 설계 용어는 중급 것(지도 3층·화면 해부 4단·상태·이동), 지침 용어는 1·2차 것(I-MRKO). 처음 듣는 말은 그 자리에서 <b>한 줄로 번역</b>합니다. 어느 반이든 처음 듣는 사람이 있으니까요.</div>
+    <div class="foot"><span>17차 · 내 캘린더를 주소로</span><span>02 / 20</span></div>
   </div></section>
 
-  <!-- 03 앞으로의 형식 + 오늘의 세 바퀴 -->
+  <!-- 03 앞으로의 형식 + 네 단계 -->
   <section class="slide"><div class="pad">
-    <div class="eyebrow amber">OT · 앞으로의 형식 + 오늘의 세 바퀴</div>
-    <div class="title sm">실습 절반 · 강의 절반 · <span class="pp">과제는 선택</span> <span class="dim">— 오늘 한 번 겪어 봅니다</span></div>
-    <div class="cards" style="margin-top:18px">
-      <div class="card"><div class="k">실습 절반</div><div class="t">강의 사이에 세 바퀴</div><div class="d">한 덩어리가 아니라 강의 블록 사이에 ①②③로 교차. 블록 하나는 20분을 넘지 않습니다</div></div>
-      <div class="card"><div class="k">강의 절반</div><div class="t">한 줄 복습, 새 것은 길게</div><div class="d">이전 것은 한 줄로만 소환. 오늘 길게 가는 것은 <b>UX</b></div></div>
-      <div class="card hot"><div class="k">과제는 선택</div><div class="t">"같은 일의 다음 바퀴"</div><div class="d">다른 일이 아니라 오늘 한 것을 한 바퀴 더. <b>다음 강의는 과제를 전제하지 않습니다</b></div></div>
+    <div class="eyebrow amber">OT · 앞으로의 형식, 그리고 오늘의 네 단계</div>
+    <div class="title sm">실습 절반 · 강의 절반 · <span class="pp">과제는 선택</span> <span class="dim">— 오늘이 이 형식의 첫 회</span></div>
+    <div class="subtitle">강의는 "왜" 셋 — 왜 github.io인가 · UX란 무엇이고 왜 중요한가 · 무엇을 설계해야 하나 — 그리고 PWA 복습 한 번. 나머지는 실습 네 단계.</div>
+    <div class="steps" style="margin-top:22px">
+      <div class="step on"><div class="sn">①</div><div class="stt">작업실 열기</div><div class="std">폴더 3단계 · <span class="mono">claude</span> · gh 로그인<br/>14분</div></div>
+      <div class="step"><div class="sn">②</div><div class="stt">설계 · 만들기 · 주소</div><div class="std">설계 카드 10분 → 만들기·push 10분 → <b>주소</b></div></div>
+      <div class="step"><div class="sn">③</div><div class="stt">손님 테스트 · 고치기</div><div class="std">내 폰에서 내 주소 → 세고 → 하나 고치고 → push<br/>32분 · 바퀴 수 자유</div></div>
+      <div class="step"><div class="sn">④</div><div class="stt">앱으로 · 설치 · 제출</div><div class="std">PWA화 → 홈 화면에 설치 → 슬랙에 주소<br/>12분</div></div>
     </div>
-    <div class="steps" style="margin-top:18px">
-      <div class="step on"><div class="sn">①</div><div class="stt">작업실 열기 · 15분</div><div class="std">종류 표 → CLAUDE.md 빈칸 4 → claude · gh 확인</div></div>
-      <div class="step on"><div class="sn">②</div><div class="stt">첫 실행 · 주소 · 25분</div><div class="std">과업 1 → 로컬 확인 → push → 주소 → 자가 진단</div></div>
-      <div class="step on"><div class="sn">③</div><div class="stt">손님 테스트 · 고치기 · 제출 · 33분</div><div class="std">과업 3을 손님 모드로 → 규칙 한 줄 → push → 슬랙 제출</div></div>
-    </div>
-    <div class="callout" style="margin-top:18px">오늘의 문장 — <span class="pp">"AI는 화면을 만들고, 상태는 사람이 시킨다."</span> <span class="dim">지금은 무슨 말인지 몰라도 됩니다. ②에서 여러분 달력이 증명합니다.</span></div>
-    <div class="callout sm">🙋 08 세팅 가이드의 <b>확인 3개</b>를 못 하고 온 분 손들기 → 세팅 창구로. 나머지는 그대로 ①에서 시작합니다.</div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>03 / 25</span></div>
+    <div class="callout" style="font-size:23px; text-align:center; padding:22px">②까지 가도 결과물, ④까지 가도 결과물. <span class="pp">속도는 각자.</span></div>
+    <div class="callout sm">②의 결과물은 <b>주소</b>, ④의 결과물은 <b>폰에 깔린 앱</b>. 설치가 마지막인 데는 이유가 있습니다 — 설치하면 고친 게 느리게 보여서(14에서). 과제는 "같은 일의 다음 바퀴" — 하나든 전부든 안 하든.</div>
+    <div class="foot"><span>17차 · 내 캘린더를 주소로</span><span>03 / 20</span></div>
   </div></section>
 
-  <!-- 04 작업실 4요소 -->
+  <!-- 04 왜 github.io인가 ⭐ -->
   <section class="slide"><div class="pad">
-    <div class="eyebrow">PART A · 작업실 4요소 — 9차 5요소에서 창고를 뺀 것</div>
-    <div class="title">작업실은 <span class="pp">넷</span>으로 됩니다 <span class="dim">— 폴더 · 지침 · 기억 · 무대</span></div>
-    <div class="subtitle">9차 한 줄 복습 — "앱은 몸·기억·무대·창고·맥박". 오늘 이름을 바꾸고, <b>창고는 비웁니다.</b></div>
+    <div class="eyebrow red">강의 1 · 왜 github.io인가 ⭐</div>
+    <div class="title sm">서버 없이 <span class="pp">주소가 생기는 무대</span> <span class="dim">— 9차 5요소 중 넷이 돌아오고, 하나만 없다</span></div>
     <div class="cards c5" style="margin-top:20px">
-      <div class="card"><div class="k">폴더 · 9차 "몸"</div><div class="t">내-캘린더/</div><div class="d">작업실은 폴더 하나다 — 12차 "파일에는 자리가 있다". 파일 3개가 여기 생깁니다</div></div>
-      <div class="card hot"><div class="k">지침 · 6차 "AI한테 한 장"</div><div class="t">CLAUDE.md</div><div class="d">매번 다시 말하던 것을 <b>한 번만</b>. 15차 지침의 Claude Code판</div></div>
-      <div class="card"><div class="k">기억 · 9차 "기억"</div><div class="t">GitHub 저장소</div><div class="d">노트북을 바꿔도 남는다 — 그래서 "앞으로 매 강의가 여기서"</div></div>
-      <div class="card"><div class="k">무대 · 9차 "무대"</div><div class="t">아이디.github.io/내-캘린더</div><div class="d">따로 붙일 것 없이 <b>push 한 번</b>이면 주소가 생깁니다</div></div>
-      <div class="card" style="border-style:dashed; color:#9aacaa"><div class="k" style="color:#9aacaa"><s>창고</s> · 비움</div><div class="t" style="color:#9aacaa"><s>DB</s></div><div class="d">오늘 데이터는 <b>주머니</b>(브라우저 저장). "폰에서 열면 일정이 없다 — 창고는 다음에"</div></div>
+      <div class="card"><div class="k">몸</div><div class="t">내 폴더(3단계)</div><div class="d">작업실은 폴더 하나 — 12차 "파일에는 자리가 있다"</div></div>
+      <div class="card"><div class="k">기억</div><div class="t">GitHub 저장소</div><div class="d">노트북을 바꿔도 남는다 — "앞으로 매 강의가 여기서"</div></div>
+      <div class="card hot"><div class="k">무대 ⭐</div><div class="t" style="font-size:15px; line-height:1.5"><span class="mono" style="font-size:13px">아이디.github.io/</span><br/><span class="mono" style="font-size:13px">내-캘린더</span></div><div class="d">서버 없이 · 돈 없이 · 따로 붙일 것 없이 <b>주소</b></div></div>
+      <div class="card"><div class="k">맥박</div><div class="t">push → 1~3분 → 주소가 바뀜</div><div class="d">오늘 여러 번 겪는다 — 9차 "push가 곧 배포"</div></div>
+      <div class="card" style="border-style:dashed; color:#9aacaa"><div class="k" style="color:#9aacaa"><span style="text-decoration:line-through; text-decoration-thickness:2px; text-decoration-color:var(--red)">창고</span> — 오늘은 없음</div><div class="t" style="color:#9aacaa">없음</div><div class="d">데이터는 주머니(localStorage)에만 — "폰에서 열면 일정이 없다" → 다음 강의</div></div>
     </div>
-    <div class="callout">맥박 — <span class="pp">push → 1~3분 → 주소에서 바뀐다.</span> 오늘 두 번 겪습니다. ②에서 처음 주소가 생길 때, ③에서 고친 것이 주소에서 바뀔 때.</div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>04 / 25</span></div>
+    <div class="callout">🖥 강사 주소 하나를 폰으로 <span class="pp">3초만</span> 열어 보입니다 — 시연이 아닙니다. "이게 오늘 여러분 손에 생기는 것" 한 마디면 됩니다.</div>
+    <div class="callout sm">왜 github.io인가 — 서버 없이, 돈 없이, 따로 붙일 것 없이 <b>주소가 생기는 유일한 무대</b>. push 한 번이면 주소가 살고, 고쳐서 push하면 주소에서 바뀝니다(맥박). 창고만 없어서 — 오늘 적은 일정은 내 폰 주머니에만 남습니다.</div>
+    <div class="foot"><span>17차 · 내 캘린더를 주소로</span><span>04 / 20</span></div>
   </div></section>
 
-  <!-- 05 지침 → CLAUDE.md -->
+  <!-- 05 주소가 있어야 남이 쓴다 -->
   <section class="slide"><div class="pad">
-    <div class="eyebrow">PART A · 지침 → CLAUDE.md</div>
-    <div class="title sm">매번 다시 말하던 것을 <span class="pp">한 번만</span> <span class="dim">— 정체성 · 임무 · 규칙 · 출력이 절이 된다</span></div>
-    <div class="twocol" style="margin-top:14px; grid-template-columns:1.15fr 1fr">
+    <div class="eyebrow red">강의 1 · 결론 한 줄 — 강의 2 예고</div>
+    <div class="callout" style="margin-top:36px; font-size:40px; text-align:center; padding:30px; line-height:1.4; letter-spacing:-.02em; font-weight:800; color:var(--ink)">주소가 있어야 남이 쓴다<br/>→ <span class="pp">남이 써야 UX가 보인다</span></div>
+    <div class="subtitle" style="text-align:center; margin-top:16px">github.io는 배포 기술이 아니라 <b>UX를 배우기 위한 조건</b>입니다. 내 노트북에서만 열리는 앱은 남이 못 누르고, 남이 못 누르면 겪는 것이 안 보입니다.</div>
+    <div class="cards c2" style="margin-top:22px">
+      <div class="card"><div class="k">사람이 직접 해야 하는 것 ①</div><div class="t"><span class="mono">gh auth login</span> — 브라우저 로그인</div><div class="d">열쇠는 사람 손으로. Claude Code가 대신 눌러 줄 수 없는 유일한 자리. 빠뜨리면 — 올리라고 시켜도 "권한 없음"에서 멈춥니다</div></div>
+      <div class="card"><div class="k">사람이 직접 해야 하는 것 ②</div><div class="t">저장소 설정 → Pages 켜기</div><div class="d">Claude Code가 못 켜면 사람이 클릭 한 번. "내가 직접 해야 하는 게 있으면 그것부터" 한 줄을 붙이면 Claude Code가 이 두 자리를 짚어 줍니다</div></div>
+    </div>
+    <div class="callout sm">그래서 ②에서 <b>전원이 주소까지</b> 갑니다 — 주소가 없으면 ③에서 누를 "남"이 없으니까요.</div>
+    <div class="foot"><span>17차 · 내 캘린더를 주소로</span><span>05 / 20</span></div>
+  </div></section>
+
+  <!-- 06 작업실 = 폴더 3단계 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">강의 1 · 작업실 = 폴더 3단계 + 저장소 + 주소 (참고 카드 A)</div>
+    <div class="title sm">작업실은 <span class="pp">폴더 3단계</span>입니다 <span class="dim">— 12차 지도 3층 회수 · 이름과 개수는 각자</span></div>
+    <div class="twocol" style="margin-top:14px; grid-template-columns:470px 1fr">
+      <div class="tree" style="margin-top:0; font-size:15px; line-height:1.62; padding:14px 22px"><span class="cm">예시일 뿐 — 이름·개수는 각자</span>
+<span class="hl">내-캘린더/</span>               <span class="cm">← 1 루트 · 지형</span>
+├─ index.html
+├─ manifest.json           <span class="cm">← PWA 서류 (④에서)</span>
+├─ sw.js                   <span class="cm">← PWA 서류 (④에서)</span>
+├─ CLAUDE.md               <span class="cm">← 권장</span>
+├─ <span class="hl">css/</span>                  <span class="cm">← 2 폴더 · 골목</span>
+│   └─ style.css           <span class="cm">← 3 파일 · 문패</span>
+├─ <span class="hl">js/</span>
+│   └─ app.js
+└─ <span class="hl">icons/</span>
+    └─ icon-192.png</div>
       <div class="dl" style="margin-top:0">
-        <div class="di" style="padding:9px 0"><div class="dk" style="flex-basis:150px"><span class="b">I</span><span class="kt">## 정체성</span></div><div class="dd">"이 폴더의 개발 담당. <b>작게, 한 번에 하나씩.</b> 시키지 않은 기능은 만들지 않는다"</div></div>
-        <div class="di" style="padding:9px 0"><div class="dk" style="flex-basis:150px"><span class="b">M</span><span class="kt">## 임무</span></div><div class="dd">"월 달력 하나를 만들고 고친다. 주 보기·알림·연동은 <b>임무 밖</b>"</div></div>
-        <div class="di" style="padding:9px 0"><div class="dk" style="flex-basis:150px"><span class="b">R</span><span class="kt">## 규칙 ⭐</span></div><div class="dd"><b>측정 가능한 규칙만.</b> 주소에서 돌아가기 위한 규칙 3 + 사용감 규칙 2 + 작업 규칙 2</div></div>
-        <div class="di" style="padding:9px 0"><div class="dk" style="flex-basis:150px"><span class="b">O</span><span class="kt">## 출력</span></div><div class="dd">"끝나면 두 줄만 — 바꾼 파일 이름 + 브라우저에서 확인하는 법. <b>코드 설명 금지</b>"</div></div>
+        <div class="di" style="padding:9px 0"><div class="dk" style="flex-basis:150px"><span class="b">1</span><span class="kt">루트 · 지형</span></div><div class="dd">주소가 가리키는 곳. PWA 서류(manifest·sw)는 여기 — 다른 데 두면 폰이 앱으로 안 알아봅니다</div></div>
+        <div class="di" style="padding:9px 0"><div class="dk" style="flex-basis:150px"><span class="b">2</span><span class="kt">폴더 · 골목</span></div><div class="dd">옷·움직임·그림을 가른다 — 14차 "옷 바꾸다 뼈 부러지지 않게". <span class="mono">data/</span> 등은 자유</div></div>
+        <div class="di" style="padding:9px 0"><div class="dk" style="flex-basis:150px"><span class="b">3</span><span class="kt">파일 · 문패</span></div><div class="dd">이름·개수 자유. 한 파일에 한 역할</div></div>
+        <div class="callout sm" style="margin-top:14px"><b>3단계면 충분하고, 3단계는 있어야 한다</b> — 한 폴더에 다 쏟으면 AI가 다음 과업에서 엉뚱한 파일을 건드립니다.</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:16px"><span class="pp">CLAUDE.md는 권장</span> — 써두면 매 과업마다 다시 말하지 않아도 됩니다(참고 카드 A에 예시 한 장). 15차 지침의 Claude Code판. <span class="dim">안 써도 됩니다.</span></div>
+    <div class="foot"><span>17차 · 내 캘린더를 주소로</span><span>06 / 20</span></div>
+  </div></section>
+
+  <!-- 07 ① 브리핑 + 막힘 해결 3단계 ⭐ -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">실습 ① · 작업실 열기 — 브리핑 + 막힘 해결 3단계 ⭐</div>
+    <div class="title sm">① 작업실 열기 <span class="dim">— 그리고 막히면 이렇게</span></div>
+    <div class="twocol" style="margin-top:12px">
+      <div class="panel"><h4>① 할 일 — 11분</h4><ul>
+        <li><b>폴더 3단계</b> 만들기 — 이름 자유, 참고 카드 A의 트리는 예시</li>
+        <li>폴더에서 <span class="mono">claude</span> 실행 · <span class="mono">gh auth status</span>로 로그인 확인</li>
+        <li>(권장) CLAUDE.md 예시를 복사해 이름·종류만 내 것으로 — 안 써도 됨</li>
+        <li>39분까지 전원 "폴더 + claude 프롬프트 + gh 로그인". 못 간 사람은 ②에서 이어서</li>
+      </ul></div>
+      <div class="panel green"><h4>막힘 해결 3단계 ⭐ — 자유도가 클수록 더 필요한 것</h4><ul>
+        <li><b>① 복사</b> — 에러를 그대로 복사한다. 요약하지 않는다</li>
+        <li><b>② 세 줄로 묻기</b> — 내 OS / 하려던 것 / 에러. 아래 틀 그대로</li>
+        <li><b>③ 한 단계만</b> — 한 단계 하고 확인. 안 되면 다시 ①</li>
+        <li>왜 3단계인가 — 에러를 요약하면 AI가 엉뚱한 걸 고치고, 여러 단계를 한 번에 시키면 어디서 깨졌는지 모릅니다</li>
+      </ul></div>
+    </div>
+    <div class="tree" style="margin-top:12px; font-size:15px; line-height:1.6; padding:12px 22px"><span class="cm">묻는 문장 틀 (Claude Code든 claude.ai든)</span>
+내 OS는 ___. 하려던 것은 ___. 에러는 아래 그대로: (붙여넣기)
+<span class="hl">내가 직접 해야 하는 게 있으면 그것부터. 한 번에 한 단계만.</span></div>
+    <div class="callout sm"><b>3분 규칙</b> — 3단계로 3분 안에 안 풀리면 세팅 창구로. 혼자 10분 끌면 ②가 날아갑니다. 같은 막힘이 셋 이상이면 강사 화면에서 다같이 한 번.</div>
+    <div class="timerbox"><small>실습 ①</small> 11:00</div>
+    <div class="foot"><span>17차 · 내 캘린더를 주소로</span><span>07 / 20</span></div>
+  </div></section>
+
+  <!-- 08 렌즈 — 생김새와 겪는 것 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">강의 2 · UX란 무엇이고 왜 중요한가 — 렌즈 (14차 문구 그대로, 바닥부터)</div>
+    <div class="title sm">생김새와 <span class="pp">겪는 것</span> <span class="dim">— 예쁜데 불편한 앱, 못생겼는데 편한 앱</span></div>
+    <div class="lens">
+      <div class="lh"></div><div class="lh">UI = 생김새</div><div class="lh hot">UX = 겪는 것</div>
+      <div class="lr">14차</div><div>뼈대 + 옷</div><div class="hot">움직임 + 상태 + 이동</div>
+      <div class="lr">캘린더에서</div><div>색 · 글꼴 · 둥근 모서리 · 분위기</div><div class="hot">오늘이 1초 안에 보이나 · 체크가 몇 탭이나 · 저장됐는지 아나 · 돌아오는 길이 있나</div>
+      <div class="lr">누가 만드나</div><div>AI가 잘 만든다</div><div class="hot"><b>사람이 시켜야 생긴다</b></div>
+      <div class="lr">오늘</div><div>자유 — 한 문장이면 바뀐다</div><div class="hot">설계 질문 5로 결정 → 시킨다</div>
+    </div>
+    <div class="callout">생김새는 <b>한 문장</b>이면 바뀝니다("분위기 ○○, 주색 ○○"). 겪는 것은 문장 하나로 안 바뀝니다 — <span class="pp">무엇을 겪게 할지 먼저 결정</span>해야 하니까. 그게 설계고, 오늘 강의 3입니다.</div>
+    <div class="callout sm">채점기 한 줄 — 점수 카드가 예뻐서 쓴 게 아니라, 등록을 누르면 리더보드에 내 이름이 <b>바로</b> 떠서 썼죠. 그게 겪는 것.</div>
+    <div class="foot"><span>17차 · 내 캘린더를 주소로</span><span>08 / 20</span></div>
+  </div></section>
+
+  <!-- 09 ⭐ AI는 화면을 만들고, 사용감은 사람이 시킨다 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">강의 2 · 오늘의 핵심 메시지 ⭐</div>
+    <div class="title sm">AI는 화면을 만들고, <span class="pp">사용감은 사람이 시킨다</span> <span class="dim">— 같은 캘린더, 그림 네 장</span></div>
+    <div class="states" style="margin-top:14px">
+      <div class="st hot"><h5>빈 달 <small>비어 있을 때</small></h5><div class="mock"><div class="mt">10월</div>
+        <div class="cal"><span class="h">일</span><span class="h">월</span><span class="h">화</span><span class="h">수</span><span class="h">목</span><span class="h">금</span><span class="h">토</span><span class="mt"></span><span class="mt"></span><span class="mt"></span><span class="mt"></span><span class="td">1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+        <div class="mk" style="text-align:center"><span class="hint">아직 일정이 없어요 — 날짜를 눌러 적어 두세요</span></div>
+        <div class="mk" style="border-color:#dc2626; color:#b91c1c; font-size:11.5px">AI 기본값 — 그냥 빈 칸. 고장처럼 보인다</div></div></div>
+      <div class="st"><h5>체크 중 <small>기다릴 때</small></h5><div class="mock"><div class="mt">10월 · 오늘</div>
+        <div class="cal"><span class="h">일</span><span class="h">월</span><span class="h">화</span><span class="h">수</span><span class="h">목</span><span class="h">금</span><span class="h">토</span><span class="mt"></span><span class="mt"></span><span class="mt"></span><span class="mt"></span><span class="td">1</span><span class="ev">2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+        <div class="mk row"><span>☐ 10:00 팀 회의</span><span class="btn" style="flex:0 0 60px">체크</span></div>
+        <div class="mk"><span class="hint">저장 중…</span></div></div></div>
+      <div class="st hot"><h5>체크됨 <small>됐을 때</small></h5><div class="mock"><div class="mt">10월 · 오늘</div>
+        <div class="cal"><span class="h">일</span><span class="h">월</span><span class="h">화</span><span class="h">수</span><span class="h">목</span><span class="h">금</span><span class="h">토</span><span class="mt"></span><span class="mt"></span><span class="mt"></span><span class="mt"></span><span class="ok">✓</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+        <div class="mk row"><span>☑ 10:00 팀 회의</span><span class="badge" style="font-size:11px">저장됨 ✓</span></div>
+        <div class="mk" style="border-color:#dc2626; color:#b91c1c; font-size:11.5px">AI 기본값 — 아무 말 없음. 됐나? 두 번 누른다</div></div></div>
+      <div class="st hot"><h5>잘못 입력 <small>안 됐을 때</small></h5><div class="mock"><div class="mt">10월 · 새 일정</div>
+        <div class="mk"><span class="lb">제목</span><span class="hint">(비어 있음)</span></div>
+        <div class="alertbox">제목이 비어 있어요 — 한 글자라도 적어야 저장돼요</div>
+        <div class="mk" style="border-color:#dc2626; color:#b91c1c; font-size:11.5px">AI 기본값 — 조용히 저장 안 됨. 적은 줄 안다</div></div></div>
+    </div>
+    <div class="callout" style="margin-top:14px">AI가 가장 많이 빠뜨리는 셋 — <span class="rr">비어 있을 때 · 안 됐을 때 · 돌아오는 길</span>. 시키면 1분이면 넣습니다. <b>시킨 사람만</b> 얻습니다. <span class="dim">(② 끝나고 손들기 — "상태 4칸 다 있는 사람?")</span></div>
+    <div class="callout sm"><b>만든 사람은 자기 앱을 못 본다</b> — 어디를 눌러야 하는지 이미 아니까. 그래서 손님처럼 누르고(③), 그래서 남이 누릅니다(강사 즉석 점검).</div>
+    <div class="foot"><span>17차 · 내 캘린더를 주소로</span><span>09 / 20</span></div>
+  </div></section>
+
+  <!-- 10 ⭐ 설계 질문 5 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">강의 3 · 무엇을 설계해야 하나 ⭐ — 02 설계 카드의 본체</div>
+    <div class="title sm">빠뜨리면 반드시 티가 나는 <span class="pp">다섯 질문</span> <span class="dim">— 답은 각자</span></div>
+    <div class="q5">
+      <div class="qh">질문</div><div class="qh">빠뜨리면</div><div class="qh">답의 예 (참고일 뿐)</div>
+      <div class="qq"><span class="b">①</span><b>쓰는 사람 한 명</b><small>누가, 하루 몇 번, 어디서(폰/PC) 여나</small></div><div class="qm">AI가 "모두를 위한 앱"을 만든다 = 누구에게도 안 맞는 앱</div><div class="qa">"나. 아침에 한 번, 퇴근 전 한 번. 폰."</div>
+      <div class="qq"><span class="b">②</span><b>핵심 과업 하나</b><small>이 앱으로 가장 자주 하는 일</small></div><div class="qm">모든 기능이 같은 크기 → 가장 자주 하는 일이 3탭</div><div class="qa">"오늘 일정에 체크 표시" / "다음 주 마감 넣기"</div>
+      <div class="qq"><span class="b">③</span><b>상태 4칸</b><small>비어 있을 때 · 기다릴 때 · 됐을 때 · 안 됐을 때</small></div><div class="qm">빈 화면이 고장처럼 보이고, 저장됐는지 몰라 두 번 누른다</div><div class="qa">빈 날 "오늘 일정 없음" / 체크하면 1초 초록 / 제목 없이 저장 거절</div>
+      <div class="qq"><span class="b">④</span><b>이동과 돌아오는 길</b><small>어디서 어디로, 오늘로 어떻게</small></div><div class="qm">다음 달 갔다가 못 돌아온다</div><div class="qa">상단 '오늘' 버튼 1탭</div>
+      <div class="qq"><span class="b">⑤</span><b>폰 먼저</b><small>엄지로 되나, 누르는 건 44px</small></div><div class="qm">PC에선 되는데 폰에서 깨진다</div><div class="qa">7열이 가로 스크롤 없이 · 체크 박스 44px(채점기 실물)</div>
+    </div>
+    <div class="callout sm" style="margin-top:10px">"다섯 답이 있으면 AI에게 시킬 수 있고, 없으면 AI가 멋대로 정한다." 답은 <span class="pp">각자</span> — 월 보기든 주 보기든, 체크를 어떻게 하든. 양식이 아니라 질문만 드리는 이유입니다.</div>
+    <div class="foot"><span>17차 · 내 캘린더를 주소로</span><span>10 / 20</span></div>
+  </div></section>
+
+  <!-- 11 설계 카드 쓰는 법 + 시키는 법 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">강의 3 · 설계 카드 쓰는 법 + 시키는 법</div>
+    <div class="title sm">카드에 다섯 줄, 그대로 <span class="pp">읽어 주면</span> 됩니다 <span class="dim">— 길게 쓰지 마세요</span></div>
+    <div class="steps" style="margin-top:20px">
+      <div class="step on"><div class="sn">1</div><div class="stt">카드 질문 5에 한 줄씩</div><div class="std">02 설계 카드 · 10분. 두 줄을 넘기지 않기 — 넘기면 답이 아니라 희망사항</div></div>
+      <div class="step"><div class="sn">2</div><div class="stt">Claude Code에 "이 다섯 답대로 v1"</div><div class="std">카드를 그대로 읽어 줘도 됨. CLAUDE.md에 옮긴 사람은 "CLAUDE.md대로 v1"로 끝</div></div>
+      <div class="step"><div class="sn">3</div><div class="stt">push → 주소</div><div class="std">"공개 저장소로 올리고 Pages 켜서 주소 알려줘. 내가 직접 해야 하는 게 있으면 그것부터" → 주소를 카드에</div></div>
+    </div>
+    <div class="tree" style="margin-top:16px; font-size:15px; line-height:1.65; padding:12px 22px"><span class="cm">시키는 문장 — 카드를 읽는 것과 같다</span>
+쓰는 사람은 ___, 핵심 과업은 ___, 상태는 ___, 이동은 ___, 폰 먼저.
+<span class="hl">이대로 업무 일정체크 캘린더 v1을 만들어.</span> 파일은 폴더 3단계로.</div>
+    <div class="callout"><span class="pp">길게 쓰지 마세요, 다섯 답이면 됩니다.</span> 길게 쓰면 AI가 중요한 것과 아닌 것을 못 가립니다. 다섯 답은 전부 중요한 것만 — 빠뜨리면 티가 나는 것만.</div>
+    <div class="foot"><span>17차 · 내 캘린더를 주소로</span><span>11 / 20</span></div>
+  </div></section>
+
+  <!-- 12 ② 설계 · 만들기 · 주소 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">실습 ② · 설계 · 만들기 · 주소 — 20분</div>
+    <div class="title sm">② 설계 카드 10분 → 만들기·push 10분 → <span class="pp">86분까지 전원 주소</span></div>
+    <div class="twocol" style="margin-top:14px">
+      <div class="panel"><h4>설계 카드 — 10분</h4>
+        <div class="timerbox" style="margin-top:0; margin-bottom:10px"><small>설계</small> 10:00</div>
+        <ul><li>질문 5에 각자 한 줄씩. 월 보기든 주 보기든</li><li>순회 질문 — "핵심 과업이 뭐예요?" "빈 달엔 뭐가 보여요?"</li><li>답 못 하면 카드로. 카드 없이 만들기 시작해도 막지 않는다</li></ul></div>
+      <div class="panel green"><h4>만들기 + push — 10분</h4>
+        <div class="timerbox" style="margin-top:0; margin-bottom:10px"><small>만들기</small> 10:00</div>
+        <ul><li>로컬에서 화면 확인 → 올리기 문장 → <b>주소를 카드에 적기</b></li><li>사람이 직접 하는 2가지는 Claude Code가 짚어 준다</li><li>순회 질문 — "주소 떴어요?"</li></ul></div>
+    </div>
+    <div class="callout"><span class="pp">86분까지 전원 주소</span> — 배포 1~3분은 휴식과 겹칩니다. ☕ 돌아오면 전원 폰으로 자기 주소 열기.</div>
+    <div class="callout sm">🙋 손들기 — <b>"상태 4칸 다 있는 사람?"</b> ≈0이 정상이고, 그게 강의 2의 증명입니다. 시키지 않은 사용감은 생기지 않는다 — 다음 ③에서 시킵니다.</div>
+    <div class="foot"><span>17차 · 내 캘린더를 주소로</span><span>12 / 20</span></div>
+  </div></section>
+
+  <!-- 13 ③ 손님 모드 ⭐ -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">실습 ③ · 손님 테스트 · 고치기 ⭐ — 32분, 바퀴 수 자유</div>
+    <div class="title sm">③ 손님 모드 <span class="dim">— "아는 길로 가지 않는다. 화면이 알려주는 길로만 간다"</span></div>
+    <div class="subtitle">내 폰에서 내 주소를 열고, <b>②의 핵심 과업</b>을 처음 쓰는 사람처럼 해 봅니다. 세 가지를 세고, 센 것이 곧 고칠 것.</div>
+    <div class="cards" style="margin-top:16px">
+      <div class="card"><div class="k">세는 것 ① → 고칠 것</div><div class="t">탭 수</div><div class="d">핵심 과업까지 몇 탭? 많으면 <b>헤맴</b> → 이름·위치(이동)</div></div>
+      <div class="card hot"><div class="k">세는 것 ② → 고칠 것</div><div class="t">멈칫한 곳</div><div class="d">어디서 손이 멈췄나? <b>멈칫</b> → 보이지 않는 것(상태·안내)</div></div>
+      <div class="card"><div class="k">세는 것 ③ → 고칠 것</div><div class="t">됐는지 화면이 말했나</div><div class="d">저장됐는지 알았나? <b>확인 불가</b> → 피드백 없음(상태)</div></div>
+    </div>
+    <div class="callout">고칠 것 하나 → Claude Code에 <span class="pp">한 가지만</span> — "___만 고쳐. 다른 건 건드리지 마" → push → 폰 새로고침 → 다시 손님. 왜 한 가지만인가 — 둘을 한 번에 고치면 뭐가 멈칫을 잡았는지 모릅니다. <b>바퀴 수 자유</b> — 2~3바퀴도, 1바퀴에 UI 한 문장 얹기도 OK.</div>
+    <div class="callout sm">UI는 한 문장 — "분위기 ○○, 주색 ○○, 구조는 그대로". <span class="pp">색은 취향, 멈칫은 설계.</span> 손님인 척해도 주인은 주인 — 마지막엔 강사가 누릅니다.</div>
+    <div class="timerbox"><small>실습 ③</small> 28:00</div>
+    <div class="foot"><span>17차 · 내 캘린더를 주소로</span><span>13 / 20</span></div>
+  </div></section>
+
+  <!-- 14 앱으로 만들기 — PWA 5요소 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow">강의 4 · 앱으로 만들기 — PWA 5요소 (7차 복습 한 장 · 참고 카드 B)</div>
+    <div class="title sm">주소를 <span class="pp">홈 화면의 앱</span>으로 <span class="dim">— 7차 다섯 글자, 그리고 왜 지금인가</span></div>
+    <div class="cards c5" style="margin-top:20px">
+      <div class="card"><div class="k">화</div><div class="t">화면</div><div class="d">폰 세로 먼저 — 질문 ⑤와 같은 것</div></div>
+      <div class="card"><div class="k">정</div><div class="t">정보</div><div class="d"><span class="mono">manifest.json</span> — 이름·아이콘·색. 홈 화면에 뜰 얼굴</div></div>
+      <div class="card"><div class="k">오</div><div class="t">오프라인</div><div class="d"><span class="mono">sw.js</span> — 서비스워커. 지하철에서도 열린다</div></div>
+      <div class="card"><div class="k">저</div><div class="t">저장</div><div class="d">localStorage — 오늘의 주머니. 창고는 아니다</div></div>
+      <div class="card hot"><div class="k">배</div><div class="t">배포</div><div class="d">HTTPS = github.io. 이미 돼 있다 — 그래서 한 줄이면 끝</div></div>
+    </div>
+    <div class="callout">시키는 문장 한 줄 — <span class="pp">"이 주소를 앱으로 만들어 홈 화면에 설치할 수 있게 — manifest.json과 sw.js를 추가해. 아이콘은 icons/에"</span> → push → 폰 브라우저에서 '홈 화면에 추가'.</div>
+    <div class="callout sm"><span class="rr">왜 지금인가</span> — 설치 후엔 서비스워커가 페이지를 캐시해서 <b>고친 게 느리게 보입니다.</b> "고치고 push하면 바뀐다"가 가려지니까, 설치는 고치기가 끝난 뒤 — 네 번째 단계. 설치 후 고치면 참고 카드 B.</div>
+    <div class="foot"><span>17차 · 내 캘린더를 주소로</span><span>14 / 20</span></div>
+  </div></section>
+
+  <!-- 15 ④ 설치 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">실습 ④ · 앱으로 만들기 → 설치 — 9분</div>
+    <div class="title sm">④ PWA화 → push → <span class="pp">홈 화면에 추가</span> <span class="dim">— ③에 머물러도 됩니다</span></div>
+    <div class="steps" style="margin-top:24px">
+      <div class="step"><div class="sn">1</div><div class="stt">앱으로 만들어 달라고</div><div class="std">14의 문장 한 줄. 파일 둘이 루트에 생기고 아이콘이 <span class="mono">icons/</span>에</div></div>
+      <div class="step"><div class="sn">2</div><div class="stt">push → 1~3분</div><div class="std">맥박 — 주소가 바뀐다. 기다리는 동안 카드에 고친 것 한 줄 적기</div></div>
+      <div class="step on"><div class="sn">3</div><div class="stt">폰에서 '홈 화면에 추가'</div><div class="std">사람이 누르는 자리. iOS는 공유 → 홈 화면에 추가, Android는 메뉴 → 설치</div></div>
+    </div>
+    <div class="callout" style="margin-top:28px"><span class="pp">③에 머물러도 됩니다</span> — 한 바퀴 더 돌고 싶으면 그게 맞는 선택. 설치는 선택 과제 ④로 남습니다. ②까지든 ③까지든 ④까지든, 전부 결과물.</div>
+    <div class="callout sm">설치하고 나서 또 고치고 싶어지면 — 바뀐 게 바로 안 보이는 게 정상(캐시). 참고 카드 B 하단.</div>
+    <div class="timerbox"><small>실습 ④</small> 9:00</div>
+    <div class="foot"><span>17차 · 내 캘린더를 주소로</span><span>15 / 20</span></div>
+  </div></section>
+
+  <!-- 16 슬랙 제출 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">실습 ④ · 슬랙 제출 — 3분</div>
+    <div class="title sm">슬랙에 세 가지 <span class="dim">— 주소만 필수</span></div>
+    <div class="cards" style="margin-top:26px">
+      <div class="card hot"><div class="k">필수</div><div class="t">주소</div><div class="d"><span class="mono">아이디.github.io/…</span> — 이것 하나가 출석이자 성공 판정. ②까지 간 사람도 여기까지는</div></div>
+      <div class="card"><div class="k">한 줄</div><div class="t">고친 것 한 줄</div><div class="d">"___에서 멈칫해서 ___을 고쳤다". 없으면 "없음"도 답 — 즉석 점검에서 같이 찾습니다</div></div>
+      <div class="card"><div class="k">설치했으면</div><div class="t">홈 화면 캡처</div><div class="d">내 아이콘이 폰 홈 화면에 있는 그림 한 장. 안 했으면 생략</div></div>
+    </div>
+    <div class="callout" style="margin-top:28px"><span class="pp">주소만 필수.</span> 제출이 곧 출석이고 성공 판정입니다. 강사가 전수 확인해 3일 안에 슬랙으로 한 줄 회신합니다.</div>
+    <div class="timerbox"><small>제출</small> 3:00</div>
+    <div class="foot"><span>17차 · 내 캘린더를 주소로</span><span>16 / 20</span></div>
+  </div></section>
+
+  <!-- 17 강사 즉석 점검 ⭐ -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow red">클로징 · 강사 즉석 점검 ⭐ — 제출 링크 3개, 7분</div>
+    <div class="title sm">이제 <span class="pp">남이 누릅니다</span> <span class="dim">— 강사 폰으로, 그 사람의 핵심 과업을 손님 모드로</span></div>
+    <div class="steps" style="margin-top:22px">
+      <div class="step"><div class="sn">1</div><div class="stt">"___에서 멈칫"</div><div class="std">강사가 화면이 알려주는 길로만 간다. 탭·멈칫을 소리 내어</div></div>
+      <div class="step"><div class="sn">2</div><div class="stt">"어떻게 고쳤나"</div><div class="std">제출한 '고친 것 한 줄'을 읽는다 — 손님 기록이 설계가 된 자리</div></div>
+      <div class="step on"><div class="sn">3</div><div class="stt">"잡혔나?"</div><div class="std">고친 뒤에도 멈칫하면 — 다음 바퀴 재료. 잡혔으면 그게 UX</div></div>
+    </div>
+    <div class="cards c2" style="margin-top:20px">
+      <div class="card hot"><div class="k">칭찬 1</div><div class="t">시킨 사용감 하나</div><div class="d">"저장됨이 바로 떴다", "오늘 버튼이 1탭" — 시켜서 생긴 것을 짚는다</div></div>
+      <div class="card"><div class="k">보완 1</div><div class="t">빠진 상태 하나</div><div class="d">"빈 달에 안내가 없다" 같은 것 하나만. 둘 이상은 수업 후 회신으로</div></div>
+    </div>
+    <div class="callout sm" style="margin-top:16px">UI는 한 마디만 — <span class="pp">"색은 취향, 멈칫은 설계."</span> 지원자 우선, 세 명. 나머지는 수업 후 전수 확인·회신.</div>
+    <div class="foot"><span>17차 · 내 캘린더를 주소로</span><span>17 / 20</span></div>
+  </div></section>
+
+  <!-- 18 선택 과제 7 + 창고가 비어 있다 -->
+  <section class="slide"><div class="pad">
+    <div class="eyebrow amber">클로징 · 선택 과제 — 같은 일의 다음 바퀴 + 다음 강의 예고</div>
+    <div class="title sm">선택 과제 7 <span class="dim">— 하나든 전부든 안 하든</span></div>
+    <div class="subtitle">새로 배우는 게 아니라 오늘 한 것의 다음 바퀴입니다 — 같은 순서를 한 번 더 돌면 손에 붙습니다. 다음 강의는 과제를 전제하지 않습니다.</div>
+    <div class="twocol" style="margin-top:18px; grid-template-columns:1.3fr 1fr">
+      <div class="dl" style="margin-top:0">
+        <div class="di" style="padding:9px 0"><div class="dk" style="flex-basis:40px"><span class="b">①</span></div><div class="dd">집에서 폰으로 내 주소(또는 앱) 열어 보기 — 일정이 비어 있다. 왜 없나 한 줄</div></div>
+        <div class="di" style="padding:9px 0"><div class="dk" style="flex-basis:40px"><span class="b">②</span></div><div class="dd"><b>진짜 남의 손</b> — 가족·동료에게 핵심 과업을 읽어 주고(말 안 하기) 세기 → 하나 고치기 → push</div></div>
+        <div class="di" style="padding:9px 0"><div class="dk" style="flex-basis:40px"><span class="b">③</span></div><div class="dd">상태 4칸 채우기 — 빈 칸을 하나씩</div></div>
+        <div class="di" style="padding:9px 0"><div class="dk" style="flex-basis:40px"><span class="b">④</span></div><div class="dd">설치 못 한 사람 — PWA화 → 홈 화면</div></div>
+        <div class="di" style="padding:9px 0"><div class="dk" style="flex-basis:40px"><span class="b">⑤</span></div><div class="dd">질문 ②를 바꿔 보기 — 핵심 과업이 둘이면 둘 다 2탭 안에</div></div>
+        <div class="di" style="padding:9px 0"><div class="dk" style="flex-basis:40px"><span class="b">⑥</span></div><div class="dd">(중급반) 내 앱으로 두 번째 작업실 — 내 3종 세트에 질문 5를 답하고 같은 순서로</div></div>
+        <div class="di" style="padding:9px 0; border-bottom:none"><div class="dk" style="flex-basis:40px"><span class="b">⑦</span></div><div class="dd">(경로 B였던 사람) 강사 저장소에서 내 계정으로 옮기기</div></div>
       </div>
       <div>
-        <div class="panel red" style="padding:14px 18px"><h4>✗ 측정할 수 없는 규칙</h4><ul style="margin-top:0"><li>"보기 좋게" · "예쁘게" · "알기 쉽게"</li><li>AI가 제 기준으로 채웁니다 — 매번 다르게</li></ul></div>
-        <div class="panel green" style="padding:14px 18px; margin-top:12px"><h4>✓ 측정 가능한 규칙 — 채점기 실물 한 줄</h4><ul style="margin-top:0"><li>"누르는 것은 전부 <b>44px 이상</b>"</li><li>"폰 세로 <b>390px</b>에서 7열이 가로 스크롤 없이"</li><li>"저장 뒤 '저장됨' <b>1초</b> 표시"</li></ul></div>
+        <div class="panel red" style="padding:18px 20px"><h4>창고가 비어 있다 — 다음 강의</h4>
+          <p style="font-size:16px; color:#2f4744; line-height:1.6">방금 제 폰에서 연 여러분 달력엔 <b>일정이 없었죠</b> — 주머니에 남은 거라서. <b>주소는 공유됐는데 데이터는 공유되지 않았습니다.</b></p>
+          <p style="font-size:16px; color:#2f4744; line-height:1.6; margin-top:10px">9차 5요소 중 오늘 없던 하나 — 창고. 팀 공유도, 알림도, 다른 폰에서 같은 일정도 창고가 있어야 합니다. <span style="color:var(--red); font-weight:800">다음 강의입니다.</span></p>
+        </div>
+        <div class="callout sm" style="margin-top:12px">안 해도 곤란하지 않습니다. 하면 — ②가 가장 큽니다. <b>진짜 남의 손</b>이 오늘 강사 손의 다음 바퀴니까요.</div>
       </div>
     </div>
-    <div class="callout sm" style="margin-top:14px">15차 한 줄 소환(초급) — I-MRKO의 I·M·R·O가 그대로 절이 됩니다. K(지식)는 다음 장 — <span class="pp">설계도 세 장</span>. 전원에게는 6차 "AI한테 한 장"이 오늘 실전 투입되는 것.</div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>05 / 25</span></div>
+    <div class="foot"><span>17차 · 내 캘린더를 주소로</span><span>18 / 20</span></div>
   </div></section>
 
-  <!-- 06 설계도 → CLAUDE.md -->
-  <section class="slide"><div class="pad">
-    <div class="eyebrow">PART A · 설계도 → CLAUDE.md — 변환표</div>
-    <div class="title sm">설계도 세 장이 <span class="pp">지침 한 장의 세 절</span>로 접힙니다</div>
-    <div class="dl" style="margin-top:12px">
-      <div class="di" style="padding:7px 0"><div class="dk" style="flex-basis:230px"><span class="b">I</span><span class="kt">## 정체성</span></div><div class="dd">초급 I — 이름·성격 → "개발 담당. 작게, 한 번에 하나씩"</div></div>
-      <div class="di" style="padding:7px 0"><div class="dk" style="flex-basis:230px"><span class="b">M</span><span class="kt">## 임무</span></div><div class="dd">초급 M — 하는 일·범위 밖 → "월 달력 하나. 그 외는 묻기 전엔 추가하지 않는다"</div></div>
-      <div class="di" style="padding:7px 0"><div class="dk" style="flex-basis:230px"><span class="b">R</span><span class="kt">## 규칙 ⭐</span></div><div class="dd">초급 R + 14차 원칙 ④ 폰 먼저 + 채점기 44px → <b>github.io 규칙 3 · UX 규칙 2 · 작업 규칙 2</b></div></div>
-      <div class="di" style="padding:7px 0"><div class="dk" style="flex-basis:230px"><span class="b">K</span><span class="kt">## 구조 ← 구조도</span></div><div class="dd">중급 구조도 — 폴더·파일에 자리 → <b>파일 3개 고정</b>: 뼈대 · 옷 · 움직임 (14차 삼형제)</div></div>
-      <div class="di" style="padding:7px 0"><div class="dk" style="flex-basis:230px"><span class="b">K</span><span class="kt">## 화면 ← 화면도</span></div><div class="dd">중급 화면도 — 부품·상태·이동 → 부품 3(월 그리드·일정 목록·입력 폼) · <b>상태 4칸</b> · 이동 2</div></div>
-      <div class="di" style="padding:7px 0"><div class="dk" style="flex-basis:230px"><span class="b">K</span><span class="kt">## 데이터 ← 데이터도</span></div><div class="dd">중급 데이터도 — 표·열·규칙 → 표 2(일정·종류) + 줄 1 · 저장은 주머니 · 종류는 <b>허용목록(내 업무 종류)</b></div></div>
-      <div class="di" style="padding:7px 0"><div class="dk" style="flex-basis:230px"><span class="b">O</span><span class="kt">## 출력</span></div><div class="dd">초급 O — 매번 나오는 형식 → "바꾼 파일 이름 + 확인하는 법 한 줄. 코드 설명 X"</div></div>
-    </div>
-    <div class="callout sm" style="margin-top:12px"><span class="pp">github.io 규칙 3</span> — ① 경로는 전부 상대 경로 · 빌드 도구 금지 ② 파일은 이 폴더 안 세 개만 ③ 저장은 브라우저 저장 하나, 서버 없음. <span class="dim">"주소에서 돌아가야 하니까."</span> &nbsp;초급 한 줄 — 레이어 4겹의 데이터·동작·화면·연결이 이 세 절입니다.</div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>06 / 25</span></div>
-  </div></section>
-
-  <!-- 07 강사 데모 -->
-  <section class="slide"><div class="pad">
-    <div class="eyebrow amber">PART A · 강사 데모 3분 — 강사 작업실 실물</div>
-    <div class="title sm">요청은 <span class="pp">한 줄</span>이었습니다. 차이는 <span class="pp">미리 써둔 한 장</span></div>
-    <div class="steps" style="margin-top:22px">
-      <div class="step"><div class="sn">1</div><div class="stt">CLAUDE.md 훑기</div><div class="std">헤더만, 10초. "정체성·임무·규칙·구조·화면·데이터·출력"</div></div>
-      <div class="step"><div class="sn">2</div><div class="stt">claude</div><div class="std">폴더에서 실행 — 프롬프트가 뜬다</div></div>
-      <div class="step on"><div class="sn">3</div><div class="stt">과업 한 줄</div><div class="std">"CLAUDE.md대로 이번 달 달력 v1"</div></div>
-      <div class="step"><div class="sn">4</div><div class="stt">파일 3개 · 화면 · 폰</div><div class="std">폴더에 세 개 생김 → 브라우저에 뜸 → 강사 주소를 폰으로</div></div>
-    </div>
-    <div class="tree" style="margin-top:20px; font-size:16px; line-height:1.7; padding:14px 24px">강사-캘린더/
-├─ <span class="hl">CLAUDE.md</span>     <span class="cm">← 미리 써둔 한 장 (지침)</span>
-├─ index.html    <span class="cm">← 뼈대   ┐</span>
-├─ style.css     <span class="cm">← 옷     ├ 과업 한 줄로 생긴 세 개 — 열어 보지 않습니다</span>
-└─ app.js        <span class="cm">← 움직임 ┘</span></div>
-    <div class="callout sm" style="margin-top:14px">15차 데모와 같은 구조입니다. 보는 것은 <span class="pp">폴더(파일 3개) · 화면 · 주소</span>뿐 — 코드는 읽지 않습니다. 2분 안에 안 뜨면 완성본 주소로. "결과는 이것, 과정은 여러분이 지금부터."</div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>07 / 25</span></div>
-  </div></section>
-
-  <!-- 08 ① 브리핑 + 막힘 해결 3단계 ⭐ -->
-  <section class="slide"><div class="pad">
-    <div class="eyebrow red">실습 ① · 작업실 열기 — 브리핑 + 막힘 해결 3단계</div>
-    <div class="title sm">① 작업실 열기 <span class="dim">— 그리고 막히면, 손 들기 전에 이 세 단계</span></div>
-    <div class="twocol" style="margin-top:14px">
-      <div class="panel"><h4>① 할 일 3 (12분)</h4><ul>
-        <li><b>종류 표</b>(3분) — 03 설계도 데이터도 쪽, 내 업무 종류 3~6개 + 색 이름("짙은 초록")</li>
-        <li><b>CLAUDE.md</b>(6분) — 04 템플릿 빈칸 4: 작업실 이름 · 내 이름 · 종류 목록 · 기준 날짜 → 폴더 <span class="mono">내-캘린더/</span>에 저장</li>
-        <li><b>확인</b>(3분) — 폴더에서 <span class="mono">claude</span> 프롬프트 뜸 · <span class="mono">gh auth status</span> 로그인 OK</li>
-      </ul></div>
-      <div class="panel green"><h4>막힘 해결 3단계 ⭐ — 도구는 LLM</h4><ul>
-        <li><b>① 복사</b> — 터미널의 빨간 줄을 <b>그대로</b>. 줄이거나 요약하지 않는다</li>
-        <li><b>② 세 줄로 묻기</b> — Claude Code 프롬프트 안에서 바로(안 뜨면 claude.ai)</li>
-        <li><b>③ 한 단계만</b> — 시키는 첫 단계만 하고 → 확인 명령 다시 → 안 되면 ①로</li>
-      </ul>
-      <div class="ask"><b>내 OS:</b> Windows / Mac &nbsp;·&nbsp; <b>하려던 것:</b> ___ &nbsp;·&nbsp; <b>에러:</b> (붙여넣기)<br/>"내가 직접 해야 하는 게 있으면 그것부터, <b>한 번에 한 단계만</b>"</div>
-      </div>
-    </div>
-    <div class="callout sm" style="margin-top:14px"><span class="rr">3분 규칙</span> — 3단계로 3분 안에 안 풀리면 손 → 세팅 창구. 포기가 아니라 다음 수단. 43분까지 전원 "폴더 + CLAUDE.md + claude + gh 로그인". <span class="dim">(gh가 안 돼도 과업 1은 됩니다 — ②에서 계속)</span></div>
-    <div class="timerbox">12:00 <small>종류 표 3 · CLAUDE.md 6 · 확인 3</small></div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>08 / 25</span></div>
-  </div></section>
-
-  <!-- 09 렌즈 UI/UX -->
-  <section class="slide"><div class="pad">
-    <div class="eyebrow">PART B · UX 복습, 바닥부터 — 렌즈</div>
-    <div class="title">UI는 <span class="pp">생김새</span>, UX는 <span class="pp">겪는 것</span> <span class="dim">— 14차 문구 그대로</span></div>
-    <div class="twocol" style="margin-top:20px">
-      <div class="panel"><h4>UI — 생김새 (뼈대 + 옷)</h4><ul>
-        <li>색 · 글꼴 · 간격 · 분위기</li>
-        <li>채점기에서 — 파랑 버튼, 초록 배지</li>
-        <li>캘린더에서 — "주색은 짙은 초록"</li>
-        <li>오늘 <b>자유</b> — 한 문장으로 각자 (③에서)</li>
-      </ul></div>
-      <div class="panel green"><h4>UX — 겪는 것 (움직임 + 상태 + 이동)</h4><ul>
-        <li>"오늘이 바로 보이나" · "들어갔는지 알 수 있나" · "오늘로 돌아올 수 있나"</li>
-        <li>채점기에서 — 등록 카드가 화면 하단에 <b>고정</b>돼 있어 결과를 보며 누른다</li>
-        <li>캘린더에서 — 저장됐는지 화면이 말하나</li>
-        <li>오늘 <b>지침에</b> — 측정 가능한 규칙으로 CLAUDE.md에</li>
-      </ul></div>
-    </div>
-    <div class="callout">오늘의 선 — <span class="pp">UI는 자유, UX는 지침에.</span> 색은 취향이라 규칙이 안 되고, 상태·이동은 규칙이 됩니다. 그래서 오늘 남는 것은 색이 아니라 <b>CLAUDE.md의 규칙 한 줄</b>.</div>
-    <div class="callout sm">초급에겐 처음, 중급에겐 14차 복습 — 둘 다 바닥부터 갑니다. 다음 세 장: 상태 4칸 · 이동 · 원칙 5.</div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>09 / 25</span></div>
-  </div></section>
-
-  <!-- 10 상태 4칸 ⭐ -->
-  <section class="slide"><div class="pad">
-    <div class="eyebrow red">PART B · 상태 4칸 — 오늘의 핵심 개념</div>
-    <div class="title sm">"화면 하나는 <span class="pp">그림 여러 장</span>이다" <span class="dim">— 캘린더로 네 장</span></div>
-    <div class="states" style="margin-top:14px">
-      <div class="st"><h5>① 빈 달 <small>· 일정 0개</small></h5>
-        <div class="mock"><div class="calbar"><span class="nav">◀</span><span>10월</span><span class="nav">▶</span></div>
-          <div class="cal"><span class="h">일</span><span class="h">월</span><span class="h">화</span><span class="h">수</span><span class="h">목</span><span class="h">금</span><span class="h">토</span><span class="x">·</span><span class="x">·</span><span class="x">·</span><span class="x">·</span><span class="td">1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
-          <div class="mk" style="text-align:center"><span class="hint">이번 달 일정이 없습니다 — 날짜를 눌러 추가하세요</span></div></div></div>
-      <div class="st"><h5>② 저장 중 / 저장됨</h5>
-        <div class="mock"><div class="calbar"><span class="nav">◀</span><span>10월</span><span class="nav">▶</span></div>
-          <div class="cal"><span class="h">일</span><span class="h">월</span><span class="h">화</span><span class="h">수</span><span class="h">목</span><span class="h">금</span><span class="h">토</span><span class="x">·</span><span class="x">·</span><span class="x">·</span><span class="x">·</span><span class="td">1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
-          <div class="mk row"><span>7일 · 미팅</span><span class="badge">저장됨 ✓ 1초</span></div></div></div>
-      <div class="st hot"><h5>③ 추가됨 <small>· 칸이 바뀐다</small></h5>
-        <div class="mock"><div class="calbar"><span class="nav">◀</span><span>10월</span><span class="nav">▶</span></div>
-          <div class="cal"><span class="h">일</span><span class="h">월</span><span class="h">화</span><span class="h">수</span><span class="h">목</span><span class="h">금</span><span class="h">토</span><span class="x">·</span><span class="x">·</span><span class="x">·</span><span class="x">·</span><span class="td">1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span class="ev">7</span><span>8</span><span class="ev r">9</span><span>10</span></div>
-          <div class="mk" style="padding:6px 9px">7 미팅 <span class="chip t">파랑</span> &nbsp; 9 마감 <span class="chip r">빨강</span></div></div></div>
-      <div class="st"><h5>④ 잘못 입력 <small>· 제목·날짜 없음</small></h5>
-        <div class="mock"><div class="calbar"><span class="nav">◀</span><span>10월</span><span class="nav">▶</span></div>
-          <div class="cal"><span class="h">일</span><span class="h">월</span><span class="h">화</span><span class="h">수</span><span class="h">목</span><span class="h">금</span><span class="h">토</span><span class="x">·</span><span class="x">·</span><span class="x">·</span><span class="x">·</span><span class="td">1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span class="ev">7</span><span>8</span><span>9</span><span>10</span></div>
-          <div class="alertbox">제목이 없어 저장하지 않았습니다</div></div></div>
-    </div>
-    <div class="callout" style="margin-top:14px">🙋 퀴즈 ① — 일정 하나 넣으면 화면이 <span class="pp">몇 번</span> 바뀔까요? <span class="dim">(답 받고 공개 — 3번. 입력 중 → 저장 중/저장됨 → 칸에 추가됨. 안 바뀌면 "들어갔나?"를 사람이 못 압니다)</span></div>
-    <div class="callout sm">AI가 가장 많이 빠뜨리는 게 이 중 <span class="rr">셋</span>(①②④)입니다. 첫 실행은 보통 ③만 있어요 — 조금 뒤 여러분 달력에서 세어 봅니다.</div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>10 / 25</span></div>
-  </div></section>
-
-  <!-- 11 이동 -->
-  <section class="slide"><div class="pad">
-    <div class="eyebrow">PART B · 이동 — 버튼마다 '어디로'</div>
-    <div class="title sm">달을 넘기면, <span class="pp">오늘로 어떻게 돌아오나</span></div>
-    <div class="twocol" style="margin-top:18px">
-      <div class="panel"><h4>이동 ① 달 넘기기 ◀ ▶</h4>
-        <div class="mock"><div class="calbar"><span class="nav">◀</span><span>2026년 12월</span><span class="nav">▶</span><span class="today off">오늘</span></div>
-          <div class="cal lg"><span class="h">일</span><span class="h">월</span><span class="h">화</span><span class="h">수</span><span class="h">목</span><span class="h">금</span><span class="h">토</span><span class="x">·</span><span class="x">·</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div></div>
-        <ul style="margin-top:12px"><li>세 번 넘겼더니 12월. 여기서 <b>10월 1일로 가는 길</b>이 화면에 있나?</li><li>◀를 세 번 — 손님은 "몇 번 눌렀더라"를 셉니다</li></ul></div>
-      <div class="panel green"><h4>이동 ② 오늘로 돌아오기 — 「오늘」 버튼 1탭</h4>
-        <div class="mock"><div class="calbar"><span class="nav">◀</span><span>2026년 10월</span><span class="nav">▶</span><span class="today">오늘</span></div>
-          <div class="cal lg"><span class="h">일</span><span class="h">월</span><span class="h">화</span><span class="h">수</span><span class="h">목</span><span class="h">금</span><span class="h">토</span><span class="x">·</span><span class="x">·</span><span class="x">·</span><span class="x">·</span><span class="td">1</span><span>2</span><span>3</span></div></div>
-        <ul style="margin-top:12px"><li>규칙으로 쓰면 — <b>"어느 달에 있든 '오늘' 버튼 1탭"</b></li><li>이게 손님 테스트 과업 ③입니다 — "다음 달 갔다가 오늘로"</li></ul></div>
-    </div>
-    <div class="callout sm" style="margin-top:14px">14차 한 줄 — <span class="pp">버튼마다 '어디로'가 정해져 있다.</span> 정해두지 않으면 AI는 ◀ ▶만 만들고 「오늘」을 빠뜨립니다. 중급 한 줄 — 12차 "폴더가 곧 주소"처럼, 버튼은 곧 행선지.</div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>11 / 25</span></div>
-  </div></section>
-
-  <!-- 12 원칙 5 → 캘린더 번역 -->
-  <section class="slide"><div class="pad">
-    <div class="eyebrow">PART B · 원칙 5 → 캘린더 번역</div>
-    <div class="title sm">14차 원칙 다섯이 <span class="pp">캘린더 규칙</span>이 됩니다 <span class="dim">— 둘은 이미 CLAUDE.md에</span></div>
-    <div class="cards c5" style="margin-top:20px">
-      <div class="card"><div class="k">원칙 ①</div><div class="t" style="font-size:17px">한 화면 한 목적</div><div class="d">월 보기 하나. 주 보기·설정 화면 X → <b>임무 절</b>이 막는다(범위 규칙)</div></div>
-      <div class="card"><div class="k">원칙 ②</div><div class="t" style="font-size:17px">반복되면 부품</div><div class="d">날짜 칸 하나 = 부품. 31번 반복 → 화면 절 "부품 3"</div></div>
-      <div class="card hot"><div class="k">원칙 ③ ⭐</div><div class="t" style="font-size:17px">상태를 빠뜨리지 않는다</div><div class="d">첫 실행엔 보통 1칸만 → ②에서 <b>세어 본 뒤</b> 규칙으로. 아직 안 씁니다</div></div>
-      <div class="card hot"><div class="k">원칙 ④ · 규칙 4·5</div><div class="t" style="font-size:17px">폰 먼저</div><div class="d">"폰 세로 390px에서 7열이 다 보인다" · "누르는 것은 44px 이상" — <b>이미 들어 있음</b></div></div>
-      <div class="card"><div class="k">원칙 ⑤ · 규칙 2</div><div class="t" style="font-size:17px">보이는 것 / 하는 것 분리</div><div class="d">옷(style.css)과 움직임(app.js)이 다른 파일 → 파일 3개 고정 규칙</div></div>
-    </div>
-    <div class="callout">04 템플릿을 펴 보세요 — 원칙 ④⑤는 <span class="pp">규칙 2·4·5로 이미 들어가 있습니다.</span> 원칙 ③ 상태 규칙은 <b>비워 두었습니다(규칙 6)</b> — 관찰한 뒤에 넣습니다.</div>
-    <div class="callout sm"><span class="pp">규칙은 본 것에서 나온다.</span> 안 본 상태를 미리 쓰면 형용사가 됩니다("알기 쉽게"). ②에서 내 달력을 보고, ③에서 손님으로 겪고, 그다음에 한 줄.</div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>12 / 25</span></div>
-  </div></section>
-
-  <!-- 13 ② 브리핑 -->
-  <section class="slide"><div class="pad">
-    <div class="eyebrow red">실습 ② · 첫 실행 · 주소 · 자가 진단 — 브리핑</div>
-    <div class="title sm">② 과업 1 — <span class="pp">요청은 한 줄</span>, 확인은 합격 기준 3</div>
-    <div class="callout" style="margin-top:16px; font-size:18px">과업 1 (04 txt 그대로 붙여넣기) — <span class="pp">"CLAUDE.md를 읽고, 「화면」「데이터」 절대로 이번 달 달력 v1을 만들어. 「규칙」의 합격 기준 3을 만족하면 멈춰. 끝나면 「출력」 형식대로."</span></div>
-    <div class="cards" style="margin-top:16px">
-      <div class="card"><div class="k">합격 기준 ①</div><div class="t">이번 달 그리드 + 오늘 표시</div><div class="d">1일이 무슨 요일인지, 그 달이 며칠인지 <b>직접 확인</b> — 날짜 계산은 예정된 코스</div></div>
-      <div class="card"><div class="k">합격 기준 ②</div><div class="t">넣고 지우고, 새로고침해도 남는다</div><div class="d">일정 하나 넣기 → 새로고침 → 있나? → 지우기</div></div>
-      <div class="card"><div class="k">합격 기준 ③</div><div class="t">내 업무 종류별로 색이 다르다</div><div class="d">종류 표의 색 이름이 칸에 보이나. 보너스 — 폰에서 7열</div></div>
-    </div>
-    <div class="callout sm" style="margin-top:14px">하나라도 X면 — <span class="pp">"합격 기준 ○번이 안 돼. 다시"</span> 한 줄만. <span class="rr">②에서는 CLAUDE.md를 고치지 않습니다</span>(범위 보호). 길게 쓰고 싶은 말은 CLAUDE.md에 들어갈 말 — ③에서. 파일을 더 만들면 "규칙 2를 어겼어. 파일 3개로".</div>
-    <div class="timerbox">10:00 <small>과업 1 + index.html 열어 합격 기준 3 체크</small></div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>13 / 25</span></div>
-  </div></section>
-
-  <!-- 14 과업 2 push·주소 + 자가 진단 -->
-  <section class="slide"><div class="pad">
-    <div class="eyebrow red">실습 ② · 과업 2 push · 주소 → 자가 진단</div>
-    <div class="title sm">push 한 번이면 <span class="pp">주소</span> <span class="dim">— 그리고 내 달력에 상태가 몇 칸 있나 센다</span></div>
-    <div class="twocol" style="margin-top:14px">
-      <div class="panel"><h4>과업 2 — push · 주소 (7분)</h4><ul style="margin-top:0">
-        <li>"이 폴더를 GitHub <b>공개</b> 저장소 내-캘린더로 올리고, Pages를 켜서 주소를 알려줘. <b>내가 직접 해야 하는 게 있으면 그것부터 한 단계씩.</b> 끝나면 저장소 이름과 주소만"</li>
-        <li><b>사람이 직접 하는 2가지</b>(LLM이 대신 못 함) — (a) <span class="mono">gh auth login</span>의 브라우저 로그인 (b) 저장소 설정 → Pages → main / root → Save 클릭</li>
-        <li>막히면 그 대화 안에서 3단계 → 3분 → 세팅 창구. 주소를 <b>02 점검표에 손으로</b> 적는다</li>
-      </ul></div>
-      <div class="panel green"><h4>자가 진단 — 02 점검표 상단 (6분)</h4><ul style="margin-top:0">
-        <li><b>상태 4칸</b> 중 내 달력에 있는 칸 체크 — 빈 달 안내 · 저장됨 · 추가됨 · 잘못 입력</li>
-        <li><b>이동 2</b> 체크 — ◀ ▶ · 「오늘」 버튼</li>
-        <li>폰에서 주소 열어 <b>7열</b>이 다 보이나 (배포 1~3분은 이 시간과 겹친다)</li>
-        <li>체크가 적을수록 좋습니다 — <b>빈칸이 오늘 고칠 것</b></li>
-      </ul></div>
-    </div>
-    <div class="callout sm" style="margin-top:12px">🙋 손들기 ① — <span class="pp">"상태 4칸이 다 있는 사람?"</span> <span class="dim">(거의 없음 — 그게 오늘의 증명: AI는 화면을 만들고, 상태는 사람이 시킨다)</span> · 주소 도달 손들기 — 88분까지 전원 주소. &nbsp;☕ 휴식 10분 — 첫 배포가 뜨는 시간. 돌아오면 <b>폰으로 자기 주소 열기</b>.</div>
-    <div class="timerbox">7:00 <small>과업 2 · push · 주소</small></div> &nbsp; <div class="timerbox">6:00 <small>자가 진단 · 폰 7열</small></div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>14 / 25</span></div>
-  </div></section>
-
-  <!-- 15 정체 공개 -->
-  <section class="slide"><div class="pad">
-    <div class="eyebrow amber">PART C · 정체 공개 — 오늘 유일한 '코드'는 파일 이름 세 개</div>
-    <div class="title sm">폴더에 생긴 <span class="pp">세 개</span> <span class="dim">— 열어 보지 않습니다. 이름만 압니다</span></div>
-    <div class="tree" style="margin-top:22px; font-size:19px; line-height:1.9">내-캘린더/
-├─ CLAUDE.md      <span class="cm">← 내가 쓴 한 장 (지침)</span>
-├─ <span class="hl">index.html</span>     <span class="cm">← 뼈대 — 상단(월 이름 · ◀ ▶ · 오늘) / 그리드 / 입력 폼 / 목록</span>
-├─ <span class="hl">style.css</span>      <span class="cm">← 옷 — 색 · 크기 · 간격만</span>
-└─ <span class="hl">app.js</span>         <span class="cm">← 움직임 — 달 계산 · 저장 · 그리기</span></div>
-    <div class="callout">14차 삼형제의 <span class="pp">실물</span>입니다 — 뼈대 · 옷 · 움직임. CLAUDE.md의 「구조」 절에 "파일 3개"라고 썼고, 그대로 세 개가 생겼습니다. <span class="dim">(초급 한 줄 — 레이어 4겹의 화면·동작이 이 파일들)</span></div>
-    <div class="callout sm">오늘 코드 노출은 여기까지. ③에서 UI를 바꾸면 <b>style.css</b>가, 규칙을 넣으면 <b>app.js</b>가 바뀝니다 — 「출력」 절이 "바꾼 파일 이름"을 알려주니 그걸로 압니다.</div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>15 / 25</span></div>
-  </div></section>
-
-  <!-- 16 손님 테스트 하는 법 ⭐ -->
-  <section class="slide"><div class="pad">
-    <div class="eyebrow red">PART C · 손님 테스트 하는 법 — UX는 남이 겪는 것</div>
-    <div class="title sm">만든 사람은 자기 앱을 못 봅니다 <span class="dim">— 그래서 손님인 척 센다</span></div>
-    <div class="callout" style="margin-top:14px; font-size:21px; text-align:center">손님 모드 규칙 하나 — <span class="pp">"아는 길로 가지 않는다. 화면이 알려주는 길로만 간다."</span> <span class="dim" style="font-size:16px">화면이 안 알려주면 그 자리가 멈칫</span></div>
-    <div class="twocol" style="margin-top:14px; grid-template-columns:1.25fr 1fr; gap:16px">
-      <div class="panel" style="padding:16px 20px"><h4>과업 3 (02 점검표 하단에 인쇄)</h4><ul style="margin-top:0">
-        <li><b>①</b> "다음 주 화요일에 '○○'(내 업무 종류 하나) 일정을 넣는다" — 탭 수 · 멈칫한 곳 · 넣고 나서 <b>"들어갔다"를 어떻게 알았나</b></li>
-        <li><b>②</b> "방금 넣은 걸 지운다" — 탭 수 · 지워졌는지 <b>화면이 말했나</b></li>
-        <li><b>③</b> "다음 달로 넘어갔다가 오늘로 돌아온다" — 탭 수 · <b>'오늘'로 가는 길이 보였나</b></li>
-      </ul></div>
-      <div class="panel green" style="padding:16px 20px"><h4>관찰 → 규칙 3패턴</h4><ul style="margin-top:0">
-        <li><b>멈칫</b> → 보이지 않는 것 (상태 · 안내)</li>
-        <li><b>헤맴</b> → 이름 · 위치 (이동 · 부품)</li>
-        <li><b>확인 불가</b> → 피드백 없음 (상태)</li>
-        <li>기록 한 줄 — <span class="mono">___에서 멈칫 → 규칙: ___</span></li>
-      </ul></div>
-    </div>
-    <div class="cards" style="margin-top:14px">
-      <div class="card" style="padding:14px 18px"><div class="k">세는 것 ①</div><div class="t" style="font-size:17px">탭 수</div><div class="d">과업 하나에 몇 번 눌렀나 — 숫자 그대로. 적을수록 좋은 게 아니라, <b>줄어드는지</b>를 봅니다</div></div>
-      <div class="card" style="padding:14px 18px"><div class="k">세는 것 ②</div><div class="t" style="font-size:17px">멈칫</div><div class="d">다음에 뭘 눌러야 할지 <b>1초 이상</b> 고민한 자리. 어디서, 왜 — 한 줄</div></div>
-      <div class="card" style="padding:14px 18px"><div class="k">세는 것 ③</div><div class="t" style="font-size:17px">확인</div><div class="d">"됐다"를 <b>화면이 말했나</b>, 아니면 내가 그냥 알았나. 후자면 상태가 없는 것</div></div>
-    </div>
-    <div class="callout sm" style="margin-top:12px">그래도 <span class="pp">주인은 주인</span> — 손님인 척해도 아는 길이 손에 남습니다. 그래서 마지막엔 <b>강사가 누릅니다</b>(클로징 즉석 점검). 진짜 남의 손은 선택 과제 2.</div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>16 / 25</span></div>
-  </div></section>
-
-  <!-- 17 UI는 한 문장 -->
-  <section class="slide"><div class="pad">
-    <div class="eyebrow">PART C · UI는 한 문장으로 — 예시의 함정 · 바꾸기 2종 · 제출</div>
-    <div class="title sm">"구글 캘린더처럼 예쁘게"가 <span class="pp">망하는 이유</span> <span class="dim">— 15차 예시의 함정, UI판</span></div>
-    <div class="twocol" style="margin-top:14px">
-      <div class="panel red" style="padding:16px 20px"><h4>✗ "구글 캘린더처럼 예쁘게"</h4><ul style="margin-top:0"><li>무엇을 베낄지 <b>AI가 고릅니다</b> — 주 보기·드래그·사이드바까지</li><li>뼈대가 바뀌면 합격 기준 3이 깨집니다</li><li>측정할 수 없으니 "더 예쁘게"가 끝없이</li></ul></div>
-      <div class="panel green" style="padding:16px 20px"><h4>✓ 분위기 한 단어 + 색 하나 + 안 바꿀 것 한 줄</h4><ul style="margin-top:0"><li>"차분하게, 주색은 짙은 초록, <b>그리드 구조는 그대로</b>"</li><li>한 번만 — 두 번째 "더"는 선택 과제</li><li>UI는 취향, 규칙이 아니므로 CLAUDE.md에 안 씁니다</li></ul></div>
-    </div>
-    <div class="cards c2" style="margin-top:14px">
-      <div class="card hot" style="padding:14px 18px"><div class="k">바꾸기 ① 기능 1 — 과업 3</div><div class="t" style="font-size:17px">손님 테스트에서 나온 규칙 한 줄 → CLAUDE.md 「규칙」 6번</div><div class="d">"CLAUDE.md 규칙에 한 줄 추가했어. <b>그것만</b> 반영해. 다른 건 바꾸지 마"</div></div>
-      <div class="card" style="padding:14px 18px"><div class="k">바꾸기 ② UI 한 문장 — 과업 4</div><div class="t" style="font-size:17px">"분위기는 ___, 주색은 ___, 구조는 그대로"</div><div class="d">각 한 번만 · 로컬 확인 → 과업 5 "push해" → 폰 새로고침</div></div>
-    </div>
-    <div class="callout sm" style="margin-top:12px">규칙 둘(15차) — <span class="pp">대화 말고 CLAUDE.md를 고친다 · 한 번에 한 줄.</span> &nbsp;제출은 <b>슬랙</b> — 강사에게 메시지로 이름 · 주소 · 규칙 한 줄 · 탭 수 변화 (02 점검표 하단에 복사 양식).</div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>17 / 25</span></div>
-  </div></section>
-
-  <!-- 18 ③ 손님 테스트 -->
-  <section class="slide"><div class="pad">
-    <div class="eyebrow red">실습 ③ · 손님 테스트 — 내 폰에서 내 주소</div>
-    <div class="title sm">③ 손님 테스트 <span class="dim">— 처음 보는 앱인 것처럼, 세 과업을 세며</span></div>
-    <div class="steps" style="margin-top:22px">
-      <div class="step on"><div class="sn">①</div><div class="stt">다음 주 화요일에 '○○' 넣기</div><div class="std">탭 수 __ · 멈칫 __ · "들어갔다"를 어떻게 알았나 __</div></div>
-      <div class="step on"><div class="sn">②</div><div class="stt">방금 넣은 걸 지우기</div><div class="std">탭 수 __ · 지워졌는지 화면이 말했나 __</div></div>
-      <div class="step on"><div class="sn">③</div><div class="stt">다음 달 갔다가 오늘로</div><div class="std">탭 수 __ · '오늘'로 가는 길이 보였나 __</div></div>
-    </div>
-    <div class="callout" style="margin-top:22px">기록 3줄 — 02 점검표 하단. 과업마다 <span class="pp">탭 수 · 멈칫한 곳 · 확인 여부</span>. 그다음 한 줄 — <b>"___에서 멈칫 → 규칙: ___"</b> (고칠 것은 하나만).</div>
-    <div class="callout sm">기록이 전부 "없음 · 없음 · 없음"이면 — <span class="rr">"화면이 알려줬나요, 아니면 아셨나요?"</span> 아는 길로 간 겁니다. 다시, 화면이 알려주는 길로만.</div>
-    <div class="timerbox">7:00 <small>손님 모드 · 과업 3 · 기록 3줄</small></div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>18 / 25</span></div>
-  </div></section>
-
-  <!-- 19 고치기 + push + 재시도 -->
-  <section class="slide"><div class="pad">
-    <div class="eyebrow red">실습 ③ · 고치기 → push → 재시도 — 두 번째 맥박</div>
-    <div class="title sm">규칙 한 줄 → <span class="pp">그것만</span> → push → <span class="pp">다시 손님</span></div>
-    <div class="steps" style="margin-top:22px">
-      <div class="step on"><div class="sn">1</div><div class="stt">규칙 한 줄</div><div class="std">CLAUDE.md 「규칙」 6번에 추가. <b>측정 가능하게</b></div></div>
-      <div class="step"><div class="sn">2</div><div class="stt">과업 3</div><div class="std">"규칙에 한 줄 추가했어. 그것만 반영해" → 로컬 확인</div></div>
-      <div class="step"><div class="sn">3</div><div class="stt">과업 4 · UI 한 문장</div><div class="std">"분위기 ___, 주색 ___, 구조는 그대로" — 한 번만</div></div>
-      <div class="step"><div class="sn">4</div><div class="stt">과업 5 · push</div><div class="std">"push해" → 1~3분 → 내 폰 새로고침</div></div>
-      <div class="step on"><div class="sn">5</div><div class="stt">손님 모드 재시도</div><div class="std">같은 과업을 다시 — 탭 수 __ → __ · 멈칫이 없어졌나</div></div>
-    </div>
-    <div class="callout" style="margin-top:20px">규칙이 형용사면 숫자로 — <span class="rr">"알기 쉽게"</span> → <span class="pp">"저장 뒤 1초간 초록 띠"</span> · <span class="rr">"빈 달엔 안내"</span> → <span class="pp">"일정이 없는 달엔 그리드 아래 안내 한 줄"</span>. 한 번에 한 줄.</div>
-    <div class="callout sm">폰에서 안 바뀌면 시크릿 창. push가 안 되면 3단계 → 창구. 로컬까지만 된 사람도 제출은 합니다(다음 장).</div>
-    <div class="timerbox">13:00 <small>규칙 한 줄 · 과업 3 · 과업 4 · 로컬 확인</small></div> &nbsp; <div class="timerbox">6:00 <small>push · 폰 새로고침 · 재시도</small></div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>19 / 25</span></div>
-  </div></section>
-
-  <!-- 20 슬랙 제출 -->
-  <section class="slide"><div class="pad">
-    <div class="eyebrow red">실습 ③ · 링크 제출 — 제출이 곧 성공 판정</div>
-    <div class="title sm">슬랙으로 <span class="pp">네 칸</span> <span class="dim">— 이름 · 주소 · 규칙 한 줄 · 탭 수 변화</span></div>
-    <div class="cards c4" style="margin-top:24px">
-      <div class="card"><div class="k">①</div><div class="t">이름</div><div class="d">강사가 즉석 점검에서 부를 이름</div></div>
-      <div class="card hot"><div class="k">② 필수</div><div class="t">주소</div><div class="d">아이디.github.io/내-캘린더 — <b>이것만은 필수</b>. 없으면 "주소 없음"이라고</div></div>
-      <div class="card"><div class="k">③</div><div class="t">고친 규칙 한 줄</div><div class="d">CLAUDE.md 「규칙」 6번 그대로 복사</div></div>
-      <div class="card"><div class="k">④</div><div class="t">탭 수 변화</div><div class="d">"과업 ① 5탭 → 3탭 · 멈칫 없어짐" 한 줄</div></div>
-    </div>
-    <div class="callout" style="margin-top:24px">02 점검표 하단의 <span class="pp">복사 양식</span> 그대로 — 강사에게 슬랙 메시지. 제출 = 출석 = 성공 판정 = 수업 후 강사 확인 대상(3일 내 한 줄 회신).</div>
-    <div class="callout sm">로컬까지만 된 사람 — <span class="pp">"주소 없음 + 규칙 한 줄"</span>로 제출. 수업 후 push 도움을 안내합니다. 여유 3분은 밀린 push·제출 사수.</div>
-    <div class="timerbox">4:00 <small>슬랙 제출 · 여유 3분</small></div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>20 / 25</span></div>
-  </div></section>
-
-  <!-- 21 강사 즉석 점검 ⭐ -->
-  <section class="slide"><div class="pad">
-    <div class="eyebrow red">클로징 · 강사 즉석 점검 — 진짜 남의 손</div>
-    <div class="title sm">매주 눌렀습니다. <span class="pp">오늘은 남이 누릅니다</span> <span class="dim">— 제출된 주소를 강사 폰으로</span></div>
-    <div class="steps" style="margin-top:22px">
-      <div class="step"><div class="sn">1</div><div class="stt">링크 열기</div><div class="std">슬랙에서 3~4개 (지원자 우선) · 강사 폰 화면 미러링</div></div>
-      <div class="step"><div class="sn">2</div><div class="stt">과업 ①만 손님 모드</div><div class="std">"다음 주 화요일에 ○○ 넣기" — 탭 수·멈칫을 <b>소리 내어</b></div></div>
-      <div class="step on"><div class="sn">3</div><div class="stt">규칙 읽기</div><div class="std">제출된 규칙 한 줄을 그대로 읽는다</div></div>
-      <div class="step on"><div class="sn">4</div><div class="stt">잡았나?</div><div class="std">칭찬 1 · 보완 1. 사람이 아니라 <b>규칙</b>을 본다</div></div>
-    </div>
-    <div class="callout" style="margin-top:24px; font-size:23px; text-align:center; padding:22px">형식 고정 — <span class="pp">"___에서 멈칫 → (규칙 한 줄 읽기) → 이 줄이 그걸 잡았나?"</span></div>
-    <div class="callout sm">UI 언급은 한 마디만 — "색은 취향, 멈칫은 규칙". 손님 모드에서 놓친 것을 진짜 남의 손이 잡아냅니다. 나머지 링크는 수업 후 같은 체크리스트로 확인하고 슬랙에 한 줄 회신.</div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>21 / 25</span></div>
-  </div></section>
-
-  <!-- 22 선택 과제 -->
-  <section class="slide"><div class="pad">
-    <div class="eyebrow amber">클로징 · 선택 과제 — 같은 일의 다음 바퀴</div>
-    <div class="title sm">하나든 전부든 안 하든 <span class="dim">— 다음 강의는 이 작업실에서 다시 시작합니다</span></div>
-    <div class="cards c4" style="margin-top:18px">
-      <div class="card"><div class="k">과제 1</div><div class="t" style="font-size:17px">폰에서 열어 보기</div><div class="d">집에서 폰으로 내 주소 → 일정이 비어 있다 → 02 여백에 "왜 없나" 한 줄</div></div>
-      <div class="card hot"><div class="k">과제 2 ⭐</div><div class="t" style="font-size:17px">진짜 남의 손</div><div class="d">가족·동료 한 명에게 과업 3을 읽어 주고(말 안 하기) 세기 → 규칙 한 줄 → push</div></div>
-      <div class="card"><div class="k">과제 3</div><div class="t" style="font-size:17px">상태 4칸 채우기</div><div class="d">자가 진단의 빈 칸을 규칙으로 하나씩 — 한 번에 한 줄</div></div>
-      <div class="card"><div class="k">과제 4</div><div class="t" style="font-size:17px">홈 화면에 설치</div><div class="d">7차 치트시트대로 PWA. 설치 뒤엔 새로고침이 느리게 반영됨을 알고</div></div>
-    </div>
-    <div class="cards" style="margin-top:14px">
-      <div class="card"><div class="k">과제 5</div><div class="t" style="font-size:17px">주 보기 또는 반복 일정</div><div class="d">임무 절을 고쳐서(임무 밖 → 안) 하나만</div></div>
-      <div class="card"><div class="k">과제 6 · 상급(중급반)</div><div class="t" style="font-size:17px">내 앱으로 두 번째 작업실</div><div class="d">내 3종 세트를 변환표대로 CLAUDE.md로 접고, 오늘 순서 그대로 ①→②</div></div>
-      <div class="card"><div class="k">과제 7 · 경로 B였던 사람</div><div class="t" style="font-size:17px">내 계정 저장소로 옮기기</div><div class="d">강사 공용 저장소에서 내 계정으로 — 08 가이드 §3·§4 다시</div></div>
-    </div>
-    <div class="callout" style="margin-top:16px">다음 강의에 가져올 것은 <span class="pp">주소 하나</span>뿐입니다. 작업실은 GitHub에 있으니 노트북이 바뀌어도, 과제를 안 했어도, 같은 자리에서 다시 엽니다.</div>
-    <div class="callout sm" style="margin-top:14px">전부 <span class="pp">오늘 한 일의 다음 바퀴</span>입니다 — 다른 일이 아닙니다. 안 해도 곤란하지 않습니다. 다음 강의는 과제를 전제하지 않습니다.</div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>22 / 25</span></div>
-  </div></section>
-
-  <!-- 23 창고가 비어 있다 -->
-  <section class="slide"><div class="pad">
-    <div class="eyebrow">클로징 · 창고가 비어 있다 — 다음 강의</div>
-    <div class="center-quote" style="top:200px">주소는 공유됐는데,<br/><span class="pp">데이터는 공유되지 않았습니다</span></div>
-    <div class="center-sub" style="top:400px">방금 제 폰에서 여러분 달력을 열었을 때 — 일정이 없었죠. 주머니(16차)에 남은 거니까요.<br/>작업실 4요소에서 오늘 비워 둔 칸, <b>창고</b>. 그게 다음 강의입니다.<br/><span style="color:#9aacaa">일정과 방식은 따로 안내드립니다. 오늘은 "주소를 잃어버리지 마세요"까지.</span></div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>23 / 25</span></div>
-  </div></section>
-
-  <!-- 24 엔딩 -->
+  <!-- 19 엔딩 -->
   <section class="slide dark closing">
     <div class="blob b1"></div><div class="blob b2"></div>
-    <div class="eyebrow top">작업실을 연다 — 앞으로 매 강의가 이 폴더에서 시작합니다</div>
-    <div class="big" style="top:220px">AI는 화면을 만들고,<br/><span class="pp">상태는 사람이 시킨다.</span></div>
-    <div class="csub" style="top:420px">매주 눌렀습니다. 오늘은 남이 누릅니다.<br/>초급은 시키는 법을, 중급은 설계도를 가져왔고, 오늘 한 장에서 만났습니다. 그 한 장이 있는 폴더가 작업실이고, 작업실은 GitHub에 있습니다.<br/><span style="color:#547571">다음 강의 — (날짜 · 주제는 따로 안내) · 실습 절반 · 강의 절반 · 과제는 선택</span></div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>24 / 25</span></div>
+    <div class="eyebrow top">내 캘린더를 주소로 — 오늘의 문장</div>
+    <div class="big" style="top:230px">AI는 화면을 만들고,<br/><span class="pp">사용감은 사람이 시킨다.</span></div>
+    <div class="csub" style="top:420px">매주 눌렀습니다. 오늘은 남이 누릅니다.<br/>앞으로 매 강의가 이 작업실에서 시작합니다 — 폴더 하나, 저장소 하나, 주소 하나.<br/><span style="color:#547571">다음 강의 안내 — ____________________ (일정·방식은 따로)</span> · 수고하셨습니다!</div>
+    <div class="foot"><span>17차 · 내 캘린더를 주소로</span><span>19 / 20</span></div>
   </section>
 
-  <!-- 25 예비 -->
-  <section class="slide"><div class="pad">
-    <div class="eyebrow amber">예비 · "Claude Code 말고 claude.ai로도 되나요?" 질문이 나오면</div>
-    <div class="center-quote" style="top:210px; font-size:46px">①②는 됩니다 — 13차 방식(Artifacts)<br/>주소는 <span class="pp">GitHub</span>가 있어야 합니다</div>
-    <div class="center-sub" style="top:400px">claude.ai 새 대화에 CLAUDE.md 전문 + 과업 1을 붙이면 같은 달력이 나옵니다(긴급 경로 A). 로컬 확인과 고치기까지 됩니다.<br/>그런데 <b>주소</b>는 안 생깁니다 — push가 곧 배포이고, push는 저장소가 있어야 하니까요.<br/><span style="color:#9aacaa">그래서 오늘 세팅 가이드가 먼저였습니다. 작업실의 "기억"과 "무대"는 GitHub에 있습니다.</span></div>
-    <div class="foot"><span>17차 · 작업실을 연다</span><span>25 / 25</span></div>
-  </div></section>
+  <!-- 20 예비 -->
+  <section class="slide">
+    <div class="pad">
+      <div class="eyebrow amber">예비 · "claude.ai로도 되나요?" "주 보기로 해도 되나요?" 가 나오면</div>
+      <div class="center-quote" style="top:200px">됩니다.<br/><span class="pp">질문 5에 답만 있으면 뭐든</span></div>
+      <div class="center-sub" style="top:400px; font-size:19px"><b>claude.ai로도?</b> — 됩니다. 카드 다섯 답 + "단일 HTML 캘린더" → 다운로드 → 폴더 → 올리기(긴급 경로 A). 손님 모드는 똑같이.<br/><b>주 보기로?</b> — 됩니다. 월이든 주든 일이든. 질문 ④ "돌아오는 길"만 있으면 됩니다.<br/><span style="color:#9aacaa"><b>팀 공유·알림은?</b> — 쓰는 사람이 나 한 명이면 오늘은 아닙니다. 둘 다 창고가 필요해요 — 다음 강의.</span></div>
+      <div class="foot"><span>17차 · 내 캘린더를 주소로</span><span>20 / 20</span></div>
+    </div>
+  </section>
 
 </div>
 </body>
