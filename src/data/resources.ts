@@ -414,4 +414,47 @@ export const resourceGroups: ResourceGroup[] = [
       },
     ],
   },
+  {
+    courseId: "course-17",
+    label: "17차",
+    title: "작업실을 연다 — 지침 한 장, 주소 하나",
+    framework: "작업실 4요소",
+    items: [
+      {
+        file: "/downloads/c17/slides.pdf",
+        downloadName: "17강_작업실열기_슬라이드.pdf",
+        title: "슬라이드",
+        description: "수업에서 띄운 슬라이드 전체 (25장)",
+        kind: "pdf",
+      },
+      {
+        file: "/downloads/c17/setup-guide.pdf",
+        downloadName: "17강_세팅가이드.pdf",
+        title: "세팅 가이드 (수업 전 집에서)",
+        description: "확인 3개(claude · gh auth status · git 이름) + 사람이 직접 해야 하는 2가지 + 막힘 해결 3단계 — 수업 일주일 전에 한 번 해 오세요",
+        kind: "pdf",
+      },
+      {
+        file: "/downloads/c17/ux-checklist.docx",
+        downloadName: "17강_UX점검표.docx",
+        title: "UX 점검표",
+        description: "자가 진단(상태 4칸·이동·원칙 5) + 손님 테스트 기록표(과업 3) + 슬랙 제출 양식 — A4 1쪽",
+        kind: "docx",
+      },
+      {
+        file: "/downloads/c17/calendar-blueprints.docx",
+        downloadName: "17강_캘린더_설계도3장.docx",
+        title: "캘린더 설계도 3장",
+        description: "구조도·화면도·데이터도 견본 — 종류 표만 각자 채우면 CLAUDE.md의 세 절이 된다",
+        kind: "docx",
+      },
+      {
+        file: "/downloads/c17/workshop-kit.zip",
+        downloadName: "17강_배포키트.zip",
+        title: "배포키트 (CLAUDE.md 템플릿 · 과업 문장 5개 · 긴급키트)",
+        description: "폴더에 CLAUDE.md로 저장할 템플릿(빈칸 4개) + Claude Code에 붙여넣는 과업 문장 ①~⑤ + 막혔을 때 1쪽",
+        kind: "zip",
+      },
+    ],
+  },
 ];
