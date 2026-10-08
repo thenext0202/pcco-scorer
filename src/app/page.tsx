@@ -60,6 +60,16 @@ export default function Home() {
       <CourseDetail courseId="course-16" />
       <div className="section-divider max-w-6xl mx-auto" />
       <CourseDetail courseId="course-17" />
+
+      {/* Footer — 실습 앱 링크 (작게) */}
+      <footer className="py-10 px-6 text-center">
+        <a
+          href="/practice"
+          className="text-xs text-text-muted/60 hover:text-accent-primary underline underline-offset-4 transition-colors"
+        >
+          실습 앱 사용하기
+        </a>
+      </footer>
     </main>
   );
 }

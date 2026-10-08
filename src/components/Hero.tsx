@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Sparkles, ChevronDown, BookOpen, ExternalLink, Download, ClipboardList } from "lucide-react";
+import { ArrowRight, Sparkles, ChevronDown, BookOpen, Download, ClipboardList } from "lucide-react";
 import { heroContent, courses } from "@/data/content";
 import { useState } from "react";
 
@@ -89,17 +89,7 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="flex flex-col items-center gap-6"
         >
-          {/* Main CTA - 실습 앱 사용하기 (강조) */}
-          <a
-            href="/practice"
-            className="group relative px-6 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 rounded-2xl font-bold text-base sm:text-lg md:text-xl bg-gradient-to-r from-accent-primary via-accent-secondary to-accent-primary bg-[length:200%_100%] text-background hover:scale-[1.02] hover:bg-[position:100%_0] transition-all duration-500 flex items-center justify-center gap-2 sm:gap-3 pulse-glow shadow-2xl btn-premium w-full sm:w-auto max-w-md"
-          >
-            <ExternalLink className="w-5 h-5 sm:w-6 sm:h-6 group-hover:rotate-12 transition-transform flex-shrink-0" />
-            <span className="whitespace-nowrap">실습 앱 사용하기</span>
-            <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-1 transition-transform flex-shrink-0" />
-          </a>
-
-          {/* 보조 CTA — 커리큘럼 / 자료실 / 실습서 */}
+          {/* CTA — 커리큘럼 / 자료실 / 실습서 */}
           <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto max-w-md sm:max-w-none">
           {/* Curriculum Toggle Button */}
           <button
